@@ -7,7 +7,7 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 <meta charset="UTF-8">
 <title>Banco de Prueba y Calibración</title>
 
-<link rel="stylesheet" href="https://cl4udio.netlify.app/CSS/mainHTML.css">
+<link rel="stylesheet" href="https://claudio-arz.github.io/AeroDeck-HTML/CSS/mainHTML.css">
 
 </head>
 
@@ -81,7 +81,7 @@ ws.onmessage = (msg) => {
 
 
 window.addEventListener('DOMContentLoaded', () => {
-  fetch("https://cl4udio.netlify.app/RPM.data")
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/RPM.data")
     .then(r => r.text())
     .then(html => {
       document.getElementById("main-grid").innerHTML = html;
@@ -98,6 +98,6 @@ window.addEventListener('DOMContentLoaded', () => {
 </script>
 
 </body>
-<script src="https://cl4udio.netlify.app/JS/functions.js"></script>
+<script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions.js"></script>
 </html>
 )rawliteral";
