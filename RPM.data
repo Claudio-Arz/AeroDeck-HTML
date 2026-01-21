@@ -4,7 +4,7 @@
 <div id="rpm-container" style="grid-row: 1; grid-column: 4;">
   <div style="display: flex; justify-content: center; align-items: flex-start; gap: 60px; margin-bottom: 32px;">
     <div id="container">
-      <img src="https://1drv.ms/i/c/976676efea6bc5cc/IQSq7R2SSyVBTr7XIEyJNr9iAdnoYbqY_Gtz4MnhCUnEMxU?width=480&height=480" alt="Tacómetro RPM">
+      <img src="https://claudio-arz.github.io/AeroDeck-HTML/Images/dial.png" alt="Tacómetro RPM">
       <div id="needle" class="needle"></div>
       <div class="needle-center"></div>
       <div id="rpm-value" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:32px;width:100px;text-align:center;z-index:20;background:rgba(8,32,50,0.85);border-radius:10px;pointer-events:none;color:#fff;box-shadow:0 0 8px #000;">--</div>
@@ -81,6 +81,10 @@ document.getElementById("start-btn-slider").addEventListener("click", function()
 document.getElementById("noice-btn").addEventListener("click", function() {
 
   noiceOn = !noiceOn;
+  // Enviar el estado de noiceOn al ESP32
+  if(ws.readyState === 1) {
+    ws.send(JSON.stringify({ setNoice: noiceOn }));
+  }
 });
 </script>
 
