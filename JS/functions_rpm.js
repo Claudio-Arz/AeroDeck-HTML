@@ -1,0 +1,57 @@
+// functions_rpm.js: lógica simple y modular para RPM
+function updateNeedleAndValue(rpm) {
+  let angle = 225 + (Math.max(0, Math.min(rpm, 3000)) * 270) / 3000;
+  document.getElementById("needle").style.transform =
+    `translate(-50%, -100%) rotate(${angle}deg)`;
+  document.getElementById("rpm-value").textContent = Math.round(rpm);
+  const rpmSlider = document.getElementById("rpm-slider");
+  const rpmSliderValue = document.getElementById("rpm-slider-value");
+  if (rpmSlider && Math.abs(rpmSlider.value - rpm) > 1) {
+    rpmSlider.value = rpm;
+    rpmSliderValue.textContent = Math.round(rpm);
+  }
+}
+
+function setupRPMControls(ws) {
+  const startBtnSlider = document.getElementById("start-btn-slider");
+  if (startBtnSlider) {
+    startBtnSlider.addEventListener("click", function() {
+      if(ws.readyState === 1) {
+        ws.send(JSON.stringify({ startMotorRoutine: true }));
+      }
+    });
+  }
+  const rpmSlider = document.getElementById("rpm-slider");
+  const rpmSliderValue = document.getElementById("rpm-slider-value");
+  if (rpmSlider && rpmSliderValue) {
+    rpmSlider.addEventListener("input", function(e) {
+      const value = parseInt(e.target.value);
+      rpmSliderValue.textContent = value;
+      updateNeedleAndValue(value);
+      if(ws.readyState === 1) {
+        ws.send(JSON.stringify({ setRPMSpeed: value }));
+      }
+    });
+    rpmSlider.addEventListener("change", function(e) {
+      // Permitir que el ESP32 vuelva a actualizar
+    });
+  }
+  const noiceBtn = document.getElementById("noice-btn");
+  let noiceOn = false;
+  if (noiceBtn) {
+    noiceBtn.addEventListener("click", function() {
+      noiceOn = !noiceOn;
+      this.textContent = "Noice: " + (noiceOn ? "ON" : "OFF");
+      if(noiceOn) {
+        this.style.background = "#0c0";
+        this.style.color = "#222";
+      } else {
+        this.style.background = "#444";
+        this.style.color = "#fff";
+      }
+      if(ws.readyState === 1) {
+        ws.send(JSON.stringify({ setNoice: noiceOn }));
+      }
+    });
+  }
+}
