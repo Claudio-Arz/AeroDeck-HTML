@@ -83,7 +83,7 @@ window.addEventListener('DOMContentLoaded', () => {
   fetch("https://claudio-arz.github.io/AeroDeck-HTML/RPM.html")
     .then(r => r.text())
     .then(html => {
-      document.getElementById("rpm-container").innerHTML = html;
+      document.getElementById("main-grid").innerHTML = html;
       // Cargar el JS específico del instrumento RPM
       const script = document.createElement('script');
       script.src = 'https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_rpm.js';
