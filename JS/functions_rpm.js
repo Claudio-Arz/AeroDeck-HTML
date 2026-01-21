@@ -1,4 +1,6 @@
 // functions_rpm.js: lógica simple y modular para RPM
+
+let isUserSliding = false;
 function updateNeedleAndValue(rpm) {
   let angle = 225 + (Math.max(0, Math.min(rpm, 3000)) * 270) / 3000;
   document.getElementById("needle").style.transform =
@@ -25,6 +27,7 @@ function setupRPMControls(ws) {
   const rpmSliderValue = document.getElementById("rpm-slider-value");
   if (rpmSlider && rpmSliderValue) {
     rpmSlider.addEventListener("input", function(e) {
+      isUserSliding = true;
       const value = parseInt(e.target.value);
       rpmSliderValue.textContent = value;
       updateNeedleAndValue(value);
@@ -33,7 +36,7 @@ function setupRPMControls(ws) {
       }
     });
     rpmSlider.addEventListener("change", function(e) {
-      // Permitir que el ESP32 vuelva a actualizar
+      isUserSliding = false;
     });
   }
   const noiceBtn = document.getElementById("noice-btn");
@@ -54,4 +57,19 @@ function setupRPMControls(ws) {
       }
     });
   }
+}
+// Interceptar mensajes del ESP32 solo si el usuario NO está moviendo el slider
+if (typeof ws !== 'undefined') {
+  ws.onmessage = (msg) => {
+    if (!isUserSliding) {
+      let data = {};
+      try {
+        data = JSON.parse(msg.data);
+      } catch (e) {
+        console.warn('Mensaje WebSocket no es JSON:', msg.data);
+        return;
+      }
+      if (data.rpm !== undefined) updateNeedleAndValue(data.rpm);
+    }
+  };
 }
