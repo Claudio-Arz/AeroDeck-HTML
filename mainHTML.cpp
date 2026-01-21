@@ -12,7 +12,7 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 </head>
 
 <body>
-<h1>Banco de Prueba y Calibración</h1>
+<h1 style="text-align:center; margin-top: 24px;">Banco de Prueba y Calibración</h1>
 
 
 <div id="main-grid" class="grid-container">
@@ -75,10 +75,7 @@ ws.onmessage = (msg) => {
   // updateAttitudeInstrument();
 };
 
-// <div id="contenedor"></div>
-
-
-
+// Cargar el HTML del instrumento RPM de forma dinámica
 window.addEventListener('DOMContentLoaded', () => {
   fetch("https://claudio-arz.github.io/AeroDeck-HTML/RPM.html")
     .then(r => r.text())
@@ -95,9 +92,6 @@ window.addEventListener('DOMContentLoaded', () => {
       document.body.appendChild(script);
     });
 });
-
-
-
 
 </script>
 
