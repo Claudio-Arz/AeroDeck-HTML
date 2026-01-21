@@ -70,4 +70,6 @@ document.getElementById("start-btn-slider").addEventListener("click", function()
 document.getElementById("noice-btn").addEventListener("click", function() {
 
   noiceOn = !noiceOn;
+});
+</script>
 
