@@ -25,8 +25,7 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
   <!-- Altimeter: Row 1, Col 3 (copiado de AltVerSpe/mainHTML.cpp) -->
   <!-- <div id="Altimeter-container" style="grid-row: 1; grid-column: 3;"></div> -->
 
-  <!-- RPM: Row 1, Col 4 -->
-  <!-- <div id="rpm-container" style="grid-row: 1; grid-column: 4;"></div> -->  
+  <div id="rpm-container" style="grid-row: 1; grid-column: 4;"></div>
 
   <!-- Vertical Speed: Row 2, Col 3 (copiado de AltVerSpe/mainHTML.cpp) -->
   <!-- <div id="VerticalSpeed-container" style="grid-row: 2; grid-column: 3;"></div> -->
@@ -81,14 +80,19 @@ ws.onmessage = (msg) => {
 
 
 window.addEventListener('DOMContentLoaded', () => {
-  fetch("https://claudio-arz.github.io/AeroDeck-HTML/RPM.data")
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/RPM.html")
     .then(r => r.text())
     .then(html => {
-      document.getElementById("main-grid").innerHTML = html;
-      // Inicializar controles y eventos RPM después de insertar el HTML
-      if (typeof setupRPMControls === 'function') {
-        setupRPMControls(ws);
-      }
+      document.getElementById("rpm-container").innerHTML = html;
+      // Cargar el JS específico del instrumento RPM
+      const script = document.createElement('script');
+      script.src = 'https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_rpm.js';
+      script.onload = () => {
+        if (typeof setupRPMControls === 'function') {
+          setupRPMControls(ws);
+        }
+      };
+      document.body.appendChild(script);
     });
 });
 
@@ -98,6 +102,6 @@ window.addEventListener('DOMContentLoaded', () => {
 </script>
 
 </body>
-<script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions.js"></script>
+
 </html>
 )rawliteral";

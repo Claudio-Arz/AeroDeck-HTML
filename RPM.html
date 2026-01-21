@@ -78,9 +78,20 @@ document.getElementById("start-btn-slider").addEventListener("click", function()
 });
 
 // Botón de ruido
-document.getElementById("noice-btn").addEventListener("click", function() {
-
+let noiceOn = false;
+const noiceBtn = document.getElementById("noice-btn");
+noiceBtn.addEventListener("click", function() {
   noiceOn = !noiceOn;
+  // Cambiar texto y color del botón
+  if (noiceOn) {
+    noiceBtn.textContent = "Noice: ON";
+    noiceBtn.style.background = "#0c0";
+    noiceBtn.style.color = "#222";
+  } else {
+    noiceBtn.textContent = "Noice: OFF";
+    noiceBtn.style.background = "#444";
+    noiceBtn.style.color = "#fff";
+  }
   // Enviar el estado de noiceOn al ESP32
   if(ws.readyState === 1) {
     ws.send(JSON.stringify({ setNoice: noiceOn }));
