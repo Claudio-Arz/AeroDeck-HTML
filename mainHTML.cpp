@@ -25,7 +25,7 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
   <!-- Altimeter: Row 1, Col 3 (copiado de AltVerSpe/mainHTML.cpp) -->
   <!-- <div id="Altimeter-container" style="grid-row: 1; grid-column: 3;"></div> -->
 
-  <div id="rpm-container" style="grid-row: 1; grid-column: 4;"></div>
+  <!-- <div id="rpm-container" style="grid-row: 1; grid-column: 4;"></div>
 
   <!-- Vertical Speed: Row 2, Col 3 (copiado de AltVerSpe/mainHTML.cpp) -->
   <!-- <div id="VerticalSpeed-container" style="grid-row: 2; grid-column: 3;"></div> -->
