@@ -33,7 +33,11 @@ ws.onmessage = (msg) => {
   let data = JSON.parse(msg.data);
   let rpm = data.rpm;
   window.currentRPM = rpm;
-  updateNeedleAndValue(rpm);
+  // Solo actualizar la aguja si el valor recibido coincide con el slider
+  const slider = document.getElementById("rpm-slider");
+  if (slider && parseInt(slider.value) === rpm) {
+    updateNeedleAndValue(rpm);
+  }
 };
 
 // Al presionar el botón Start principal, enviar mensaje al ESP32 para que ejecute la rutina
