@@ -26,17 +26,22 @@
 
 <script>
 
+
 let ws = new WebSocket("ws://" + location.hostname + ":81");
+let isUserSliding = false;
 
 
 ws.onmessage = (msg) => {
   let data = JSON.parse(msg.data);
   let rpm = data.rpm;
   window.currentRPM = rpm;
-  // Solo actualizar la aguja si el valor recibido coincide con el slider
-  const slider = document.getElementById("rpm-slider");
-  if (slider && parseInt(slider.value) === rpm) {
+  // Solo actualizar la aguja si el usuario NO está moviendo el slider
+  if (!isUserSliding) {
     updateNeedleAndValue(rpm);
+    const slider = document.getElementById("rpm-slider");
+    if (slider) slider.value = rpm;
+    const sliderValue = document.getElementById("rpm-slider-value");
+    if (sliderValue) sliderValue.textContent = rpm;
   }
 };
 
@@ -49,6 +54,7 @@ document.getElementById("start-btn").addEventListener("click", function() {
 
 // Al mover el slider, enviar el valor al ESP32
 document.getElementById("rpm-slider").addEventListener("input", function(e) {
+  isUserSliding = true;
   const value = parseInt(e.target.value);
   document.getElementById("rpm-slider-value").textContent = value;
   // Mover la aguja instantáneamente en el frontend
@@ -57,6 +63,11 @@ document.getElementById("rpm-slider").addEventListener("input", function(e) {
   if(ws.readyState === 1) {
     ws.send(JSON.stringify({ setRPMSpeed: value }));
   }
+});
+
+// Cuando el usuario deja de mover el slider, permitir que el ESP32 vuelva a actualizar
+document.getElementById("rpm-slider").addEventListener("change", function(e) {
+  isUserSliding = false;
 });
 
 // Al presionar el botón Start del slider, enviar rutina
