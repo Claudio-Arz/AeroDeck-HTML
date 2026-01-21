@@ -42,31 +42,40 @@ float rollValue = 0.0f;
 int pitchValue = 0;
 float airspeedValue = 0.0f;
 
-// void onWsEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
-//   if (type == WStype_TEXT) {
-//     String msg = (const char*)payload;
-//     if (msg.indexOf("setRPMSpeed") >= 0) {
-//       int start = msg.indexOf(":");
-//       int end = msg.indexOf("}", start);
-//       if (start > 0 && end > start) {
-//         String val = msg.substring(start + 1, end);
-//         varRPM = val.toInt();
-//       }
-//     }
-//     if (msg.indexOf("startMotorRoutine") >= 0) {
-//       if (rpm == 0.0f) {
-//         startRoutine = true;
-//         routineStart = millis();
-//         routineStep = 0;
-//         routineInitial = varRPM;
-//       }
-//     }
-//   }
-// }
+void onWsEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
+  String msg = (const char*)payload;
+  if (msg.indexOf("setNoice") >= 0) {
+    int start = msg.indexOf(":");
+    int end = msg.indexOf("}", start);
+    if (start > 0 && end > start) {
+      String val = msg.substring(start + 1, end);
+      rpmNoiceOn = (val == "true");
+    }
+  }
+  if (type == WStype_TEXT) {
+    String msg = (const char*)payload;
+    if (msg.indexOf("setRPMSpeed") >= 0) {
+      int start = msg.indexOf(":");
+      int end = msg.indexOf("}", start);
+      if (start > 0 && end > start) {
+        String val = msg.substring(start + 1, end);
+        varRPM = val.toInt();
+      }
+    }
+    if (msg.indexOf("startMotorRoutine") >= 0) {
+      if (rpm == 0.0f) {
+        startRoutine = true;
+        routineStart = millis();
+        routineStep = 0;
+        routineInitial = varRPM;
+      }
+    }
+  }
+}
 
 // ===== CONFIGURAR ACCESS POINT =====
 const char* ap_ssid = "Intrumentos-ESP32";  // Nombre del AP servidor
-const char* ap_pass = "11335577";   // mínimo 8 caracteres
+const char* ap_pass = "12345678";   // mínimo 8 caracteres
 
 // Puerto DNS estándar
 const byte DNS_PORT = 53;
@@ -80,37 +89,15 @@ IPAddress netMsk(255, 255, 255, 0);
 
 
 // ===== WEBSOCKET EVENTOS =====
-void onWsEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
-  if (type == WStype_TEXT) {
-    StaticJsonDocument<256> doc;
-    DeserializationError error = deserializeJson(doc, payload, length);
-    if (!error) {
-
-      if (doc["setRPMNoice"].is<bool>()) {
-        rpmNoiceOn = doc["setRPMNoice"].as<bool>();
-      }
-
-      if (doc["setRPMSpeed"].is<int>()) {
-        varRPM = doc["setRPMSpeed"].as<int>();
-      }
-
-      if (doc["startMotorRoutine"].is<bool>()) {
-        if (rpm == 0.0f) {
-          startRoutine = true;
-          routineStart = millis();
-          routineStep = 0;
-          routineInitial = varRPM;
-        }
-      }
-    }
-  }
-  if (type == WStype_CONNECTED) {
-    // Enviar estado inicial al cliente recién conectado
-    char buffer[400];
-    sprintf(buffer, "{\"rpm\":%.2f}", rpm );
-    ws.sendTXT(num, buffer);
-  }
-}
+// void onWsEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
+//   if (type == WStype_CONNECTED) {
+//     // Enviar estado inicial al cliente recién conectado
+//     char buffer[400];
+//     sprintf(buffer, "{\"rpm\":%.2f}", rpm );
+//     ws.sendTXT(num, buffer);
+//   }
+//   // Aquí puedes agregar el manejo de mensajes entrantes si lo necesitas
+// }
 
 // ===== HANDLERS DEL SERVIDOR HTTP =====
 
@@ -122,17 +109,17 @@ void handleRoot() {
 }
 
 // Redirección genérica: cualquier path te manda al Tablero principal
-void handleNotFound() {
-  server.sendHeader("Location", String("http://") + apIP.toString(), true);
-  server.send(302, "text/plain", "");
-}
+// void handleNotFound() {
+//   server.sendHeader("Location", String("http://") + apIP.toString(), true);
+//   server.send(302, "text/plain", "");
+// }
 
 
 // ===== SETUP =====
 void setup() {
   Serial.begin(115200);
   WiFiManager wifiManager;
-  // wifiManager.resetSettings(); // Descomenta para forzar portal cada vez
+  wifiManager.resetSettings(); // Descomenta para forzar portal cada vez
   Serial.println("Iniciando WiFiManager...");
   if (!wifiManager.autoConnect("Instrumentos-ESP32")) {
     Serial.println("No se pudo conectar a WiFi. Reiniciando...");
@@ -144,8 +131,9 @@ void setup() {
   Serial.println(WiFi.localIP());
 
   // ===== HTTP SERVER =====
+
   server.on("/", handleRoot);
-  server.onNotFound(handleNotFound);
+  // server.onNotFound(handleNotFound); // Comentado porque handleNotFound está comentada
   server.begin();
 
   // ===== WEBSOCKET =====
@@ -213,12 +201,6 @@ void loop() {
     if (rpm_mostrar > 3000) rpm_mostrar = 3000;
   }
 
-  // Solo imprimir si cambia el valor
-  if (ant_Val_RPM != varRPM) {
-    ant_Val_RPM = varRPM;
-    Serial.print("RPM: ");
-    Serial.println(rpm);
-  }
 
   float fuelFlow_mostrar = fuelFlow;
   float airspeed_mostrar = airspeedValue;

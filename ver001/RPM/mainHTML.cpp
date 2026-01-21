@@ -106,6 +106,7 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
     <div id="rpm-value" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:32px;width:100px;text-align:center;z-index:20;background:rgba(8,32,50,0.85);border-radius:10px;pointer-events:none;color:#fff;box-shadow:0 0 8px #000;">--</div>
   </div>
   <button id="start-btn" style="height:48px;font-size:18px;padding:8px 32px;align-self:center;">Start</button>
+  <button id="noice-btn" style="height:40px;font-size:16px;padding:6px 10px;margin-top:10px;background:#444;color:#fff;border-radius:8px;border:none;cursor:pointer;">Noice: ON</button>
 </div>
 
 
@@ -151,6 +152,27 @@ document.getElementById("start-btn").addEventListener("click", function() {
     ws.send(JSON.stringify({ startMotorRoutine: true }));
   }
 });
+
+// Al presionar el botón noice, enviar mensaje al ESP32 para que ejecute la rutina
+let noiceOn = true;
+const noiceBtn = document.getElementById("noice-btn");
+noiceBtn.addEventListener("click", function() {
+  if(ws.readyState === 1) {
+    ws.send(JSON.stringify({ toggleNoice: true }));
+    noiceOn = !noiceOn;
+    if(noiceOn) {
+      noiceBtn.textContent = "Noice: ON";
+      noiceBtn.style.background = "#444";
+      noiceBtn.style.color = "#fff";
+    } else {
+      noiceBtn.textContent = "Noice: OFF";
+      noiceBtn.style.background = "#ff4444";
+      noiceBtn.style.color = "#fff";
+    }
+  }
+});
+
+
 </script>
 
 <script>

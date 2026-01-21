@@ -32,6 +32,8 @@ unsigned long routineStart = 0;
 int routineStep = 0;
 float routineInitial = 0;
 float vsVar = 0.0f;
+bool noiceOn = false;
+
 void onWsEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
   if (type == WStype_TEXT) {
     String msg = (const char*)payload;
@@ -50,6 +52,19 @@ void onWsEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
         routineStep = 0;
         routineInitial = varRPM;
       }
+    }
+    // Calcular valor mostrado with ruido solo para enviar al frontend
+    float rpm_mostrar = rpm;
+    if (rpm != 0.0f && noiceOn) {
+      int ruido = random(-5, 6); // de -5 a +5
+      rpm_mostrar = rpm + ruido;
+      if (rpm_mostrar < 0) rpm_mostrar = 0;
+      if (rpm_mostrar > 3000) rpm_mostrar = 3000;
+    }
+
+    if (msg.indexOf("toggleNoice") >= 0) {
+      noiceOn = !noiceOn;
+      // Aquí podrías agregar código para activar/desactivar el ruido en el motor
     }
   }
 }
@@ -146,7 +161,7 @@ void loop() {
   rpm = (float)varRPM;
   // Calcular valor mostrado con ruido solo para enviar al frontend
   float rpm_mostrar = rpm;
-  if (rpm != 0.0f) {
+  if (rpm != 0.0f && noiceOn) {
     int ruido = random(-5, 6); // de -5 a +5
     rpm_mostrar = rpm + ruido;
     if (rpm_mostrar < 0) rpm_mostrar = 0;
