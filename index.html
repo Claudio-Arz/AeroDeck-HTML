@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="0; url=mainHTML.html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AeroDeck - Panel de Instrumentos Aeronáuticos</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #0a1a2f;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .loading {
+            text-align: center;
+        }
+        .loading h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        .loading p {
+            font-size: 1.2em;
+            opacity: 0.8;
+        }
+        a {
+            color: #4a9eff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="loading">
+        <h1>🛩️ AeroDeck</h1>
+        <p>Redirigiendo al panel de instrumentos...</p>
+        <p style="margin-top: 20px;">Si no eres redirigido automáticamente, <a href="mainHTML.html">haz clic aquí</a>.</p>
+    </div>
+    <script>
+        // Redirección alternativa por si meta refresh no funciona
+        setTimeout(() => {
+            window.location.href = 'mainHTML.html';
+        }, 100);
+    </script>
+</body>
+</html>
