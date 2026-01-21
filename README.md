@@ -13,12 +13,12 @@ Este repositorio puede ser accedido públicamente mediante GitHub Pages. Sigue e
 1. Ve a la página del repositorio en GitHub: `https://github.com/Claudio-Arz/AeroDeck-HTML`
 2. Haz clic en **Settings** (Configuración)
 3. En el menú lateral, haz clic en **Pages**
-4. En **Source** (Origen), selecciona la rama `copilot/access-file-url` (o la rama principal que desees)
+4. En **Source** (Origen), selecciona la rama principal (main)
 5. Haz clic en **Save** (Guardar)
 
 Una vez habilitado, los archivos estarán disponibles en:
 ```
-https://claudio-arz.github.io/AeroDeck-HTML/mainHTML.html
+https://claudio-arz.github.io/AeroDeck-HTML/
 ```
 
 **Nota:** La primera vez puede tardar unos minutos en estar disponible.
@@ -33,7 +33,7 @@ Para probar los archivos localmente:
    python -m http.server 8000
    
    # Luego abre en tu navegador:
-   # http://localhost:8000/mainHTML.html
+   # http://localhost:8000/
    ```
 
 2. **Usando Node.js (http-server):**
@@ -41,7 +41,7 @@ Para probar los archivos localmente:
    npx http-server -p 8000
    
    # Luego abre en tu navegador:
-   # http://localhost:8000/mainHTML.html
+   # http://localhost:8000/
    ```
 
 3. **Usando PHP:**
@@ -49,14 +49,14 @@ Para probar los archivos localmente:
    php -S localhost:8000
    
    # Luego abre en tu navegador:
-   # http://localhost:8000/mainHTML.html
+   # http://localhost:8000/
    ```
 
 ### Opción 3: Netlify (Alternativa a GitHub Pages)
 
 1. Ve a [netlify.com](https://www.netlify.com/)
 2. Arrastra la carpeta del proyecto a la zona de "Drop"
-3. Netlify generará una URL como: `https://tu-sitio.netlify.app/mainHTML.html`
+3. Netlify generará una URL como: `https://tu-sitio.netlify.app/`
 
 ### Opción 4: Abrir directamente desde el sistema de archivos
 
@@ -70,6 +70,7 @@ file:///ruta/completa/al/proyecto/mainHTML.html
 
 ```
 AeroDeck-HTML/
+├── index.html          # Punto de entrada principal (redirige a mainHTML.html)
 ├── mainHTML.html       # Archivo principal del panel de instrumentos
 ├── CSS/
 │   └── mainHTML.css    # Estilos del panel
