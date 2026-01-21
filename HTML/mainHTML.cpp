@@ -12,7 +12,7 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 </head>
 
 <body>
-<h1>Banco de Prueba y Calibración</h1>
+<h1 style="text-align:center; margin-top: 24px;">Banco de Prueba y Calibración</h1>
 
 
 <div id="main-grid" class="grid-container">
@@ -25,7 +25,7 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
   <!-- Altimeter: Row 1, Col 3 (copiado de AltVerSpe/mainHTML.cpp) -->
   <!-- <div id="Altimeter-container" style="grid-row: 1; grid-column: 3;"></div> -->
 
-  <div id="rpm-container" style="grid-row: 1; grid-column: 4;"></div>
+  <!-- <div id="rpm-container" style="grid-row: 1; grid-column: 4;"></div>
 
   <!-- Vertical Speed: Row 2, Col 3 (copiado de AltVerSpe/mainHTML.cpp) -->
   <!-- <div id="VerticalSpeed-container" style="grid-row: 2; grid-column: 3;"></div> -->
@@ -75,15 +75,12 @@ ws.onmessage = (msg) => {
   // updateAttitudeInstrument();
 };
 
-// <div id="contenedor"></div>
-
-
-
+// Cargar el HTML del instrumento RPM de forma dinámica
 window.addEventListener('DOMContentLoaded', () => {
   fetch("https://claudio-arz.github.io/AeroDeck-HTML/RPM.html")
     .then(r => r.text())
     .then(html => {
-      document.getElementById("rpm-container").innerHTML = html;
+      document.getElementById("main-grid").innerHTML = html;
       // Cargar el JS específico del instrumento RPM
       const script = document.createElement('script');
       script.src = 'https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_rpm.js';
@@ -95,9 +92,6 @@ window.addEventListener('DOMContentLoaded', () => {
       document.body.appendChild(script);
     });
 });
-
-
-
 
 </script>
 

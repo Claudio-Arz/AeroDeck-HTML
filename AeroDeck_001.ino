@@ -166,11 +166,11 @@ void loop() {
         routineStep = 2;
         routineStart = millis();
       }
-    } else if (routineStep == 2) { // Bajar a 700 rpm en 3s
-      float frac = min(1.0f, t / 3000.0f);
-      varRPM = 1000 + (700 - 1000) * frac;
+    } else if (routineStep == 2) { // Bajar a 700 rpm en 4s
+      float frac = min(1.0f, t / 4000.0f);
+      varRPM = 1000 + (455 - 1000) * frac;
       if (frac >= 1.0f) {
-        varRPM = 700;
+        varRPM = 455;
         startRoutine = false;
       }
     }

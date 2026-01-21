@@ -1,7 +1,7 @@
 
 
 
-<div id="main-grid" style="grid-row: 1; grid-column: 4;">
+<div style="grid-row: 1; grid-column: 4;">
   <div style="display: flex; justify-content: center; align-items: flex-start; gap: 60px; margin-bottom: 32px;">
     <div id="container">
       <img src="https://claudio-arz.github.io/AeroDeck-HTML/Images/dial.png" alt="Tacómetro RPM">
@@ -13,7 +13,7 @@
 </div>
 
 <!-- Control deslizante para motor -->
-<div id="main-grid" style="grid-row: 1; grid-column: 6;">
+<div style="grid-row: 1; grid-column: 6;">
   <div class="grid-item slider-vertical" >
     <div style="text-align:center;font-weight:bold;color:#fff;margin-bottom:4px;">RPM</div>
     <input type="range" min="0" max="3000" value="0" class="slider" id="rpm-slider" orient="vertical">
@@ -24,78 +24,5 @@
 </div>
 
 
-<script>
 
-
-let ws = new WebSocket("ws://" + location.hostname + ":81");
-let isUserSliding = false;
-
-
-ws.onmessage = (msg) => {
-  let data = JSON.parse(msg.data);
-  let rpm = data.rpm;
-  window.currentRPM = rpm;
-  // Solo actualizar la aguja si el usuario NO está moviendo el slider
-  if (!isUserSliding) {
-    updateNeedleAndValue(rpm);
-    const slider = document.getElementById("rpm-slider");
-    if (slider) slider.value = rpm;
-    const sliderValue = document.getElementById("rpm-slider-value");
-    if (sliderValue) sliderValue.textContent = rpm;
-  }
-};
-
-// Al presionar el botón Start principal, enviar mensaje al ESP32 para que ejecute la rutina
-document.getElementById("start-btn").addEventListener("click", function() {
-  if(ws.readyState === 1) {
-    ws.send(JSON.stringify({ startMotorRoutine: true }));
-  }
-});
-
-// Al mover el slider, enviar el valor al ESP32
-document.getElementById("rpm-slider").addEventListener("input", function(e) {
-  isUserSliding = true;
-  const value = parseInt(e.target.value);
-  document.getElementById("rpm-slider-value").textContent = value;
-  // Mover la aguja instantáneamente en el frontend
-  updateNeedleAndValue(value);
-  // Enviar el valor al ESP32 en background
-  if(ws.readyState === 1) {
-    ws.send(JSON.stringify({ setRPMSpeed: value }));
-  }
-});
-
-// Cuando el usuario deja de mover el slider, permitir que el ESP32 vuelva a actualizar
-document.getElementById("rpm-slider").addEventListener("change", function(e) {
-  isUserSliding = false;
-});
-
-// Al presionar el botón Start del slider, enviar rutina
-document.getElementById("start-btn-slider").addEventListener("click", function() {
-  if(ws.readyState === 1) {
-    ws.send(JSON.stringify({ startMotorRoutine: true }));
-  }
-});
-
-// Botón de ruido
-let noiceOn = false;
-const noiceBtn = document.getElementById("noice-btn");
-noiceBtn.addEventListener("click", function() {
-  noiceOn = !noiceOn;
-  // Cambiar texto y color del botón
-  if (noiceOn) {
-    noiceBtn.textContent = "Noice: ON";
-    noiceBtn.style.background = "#0c0";
-    noiceBtn.style.color = "#222";
-  } else {
-    noiceBtn.textContent = "Noice: OFF";
-    noiceBtn.style.background = "#444";
-    noiceBtn.style.color = "#fff";
-  }
-  // Enviar el estado de noiceOn al ESP32
-  if(ws.readyState === 1) {
-    ws.send(JSON.stringify({ setNoice: noiceOn }));
-  }
-});
-</script>
 
