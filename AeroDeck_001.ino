@@ -119,7 +119,7 @@ void handleRoot() {
 void setup() {
   Serial.begin(115200);
   WiFiManager wifiManager;
-  wifiManager.resetSettings(); // Descomenta para forzar portal cada vez
+  // wifiManager.resetSettings(); // Descomenta para forzar portal cada vez
   Serial.println("Iniciando WiFiManager...");
   if (!wifiManager.autoConnect("Instrumentos-ESP32")) {
     Serial.println("No se pudo conectar a WiFi. Reiniciando...");
