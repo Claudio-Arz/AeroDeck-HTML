@@ -6,7 +6,7 @@ function updateVariometerAndValue(variometer) {
   // Ángulo base: 270° (abajo), 0° (arriba), 0 en el centro (90°)
   // Mapeo: -20 → 270°, 0 → 90°, 20 → -90°
   let angle = 90 - ((variometer / 20) * 180); // -20 a 20 mapea 270° a -90°
-  document.getElementById("needle").style.transform =
+  document.getElementById("aguja").style.transform =
     `translate(-50%, -100%) rotate(${angle}deg)`;
   document.getElementById("variometer-value").textContent = Math.round(variometer);
   const variometerSlider = document.getElementById("variometer-slider");
