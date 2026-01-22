@@ -69,18 +69,16 @@ function setupRPMControls(ws) {
   }
 }
 
-// Interceptar mensajes del ESP32 solo si el usuario NO está moviendo el slider
+// Interceptar mensajes del ESP32 y actualizar siempre la aguja y el valor
 if (typeof ws !== 'undefined') {
   ws.onmessage = (msg) => {
-    if (!isUserSliding) {
-      let data = {};
-      try {
-        data = JSON.parse(msg.data);
-      } catch (e) {
-        console.warn('Mensaje WebSocket no es JSON:', msg.data);
-        return;
-      }
-      if (data.rpm !== undefined) updateNeedleAndValue(data.rpm);
+    let data = {};
+    try {
+      data = JSON.parse(msg.data);
+    } catch (e) {
+      console.warn('Mensaje WebSocket no es JSON:', msg.data);
+      return;
     }
+    if (data.rpm !== undefined) updateNeedleAndValue(data.rpm);
   };
 }
