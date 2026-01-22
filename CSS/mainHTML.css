@@ -1,12 +1,12 @@
 /* Aguja horizontal específica para el variometro */
-.needle-variometer {
+.aguja-variometer {
   position: absolute;
   top: 50%;
   left: 50%;
   width: 240px;
   height: 12px;
   background: #ffcc33;
-  border-radius: 6px;
+  
   z-index: 18;
   transform-origin: 50% 50%; /* pivote en el centro */
   transform: translate(-50%, -50%) rotate(0deg);
