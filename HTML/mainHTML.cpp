@@ -93,6 +93,24 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+// Cargar el HTML del instrumento Variometer de forma dinámica
+window.addEventListener('DOMContentLoaded', () => {
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/variometer.html")
+    .then(r => r.text())
+    .then(html => {
+      document.getElementById("main-grid").innerHTML = html;
+      // Cargar el JS específico del instrumento Variometer
+      const script = document.createElement('script');
+      script.src = 'https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_variometer.js';
+      script.onload = () => {
+        if (typeof setupVariometerControls === 'function') {
+          setupVariometerControls(ws);
+        }
+      };
+      document.body.appendChild(script);
+    });
+});
+
 </script>
 
 </body>

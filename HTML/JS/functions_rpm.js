@@ -15,16 +15,18 @@ function updateNeedleAndValue(rpm) {
 }
 
 function setupRPMControls(ws) {
-  const startBtnSlider = document.getElementById("start-btn-slider");
-  if (startBtnSlider) {
-    startBtnSlider.addEventListener("click", function() {
+  const startBtnRpm = document.getElementById("start-btn-rpm");
+  if (startBtnRpm) {
+    startBtnRpm.addEventListener("click", function() {
       if(ws.readyState === 1) {
         ws.send(JSON.stringify({ startMotorRoutine: true }));
       }
     });
   }
+
   const rpmSlider = document.getElementById("rpm-slider");
   const rpmSliderValue = document.getElementById("rpm-slider-value");
+  
   if (rpmSlider && rpmSliderValue) {
     rpmSlider.addEventListener("input", function(e) {
       isUserSliding = true;
@@ -58,6 +60,7 @@ function setupRPMControls(ws) {
     });
   }
 }
+
 // Interceptar mensajes del ESP32 solo si el usuario NO está moviendo el slider
 if (typeof ws !== 'undefined') {
   ws.onmessage = (msg) => {
