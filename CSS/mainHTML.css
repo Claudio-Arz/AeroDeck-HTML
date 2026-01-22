@@ -83,14 +83,15 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 240px;
-    height: 8px;
-    background: #ffcc33;
-    border-radius: 4px;
+    width: 0;
+    height: 0;
     z-index: 18;
-    transform-origin: 50% 50%; /* pivote en el centro */
-    transform: translate(-50%, -50%) rotate(0deg);
-    box-shadow: 0 0 4px #000;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 90px solid #ffcc33;
+    transform-origin: bottom center;
+    transform: translate(-50%, -100%) rotate(0deg);
+    filter: drop-shadow(0 0 4px #000);
   }
 
   .needle-center {
