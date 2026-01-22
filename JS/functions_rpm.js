@@ -8,11 +8,14 @@ function updateNeedleAndValue(rpm) {
   document.getElementById("rpm-value").textContent = Math.round(rpm);
   const rpmSlider = document.getElementById("rpm-slider");
   const rpmSliderValue = document.getElementById("rpm-slider-value");
-  // Solo actualizar el slider si el usuario NO está interactuando
+  // El valor visual y la aguja siempre reflejan el dato recibido
+  if (rpmSliderValue) {
+    rpmSliderValue.textContent = Math.round(rpm);
+  }
+  // El slider solo se mueve si el usuario no lo está usando
   if (rpmSlider && !isUserSliding) {
-    if (Math.abs(rpmSlider.value - rpm) > 1) {
+    if (Math.abs(Number(rpmSlider.value) - rpm) > 1) {
       rpmSlider.value = rpm;
-      rpmSliderValue.textContent = Math.round(rpm);
     }
   }
 }

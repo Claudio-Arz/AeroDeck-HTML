@@ -11,9 +11,12 @@ function updateVariometerAndValue(variometer) {
   document.getElementById("variometer-value").textContent = Math.round(variometer);
   const variometerSlider = document.getElementById("variometer-slider");
   const variometerSliderValue = document.getElementById("variometer-slider-value");
-  if (variometerSlider && Math.abs(variometerSlider.value - variometer) > 1) {
-    variometerSlider.value = variometer;
-    variometerSliderValue.textContent = Math.round(variometer);
+  // Solo actualizar el slider si el usuario NO está interactuando
+  if (variometerSlider && !isUserSlidingVariometer) {
+    if (Math.abs(variometerSlider.value - variometer) > 1) {
+      variometerSlider.value = variometer;
+      variometerSliderValue.textContent = Math.round(variometer);
+    }
   }
 }
 
@@ -33,9 +36,11 @@ function setupVariometerControls(ws) {
         ws.send(JSON.stringify({ setVariometerSpeed: value }));
       }
     });
-    variometerSlider.addEventListener("change", function(e) {
-      isUserSlidingVariometer = false;
-    });
+    // Detectar cuando el usuario deja de interactuar con el slider
+    const stopSliding = function() { isUserSlidingVariometer = false; };
+    variometerSlider.addEventListener("change", stopSliding);
+    variometerSlider.addEventListener("mouseup", stopSliding);
+    variometerSlider.addEventListener("touchend", stopSliding);
   }
 
 }
