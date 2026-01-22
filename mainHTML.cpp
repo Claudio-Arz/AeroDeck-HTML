@@ -7,37 +7,37 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 <meta charset="UTF-8">
 <title>Banco de Prueba y Calibración</title>
 
-
-<link rel="stylesheet" href="https://claudio-arz.github.io/AeroDeck-HTML/CSS/mainHTML.css">
-
-<script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_rpm.js"></script>
-<script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_variometer.js"></script>
+<link rel="stylesheet" href="https://cl4udio.netlify.app/CSS/mainHTML.css">
 
 </head>
 
 <body>
-<h1 style="text-align:center; margin-top: 24px;">Banco de Prueba y Calibración</h1>
+<h1>Banco de Prueba y Calibración</h1>
 
 
 <div id="main-grid" class="grid-container">
-  
-  <div id="Instrumento1" style="grid-row: 1; grid-column: 1;"></div>  
-  <div id="Instrumento2" style="grid-row: 1; grid-column: 2;"></div>  
-  <div id="Instrumento3" style="grid-row: 1; grid-column: 3;"></div>  
-  <div id="Instrumento4" style="grid-row: 1; grid-column: 4;"></div>  
-  <div id="Instrumento5" style="grid-row: 1; grid-column: 5;"></div>  
-  <div id="Instrumento6" style="grid-row: 1; grid-column: 6;"></div>  
-  <div id="Instrumento7" style="grid-row: 1; grid-column: 7;"></div>  
-  <div id="Instrumento8" style="grid-row: 1; grid-column: 8;"></div>  
-  <div id="Instrumento9" style="grid-row: 2; grid-column: 1;"></div>  
-  <div id="Instrumento10" style="grid-row: 2; grid-column: 2;"></div>  
-  <div id="Instrumento11" style="grid-row: 2; grid-column: 3;"></div>  
-  <div id="Instrumento12" style="grid-row: 2; grid-column: 4;"></div>  
-  <div id="Instrumento13" style="grid-row: 2; grid-column: 5;"></div>  
-  <div id="Instrumento14" style="grid-row: 2; grid-column: 6;"></div>  
-  <div id="Instrumento15" style="grid-row: 2; grid-column: 7;"></div>  
-  <div id="Instrumento16" style="grid-row: 2; grid-column: 8;"></div>
+  <!-- AirSpeed: Row 1, Col 1 -->
+  <!-- <div id="AirSpeed-container" style="grid-row: 1; grid-column: 1;"></div>  -->
 
+  <!-- Attitude Control: Row 1, Col 2 -->
+  <!-- <div id="Attitude-container" style="grid-row: 1; grid-column: 2;"></div> -->
+
+  <!-- Altimeter: Row 1, Col 3 (copiado de AltVerSpe/mainHTML.cpp) -->
+  <!-- <div id="Altimeter-container" style="grid-row: 1; grid-column: 3;"></div> -->
+
+  <!-- RPM: Row 1, Col 4 -->
+  <!-- <div id="rpm-container" style="grid-row: 1; grid-column: 4;"></div> -->  
+
+  <!-- Vertical Speed: Row 2, Col 3 (copiado de AltVerSpe/mainHTML.cpp) -->
+  <!-- <div id="VerticalSpeed-container" style="grid-row: 2; grid-column: 3;"></div> -->
+  <!-- Fuel Flow: Row 2, Col 4 -->
+  <!-- <div id="FuelFlow-container" style="grid-row: 2; grid-column: 4;"></div> -->
+  
+  <!-- Sliders: Row 2, Col 6 en adelante -->
+
+
+
+  
 </div>
 
 
@@ -76,48 +76,28 @@ ws.onmessage = (msg) => {
   // updateAttitudeInstrument();
 };
 
-// Cargar el HTML del instrumento RPM de forma dinámica
+// <div id="contenedor"></div>
+
+
+
 window.addEventListener('DOMContentLoaded', () => {
-  fetch("https://claudio-arz.github.io/AeroDeck-HTML/RPM.html")
+  fetch("https://cl4udio.netlify.app/RPM.data")
     .then(r => r.text())
     .then(html => {
-      document.getElementById("Instrumento4").innerHTML = html;
-    });
-});
-// Cargar el HTML del Controles de RPM de forma dinámica
-window.addEventListener('DOMContentLoaded', () => {
-  fetch("https://claudio-arz.github.io/AeroDeck-HTML/RPM_Control.html")
-    .then(r => r.text())
-    .then(html => {
-      document.getElementById("Instrumento6").innerHTML = html;
+      document.getElementById("main-grid").innerHTML = html;
+      // Inicializar controles y eventos RPM después de insertar el HTML
       if (typeof setupRPMControls === 'function') {
         setupRPMControls(ws);
       }
     });
 });
-// Cargar el HTML del instrumento Variometer de forma dinámica
-window.addEventListener('DOMContentLoaded', () => {
-  fetch("https://claudio-arz.github.io/AeroDeck-HTML/variometer.html")
-    .then(r => r.text())
-    .then(html => {
-      document.getElementById("Instrumento11").innerHTML = html;
-    });
-});
-// Cargar el HTML del instrumento Variometer de forma dinámica
-window.addEventListener('DOMContentLoaded', () => {
-  fetch("https://claudio-arz.github.io/AeroDeck-HTML/variometer_Control.html")
-    .then(r => r.text())
-    .then(html => {
-      document.getElementById("Instrumento14").innerHTML = html;
-      if (typeof setupVariometerControls === 'function') {
-        setupVariometerControls(ws);
-      }
-    });
-});
+
+
+
 
 </script>
 
 </body>
-
+<script src="https://cl4udio.netlify.app/JS/functions.js"></script>
 </html>
 )rawliteral";
