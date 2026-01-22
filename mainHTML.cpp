@@ -7,7 +7,11 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 <meta charset="UTF-8">
 <title>Banco de Prueba y Calibración</title>
 
+
 <link rel="stylesheet" href="https://claudio-arz.github.io/AeroDeck-HTML/CSS/mainHTML.css">
+
+<script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_rpm.js"></script>
+<script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_variometer.js"></script>
 
 </head>
 
@@ -86,15 +90,9 @@ window.addEventListener('DOMContentLoaded', () => {
     .then(r => r.text())
     .then(html => {
       document.getElementById("Instrumento6").innerHTML = html;
-      // Cargar el JS específico del instrumento RPM
-      const script = document.createElement('script');
-      script.src = 'https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_rpm.js';
-      script.onload = () => {
-        if (typeof setupRPMControls === 'function') {
-          setupRPMControls(ws);
-        }
-      };
-      document.body.appendChild(script);
+      if (typeof setupRPMControls === 'function') {
+        setupRPMControls(ws);
+      }
     });
 });
 // Cargar el HTML del instrumento Variometer de forma dinámica
@@ -111,15 +109,9 @@ window.addEventListener('DOMContentLoaded', () => {
     .then(r => r.text())
     .then(html => {
       document.getElementById("Instrumento14").innerHTML = html;
-      // Cargar el JS específico del instrumento Variometer
-      const script = document.createElement('script');
-      script.src = 'https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_variometer.js';
-      script.onload = () => {
-        if (typeof setupVariometerControls === 'function') {
-          setupVariometerControls(ws);
-        }
-      };
-      document.body.appendChild(script);
+      if (typeof setupVariometerControls === 'function') {
+        setupVariometerControls(ws);
+      }
     });
 });
 
