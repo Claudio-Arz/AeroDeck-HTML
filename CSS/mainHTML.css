@@ -1,17 +1,4 @@
-/* Aguja horizontal específica para el variometro */
-.aguja-variometer {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 240px;
-  height: 12px;
-  
-  
-  z-index: 18;
-  transform-origin: 50% 50%; /* pivote en el centro */
-  transform: translate(-50%, -50%) rotate(0deg);
-  box-shadow: 0 0 4px #000;
-}
+
 .label-slider {
   text-align: center;
   font-weight: bold;
@@ -109,7 +96,7 @@
 
 /* ===== Container Instrumento redondo ===== */
   /* Aguja del variometro como imagen, sin deformaciones */
-  #aguja {
+  #aguja-variometer {
     position: absolute;
     top: 50%;
     left: 50%;
