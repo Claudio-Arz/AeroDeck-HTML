@@ -100,15 +100,6 @@ window.addEventListener('DOMContentLoaded', () => {
     .then(r => r.text())
     .then(html => {
       document.getElementById("Instrumento11").innerHTML = html;
-      // Cargar el JS específico del instrumento Variometer
-      const script = document.createElement('script');
-      script.src = 'https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_variometer.js';
-      script.onload = () => {
-        if (typeof setupVariometerControls === 'function') {
-          setupVariometerControls(ws);
-        }
-      };
-      document.body.appendChild(script);
     });
 });
 // Cargar el HTML del instrumento Variometer de forma dinámica

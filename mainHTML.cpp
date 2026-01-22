@@ -78,6 +78,14 @@ window.addEventListener('DOMContentLoaded', () => {
     .then(r => r.text())
     .then(html => {
       document.getElementById("Instrumento4").innerHTML = html;
+    });
+});
+// Cargar el HTML del Controles de RPM de forma dinámica
+window.addEventListener('DOMContentLoaded', () => {
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/RPM_Control.html")
+    .then(r => r.text())
+    .then(html => {
+      document.getElementById("Instrumento6").innerHTML = html;
       // Cargar el JS específico del instrumento RPM
       const script = document.createElement('script');
       script.src = 'https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_rpm.js';
@@ -89,13 +97,20 @@ window.addEventListener('DOMContentLoaded', () => {
       document.body.appendChild(script);
     });
 });
-
 // Cargar el HTML del instrumento Variometer de forma dinámica
 window.addEventListener('DOMContentLoaded', () => {
   fetch("https://claudio-arz.github.io/AeroDeck-HTML/variometer.html")
     .then(r => r.text())
     .then(html => {
       document.getElementById("Instrumento11").innerHTML = html;
+    });
+});
+// Cargar el HTML del instrumento Variometer de forma dinámica
+window.addEventListener('DOMContentLoaded', () => {
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/variometer_Control.html")
+    .then(r => r.text())
+    .then(html => {
+      document.getElementById("Instrumento14").innerHTML = html;
       // Cargar el JS específico del instrumento Variometer
       const script = document.createElement('script');
       script.src = 'https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_variometer.js';
