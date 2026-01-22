@@ -8,9 +8,12 @@ function updateNeedleAndValue(rpm) {
   document.getElementById("rpm-value").textContent = Math.round(rpm);
   const rpmSlider = document.getElementById("rpm-slider");
   const rpmSliderValue = document.getElementById("rpm-slider-value");
-  if (rpmSlider && Math.abs(rpmSlider.value - rpm) > 1) {
-    rpmSlider.value = rpm;
-    rpmSliderValue.textContent = Math.round(rpm);
+  // Solo actualizar el slider si el usuario NO está interactuando
+  if (rpmSlider && !isUserSliding) {
+    if (Math.abs(rpmSlider.value - rpm) > 1) {
+      rpmSlider.value = rpm;
+      rpmSliderValue.textContent = Math.round(rpm);
+    }
   }
 }
 
@@ -37,9 +40,11 @@ function setupRPMControls(ws) {
         ws.send(JSON.stringify({ setRPMSpeed: value }));
       }
     });
-    rpmSlider.addEventListener("change", function(e) {
-      isUserSliding = false;
-    });
+    // Detectar cuando el usuario deja de interactuar con el slider
+    const stopSliding = function() { isUserSliding = false; };
+    rpmSlider.addEventListener("change", stopSliding);
+    rpmSlider.addEventListener("mouseup", stopSliding);
+    rpmSlider.addEventListener("touchend", stopSliding);
   }
   const noiceBtn = document.getElementById("noice-btn");
   let noiceOn = false;
