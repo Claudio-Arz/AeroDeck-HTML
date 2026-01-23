@@ -1,3 +1,13 @@
+.aguja-variometer img {
+  width: 240px !important;
+  height: 10px !important;
+  position: static !important;
+  top: auto !important;
+  left: auto !important;
+  transform: none !important;
+  border-radius: 0 !important;
+  z-index: 19;
+}
 .aguja-variometer {
   /* ...otros estilos existentes... */
   /* Permite rotar la aguja usando una variable CSS */
