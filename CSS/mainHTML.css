@@ -135,7 +135,7 @@
 
   .aguja-variometer {
     position: absolute;
-    top: 50%;
+    top: 48%;
     left: 50%;
     width: 240px;
     height: 10px;
@@ -160,12 +160,12 @@
   pointer-events: none;
   border-radius: 120px;
 }
-
+.aguja-variometer img {
   position: absolute;
-  top: calc(50% + 8px);
+  top: 50%;
   left: 50%;
-  width: 240px;
-  height: 10px;
+  width: 240px !important;
+  height: 10px !important;
   transform-origin: 50% 50%; /* pivote en el centro */
   transform: translate(-50%, -50%) rotate(var(--needle-rotation));
   transition: transform 0.2s cubic-bezier(.4,2,.6,1);
