@@ -115,14 +115,15 @@
 
 /* ===== Container Instrumento redondo ===== */
   /* Aguja del variometro como imagen, sin deformaciones */
-  #aguja-variometer {
+
+  .aguja-variometer {
     position: absolute;
     top: 50%;
     left: 50%;
     width: 240px;
     height: 10px;
     transform-origin: 50% 50%; /* pivote en el centro */
-    transform: translate(-50%, -50%) rotate(45deg);
+    transform: translate(-50%, -50%) rotate(10deg);
     z-index: 18;
     pointer-events: none;
   }
