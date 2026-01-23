@@ -40,7 +40,7 @@ function setupVariometerControls(ws) {
       isUserSlidingVariometer = true;
       const value = parseInt(e.target.value);
       variometerSliderValue.textContent = value;
-      updateVariometerAndValue(value/20);
+      updateVariometerAndValue(value*20);
       if(ws.readyState === 1) {
         ws.send(JSON.stringify({ setVariometerSpeed: value }));
       }
