@@ -1,9 +1,10 @@
 .aguja-variometer img {
   width: 240px !important;
   height: 10px !important;
-  position: static !important;
-  top: auto !important;
-  left: auto !important;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
   border-radius: 0 !important;
   z-index: 19;
 }
