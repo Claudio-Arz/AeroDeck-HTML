@@ -5,17 +5,17 @@ function updateVariometerAndValue(variometer) {
   // Rango: -2000 (mínimo) a 2000 (máximo)
   // 0 a 2000: 270° a 54° (horario)
   // 0 a -2000: 270° a 126° (antihorario)
-  let angle = 270;
+  let angle = 0;
   if (variometer >= 0) {
-    // 0 a 2000 → 270° a 54°
-    angle = 270 - (variometer / 2000) * 216;
+    // 0 a 2000 → 216° a 144°
+    angle =   (variometer / 200) * 288;
   } else {
-    // 0 a -2000 → 270° a 126°
-    angle = 270 + (Math.abs(variometer) / 2000) * 144;
+    // 0 a -200 → 270° a 126°
+    angle = (Math.abs(variometer) / 200) * 288;
   }
   const agujaDiv = document.getElementById('aguja-variometer');
   if (agujaDiv) {
-    agujaDiv.style.setProperty('--needle-rotation', `${angle+90}deg`);
+    agujaDiv.style.setProperty('--needle-rotation', `${angle}deg`);
   }
   document.getElementById("variometer-value").textContent = Math.round(variometer);
   const variometerSlider = document.getElementById("variometer-slider");
