@@ -11,7 +11,7 @@ function updateVariometerAndValue(variometer) {
     angle =   (variometer / 100) * 144;
   } else {
     // 0 a -200 → 270° a 126°
-    angle = (Math.abs(variometer) / 100) * 144;
+    angle = -(Math.abs(variometer) / 100) * 144;
   }
   const agujaDiv = document.getElementById('aguja-variometer');
   if (agujaDiv) {
