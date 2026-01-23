@@ -1,9 +1,9 @@
-@echo off
+
 REM Script para actualizar la carpeta HTML en el repositorio público AeroDeck-HTML
 
 REM Cambia al directorio de la carpeta HTML
 
-cd /d "C:\ESPLab\ZZZTmpTests\LuisSystems\Instrumentos_Calibración_Versión002\AeroDeck_001\HTML"
+
 git add .
 set FECHA=%DATE% %TIME%
 git commit -m "Actualizacion automatica %FECHA%"
