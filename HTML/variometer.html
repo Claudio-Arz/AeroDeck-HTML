@@ -1,11 +1,59 @@
+/* 
+  (Variometer) 
+  2026-01-23 09:51:37
+  Actualiza el instrumento variometer, si otro usuario 
+  cambia el valor del slider, se sincroniza.
+*/
+
+<div class="instrumento-grid">
+  <img src="https://claudio-arz.github.io/AeroDeck-HTML/Images/variometer/vert_speed_dial.png" alt="Variometer">
+  <div class="aguja-variometer" id="aguja-variometer">
+    <img src="https://claudio-arz.github.io/AeroDeck-HTML/Images/variometer/aguja.png" alt="Aguja">
+  </div>
+  <div id="variometer-value" class="instrument-center-label">--</div>
+</div>
 
 
-    <div class="instrumento-grid">
-      <img src="https://claudio-arz.github.io/AeroDeck-HTML/Images/variometer/vert_speed_dial.png" alt="Variometer">
-      <div class="aguja-variometer" id="aguja-variometer">
-        <img src="https://claudio-arz.github.io/AeroDeck-HTML/Images/variometer/aguja.png" alt="Aguja">
-      </div>
-      <div id="variometer-value" class="instrument-center-label">--</div>
-    </div>
+<script>
+let ws = new WebSocket("ws://" + location.hostname + ":81");
 
+ws.onmessage = (msg) => {
+  let data = JSON.parse(msg.data);
+  let heading = data.heading;
+  let verticalSpeed = data.verticalSpeed ?? 0;
+  let vsSliderValueServer = data.vsSliderValue;
 
+  // Actualiza instrumentos
+  let angle = (heading % 1000) * 360 / 1000;
+  document.getElementById("needle").style.transform =
+    `translate(-50%, -100%) rotate(${angle}deg)`;
+  document.getElementById("heading-value").textContent =
+    Math.round(heading);
+  let vsAngle = 270 + verticalSpeed * 36;
+  document.getElementById("needle-vs").style.transform =
+    `translate(-50%, -100%) rotate(${vsAngle}deg)`;
+  document.getElementById("vs-center-value").textContent =
+    Math.round(verticalSpeed * 1000);
+
+  // Sincroniza el slider si el valor recibido es diferente
+  if (typeof vsSlider !== 'undefined' && typeof vsSliderValueServer !== 'undefined') {
+    if (vsSlider.value != vsSliderValueServer) {
+      vsSlider.value = vsSliderValueServer;
+      vsSliderValue.textContent = vsSliderValueServer;
+    }
+  }
+};
+</script>
+
+<script>
+// Control deslizante para velocidad vertical
+const vsSlider = document.getElementById("vs-slider");
+const vsSliderValue = document.getElementById("vs-slider-value");
+vsSlider.addEventListener("input", function() {
+  vsSliderValue.textContent = this.value;
+  // Enviar valor al ESP32 por WebSocket
+  if(ws.readyState === 1) {
+    ws.send(JSON.stringify({ setVerticalSpeed: Number(this.value) }));
+  }
+});
+</script>

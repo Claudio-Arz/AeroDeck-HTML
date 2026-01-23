@@ -132,6 +132,10 @@
 </head>
 
 <body>
+<div style="margin-bottom:20px;">
+  <strong>IP del sistema:</strong> <span id="esp32-ip">Cargando...</span><br>
+  <small>Conéctate a esta IP desde cualquier dispositivo en la misma red WiFi.</small>
+</div>
 <h2>Altímetro y Velocidad Vertical</h2>
 
 <div id="container">
@@ -185,24 +189,28 @@ let ws = new WebSocket("ws://" + location.hostname + ":81");
 ws.onmessage = (msg) => {
   let data = JSON.parse(msg.data);
   let heading = data.heading;
-  let verticalSpeed = data.verticalSpeed ?? 0; // Si no existe, usa 0
+  let verticalSpeed = data.verticalSpeed ?? 0;
+  let vsSliderValueServer = data.vsSliderValue;
 
-
-  // Para que 0 esté arriba, 1-9 en sentido horario, cada vuelta 1000 pies
-  // heading: 0-999 (pies), cada 100 = 1 división
-  let angle = (heading % 1000) * 360 / 1000; // - 90;
+  // Actualiza instrumentos
+  let angle = (heading % 1000) * 360 / 1000;
   document.getElementById("needle").style.transform =
     `translate(-50%, -100%) rotate(${angle}deg)`;
   document.getElementById("heading-value").textContent =
     Math.round(heading);
-
-  // La aguja de velocidad vertical parte en 270° (abajo), y se mueve +/-36° por cada unidad
   let vsAngle = 270 + verticalSpeed * 36;
   document.getElementById("needle-vs").style.transform =
     `translate(-50%, -100%) rotate(${vsAngle}deg)`;
-  // Eliminado el valor y leyenda de velocidad vertical debajo de los instrumentos
   document.getElementById("vs-center-value").textContent =
     Math.round(verticalSpeed * 1000);
+
+  // Sincroniza el slider si el valor recibido es diferente
+  if (typeof vsSlider !== 'undefined' && typeof vsSliderValueServer !== 'undefined') {
+    if (vsSlider.value != vsSliderValueServer) {
+      vsSlider.value = vsSliderValueServer;
+      vsSliderValue.textContent = vsSliderValueServer;
+    }
+  }
 };
 </script>
 
