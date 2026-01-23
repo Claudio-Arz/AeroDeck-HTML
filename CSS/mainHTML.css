@@ -129,7 +129,9 @@
 
 
 /* ... Imagenes que forman el instrumento ... */
-#container img {
+
+#container img,
+.instrumento-grid img {
   width: 240px !important;
   height: 240px !important;
   position: absolute;
