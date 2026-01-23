@@ -21,22 +21,22 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 
 <div id="main-grid" class="grid-container">
   
-  <div id="Instrumento1" style="grid-row: 1; grid-column: 1;"></div>  
-  <div id="Instrumento2" style="grid-row: 1; grid-column: 2;"></div>  
-  <div id="Instrumento3" style="grid-row: 1; grid-column: 3;"></div>  
-  <div id="Instrumento4" style="grid-row: 1; grid-column: 4;"></div>  
-  <div id="Instrumento5" style="grid-row: 1; grid-column: 5;"></div>  
-  <div id="Instrumento6" style="grid-row: 1; grid-column: 6;"></div>  
-  <div id="Instrumento7" style="grid-row: 1; grid-column: 7;"></div>  
-  <div id="Instrumento8" style="grid-row: 1; grid-column: 8;"></div>  
-  <div id="Instrumento9" style="grid-row: 2; grid-column: 1;"></div>  
-  <div id="Instrumento10" style="grid-row: 2; grid-column: 2;"></div>  
-  <div id="Instrumento11" style="grid-row: 2; grid-column: 3;"></div>  
-  <div id="Instrumento12" style="grid-row: 2; grid-column: 4;"></div>  
-  <div id="Instrumento13" style="grid-row: 2; grid-column: 5;"></div>  
-  <div id="Instrumento14" style="grid-row: 2; grid-column: 6;"></div>  
-  <div id="Instrumento15" style="grid-row: 2; grid-column: 7;"></div>  
-  <div id="Instrumento16" style="grid-row: 2; grid-column: 8;"></div>
+  <div class="grid-item" id="inst01" style="grid-row: 1; grid-column: 1;"></div>  
+  <div class="grid-item" id="inst02" style="grid-row: 1; grid-column: 2;"></div>  
+  <div class="grid-item" id="inst03" style="grid-row: 1; grid-column: 3;"></div>  
+  <div class="grid-item" id="inst04" style="grid-row: 1; grid-column: 4;"></div>  
+  <div class="grid-item" id="inst05" style="grid-row: 1; grid-column: 5;"></div>  
+  <div class="grid-item" id="inst06" style="grid-row: 1; grid-column: 6;"></div>  
+  <div class="grid-item" id="inst07" style="grid-row: 1; grid-column: 7;"></div>  
+  <div class="grid-item" id="inst08" style="grid-row: 1; grid-column: 8;"></div>  
+  <div class="grid-item" id="inst09" style="grid-row: 2; grid-column: 1;"></div>  
+  <div class="grid-item" id="inst10" style="grid-row: 2; grid-column: 2;"></div>  
+  <div class="grid-item" id="inst11" style="grid-row: 2; grid-column: 3;"></div>  
+  <div class="grid-item" id="inst12" style="grid-row: 2; grid-column: 4;"></div>  
+  <div class="grid-item" id="inst13" style="grid-row: 2; grid-column: 5;"></div>  
+  <div class="grid-item" id="inst14" style="grid-row: 2; grid-column: 6;"></div>  
+  <div class="grid-item" id="inst15" style="grid-row: 2; grid-column: 7;"></div>  
+  <div class="grid-item" id="inst16" style="grid-row: 2; grid-column: 8;"></div>
 
 </div>
 
@@ -81,7 +81,7 @@ window.addEventListener('DOMContentLoaded', () => {
   fetch("https://claudio-arz.github.io/AeroDeck-HTML/RPM.html")
     .then(r => r.text())
     .then(html => {
-      document.getElementById("Instrumento4").innerHTML = html;
+      document.getElementById("inst04").innerHTML = html;
     });
 });
 // Cargar el HTML del Controles de RPM de forma dinámica
@@ -89,7 +89,7 @@ window.addEventListener('DOMContentLoaded', () => {
   fetch("https://claudio-arz.github.io/AeroDeck-HTML/RPM_Control.html")
     .then(r => r.text())
     .then(html => {
-      document.getElementById("Instrumento6").innerHTML = html;
+      document.getElementById("inst06").innerHTML = html;
       if (typeof setupRPMControls === 'function') {
         setupRPMControls(ws);
       }
@@ -100,7 +100,7 @@ window.addEventListener('DOMContentLoaded', () => {
   fetch("https://claudio-arz.github.io/AeroDeck-HTML/variometer.html")
     .then(r => r.text())
     .then(html => {
-      document.getElementById("Instrumento11").innerHTML = html;
+      document.getElementById("inst11").innerHTML = html;
     });
 });
 // Cargar el HTML del instrumento Variometer de forma dinámica
@@ -108,7 +108,7 @@ window.addEventListener('DOMContentLoaded', () => {
   fetch("https://claudio-arz.github.io/AeroDeck-HTML/variometer_Control.html")
     .then(r => r.text())
     .then(html => {
-      document.getElementById("Instrumento14").innerHTML = html;
+      document.getElementById("inst14").innerHTML = html;
       if (typeof setupVariometerControls === 'function') {
         setupVariometerControls(ws);
       }
