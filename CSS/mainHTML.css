@@ -162,7 +162,7 @@
 }
 
   position: absolute;
-  top: calc(50% - 8px);
+  top: calc(50% + 8px);
   left: 50%;
   width: 240px;
   height: 10px;
