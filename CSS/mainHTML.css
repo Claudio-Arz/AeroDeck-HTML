@@ -5,7 +5,7 @@
   color: #fff;
   margin-bottom: 4px;
 }
-.intrument-center-label {
+.instrument-center-label {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -121,11 +121,4 @@
   border-radius: 120px;
 }
 
-/* Caja para instrumentos (usada en RPM.html) */
-.intrument-box {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 60px;
-  margin-bottom: 32px;
-}
+
