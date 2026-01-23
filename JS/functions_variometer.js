@@ -17,14 +17,14 @@ function updateVariometerAndValue(variometer) {
   if (agujaDiv) {
     agujaDiv.style.setProperty('--needle-rotation', `${angle}deg`);
   }
-  document.getElementById("variometer-value").textContent = Math.round(variometer);
+  document.getElementById("variometer-value").textContent = Math.round(variometer*20);
   const variometerSlider = document.getElementById("variometer-slider");
   const variometerSliderValue = document.getElementById("variometer-slider-value");
   // Solo actualizar el slider si el usuario NO está interactuando
   if (variometerSlider && !isUserSlidingVariometer) {
     if (Math.abs(variometerSlider.value - variometer) > 1) {
       variometerSlider.value = variometer;
-      variometerSliderValue.textContent = Math.round(variometer);
+      variometerSliderValue.textContent = Math.round(variometer*20);
     }
   }
 }
@@ -40,7 +40,7 @@ function setupVariometerControls(ws) {
       isUserSlidingVariometer = true;
       const value = parseInt(e.target.value);
       variometerSliderValue.textContent = value;
-      updateVariometerAndValue(value);
+      updateVariometerAndValue(value/20);
       if(ws.readyState === 1) {
         ws.send(JSON.stringify({ setVariometerSpeed: value }));
       }
