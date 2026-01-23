@@ -8,10 +8,10 @@ function updateVariometerAndValue(variometer) {
   let angle = 0;
   if (variometer >= 0) {
     // 0 a 2000 → 216° a 144°
-    angle =   (variometer / 100) * 288;
+    angle =   (variometer / 100) * 144;
   } else {
     // 0 a -200 → 270° a 126°
-    angle = (Math.abs(variometer) / 100) * 288;
+    angle = (Math.abs(variometer) / 100) * 144;
   }
   const agujaDiv = document.getElementById('aguja-variometer');
   if (agujaDiv) {
