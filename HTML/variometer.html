@@ -14,46 +14,35 @@
 </div>
 
 
+<script src="JS/functions_variometer.js"></script>
 <script>
+// WebSocket y sincronización con el backend
 let ws = new WebSocket("ws://" + location.hostname + ":81");
 
 ws.onmessage = (msg) => {
-  let data = JSON.parse(msg.data);
-  let heading = data.heading;
-  let verticalSpeed = data.verticalSpeed ?? 0;
-  let vsSliderValueServer = data.vsSliderValue;
-
-  // Actualiza instrumentos
-  let angle = (heading % 1000) * 360 / 1000;
-  document.getElementById("needle").style.transform =
-    `translate(-50%, -100%) rotate(${angle}deg)`;
-  document.getElementById("heading-value").textContent =
-    Math.round(heading);
-  let vsAngle = 270 + verticalSpeed * 36;
-  document.getElementById("needle-vs").style.transform =
-    `translate(-50%, -100%) rotate(${vsAngle}deg)`;
-  document.getElementById("vs-center-value").textContent =
-    Math.round(verticalSpeed * 1000);
-
-  // Sincroniza el slider si el valor recibido es diferente
-  if (typeof vsSlider !== 'undefined' && typeof vsSliderValueServer !== 'undefined') {
-    if (vsSlider.value != vsSliderValueServer) {
-      vsSlider.value = vsSliderValueServer;
-      vsSliderValue.textContent = vsSliderValueServer;
-    }
+  let data = {};
+  try {
+    data = JSON.parse(msg.data);
+  } catch (e) {
+    return;
+  }
+  // El backend debe enviar { variometer: valor }
+  if (typeof data.variometer !== 'undefined') {
+    updateVariometerAndValue(data.variometer);
   }
 };
-</script>
 
-<script>
 // Control deslizante para velocidad vertical
-const vsSlider = document.getElementById("vs-slider");
-const vsSliderValue = document.getElementById("vs-slider-value");
-vsSlider.addEventListener("input", function() {
-  vsSliderValue.textContent = this.value;
-  // Enviar valor al ESP32 por WebSocket
-  if(ws.readyState === 1) {
-    ws.send(JSON.stringify({ setVerticalSpeed: Number(this.value) }));
-  }
-});
+const variometerSlider = document.getElementById("variometer-slider");
+const variometerSliderValue = document.getElementById("variometer-slider-value");
+if (variometerSlider && variometerSliderValue) {
+  variometerSlider.addEventListener("input", function() {
+    variometerSliderValue.textContent = this.value;
+    // Enviar valor al ESP32 por WebSocket
+    if(ws.readyState === 1) {
+      ws.send(JSON.stringify({ setVariometer: Number(this.value) }));
+    }
+    updateVariometerAndValue(Number(this.value));
+  });
+}
 </script>

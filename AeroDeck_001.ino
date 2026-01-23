@@ -54,6 +54,17 @@ void onWsEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
   }
   if (type == WStype_TEXT) {
     String msg = (const char*)payload;
+    if (msg.indexOf("setVariometer") >= 0) {
+      int start = msg.indexOf(":");
+      int end = msg.indexOf("}", start);
+      if (start > 0 && end > start) {
+        String val = msg.substring(start + 1, end);
+        vsVar = val.toFloat();
+      }
+    }
+    // ...existing code...
+  if (type == WStype_TEXT) {
+    String msg = (const char*)payload;
     if (msg.indexOf("setRPMSpeed") >= 0) {
       int start = msg.indexOf(":");
       int end = msg.indexOf("}", start);
@@ -204,8 +215,9 @@ void loop() {
 
   float fuelFlow_mostrar = fuelFlow;
   float airspeed_mostrar = airspeedValue;
+  // Enviar valor de variometer como campo principal para el nuevo frontend
   char buffer[400];
-  sprintf(buffer, "{\"heading\":%.2f,\"verticalSpeed\":%.2f,\"vsSliderValue\":%d,\"rpm\":%.2f,\"fuelFlow\":%.2f,\"roll\":%.2f,\"pitch\":%d,\"airspeed\":%.2f}", heading, vsVar, vsSliderValue, rpm_mostrar, fuelFlow_mostrar, rollValue, pitchValue, airspeed_mostrar);
+  sprintf(buffer, "{\"variometer\":%.2f,\"heading\":%.2f,\"verticalSpeed\":%.2f,\"vsSliderValue\":%d,\"rpm\":%.2f,\"fuelFlow\":%.2f,\"roll\":%.2f,\"pitch\":%d,\"airspeed\":%.2f}", vsVar, heading, vsVar, vsSliderValue, rpm_mostrar, fuelFlow_mostrar, rollValue, pitchValue, airspeed_mostrar);
   ws.broadcastTXT(buffer);
 
   delay(50);
