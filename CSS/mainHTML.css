@@ -4,7 +4,6 @@
   position: static !important;
   top: auto !important;
   left: auto !important;
-  transform: none !important;
   border-radius: 0 !important;
   z-index: 19;
 }
