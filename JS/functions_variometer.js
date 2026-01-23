@@ -15,7 +15,7 @@ function updateVariometerAndValue(variometer) {
   }
   const agujaDiv = document.getElementById('aguja-variometer');
   if (agujaDiv) {
-    agujaDiv.style.setProperty('--needle-rotation', `${angle}deg`);
+    agujaDiv.style.setProperty('--needle-rotation', `${angle+90}deg`);
   }
   document.getElementById("variometer-value").textContent = Math.round(variometer);
   const variometerSlider = document.getElementById("variometer-slider");
