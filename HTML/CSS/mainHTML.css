@@ -1,3 +1,10 @@
+.aguja-variometer {
+  /* ...otros estilos existentes... */
+  /* Permite rotar la aguja usando una variable CSS */
+  --needle-rotation: 0deg;
+  transform: translate(-50%, -50%) rotate(var(--needle-rotation));
+  transition: transform 0.2s cubic-bezier(.4,2,.6,1);
+}
 /* Combina grid-item y container para instrumentos individuales */
 .instrumento-grid {
   display: flex;
@@ -123,7 +130,7 @@
     width: 240px;
     height: 10px;
     transform-origin: 50% 50%; /* pivote en el centro */
-    transform: translate(-50%, -50%) rotate(10deg);
+    transform: translate(-50%, -50%) rotate(00deg);
     z-index: 18;
     pointer-events: none;
   }
@@ -142,6 +149,17 @@
   z-index: 1;
   pointer-events: none;
   border-radius: 120px;
+}
+
+.aguja-variometer img {
+  width: 240px !important;
+  height: 10px !important;
+  position: static !important;
+  top: auto !important;
+  left: auto !important;
+  transform: none !important;
+  border-radius: 0 !important;
+  z-index: 19;
 }
 
 
