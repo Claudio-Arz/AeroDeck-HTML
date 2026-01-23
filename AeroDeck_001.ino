@@ -43,17 +43,16 @@ int pitchValue = 0;
 float airspeedValue = 0.0f;
 
 void onWsEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
-  String msg = (const char*)payload;
-  if (msg.indexOf("setNoice") >= 0) {
-    int start = msg.indexOf(":");
-    int end = msg.indexOf("}", start);
-    if (start > 0 && end > start) {
-      String val = msg.substring(start + 1, end);
-      rpmNoiceOn = (val == "true");
-    }
-  }
   if (type == WStype_TEXT) {
     String msg = (const char*)payload;
+    if (msg.indexOf("setNoice") >= 0) {
+      int start = msg.indexOf(":");
+      int end = msg.indexOf("}", start);
+      if (start > 0 && end > start) {
+        String val = msg.substring(start + 1, end);
+        rpmNoiceOn = (val == "true");
+      }
+    }
     if (msg.indexOf("setVariometer") >= 0) {
       int start = msg.indexOf(":");
       int end = msg.indexOf("}", start);
@@ -62,9 +61,6 @@ void onWsEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
         vsVar = val.toFloat();
       }
     }
-    // ...existing code...
-  if (type == WStype_TEXT) {
-    String msg = (const char*)payload;
     if (msg.indexOf("setRPMSpeed") >= 0) {
       int start = msg.indexOf(":");
       int end = msg.indexOf("}", start);
