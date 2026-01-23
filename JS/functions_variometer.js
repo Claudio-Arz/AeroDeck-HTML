@@ -3,12 +3,19 @@
 let isUserSlidingVariometer = false;
 function updateVariometerAndValue(variometer) {
   // Rango: -20 (mínimo) a 20 (máximo)
-  // Cero en 270°, ±135°
-  // Mapeo: -20 → 135°, 0 → 270°, 20 → 405°
-  let angle = 270 + (variometer / 20) * 135;
-  const aguja = document.getElementById('aguja');
-  if (aguja) {
-    aguja.style.transform = `translate(-50%, -50%) rotate(${angle}deg)`;
+  // 0 a 20: 270° a 54° (horario)
+  // 0 a -20: 270° a 126° (antihorario)
+  let angle = 270;
+  if (variometer >= 0) {
+    // 0 a 20 → 270° a 54°
+    angle = 270 - (variometer / 20) * 216;
+  } else {
+    // 0 a -20 → 270° a 126°
+    angle = 270 + (Math.abs(variometer) / 20) * 144;
+  }
+  const agujaDiv = document.getElementById('aguja-variometer');
+  if (agujaDiv) {
+    agujaDiv.style.setProperty('--needle-rotation', `${angle}deg`);
   }
   document.getElementById("variometer-value").textContent = Math.round(variometer);
   const variometerSlider = document.getElementById("variometer-slider");
