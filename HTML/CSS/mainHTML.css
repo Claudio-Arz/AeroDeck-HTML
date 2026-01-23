@@ -130,7 +130,7 @@
     width: 240px;
     height: 10px;
     transform-origin: 50% 50%; /* pivote en el centro */
-    transform: translate(-50%, -50%) rotate(00deg);
+    transform: translate(-50%, -50%) rotate(0deg);
     z-index: 18;
     pointer-events: none;
   }
@@ -155,7 +155,7 @@
   width: 240px !important;
   height: 10px !important;
   position: static !important;
-  top: auto !important;
+  top: 115px !important;
   left: auto !important;
   transform: none !important;
   border-radius: 0 !important;
