@@ -19,3 +19,9 @@ echo HTML actualizado en GitHub Pages: https://claudio-arz.github.io/AeroDeck-HT
 echo Esto sube los archivos que GitHub Pages utiliza para mostrar el sitio web.
 
 pause
+rem git add RPM.html variometer.html
+rem git commit -m "Rescate de cambios desde HEAD detached"
+rem git checkout main
+rem git checkout main
+rem git merge rescate_trabajo
+rem git push origin main
