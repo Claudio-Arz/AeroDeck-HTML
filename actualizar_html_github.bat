@@ -1,12 +1,14 @@
-
+@echo off
 REM Script para actualizar la carpeta HTML en el repositorio público AeroDeck-HTML
 
 REM Cambia al directorio de la carpeta HTML
 
 
+
 git add .
+set /p COMENTARIO="Ingrese comentario para el commit: "
 set FECHA=%DATE% %TIME%
-git commit -m "Actualizacion automatica %FECHA%"
+git commit -m "%COMENTARIO% [%FECHA%]"
 git push origin main
 
 
