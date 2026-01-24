@@ -39,7 +39,7 @@ function setupVariometerControls(ws) {
       const value = parseInt(e.target.value); // -100 a 100
       updateVariometerAndValue(value);
       if(ws.readyState === 1) {
-        ws.send(JSON.stringify({ setVariometerSpeed: value }));
+        ws.send(JSON.stringify({ verticalSpeed: value }));
       }
     });
     // Detectar cuando el usuario deja de interactuar con el slider
@@ -51,4 +51,18 @@ function setupVariometerControls(ws) {
 }
 
 // Interceptar mensajes del ESP32 solo si el usuario NO está moviendo el slider
+if (typeof ws !== 'undefined') {
+  ws.onmessage = (msg) => {
+    if (!isUserSlidingVariometer) {
+      let data = {};
+      try {
+        data = JSON.parse(msg.data);
+      } catch (e) {
+        console.warn('Mensaje WebSocket no es JSON:', msg.data);
+        return;
+      }
+      if (data.verticalSpeed !== undefined) updateVariometerAndValue(data.verticalSpeed);
+    }
+  };
+}
 
