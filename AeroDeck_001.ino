@@ -23,9 +23,14 @@ WebSocketsServer ws(81);
 DNSServer dnsServer;
 
 // ===== VARIABLES GLOBALES =====
-// ===== VARIABLES RPM =====
+// ===== VARIABLES RPM Y VARIOMETER =====
 float rpm = 0.0f;
 int varRPM = 0;
+bool startRoutine = false;
+unsigned long routineStart = 0;
+int routineStep = 0;
+float routineInitial = 0;
+bool rpmNoiceOn = false;
 float vsVar = 0.0f;
 int vsSliderValue = 0;
 
@@ -38,7 +43,14 @@ void onWsEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
     }
     if (type == WStype_TEXT) {
       String msg = (const char*)payload;
-      // (Eliminado: setNoice y rpmNoiceOn)
+      if (msg.indexOf("setNoice") >= 0) {
+        int start = msg.indexOf(":");
+        int end = msg.indexOf("}", start);
+        if (start > 0 && end > start) {
+          String val = msg.substring(start + 1, end);
+          rpmNoiceOn = (val == "true");
+        }
+      }
       // Use setVariometerSpeed for variometer
       if (msg.indexOf("setVariometerSpeed") >= 0) {
         int start = msg.indexOf(":");
@@ -137,8 +149,8 @@ void setup() {
 
   // Inicializar valores de sliders en el frontend al conectar
   delay(500); // Espera breve para asegurar que el frontend esté listo
-  char buffer[400];
-  sprintf(buffer, "{\"heading\":%.2f,\"verticalSpeed\":%.2f,\"vsSliderValue\":%d,\"rpm\":%.2f,\"fuelFlow\":%.2f,\"roll\":%.2f,\"pitch\":%d,\"airspeed\":%.2f}", heading, vsVar, vsSliderValue, rpm, fuelFlow, rollValue, pitchValue, airspeedValue);
+  char buffer[200];
+  sprintf(buffer, "{\"verticalSpeed\":%.2f,\"vsSliderValue\":%d,\"rpm\":%.2f}", vsVar, vsSliderValue, rpm);
   ws.broadcastTXT(buffer);
 }
 
