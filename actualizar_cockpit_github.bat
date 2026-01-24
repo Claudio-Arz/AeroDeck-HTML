@@ -7,9 +7,12 @@ cd /d "C:\ESPLab\ZZZTmpTests\LuisSystems\Instrumentos_Calibración_Versión002\A
 REM Agrega todos los cambios
 git add .
 
-REM Crea un commit con mensaje automático y fecha/hora
-set FECHA=%DATE% %TIME%
 git commit -m "Actualización automática %FECHA%"
+
+REM Pide comentario por teclado y agrega fecha/hora
+set /p COMENTARIO="Ingrese comentario para el commit: "
+set FECHA=%DATE% %TIME%
+git commit -m "%COMENTARIO% [%FECHA%]"
 
 REM Sube los cambios a la rama main
 git push origin main

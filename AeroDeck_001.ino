@@ -26,21 +26,8 @@ DNSServer dnsServer;
 // ===== VARIABLES RPM =====
 float rpm = 0.0f;
 int varRPM = 0;
-int ant_Val_RPM = 0;
-bool startRoutine = false;
-unsigned long routineStart = 0;
-int routineStep = 0;
-float routineInitial = 0;
-
-// ===== VARIABLES PARA INSTRUMENTOS Y ESTADO =====
-bool rpmNoiceOn = false;
-float heading = 0.0f;
 float vsVar = 0.0f;
 int vsSliderValue = 0;
-float fuelFlow = 0.0f;
-float rollValue = 0.0f;
-int pitchValue = 0;
-float airspeedValue = 0.0f;
 
 void onWsEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
     if (type == WStype_CONNECTED) {
@@ -49,41 +36,36 @@ void onWsEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
       sprintf(buffer, "{\"variometer\":%.2f}", vsVar);
       ws.sendTXT(num, buffer);
     }
-  if (type == WStype_TEXT) {
-    String msg = (const char*)payload;
-    if (msg.indexOf("setNoice") >= 0) {
-      int start = msg.indexOf(":");
-      int end = msg.indexOf("}", start);
-      if (start > 0 && end > start) {
-        String val = msg.substring(start + 1, end);
-        rpmNoiceOn = (val == "true");
+    if (type == WStype_TEXT) {
+      String msg = (const char*)payload;
+      // (Eliminado: setNoice y rpmNoiceOn)
+      // Use setVariometerSpeed for variometer
+      if (msg.indexOf("setVariometerSpeed") >= 0) {
+        int start = msg.indexOf(":");
+        int end = msg.indexOf("}", start);
+        if (start > 0 && end > start) {
+          String val = msg.substring(start + 1, end);
+          vsVar = val.toFloat();
+        }
+      }
+      // Use setRPMSpeed for RPM
+      if (msg.indexOf("setRPMSpeed") >= 0) {
+        int start = msg.indexOf(":");
+        int end = msg.indexOf("}", start);
+        if (start > 0 && end > start) {
+          String val = msg.substring(start + 1, end);
+          varRPM = val.toInt();
+        }
+      }
+      if (msg.indexOf("startMotorRoutine") >= 0) {
+        if (rpm == 0.0f) {
+          startRoutine = true;
+          routineStart = millis();
+          routineStep = 0;
+          routineInitial = varRPM;
+        }
       }
     }
-    if (msg.indexOf("setVariometer") >= 0) {
-      int start = msg.indexOf(":");
-      int end = msg.indexOf("}", start);
-      if (start > 0 && end > start) {
-        String val = msg.substring(start + 1, end);
-        vsVar = val.toFloat();
-      }
-    }
-    if (msg.indexOf("setRPMSpeed") >= 0) {
-      int start = msg.indexOf(":");
-      int end = msg.indexOf("}", start);
-      if (start > 0 && end > start) {
-        String val = msg.substring(start + 1, end);
-        varRPM = val.toInt();
-      }
-    }
-    if (msg.indexOf("startMotorRoutine") >= 0) {
-      if (rpm == 0.0f) {
-        startRoutine = true;
-        routineStart = millis();
-        routineStep = 0;
-        routineInitial = varRPM;
-      }
-    }
-  }
 }
 
 // ===== CONFIGURAR ACCESS POINT =====
@@ -205,21 +187,11 @@ void loop() {
 
   // Asignar el valor del slider directamente a rpm
   rpm = (float)varRPM;
-  // Calcular valor mostrado with ruido solo para enviar al frontend
-  float rpm_mostrar = rpm;
-  if (rpm != 0.0f && rpmNoiceOn) {
-    int ruido = random(-5, 6); // de -5 a +5
-    rpm_mostrar = rpm + ruido;
-    if (rpm_mostrar < 0) rpm_mostrar = 0;
-    if (rpm_mostrar > 3000) rpm_mostrar = 3000;
-  }
 
-
-  float fuelFlow_mostrar = fuelFlow;
-  float airspeed_mostrar = airspeedValue;
-  // Enviar valor de variometer como campo principal para el nuevo frontend
-  char buffer[400];
-  sprintf(buffer, "{\"variometer\":%.2f,\"heading\":%.2f,\"verticalSpeed\":%.2f,\"vsSliderValue\":%d,\"rpm\":%.2f,\"fuelFlow\":%.2f,\"roll\":%.2f,\"pitch\":%d,\"airspeed\":%.2f}", vsVar, heading, vsVar, vsSliderValue, rpm_mostrar, fuelFlow_mostrar, rollValue, pitchValue, airspeed_mostrar);
+  // Enviar valores de los dos instrumentos activos
+  char buffer[200];
+  sprintf(buffer, "{\"variometer\":%.2f, \"vsSliderValue\":%d, \"rpm\":%.2f}",
+    vsVar, vsSliderValue, rpm);
   ws.broadcastTXT(buffer);
 
   delay(50);
