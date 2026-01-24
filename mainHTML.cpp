@@ -70,35 +70,32 @@ ws.onmessage = (msg) => {
   if (data.rpmNoiceOn !== undefined) {
     // Función para actualizar el estado visual del botón Noice
     function updateNoiceButtonState(state) {
-    if (data.rpmNoiceOn !== undefined) {
-      // Función para actualizar el estado visual del botón Noice
-      function updateNoiceButtonState(state) {
-        const btn = document.getElementById('noice-btn');
-        if (btn) {
-          if (state) {
-            btn.classList.add('active');
-            btn.textContent = 'Noice ON';
-          } else {
-            btn.classList.remove('active');
-            btn.textContent = 'Noice OFF';
-          }
+      const btn = document.getElementById('noice-btn');
+      if (btn) {
+        if (state) {
+          btn.classList.add('active');
+          btn.textContent = 'Noice ON';
+        } else {
+          btn.classList.remove('active');
+          btn.textContent = 'Noice OFF';
         }
       }
-      // Si el botón ya está en el DOM, actualizarlo
-      if (document.getElementById('noice-btn')) {
-        updateNoiceButtonState(data.rpmNoiceOn);
-      } else {
-        // Si el botón se carga dinámicamente, observar el DOM hasta que aparezca
-        const observer = new MutationObserver((mutations, obs) => {
-          const btn = document.getElementById('noice-btn');
-          if (btn) {
-            updateNoiceButtonState(data.rpmNoiceOn);
-            obs.disconnect();
-          }
-        });
-        observer.observe(document.body, { childList: true, subtree: true });
-      }
     }
+    // Si el botón ya está en el DOM, actualizarlo
+    if (document.getElementById('noice-btn')) {
+      updateNoiceButtonState(data.rpmNoiceOn);
+    } else {
+      // Si el botón se carga dinámicamente, observar el DOM hasta que aparezca
+      const observer = new MutationObserver((mutations, obs) => {
+        const btn = document.getElementById('noice-btn');
+        if (btn) {
+          updateNoiceButtonState(data.rpmNoiceOn);
+          obs.disconnect();
+        }
+      });
+      observer.observe(document.body, { childList: true, subtree: true });
+    }
+  }
   //   rollSliderValue.textContent = parseFloat(data.roll).toFixed(1);
   // }
   // if (data.pitch !== undefined) {
