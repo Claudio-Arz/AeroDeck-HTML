@@ -19,7 +19,7 @@ function updateVariometerAndValue(variometer) {
   }
   document.getElementById("variometer-value").textContent = Math.round(variometer*20);
   const variometerSlider = document.getElementById("variometer-slider");
-  const variometerSliderValue = document.getElementById("variometer-slider-value");
+  const variometerSliderValue = document.getElementById("variometer-value");
   // Solo actualizar el slider si el usuario NO está interactuando
   if (variometerSlider && !isUserSlidingVariometer) {
     if (Math.abs(variometerSlider.value - variometer) > 1) {
@@ -33,7 +33,7 @@ function setupVariometerControls(ws) {
 
 
   const variometerSlider = document.getElementById("variometer-slider");
-  const variometerSliderValue = document.getElementById("variometer-slider-value");
+  const variometerSliderValue = document.getElementById("variometer-value");
   
   if (variometerSlider && variometerSliderValue) {
     variometerSlider.addEventListener("input", function(e) {
