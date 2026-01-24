@@ -55,14 +55,7 @@ function setupRPMControls(ws) {
   if (noiceBtn) {
     noiceBtn.addEventListener("click", function() {
       noiceOn = !noiceOn;
-      this.textContent = "Noice: " + (noiceOn ? "ON" : "OFF");
-      if(noiceOn) {
-        this.style.background = "rgb(26, 176, 166)";
-        this.style.color = "#222";
-      } else {
-        this.style.background = "#071037";
-        this.style.color = "#fff";
-      }
+      // El estado visual y el texto serán actualizados por ws.onmessage centralizado
       if(ws.readyState === 1) {
         ws.send(JSON.stringify({ setNoice: noiceOn }));
       }
