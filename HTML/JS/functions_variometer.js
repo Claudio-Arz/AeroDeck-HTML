@@ -58,17 +58,4 @@ function setupVariometerControls(ws) {
 }
 
 // Interceptar mensajes del ESP32 solo si el usuario NO está moviendo el slider
-if (typeof ws !== 'undefined') {
-  ws.onmessage = (msg) => {
-    if (!isUserSlidingVariometer) {
-      let data = {};
-      try {
-        data = JSON.parse(msg.data);
-      } catch (e) {
-        console.warn('Mensaje WebSocket no es JSON:', msg.data);
-        return;
-      }
-      if (data.variometer !== undefined) updateVariometerAndValue(data.variometer);
-    }
-  };
-}
+
