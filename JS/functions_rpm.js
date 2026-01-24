@@ -8,17 +8,16 @@ function updateNeedleAndValue(rpm) {
     needle.style.setProperty('--needle-rotation', `${angle}deg`);
     needle.style.transform = `translate(-50%, -100%) rotate(${angle}deg)`;
   }
-  document.getElementById("rpm-value").textContent = Math.round(rpm);
+  const rpmValueDiv = document.getElementById("rpm-value");
+  if (rpmValueDiv) rpmValueDiv.textContent = Math.round(rpm);
   const rpmSlider = document.getElementById("rpm-slider");
   const rpmSliderValue = document.getElementById("rpm-slider-value");
-  // El valor visual y la aguja siempre reflejan el dato recibido
-  if (rpmSliderValue) {
-    rpmSliderValue.textContent = Math.round(rpm);
-  }
-  // El slider solo se mueve si el usuario no lo está usando
+  if (rpmSliderValue) rpmSliderValue.textContent = Math.round(rpm);
+  // Solo actualizar el slider si el usuario NO está interactuando
   if (rpmSlider && !isUserSliding) {
     if (Math.abs(Number(rpmSlider.value) - rpm) > 1) {
       rpmSlider.value = rpm;
+      if (rpmSliderValue) rpmSliderValue.textContent = Math.round(rpm);
     }
   }
 }
@@ -40,7 +39,6 @@ function setupRPMControls(ws) {
     rpmSlider.addEventListener("input", function(e) {
       isUserSliding = true;
       const value = parseInt(e.target.value);
-      rpmSliderValue.textContent = value;
       updateNeedleAndValue(value);
       if(ws.readyState === 1) {
         ws.send(JSON.stringify({ setRPMSpeed: value }));
@@ -72,7 +70,7 @@ function setupRPMControls(ws) {
   }
 }
 
-// Interceptar mensajes del ESP32 y actualizar siempre la aguja y el valor
+// Interceptar mensajes del ESP32 y actualizar la aguja solo si el usuario NO está moviendo el slider
 if (typeof ws !== 'undefined') {
   ws.onmessage = (msg) => {
     let data = {};
@@ -82,6 +80,6 @@ if (typeof ws !== 'undefined') {
       console.warn('Mensaje WebSocket no es JSON:', msg.data);
       return;
     }
-    if (data.rpm !== undefined) updateNeedleAndValue(data.rpm);
+    if (data.rpm !== undefined && !isUserSliding) updateNeedleAndValue(data.rpm);
   };
 }
