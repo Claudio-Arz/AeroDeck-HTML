@@ -214,8 +214,8 @@ void loop() {
 
   // Enviar valores de los dos instrumentos activos (rpm usa rpm_mostrar)
   char buffer[200];
-  sprintf(buffer, "{\"verticalSpeed\":%.2f, \"vsSliderValue\":%d, \"rpm\":%.2f}",
-    vsVar, vsSliderValue, rpm_mostrar);
+  sprintf(buffer, "{\"verticalSpeed\":%.2f, \"vsSliderValue\":%d, \"rpm\":%.2f, \"rpmNoiceOn\":%s}",
+    vsVar, vsSliderValue, rpm_mostrar, rpmNoiceOn ? "true" : "false");
   ws.broadcastTXT(buffer);
 
   delay(50);
