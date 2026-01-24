@@ -70,28 +70,4 @@ function setupRPMControls(ws) {
   }
 }
 
-// Interceptar mensajes del ESP32 y actualizar la aguja y valor SOLO si el usuario NO está moviendo el slider
-if (typeof ws !== 'undefined') {
-  ws.onmessage = (msg) => {
-    if (isUserSliding) return; // Ignora cualquier valor del backend mientras el usuario mueve el slider
-    let data = {};
-    try {
-      data = JSON.parse(msg.data);
-    } catch (e) {
-      console.warn('Mensaje WebSocket no es JSON:', msg.data);
-      return;
-    }
-    if (data.rpm !== undefined) updateNeedleAndValue(data.rpm);
-    // Sincronizar el botón Noice si llega rpmNoiceOn
-    if (data.rpmNoiceOn !== undefined) {
-      // Convertir a booleano si llega como string
-      noiceOn = (data.rpmNoiceOn === true || data.rpmNoiceOn === "true");
-      const noiceBtn = document.getElementById("noice-btn");
-      if (noiceBtn) {
-        noiceBtn.textContent = "Noice: " + (noiceOn ? "ON" : "OFF");
-        noiceBtn.style.background = noiceOn ? "rgb(26, 176, 166)" : "#071037";
-        noiceBtn.style.color = noiceOn ? "#222" : "#fff";
-      }
-    }
-  };
-}
+// ...el handler ws.onmessage está unificado en mainHTML.html...
