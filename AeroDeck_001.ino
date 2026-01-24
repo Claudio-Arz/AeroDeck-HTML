@@ -43,6 +43,12 @@ int pitchValue = 0;
 float airspeedValue = 0.0f;
 
 void onWsEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
+    if (type == WStype_CONNECTED) {
+      // Enviar valor inicial de variometer al cliente recién conectado
+      char buffer[128];
+      sprintf(buffer, "{\"variometer\":%.2f}", vsVar);
+      ws.sendTXT(num, buffer);
+    }
   if (type == WStype_TEXT) {
     String msg = (const char*)payload;
     if (msg.indexOf("setNoice") >= 0) {
