@@ -2,47 +2,37 @@
 
 let isUserSlidingVariometer = false;
 function updateVariometerAndValue(variometer) {
-  // Rango: -2000 (mínimo) a 2000 (máximo)
-  // 0 a 2000: 270° a 54° (horario)
-  // 0 a -2000: 270° a 126° (antihorario)
-  let angle = 0;
-  if (variometer >= 0) {
-    // 0 a 2000 → 216° a 144°
-    angle =   (variometer / 100) * 144;
-  } else {
-    // 0 a -200 → 270° a 126°
-    angle = -(Math.abs(variometer) / 100) * 144;
-  }
+  // variometer: valor recibido del backend, rango esperado -100 a 100
+  // Mapeo: -100 a 100 → -2000 a 2000 para visualización
+  const value = Math.round(variometer * 20); // valor mostrado
+  // Ángulo: -100 a 100 → -144° a 144°
+  let angle = (variometer / 100) * 144;
   const agujaDiv = document.getElementById('aguja-variometer');
   if (agujaDiv) {
     agujaDiv.style.setProperty('--needle-rotation', `${angle}deg`);
   }
   // Mostrar el valor en el centro y al pie del slider
-  const valueText = Math.round(variometer*20);
-  document.getElementById("variometer-value").textContent = valueText;
+  const valueDiv = document.getElementById("variometer-value");
+  if (valueDiv) valueDiv.textContent = value;
   const variometerSliderValue = document.getElementById("variometer-slider-value");
-  if (variometerSliderValue) variometerSliderValue.textContent = valueText;
+  if (variometerSliderValue) variometerSliderValue.textContent = value;
   const variometerSlider = document.getElementById("variometer-slider");
-  const variometerSliderValue = document.getElementById("variometer-slider-value");
   // Solo actualizar el slider si el usuario NO está interactuando
   if (variometerSlider && !isUserSlidingVariometer) {
     if (Math.abs(variometerSlider.value - variometer) > 1) {
       variometerSlider.value = variometer;
-      variometerSliderValue.textContent = Math.round(variometer*20);
+      if (variometerSliderValue) variometerSliderValue.textContent = value;
     }
   }
 }
 
 function setupVariometerControls(ws) {
-
-
   const variometerSlider = document.getElementById("variometer-slider");
   const variometerSliderValue = document.getElementById("variometer-slider-value");
-  
   if (variometerSlider && variometerSliderValue) {
     variometerSlider.addEventListener("input", function(e) {
       isUserSlidingVariometer = true;
-      const value = parseInt(e.target.value);
+      const value = parseInt(e.target.value); // -100 a 100
       updateVariometerAndValue(value);
       if(ws.readyState === 1) {
         ws.send(JSON.stringify({ setVariometerSpeed: value }));
@@ -54,7 +44,6 @@ function setupVariometerControls(ws) {
     variometerSlider.addEventListener("mouseup", stopSliding);
     variometerSlider.addEventListener("touchend", stopSliding);
   }
-
 }
 
 // Interceptar mensajes del ESP32 solo si el usuario NO está moviendo el slider
