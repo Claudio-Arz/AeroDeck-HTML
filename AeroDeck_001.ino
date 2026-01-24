@@ -50,6 +50,10 @@ void onWsEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
           } else {
             rpmNoiceOn = (val == "true");
           }
+          // Broadcast del nuevo estado a todos los clientes
+          char buffer[64];
+          sprintf(buffer, "{\"rpmNoiceOn\":%s}", rpmNoiceOn ? "true" : "false");
+          ws.broadcastTXT(buffer);
         }
       }
       // Usar verticalSpeed para variometer
