@@ -3,8 +3,11 @@
 let isUserSliding = false;
 function updateNeedleAndValue(rpm) {
   let angle = 225 + (Math.max(0, Math.min(rpm, 3000)) * 270) / 3000;
-  document.getElementById("needle").style.transform =
-    `translate(-50%, -100%) rotate(${angle}deg)`;
+  const needle = document.getElementById("needle");
+  if (needle) {
+    needle.style.setProperty('--needle-rotation', `${angle}deg`);
+    needle.style.transform = `translate(-50%, -100%) rotate(${angle}deg)`;
+  }
   document.getElementById("rpm-value").textContent = Math.round(rpm);
   const rpmSlider = document.getElementById("rpm-slider");
   const rpmSliderValue = document.getElementById("rpm-slider-value");
