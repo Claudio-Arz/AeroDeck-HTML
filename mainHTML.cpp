@@ -42,8 +42,6 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 
 
 <script>
-// Variable global para el estado del botón Noice
-window.noiceOn = false;
 
 
 // Inicialización del WebSocket para comunicación con el ESP32
@@ -73,8 +71,6 @@ ws.onmessage = (msg) => {
     // Función para actualizar el estado visual del botón Noice
     function updateNoiceButtonState(state) {
     if (data.rpmNoiceOn !== undefined) {
-      // Actualizar la variable global
-      window.noiceOn = !!data.rpmNoiceOn;
       // Función para actualizar el estado visual del botón Noice
       function updateNoiceButtonState(state) {
         const btn = document.getElementById('noice-btn');
@@ -90,13 +86,13 @@ ws.onmessage = (msg) => {
       }
       // Si el botón ya está en el DOM, actualizarlo
       if (document.getElementById('noice-btn')) {
-        updateNoiceButtonState(window.noiceOn);
+        updateNoiceButtonState(data.rpmNoiceOn);
       } else {
         // Si el botón se carga dinámicamente, observar el DOM hasta que aparezca
         const observer = new MutationObserver((mutations, obs) => {
           const btn = document.getElementById('noice-btn');
           if (btn) {
-            updateNoiceButtonState(window.noiceOn);
+            updateNoiceButtonState(data.rpmNoiceOn);
             obs.disconnect();
           }
         });
