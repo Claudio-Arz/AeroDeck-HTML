@@ -68,8 +68,9 @@ ws.onmessage = (msg) => {
 
   // --- Sincronizar visualmente el botón Noice en todos los clientes ---
   if (data.rpmNoiceOn !== undefined) {
-    // Función para actualizar el estado visual del botón Noice
+    // Función para actualizar el estado visual del botón Noice y la variable global
     function updateNoiceButtonState(state) {
+      window.noiceOn = !!state;
       const btn = document.getElementById('noice-btn');
       if (btn) {
         if (state) {
