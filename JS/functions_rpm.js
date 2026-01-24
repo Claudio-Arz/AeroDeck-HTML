@@ -57,10 +57,10 @@ function setupRPMControls(ws) {
       noiceOn = !noiceOn;
       this.textContent = "Noice: " + (noiceOn ? "ON" : "OFF");
       if(noiceOn) {
-        this.style.background = "#0c0";
+        this.style.background = "rgb(26, 176, 166)";
         this.style.color = "#222";
       } else {
-        this.style.background = "#444";
+        this.style.background = "#071037";
         this.style.color = "#fff";
       }
       if(ws.readyState === 1) {
@@ -84,11 +84,12 @@ if (typeof ws !== 'undefined') {
     if (data.rpm !== undefined) updateNeedleAndValue(data.rpm);
     // Sincronizar el botón Noice si llega rpmNoiceOn
     if (data.rpmNoiceOn !== undefined) {
-      noiceOn = data.rpmNoiceOn;
+      // Convertir a booleano si llega como string
+      noiceOn = (data.rpmNoiceOn === true || data.rpmNoiceOn === "true");
       const noiceBtn = document.getElementById("noice-btn");
       if (noiceBtn) {
         noiceBtn.textContent = "Noice: " + (noiceOn ? "ON" : "OFF");
-        noiceBtn.style.background = noiceOn ? "#0c0" : "#444";
+        noiceBtn.style.background = noiceOn ? "rgb(26, 176, 166)" : "#071037";
         noiceBtn.style.color = noiceOn ? "#222" : "#fff";
       }
     }
