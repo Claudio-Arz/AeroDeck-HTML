@@ -62,7 +62,7 @@ ws.onmessage = (msg) => {
     return;
   }
   // if (data.airspeed !== undefined) updateAirspeedInstrument(data.airspeed);
-  if (data.rpm !== undefined) updateNeedleAndValue(data.rpm);
+  // if (data.rpm !== undefined) updateNeedleAndValue(data.rpm);
   // if (data.fuelFlow !== undefined) updateFuelFlowInstrument(data.fuelFlow);
   // if (data.vsSliderValue !== undefined) updateVSInstrument(data.vsSliderValue);
   // if (data.roll !== undefined) {
@@ -103,7 +103,7 @@ window.addEventListener('DOMContentLoaded', () => {
       document.getElementById("inst11").innerHTML = html;
     });
 });
-// Cargar el HTML del instrumento Variometer de forma dinámica
+// Cargar el HTML del slider del  instrumento Variometer de forma dinámica
 window.addEventListener('DOMContentLoaded', () => {
   fetch("https://claudio-arz.github.io/AeroDeck-HTML/variometer_Control.html")
     .then(r => r.text())
