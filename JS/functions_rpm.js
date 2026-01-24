@@ -82,5 +82,15 @@ if (typeof ws !== 'undefined') {
       return;
     }
     if (data.rpm !== undefined) updateNeedleAndValue(data.rpm);
+    // Sincronizar el botón Noice si llega rpmNoiceOn
+    if (data.rpmNoiceOn !== undefined) {
+      noiceOn = data.rpmNoiceOn;
+      const noiceBtn = document.getElementById("noice-btn");
+      if (noiceBtn) {
+        noiceBtn.textContent = "Noice: " + (noiceOn ? "ON" : "OFF");
+        noiceBtn.style.background = noiceOn ? "#0c0" : "#444";
+        noiceBtn.style.color = noiceOn ? "#222" : "#fff";
+      }
+    }
   };
 }
