@@ -29,13 +29,13 @@ ws.onmessage = (msg) => {
 
 // Control deslizante para velocidad vertical
 const variometerSlider = document.getElementById("variometer-slider");
-const variometerSliderValue = document.getElementById("variometer-value");
+const variometerSliderValue = document.getElementById("variometer-slider-value");
 if (variometerSlider && variometerSliderValue) {
   variometerSlider.addEventListener("input", function() {
     variometerSliderValue.textContent = this.value;
     // Enviar valor al ESP32 por WebSocket
     if(ws.readyState === 1) {
-      ws.send(JSON.stringify({ setVariometerSpeed: Number(this.value) }));
+      ws.send(JSON.stringify({ setVariometer: Number(this.value) }));
     }
     updateVariometerAndValue(Number(this.value));
   });
