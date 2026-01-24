@@ -43,12 +43,18 @@ void onWsEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
     }
     if (type == WStype_TEXT) {
       String msg = (const char*)payload;
+      // Cambiar el estado de rpmNoiceOn si se recibe el mensaje del botón
       if (msg.indexOf("setNoice") >= 0) {
         int start = msg.indexOf(":");
         int end = msg.indexOf("}", start);
         if (start > 0 && end > start) {
           String val = msg.substring(start + 1, end);
-          rpmNoiceOn = (val == "true");
+          // Alternar si no se especifica valor, o asignar si es true/false
+          if (val == "toggle") {
+            rpmNoiceOn = !rpmNoiceOn;
+          } else {
+            rpmNoiceOn = (val == "true");
+          }
         }
       }
       // Use setVariometerSpeed for variometer
@@ -183,6 +189,15 @@ void loop() {
     }
   }
 
+  // Calcular valor mostrado con ruido solo para enviar al frontend
+  float rpm_mostrar = rpm;
+  if (rpm != 0.0f && rpmNoiceOn) {
+      int ruido = random(-5, 6); // de -5 a +5
+      rpm_mostrar = rpm + ruido;
+      if (rpm_mostrar < 0) rpm_mostrar = 0;
+      if (rpm_mostrar > 3000) rpm_mostrar = 3000;
+  }
+  
   // Procesar DNS (muy importante para el portal cautivo)
   dnsServer.processNextRequest();
 
@@ -200,10 +215,10 @@ void loop() {
   // Asignar el valor del slider directamente a rpm
   rpm = (float)varRPM;
 
-  // Enviar valores de los dos instrumentos activos
+  // Enviar valores de los dos instrumentos activos (rpm usa rpm_mostrar)
   char buffer[200];
   sprintf(buffer, "{\"variometer\":%.2f, \"vsSliderValue\":%d, \"rpm\":%.2f}",
-    vsVar, vsSliderValue, rpm);
+    vsVar, vsSliderValue, rpm_mostrar);
   ws.broadcastTXT(buffer);
 
   delay(50);
