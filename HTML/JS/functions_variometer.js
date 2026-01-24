@@ -9,7 +9,11 @@ function updateVariometerAndValue(variometer) {
   let angle = (variometer / 100) * 144;
   const agujaDiv = document.getElementById('aguja-variometer');
   if (agujaDiv) {
-    agujaDiv.style.setProperty('--needle-rotation', `${angle}deg`);
+    const agujaImg = agujaDiv.querySelector('img');
+    if (agujaImg) {
+      agujaImg.style.setProperty('--needle-rotation', `${angle}deg`);
+      agujaImg.style.transform = `translate(-50%, -50%) rotate(${angle}deg)`;
+    }
   }
   // Mostrar el valor en el centro y al pie del slider
   const valueDiv = document.getElementById("variometer-value");
