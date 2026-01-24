@@ -112,9 +112,11 @@
     border-right: 6px solid transparent;
     border-bottom: 120px solid #ffcc33;
     transform-origin: bottom center;
-    transform: translate(-50%, -100%) rotate(0deg);
+    --needle-rotation: 0deg;
+    transform: translate(-50%, -100%) rotate(var(--needle-rotation));
+    transition: transform 0.2s cubic-bezier(.4,2,.6,1);
     filter: drop-shadow(0 0 4px #000);
-      z-index: 2;
+    z-index: 2;
   }
 
   .needle-center {
