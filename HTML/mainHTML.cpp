@@ -64,7 +64,7 @@ ws.onmessage = (msg) => {
   // if (data.airspeed !== undefined) updateAirspeedInstrument(data.airspeed);
   if (data.rpm !== undefined) updateNeedleAndValue(data.rpm);
   // if (data.fuelFlow !== undefined) updateFuelFlowInstrument(data.fuelFlow);
-  // if (data.vsSliderValue !== undefined) updateVSInstrument(data.vsSliderValue);
+  if (data.vsSliderValue !== undefined) updateVSInstrument(data.vsSliderValue);
   // if (data.roll !== undefined) {
   //   rollSlider.value = data.roll;
   //   rollSliderValue.textContent = parseFloat(data.roll).toFixed(1);

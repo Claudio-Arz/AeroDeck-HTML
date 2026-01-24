@@ -35,12 +35,7 @@ float vsVar = 0.0f;
 int vsSliderValue = 0;
 
 void onWsEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
-    if (type == WStype_CONNECTED) {
-      // Enviar valor inicial de variometer al cliente recién conectado
-      char buffer[128];
-      sprintf(buffer, "{\"variometer\":%.2f}", vsVar);
-      ws.sendTXT(num, buffer);
-    }
+    
     if (type == WStype_TEXT) {
       String msg = (const char*)payload;
       // Cambiar el estado de rpmNoiceOn si se recibe el mensaje del botón
@@ -57,13 +52,17 @@ void onWsEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
           }
         }
       }
-      // Use setVariometerSpeed for variometer
-      if (msg.indexOf("setVariometerSpeed") >= 0) {
+      // Usar verticalSpeed para variometer
+      if (msg.indexOf("verticalSpeed") >= 0) {
         int start = msg.indexOf(":");
         int end = msg.indexOf("}", start);
         if (start > 0 && end > start) {
           String val = msg.substring(start + 1, end);
           vsVar = val.toFloat();
+          // Enviar el nuevo valor a todos los clientes
+          char buffer[128];
+          sprintf(buffer, "{\"verticalSpeed\":%.2f}", vsVar);
+          ws.broadcastTXT(buffer);
         }
       }
       // Use setRPMSpeed for RPM
@@ -120,12 +119,6 @@ void handleRoot() {
   page.replace("Cargando...", WiFi.localIP().toString());
   server.send(200, "text/html", page);
 }
-
-// Redirección genérica: cualquier path te manda al Tablero principal
-// void handleNotFound() {
-//   server.sendHeader("Location", String("http://") + apIP.toString(), true);
-//   server.send(302, "text/plain", "");
-// }
 
 
 // ===== SETUP =====
@@ -217,7 +210,7 @@ void loop() {
 
   // Enviar valores de los dos instrumentos activos (rpm usa rpm_mostrar)
   char buffer[200];
-  sprintf(buffer, "{\"variometer\":%.2f, \"vsSliderValue\":%d, \"rpm\":%.2f}",
+  sprintf(buffer, "{\"verticalSpeed\":%.2f, \"vsSliderValue\":%d, \"rpm\":%.2f}",
     vsVar, vsSliderValue, rpm_mostrar);
   ws.broadcastTXT(buffer);
 
