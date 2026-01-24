@@ -52,7 +52,7 @@ const ws = new WebSocket('ws://' + location.hostname + ':81/');
 
 
 
-// Handler WebSocket: actualiza todos los instrumentos
+// Handler WebSocket: actualiza todos los instrumentos y el botón Noice
 ws.onmessage = (msg) => {
   let data = {};
   try {
@@ -65,6 +65,38 @@ ws.onmessage = (msg) => {
   if (data.rpm !== undefined) updateNeedleAndValue(data.rpm);
   // if (data.fuelFlow !== undefined) updateFuelFlowInstrument(data.fuelFlow);
   if (data.verticalSpeed !== undefined) updateVariometerAndValue(data.verticalSpeed);
+
+  // --- Sincronizar visualmente el botón Noice en todos los clientes ---
+  if (data.rpmNoiceOn !== undefined) {
+    // Función para actualizar el estado visual del botón Noice
+    function updateNoiceButtonState(state) {
+      const btn = document.getElementById('noice-btn');
+      if (btn) {
+        if (state) {
+          btn.classList.add('active');
+          btn.textContent = 'Noice ON';
+        } else {
+          btn.classList.remove('active');
+          btn.textContent = 'Noice OFF';
+        }
+      }
+    }
+    // Si el botón ya está en el DOM, actualizarlo
+    if (document.getElementById('noice-btn')) {
+      updateNoiceButtonState(data.rpmNoiceOn);
+    } else {
+      // Si el botón se carga dinámicamente, observar el DOM hasta que aparezca
+      const observer = new MutationObserver((mutations, obs) => {
+        const btn = document.getElementById('noice-btn');
+        if (btn) {
+          updateNoiceButtonState(data.rpmNoiceOn);
+          obs.disconnect();
+        }
+      });
+      observer.observe(document.body, { childList: true, subtree: true });
+    }
+  }
+  // --- Fin sincronización botón Noice ---
   // if (data.roll !== undefined) {
   //   rollSlider.value = data.roll;
   //   rollSliderValue.textContent = parseFloat(data.roll).toFixed(1);
