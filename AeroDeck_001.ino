@@ -4,6 +4,16 @@
   Tablero completo con intrumental aeronáutico
   para ajustar instrumentos analógicos.
 
+  2026-01-24 19:22:03
+  RPM y Variometer funcionan bien con WebSocket.
+  El botón Noice sincroniza su estado en todos los clientes. Pero
+  hay que presionarlo dos veces para que tome el estado correcto.
+  Posiblemente porque el primer mensaje llega antes de que el botón. O
+  porque el estado inicial no se envía al conectar. O cada terminal
+  mantiene su propio estado y no se actualiza al conectar.
+  Investigar y corregir.
+
+  
   
 
 
