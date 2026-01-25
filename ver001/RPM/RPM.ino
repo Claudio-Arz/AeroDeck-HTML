@@ -3,6 +3,7 @@
 #include <WebServer.h>
 #include <WebSocketsServer.h>
 #include <DNSServer.h>
+#include <ArduinoJson.h>
 
 // ===== OBJETOS =====
 WebServer server(80);
@@ -34,39 +35,41 @@ float routineInitial = 0;
 float vsVar = 0.0f;
 bool noiceOn = false;
 
+// Nota: La firma de esta función NO se puede cambiar.
+// WebSocketsServer requiere exactamente este prototipo para el callback de eventos WebSocket.
+// Aunque solo usamos JSON, la librería entrega los datos como puntero a bytes y longitud.
+// Solo procesamos mensajes de texto (WStype_TEXT) y asumimos que el payload es JSON.
 void onWsEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
-  if (type == WStype_TEXT) {
-    String msg = (const char*)payload;
-    if (msg.indexOf("setRPMSpeed") >= 0) {
-      int start = msg.indexOf(":");
-      int end = msg.indexOf("}", start);
-      if (start > 0 && end > start) {
-        String val = msg.substring(start + 1, end);
-        varRPM = val.toInt();
-      }
-    }
-    if (msg.indexOf("startMotorRoutine") >= 0) {
-      if (rpm == 0.0f) {
-        startRoutine = true;
-        routineStart = millis();
-        routineStep = 0;
-        routineInitial = varRPM;
-      }
-    }
-    // Calcular valor mostrado with ruido solo para enviar al frontend
-    float rpm_mostrar = rpm;
-    if (rpm != 0.0f && noiceOn) {
-      int ruido = random(-5, 6); // de -5 a +5
-      rpm_mostrar = rpm + ruido;
-      if (rpm_mostrar < 0) rpm_mostrar = 0;
-      if (rpm_mostrar > 3000) rpm_mostrar = 3000;
-    }
+  if (type != WStype_TEXT) return;
 
-    if (msg.indexOf("toggleNoice") >= 0) {
-      noiceOn = !noiceOn;
-      // Aquí podrías agregar código para activar/desactivar el ruido en el motor
-    }
+  DynamicJsonDocument doc(256);
+  DeserializationError error = deserializeJson(doc, payload, length);
+  if (error) {
+    Serial.print("[WS] JSON parse error: ");
+    Serial.println(error.c_str());
+    return;
   }
+
+  // Validar que el campo "cmd" exista y sea string
+  if (!doc.containsKey("cmd") || !doc["cmd"].is<const char*>()) {
+    Serial.println("[WS] JSON missing or invalid 'cmd' field");
+    return;
+  }
+  const char* cmd = doc["cmd"];
+
+  if (strcmp(cmd, "setRPMSpeed") == 0) {
+    varRPM = doc["value"] | 0;
+  } else if (strcmp(cmd, "startMotorRoutine") == 0) {
+    if (rpm == 0.0f) {
+      startRoutine = true;
+      routineStart = millis();
+      routineStep = 0;
+      routineInitial = varRPM;
+    }
+  } else if (strcmp(cmd, "toggleNoice") == 0) {
+    noiceOn = !noiceOn;
+  }
+  // Puedes agregar más comandos aquí según sea necesario
 }
 
 // ===== HANDLERS DEL SERVIDOR HTTP =====
@@ -106,6 +109,9 @@ void setup() {
   server.begin();
 
   // ===== WEBSOCKET =====
+  // En el setup del WebSocket, asignar el callback de eventos
+  // Iniciar el servidor WebSocket
+  // En el Backend, se usa ws.onEvent para asignar el callback
   ws.begin();
   ws.onEvent(onWsEvent);
 
@@ -174,9 +180,15 @@ void loop() {
     Serial.print("RPM: ");
     Serial.println(rpm);
   }
-  char buffer[128];
-  sprintf(buffer, "{\"rpm\":%.2f,\"varRPM\":%d}", rpm_mostrar, (int)varRPM);
-  ws.broadcastTXT(buffer);
+
+  // Enviar datos como JSON usando ArduinoJson
+  DynamicJsonDocument doc(128);
+  doc["rpm"] = rpm_mostrar;
+  doc["varRPM"] = (int)varRPM;
+  doc["noiceOn"] = noiceOn;
+  String jsonStr;
+  serializeJson(doc, jsonStr);
+  ws.broadcastTXT(jsonStr);
 
   delay(50);
 }

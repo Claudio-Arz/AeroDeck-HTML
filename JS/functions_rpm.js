@@ -103,13 +103,11 @@ function setupRPMControls(ws) {
     rpmSlider.addEventListener("touchend", stopSliding);
   }
   const noiceBtn = document.getElementById("noice-btn");
-  let noiceOn = false;
   if (noiceBtn) {
     noiceBtn.addEventListener("click", function() {
-      noiceOn = !noiceOn;
-      // El estado visual y el texto serán actualizados por ws.onmessage centralizado
+      // Siempre pedir al backend que alterne el estado
       if(ws.readyState === 1) {
-        ws.send(JSON.stringify({ setNoice: noiceOn }));
+        ws.send(JSON.stringify({ setNoice: "toggle" }));
       }
     });
   }

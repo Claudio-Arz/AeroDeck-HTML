@@ -11,8 +11,14 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
     background: #082032;
     color: #eee;
     font-family: Arial, sans-serif;
-    text-align: center;
-    padding-top: 30px;
+    min-height: 100vh;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    gap: 0;
+    align-items: center;
+    justify-items: center;
   }
 
   #container {
@@ -69,18 +75,27 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
   /* Estilos para el control deslizante */
   .slider-container {
     margin-top: 20px;
+    width: 40px;
+    height: 400px;
+    min-height: 340px;
+    max-height: 95vh;
+    writing-mode: vertical-lr;
+    direction: rtl;
+    margin: 0 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     color: #ffffff;
   }
-
   .slider {
-    -webkit-appearance: none;
-    width: 75%;
-    height: 20px;
-    border-radius: 5px;
     background: #444;
     outline: none;
+    border-radius: 4px;
     opacity: 0.7;
-    transition: opacity .2s;
+    height: 380px;
+    min-height: 320px;
+    max-height: 90vh;
   }
 
   .slider:hover {
@@ -90,33 +105,31 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
   .slider-value {
     font-size: 18px;
     margin-top: 10px;
+    margin-bottom: 10px;
+    align-items: center;
   }
 </style>
 </head>
 
+
 <body>
-<h2>Calibración RPM</h2>
+<h2 style="grid-column: 1 / span 2; text-align: center; width: 100%;">Calibración RPM</h2>
 
-
-<div style="display: flex; justify-content: center; align-items: flex-start; gap: 60px; margin-bottom: 32px;">
+<div style="grid-column: 1; grid-row: 1; display: flex; flex-direction: column; align-items: center;">
   <div id="container">
     <img src="https://1drv.ms/i/c/976676efea6bc5cc/IQSq7R2SSyVBTr7XIEyJNr9iAdnoYbqY_Gtz4MnhCUnEMxU?width=480&height=480" style="width:300px;height:300px;position:absolute;top:0;left:0;z-index:1;pointer-events:none;" alt="Tacómetro RPM">
     <div id="needle" class="needle"></div>
     <div class="needle-center"></div>
     <div id="rpm-value" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:32px;width:100px;text-align:center;z-index:20;background:rgba(8,32,50,0.85);border-radius:10px;pointer-events:none;color:#fff;box-shadow:0 0 8px #000;">--</div>
   </div>
-  <button id="start-btn" style="height:48px;font-size:18px;padding:8px 32px;align-self:center;">Start</button>
-  <button id="noice-btn" style="height:40px;font-size:16px;padding:6px 10px;margin-top:10px;background:#444;color:#fff;border-radius:8px;border:none;cursor:pointer;">Noice: ON</button>
 </div>
 
-
-
-
-
-
-<!-- Control deslizante para motor -->
-<div class="slider-container">
-  <input type="range" min="0" max="3000" value="0" class="slider" id="vs-slider">
+<div style="grid-column: 2; grid-row: 1; display: flex; flex-direction: column; align-items: center; gap: 32px;">
+  <button id="start-btn" style="height:48px;font-size:18px;padding:8px 32px;">Start</button>
+  <button id="noice-btn" style="height:40px;font-size:16px;padding:6px 10px;background:#444;color:#fff;border-radius:8px;border:none;cursor:pointer;">Noice: ON</button>
+  <div class="slider-container" style="display: flex; flex-direction: column; align-items: center;">
+    <input type="range" min="0" max="3000" value="0" class="slider" id="vs-slider">
+  </div>
   <div class="slider-value" id="vs-slider-value">0</div>
 </div>
 
@@ -139,17 +152,33 @@ function updateNeedleAndValue(rpm) {
   }
 }
 
+// Manejar mensajes entrantes del WebSocket
+// Se espera un JSON con el formato: { "rpm": valor }
+// En el frontend, se usa ws.onmessage para recibir mensajes
 ws.onmessage = (msg) => {
   let data = JSON.parse(msg.data);
   let rpm = data.rpm;
   window.currentRPM = rpm;
   updateNeedleAndValue(rpm);
+  // Actualizar el estado visual del botón noice según el backend
+  if (typeof data.noiceOn !== 'undefined') {
+    const noiceBtn = document.getElementById("noice-btn");
+    if (data.noiceOn) {
+      noiceBtn.textContent = "Noice: ON";
+      noiceBtn.style.background = "#444";
+      noiceBtn.style.color = "#fff";
+    } else {
+      noiceBtn.textContent = "Noice: OFF";
+      noiceBtn.style.background = "#ff4444";
+      noiceBtn.style.color = "#fff";
+    }
+  }
 };
 
 // Al presionar el botón Start, enviar mensaje al ESP32 para que ejecute la rutina
 document.getElementById("start-btn").addEventListener("click", function() {
   if(ws.readyState === 1) {
-    ws.send(JSON.stringify({ startMotorRoutine: true }));
+    ws.send(JSON.stringify({ cmd: "startMotorRoutine" }));
   }
 });
 
@@ -158,7 +187,7 @@ let noiceOn = true;
 const noiceBtn = document.getElementById("noice-btn");
 noiceBtn.addEventListener("click", function() {
   if(ws.readyState === 1) {
-    ws.send(JSON.stringify({ toggleNoice: true }));
+    ws.send(JSON.stringify({ cmd: "toggleNoice" }));
     noiceOn = !noiceOn;
     if(noiceOn) {
       noiceBtn.textContent = "Noice: ON";
@@ -183,7 +212,7 @@ vsSlider.addEventListener("input", function() {
   varRPM.textContent = this.value;
   // Enviar valor al ESP32 por WebSocket
   if(ws.readyState === 1) {
-    ws.send(JSON.stringify({ setRPMSpeed: Number(this.value) }));
+    ws.send(JSON.stringify({ cmd: "setRPMSpeed", value: Number(this.value) }));
   }
 });
 </script>
