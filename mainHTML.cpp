@@ -28,7 +28,24 @@
 #include <pgmspace.h>
 
 const char MAIN_page[] PROGMEM = R"rawliteral(
-<!DOCTYPE html id="main-html">
+<!DOCTYPE html >
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Banco de Prueba y Calibración</title>
+
+
+<link rel="stylesheet" href="https://claudio-arz.github.io/AeroDeck-HTML/CSS/mainHTML.css">
+
+<script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_rpm.js"></script>
+<script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_variometer.js"></script>
+
+</head>
+
+<body>
+<div id="main-html">
+<!-- El contenido HTML principal se cargará aquí dinámicamente -->
+</div>
 <script>
 // Inicialización del WebSocket para comunicación con el ESP32
 const ws = new WebSocket('ws://' + location.hostname + ':81/');
@@ -47,6 +64,7 @@ window.addEventListener('DOMContentLoaded', () => {
 });
       
 </script>
+</body>
 </html>
 )rawliteral";
 
