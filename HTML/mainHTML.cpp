@@ -29,7 +29,6 @@
 
 const char MAIN_page[] PROGMEM = R"rawliteral(
 <!DOCTYPE html id="main-html">
-</html>
 <script>
 // Inicialización del WebSocket para comunicación con el ESP32
 const ws = new WebSocket('ws://' + location.hostname + ':81/');
@@ -38,15 +37,16 @@ const ws = new WebSocket('ws://' + location.hostname + ':81/');
 // Cargar el HTML principal de forma dinámica
 window.addEventListener('DOMContentLoaded', () => {
   fetch("https://claudio-arz.github.io/AeroDeck-HTML/mainHTML.html")
-    .then(r => r.text())
-    .then(html => {
-      document.getElementById("main-html").innerHTML = html;
-      if (typeof setupVariometerControls === 'function') {
-        setupVariometerControls(ws);
-      }
-    });
+  .then(r => r.text())
+  .then(html => {
+    document.getElementById("main-html").innerHTML = html;
+    if (typeof setupVariometerControls === 'function') {
+      setupVariometerControls(ws);
+    }
+  });
 });
-
+      
+</html>
 </script>
 )rawliteral";
 
