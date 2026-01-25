@@ -1,5 +1,40 @@
-// functions_rpm.js: lógica simple y modular para RPM
+/*
+  Tablero AeroDeck
+  Claudio Arzamendia Systems
+  Tablero completo con intrumental aeronáutico
+  para ajustar instrumentos analógicos.
 
+  2026-01-24 19:37:12
+  En el sistema vamos a usar librerías estándar de JS y CSS.
+  El código JS se divide en módulos lógicos por instrumento.
+  Cada módulo tiene funciones para actualizar la UI y
+  configurar los controles. El WebSocket se maneja en mainHTML.html
+  y los mensajes se distribuyen a los módulos según el contenido.
+
+  functions_rpm.js: lógica simple y modular para RPM. Cada función
+  debe tener una buena documentación. Indicando en comienzo de la 
+  función qué hace, y en los parámetros qué espera y qué devuelve,
+  o que ejecuta.
+
+
+
+
+*/
+
+
+/*
+  Actualiza la aguja del tacómetro y el valor numérico de RPM.
+  Parámetros:
+    rpm: número, valor de RPM entre 0 y 3000.
+
+  Comunicaciones:
+    No envía ni recibe mensajes WebSocket.
+
+  Issues:
+    - La aguja no se mueve suavemente, sino en saltos.
+
+
+*/ 
 let isUserSliding = false;
 function updateNeedleAndValue(rpm) {
   let angle = 225 + (Math.max(0, Math.min(rpm, 3000)) * 270) / 3000;
@@ -22,6 +57,23 @@ function updateNeedleAndValue(rpm) {
   }
 }
 
+
+/*
+  Configura los controles de RPM: botón de inicio, slider de RPM,
+  y botón de ruido (noice).
+  Parámetros:
+    ws: WebSocket abierto y listo para enviar mensajes.
+
+  Comunicaciones:
+    Envía mensajes JSON:
+      { startMotorRoutine: true }
+      { setRPMSpeed: valor }
+      { setNoice: true/false }
+
+  Issues:
+    - El botón Noice no sincroniza bien su estado en todos los clientes.
+      Hay que investigar y corregir.
+*/
 function setupRPMControls(ws) {
   const startBtnRpm = document.getElementById("start-btn-rpm");
   if (startBtnRpm) {
@@ -63,4 +115,4 @@ function setupRPMControls(ws) {
   }
 }
 
-// ...el handler ws.onmessage está unificado en mainHTML.html...
+// Fin de functions_rpm.js

@@ -1,4 +1,31 @@
-/* === Estado activo para el botón Noice === */
+/*
+  mainHTML.css
+  Estilos CSS para el tablero de instrumentos AeroDeck
+  Claudio Arzamendia Systems
+  Tablero completo con intrumental aeronáutico
+  para ajustar instrumentos analógicos.
+
+  2026-01-24 20:06:19
+  Este es un buen punto de partida para los estilos CSS.
+  Se han añadido estilos específicos para el botón Noice
+  y para el variometro con aguja como imagen.
+  Se han corregido algunos detalles de estilo para mejorar
+  la apariencia general del tablero.
+
+  Tiene que incluir una detallada documentación de los estilos
+  y las clases utilizadas. Incluyendo en que archivos HTML se usan.
+
+
+*/
+
+
+/* === Estado activo para el botón Noice === 
+
+  Cambia el fondo, color, borde y sombra cuando está activo
+  para indicar visualmente su estado.
+
+  
+*/
 #noice-btn.active {
   background: rgb(26, 176, 166) !important;
   color: #222 !important;
@@ -6,12 +33,14 @@
   box-shadow: 0 0 10px #1ab0a6, 0 0 2px #222;
   transition: background 0.2s, color 0.2s, box-shadow 0.2s;
 }
+
 #noice-btn {
   background: #071037;
   color: #fff;
   border: 2px solid #071037;
   transition: background 0.2s, color 0.2s, box-shadow 0.2s;
 }
+
 .aguja-variometer img {
   width: 240px !important;
   height: 10px !important;

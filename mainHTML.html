@@ -58,30 +58,43 @@ ws.onmessage = (msg) => {
     console.warn('Mensaje WebSocket no es JSON:', msg.data);
     return;
   }
+  // if (data.airspeed !== undefined) updateAirspeedInstrument(data.airspeed);
   if (data.rpm !== undefined) updateNeedleAndValue(data.rpm);
+  // if (data.fuelFlow !== undefined) updateFuelFlowInstrument(data.fuelFlow);
   if (data.verticalSpeed !== undefined) updateVariometerAndValue(data.verticalSpeed);
-  // Sincronizar el botón Noice si llega rpmNoiceOn
+
+  // --- Sincronizar visualmente el botón Noice en todos los clientes ---
   if (data.rpmNoiceOn !== undefined) {
-    const noiceOn = (data.rpmNoiceOn === true || data.rpmNoiceOn === "true");
-    // Esperar a que el botón esté en el DOM si aún no existe
-    const updateNoiceBtn = () => {
-      const noiceBtn = document.getElementById("noice-btn");
-      if (noiceBtn) {
-        noiceBtn.textContent = "Noice: " + (noiceOn ? "ON" : "OFF");
-        noiceBtn.style.background = noiceOn ? "rgb(26, 176, 166)" : "#071037";
-        noiceBtn.style.color = noiceOn ? "#222" : "#fff";
-        return true;
+    // Función para actualizar el estado visual del botón Noice y la variable global
+    function updateNoiceButtonState(state) {
+      window.noiceOn = !!state;
+      const btn = document.getElementById('noice-btn');
+      if (btn) {
+        if (state) {
+          btn.classList.add('active');
+          btn.textContent = 'Noice ON';
+        } else {
+          btn.classList.remove('active');
+          btn.textContent = 'Noice OFF';
+        }
       }
-      return false;
-    };
-    if (!updateNoiceBtn()) {
-      // Si el botón aún no existe, observar el DOM hasta que aparezca
-      const observer = new MutationObserver(() => {
-        if (updateNoiceBtn()) observer.disconnect();
+    }
+    // Si el botón ya está en el DOM, actualizarlo
+    if (document.getElementById('noice-btn')) {
+      updateNoiceButtonState(data.rpmNoiceOn);
+    } else {
+      // Si el botón se carga dinámicamente, observar el DOM hasta que aparezca
+      const observer = new MutationObserver((mutations, obs) => {
+        const btn = document.getElementById('noice-btn');
+        if (btn) {
+          updateNoiceButtonState(data.rpmNoiceOn);
+          obs.disconnect();
+        }
       });
       observer.observe(document.body, { childList: true, subtree: true });
     }
   }
+
 };
 
 // Cargar el HTML del instrumento RPM de forma dinámica
