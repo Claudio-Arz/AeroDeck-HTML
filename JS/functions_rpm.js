@@ -89,9 +89,7 @@ function updateNeedleAndValue(rpm) {
       { setRPMSpeed: valor }
       { setNoice: true/false }
 
-  Issues:
-    - El botón Noice no sincroniza bien su estado en todos los clientes.
-      Hay que investigar y corregir.
+
 */
 function setupRPMControls(ws) {
   const startBtnRpm = document.getElementById("start-btn-rpm");
