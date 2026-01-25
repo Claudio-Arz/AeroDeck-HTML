@@ -79,22 +79,6 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 // Inicialización del WebSocket para comunicación con el ESP32
 const ws = new WebSocket('ws://' + location.hostname + ':81/');
 
-// === Funciones de actualización de instrumentos ===
-// Cargar el HTML principal de forma dinámica
-window.addEventListener('DOMContentLoaded', () => {
-  fetch("https://claudio-arz.github.io/AeroDeck-HTML/mainHTML.html")
-  .then(r => r.text())
-  .then(html => {
-    document.getElementById("main-html").innerHTML = html;
-    if (typeof setupVariometerControls === 'function') {
-      setupVariometerControls(ws);
-    }
-  });
-});
-
-
-// Inicialización del WebSocket para comunicación con el ESP32
-const ws = new WebSocket('ws://' + location.hostname + ':81/');
 
 // === Funciones de actualización de instrumentos ===
 
@@ -148,6 +132,16 @@ ws.onmessage = (msg) => {
   }
 
 };
+
+// Cargar el HTML del Controles de RPM de forma dinámica
+window.addEventListener('DOMContentLoaded', () => {
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/RPM.html")
+    .then(r => r.text())
+    .then(html => {
+      document.getElementById("inst04").innerHTML = html;
+
+    });
+});
 
 // Cargar el HTML del Controles de RPM de forma dinámica
 window.addEventListener('DOMContentLoaded', () => {
