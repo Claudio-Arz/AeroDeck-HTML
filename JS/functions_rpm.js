@@ -36,6 +36,25 @@
 
 */ 
 let isUserSliding = false;
+let currentRPM = 0;
+let targetRPM = 0;
+let rpmAnimationFrame = null;
+function animateNeedleRPM(newValue) {
+  targetRPM = newValue;
+  if (!rpmAnimationFrame) {
+    function step() {
+      currentRPM += (targetRPM - currentRPM) * 0.2;
+      if (Math.abs(targetRPM - currentRPM) < 0.5) {
+        currentRPM = targetRPM;
+        rpmAnimationFrame = null;
+      } else {
+        rpmAnimationFrame = requestAnimationFrame(step);
+      }
+      updateNeedleAndValue(currentRPM);
+    }
+    rpmAnimationFrame = requestAnimationFrame(step);
+  }
+}
 function updateNeedleAndValue(rpm) {
   let angle = 225 + (Math.max(0, Math.min(rpm, 3000)) * 270) / 3000;
   const needle = document.getElementById("needle");
@@ -91,7 +110,7 @@ function setupRPMControls(ws) {
     rpmSlider.addEventListener("input", function(e) {
       isUserSliding = true;
       const value = parseInt(e.target.value);
-      updateNeedleAndValue(value);
+      animateNeedleRPM(value);
       if(ws.readyState === 1) {
         ws.send(JSON.stringify({ setRPMSpeed: value }));
       }
