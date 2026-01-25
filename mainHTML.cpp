@@ -46,6 +46,8 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 <div id="main-html">
 <!-- El contenido HTML principal se cargará aquí dinámicamente -->
 </div>
+</body>
+
 <script>
 // Inicialización del WebSocket para comunicación con el ESP32
 const ws = new WebSocket('ws://' + location.hostname + ':81/');
@@ -64,7 +66,6 @@ window.addEventListener('DOMContentLoaded', () => {
 });
       
 </script>
-</body>
 </html>
 )rawliteral";
 
