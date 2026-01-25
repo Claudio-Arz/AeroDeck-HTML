@@ -46,8 +46,8 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 });
       
-</html>
 </script>
+</html>
 )rawliteral";
 
 
