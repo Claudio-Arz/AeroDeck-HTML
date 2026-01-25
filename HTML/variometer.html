@@ -1,0 +1,18 @@
+
+
+<div class="instrumento-grid">
+  <img src="https://claudio-arz.github.io/AeroDeck-HTML/Images/variometer/vert_speed_dial.png" alt="Variometer">
+  <div class="aguja-variometer" id="aguja-variometer">
+    <img src="https://claudio-arz.github.io/AeroDeck-HTML/Images/variometer/aguja.png" alt="Aguja">
+  </div>
+  <div id="variometer-value" class="instrument-center-label">--</div>
+</div>
+
+
+<script src="JS/functions_variometer.js"></script>
+<script>
+// Usar el WebSocket global y la lógica unificada
+if (typeof ws !== 'undefined') {
+  setupVariometerControls(ws);
+}
+</script>
