@@ -87,7 +87,7 @@ function updateNeedleAndValue(rpm) {
     Envía mensajes JSON:
       { startMotorRoutine: true }
       { setRPMSpeed: valor }
-      { setNoice: true/false }
+      { setNoice: toggle }
 
 
 */

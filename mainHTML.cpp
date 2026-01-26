@@ -173,6 +173,17 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     });
 });      
+// Cargar el HTML del instrumento Altimeter de forma dinámica
+window.addEventListener('DOMContentLoaded', () => {
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/Images/altimeter.html")
+    .then(r => r.text())
+    .then(html => {
+      document.getElementById("inst3").innerHTML = html;
+      if (typeof setupVariometerControls === 'function') {
+        setupVariometerControls(ws);
+      }
+    });
+});      
 </script>
 </html>
 )rawliteral";
