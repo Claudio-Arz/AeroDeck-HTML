@@ -17,9 +17,8 @@
 */
 ws.onmessage = (msg) => {
   let data = JSON.parse(msg.data);
-  let heading = data.varAltitud ?? 0;
+  let heading = data.altitud ?? 0;
   let verticalSpeed = data.verticalSpeed ?? 0;
-
 
   // Actualiza instrumentos
   let angle_pies = (heading % 1000) * 360 / 1000; // Angulo para cientos de pies.
@@ -27,6 +26,4 @@ ws.onmessage = (msg) => {
     `translate(-50%, -100%) rotate(${angle_pies}deg)`;
   document.getElementById("altimeter-value").textContent =
     Math.round(heading);
-  
-
 };
