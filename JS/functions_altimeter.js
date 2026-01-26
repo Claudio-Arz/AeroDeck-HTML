@@ -15,10 +15,12 @@
   
 
 */
-ws.onmessage = (msg) => {
-  let data = JSON.parse(msg.data);
-  let heading = data.altitud ?? 0;
-  let verticalSpeed = data.verticalSpeed ?? 0;
+// Actualiza el altímetro y el valor numérico.
+// Parámetros:
+//   altitud: número, valor de altitud en pies (0 a 30000).
+function updateAltimeterAndValue(altitud) {
+  
+  let heading = altitud;
 
   // Actualiza instrumentos
   let angle_pies = (heading % 1000) * 360 / 1000; // Angulo para cientos de pies.

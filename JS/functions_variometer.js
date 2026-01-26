@@ -60,6 +60,7 @@ function updateVariometerAndValue(variometer) {
       if (variometerSliderValue) variometerSliderValue.textContent = value;
     }
   }
+  updateAltimeterAndValue(variometer);
 }
 
 /*
