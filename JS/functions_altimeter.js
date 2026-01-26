@@ -25,7 +25,7 @@ function updateAltimeterAndValue(altitud) {
   // Actualiza instrumentos
   let angle_pies = (heading % 1000) * 360 / 1000; // Angulo para cientos de pies.
   document.getElementById("aguja_pies").style.transform =
-    `translate(-50%, -100%) rotate(${angle_pies}deg)`;
+    `translate(-50%, -50%) rotate(${angle_pies}deg)`;
   document.getElementById("altimeter-value").textContent =
     Math.round(heading);
 };
