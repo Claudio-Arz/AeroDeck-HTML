@@ -175,7 +175,7 @@ window.addEventListener('DOMContentLoaded', () => {
 });      
 // Cargar el HTML del instrumento Altimeter de forma dinámica
 window.addEventListener('DOMContentLoaded', () => {
-  fetch("https://claudio-arz.github.io/AeroDeck-HTML/Images/altimeter.html")
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/altimeter.html")
     .then(r => r.text())
     .then(html => {
       document.getElementById("inst03").innerHTML = html;
