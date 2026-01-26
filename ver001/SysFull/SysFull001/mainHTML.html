@@ -237,16 +237,10 @@
   <!-- Sliders: Row 2, Col 6 en adelante -->
   <div class="grid-item slider-vertical" style="grid-row: 2; grid-column: 6;">
     <div style="text-align:center;font-weight:bold;color:#fff;margin-bottom:4px;">VS</div>
-    <input type="range" min="-127" max="127" value="0" class="slider" id="vs-slider" orient="vertical">
-    <div class="slider-value" id="vs-slider-value">0</div>
-  </div>
-  <div class="grid-item slider-vertical" style="grid-row: 2; grid-column: 7;">
-    <div style="text-align:center;font-weight:bold;color:#fff;margin-bottom:4px;">RPM</div>
-    <div style="display: flex; flex-direction: row; align-items: center; gap: 12px;">
-      <div style="display: flex; flex-direction: column; align-items: center;">
-        <input type="range" min="0" max="3000" value="0" class="slider" id="rpm-slider" orient="vertical">
-        <div class="slider-value" id="rpm-slider-value">0</div>
-      </div>
+    <input type="range" min="0" max="3000" value="0" class="slider" id="rpm-slider" orient="vertical">
+    <div class="slider-value" id="rpm-slider-value">0</div>
+    <button id="start-btn" style="height:48px;font-size:18px;padding:8px 12px;margin-top:12px;border-radius:8px;">Start</button>
+    <button id="noice-btn" style="height:40px;font-size:16px;padding:6px 10px;margin-top:10px;background:#444;color:#fff;border-radius:8px;border:none;cursor:pointer;">Noice: OFF</button>
       <div style="display: flex; flex-direction: column; gap: 10px; align-items: flex-start; margin-left: 8px;">
         <button id="start-btn" style="height:48px;font-size:18px;padding:8px 12px;border-radius:8px;">Start</button>
         <button id="noice-btn" style="height:40px;font-size:16px;padding:6px 10px;background:#444;color:#fff;border-radius:8px;border:none;cursor:pointer;">Noice: OFF</button>
