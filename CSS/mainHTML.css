@@ -268,10 +268,8 @@
 }
 
 /* === RPM y VARIOMETER: Restaurar estilos === */
-.instrumento-grid > img[alt*="RPM"],
-.instrumento-grid > img[alt*="Tacómetro"],
-.instrumento-grid > img[alt*="Variometer"],
-.instrumento-grid > img[alt*="vert_speed_dial"] {
+.rpm-dial,
+.variometer-dial {
   width: 240px;
   height: 240px;
   position: absolute;
@@ -318,23 +316,13 @@
   position: absolute;
   top: 50%;
   left: 50%;
+  transform-origin: 50% 50%;
   transform: translate(-50%, -50%) rotate(var(--needle-rotation));
   border-radius: 0 !important;
   z-index: 19;
   pointer-events: none;
   object-fit: contain;
-}
-.aguja-variometer img {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 240px !important;
-  height: 10px !important;
-  transform-origin: 50% 50%; /* pivote en el centro */
-  transform: translate(-50%, -50%) rotate(var(--needle-rotation));
   transition: transform 0.2s cubic-bezier(.4,2,.6,1);
-  z-index: 18;
-  pointer-events: none;
 }
 
 
