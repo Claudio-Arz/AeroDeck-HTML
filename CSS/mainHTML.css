@@ -201,45 +201,74 @@
   }
 
 
-/* ... Imagenes que forman el instrumento ... */
+/* ... Imagenes que forman el instrumento Altimeter ... 
+  escala_kollsman.png       301 x 301
+  altimeter_dial.png        360 x 360
+  bandera_off.png           172 x 172
+  tapa_frente.png           173 x 173
+  aguja_dec_miles_pies.png   28 x 360
+  aguja_miles_pies.png       28 x 360
+  aguja_cientos_pies.png     22 x 360  
 
-  .aguja-altimeter {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 28px;
-    height: 240px;
-    transform-origin: 50% 50%; /* pivote en el centro */
-    transform: translate(-50%, -50%) rotate(0deg);
-    z-index: 18;
-    pointer-events: none;
-  }
+  Hay que ajustar las dimensiones y posiciones
+  proporcionalmente para que encajen bien.
+*/
 
-  .aguja-altimeter-cientos {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 22px;
-    height: 240px;
-    transform-origin: 50% 50%; /* pivote en el centro */
-    transform: translate(-50%, -50%) rotate(0deg);
-    z-index: 18;
-    pointer-events: none;
-  }
+
 
 
   
-#container img,
-.instrumento-grid img {
-  width: 240px ;
-  height: 240px ;
+/* Fondo y dial del altímetro: ocupan todo el contenedor */
+.altimeter-bg,
+.altimeter-dial {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  pointer-events: none;
+  border-radius: 50%;
+  object-fit: contain;
+}
+
+/* Bandera y tapa: centradas, tamaño proporcional */
+.altimeter-flag,
+.altimeter-cover {
+  width: 48%; /* ~172/360 y ~173/360 */
+  height: 48%;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 1;
+  z-index: 10;
   pointer-events: none;
-  border-radius: 120px;
+  border-radius: 50%;
+  object-fit: contain;
+}
+
+/* Agujas: centradas, altura proporcional, ancho según original */
+.aguja-altimeter img {
+  width: 7.8%; /* 28/360 */
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 18;
+  pointer-events: none;
+  object-fit: contain;
+}
+.aguja-altimeter-cientos img {
+  width: 6.1%; /* 22/360 */
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 18;
+  pointer-events: none;
+  object-fit: contain;
 }
 .aguja-variometer img {
   position: absolute;
