@@ -218,7 +218,7 @@
 
 
   
-/* Fondo y dial del altímetro: ocupan todo el contenedor */
+/* === ALTÍMETRO: Estilos exclusivos === */
 .altimeter-bg,
 .altimeter-dial {
   width: 100%;
@@ -231,11 +231,9 @@
   border-radius: 50%;
   object-fit: contain;
 }
-
-/* Bandera y tapa: centradas, tamaño proporcional */
 .altimeter-flag,
 .altimeter-cover {
-  width: 48%; /* ~172/360 y ~173/360 */
+  width: 48%;
   height: 48%;
   position: absolute;
   top: 50%;
@@ -246,10 +244,8 @@
   border-radius: 50%;
   object-fit: contain;
 }
-
-/* Agujas: centradas, altura proporcional, ancho según original */
 .aguja-altimeter img {
-  width: 7.8%; /* 28/360 */
+  width: 7.8%;
   height: 100%;
   position: absolute;
   top: 0;
@@ -260,13 +256,71 @@
   object-fit: contain;
 }
 .aguja-altimeter-cientos img {
-  width: 6.1%; /* 22/360 */
+  width: 6.1%;
   height: 100%;
   position: absolute;
   top: 0;
   left: 50%;
   transform: translateX(-50%);
   z-index: 18;
+  pointer-events: none;
+  object-fit: contain;
+}
+
+/* === RPM y VARIOMETER: Restaurar estilos === */
+.instrumento-grid > img[alt*="RPM"],
+.instrumento-grid > img[alt*="Tacómetro"],
+.instrumento-grid > img[alt*="Variometer"],
+.instrumento-grid > img[alt*="vert_speed_dial"] {
+  width: 240px;
+  height: 240px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  pointer-events: none;
+  border-radius: 120px;
+  object-fit: contain;
+}
+.needle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 120px solid #ffcc33;
+  transform-origin: bottom center;
+  --needle-rotation: 0deg;
+  transform: translate(-50%, -100%) rotate(var(--needle-rotation));
+  transition: transform 0.2s cubic-bezier(.4,2,.6,1);
+  filter: drop-shadow(0 0 4px #000);
+  z-index: 2;
+}
+.needle-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #e92084, #a20202);
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 4px #000;
+  border: 2px solid #222;
+  z-index: 3;
+}
+.aguja-variometer img {
+  width: 240px !important;
+  height: 10px !important;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(var(--needle-rotation));
+  border-radius: 0 !important;
+  z-index: 19;
   pointer-events: none;
   object-fit: contain;
 }
