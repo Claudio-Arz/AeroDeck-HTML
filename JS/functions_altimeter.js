@@ -15,9 +15,9 @@
   
 
 */
-// Actualiza el altímetro y el valor numérico.
+// Actualiza la aguja del altímetro y el valor numérico.
 // Parámetros:
-//   altitud: número, valor de altitud en pies (0 a 30000).
+//   altitud: número, valor de altitud en pies (0 a 20000).
 function updateAltimeterAndValue(altitud) {
   
   let heading = altitud;
