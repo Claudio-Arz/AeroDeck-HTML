@@ -17,9 +17,9 @@
 */
 ws.onmessage = (msg) => {
   let data = JSON.parse(msg.data);
-  let heading = data.vsVar;
+  let heading = data.varAltitud ?? 0;
   let verticalSpeed = data.verticalSpeed ?? 0;
-  let vsSliderValueServer = data.vsSliderValue;
+
 
   // Actualiza instrumentos
   let angle_pies = (heading % 1000) * 360 / 1000; // Angulo para cientos de pies.
