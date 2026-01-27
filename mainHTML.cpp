@@ -99,7 +99,7 @@ ws.onmessage = (msg) => {
   if (data.rpm !== undefined) updateNeedleAndValue(data.rpm);
   // if (data.fuelFlow !== undefined) updateFuelFlowInstrument(data.fuelFlow);
   if (data.verticalSpeed !== undefined) updateVariometerAndValue(data.verticalSpeed);
-  if (data.altitud !== undefined) updateAltimeterAndValue(data.altitud);
+  if (data.varAltitud !== undefined) updateAltimeterAndValue(data.varAltitud);
 
   // --- Sincronizar visualmente el botón Noice en todos los clientes ---
   if (data.rpmNoiceOn !== undefined) {
