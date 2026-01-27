@@ -20,7 +20,7 @@
 //   altitud: número, valor de altitud en pies (0 a 20000).
 function updateAltimeterAndValue(altitud) {
   
-  let heading = altitud;
+  let heading = altitud; // Valor en pies.
 
   // Actualiza instrumentos
   let angle_pies = (heading % 1000) * 360 / 1000; // Angulo para cientos de pies.
