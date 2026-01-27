@@ -22,10 +22,27 @@ function updateAltimeterAndValue(altitud) {
   
   let heading = altitud; // Valor en pies.
 
-  // Actualiza instrumentos
-  let angle_pies = (heading % 1000) * 360 / 1000; // Angulo para cientos de pies.
+  // Aguja de cientos de pies
+  let angle_pies = (heading % 1000) * 360 / 1000;
   document.getElementById("aguja_pies").style.transform =
     `translate(-50%, -50%) rotate(${angle_pies}deg)`;
+
+  // Aguja de miles de pies (0-9999)
+  // Primer <img> en .aguja-altimeter es decenas de miles, segundo es miles
+  let angle_miles = ((heading % 10000) / 10000) * 360;
+  let milesNeedle = document.querySelectorAll("#aguja-altimeter img")[1];
+  if (milesNeedle) {
+    milesNeedle.style.transform = `translate(-50%, -50%) rotate(${angle_miles}deg)`;
+  }
+
+  // Aguja de decenas de miles de pies (0-20000)
+  let angle_dec_miles = (heading / 100000) * 360;
+  let decMilesNeedle = document.querySelectorAll("#aguja-altimeter img")[0];
+  if (decMilesNeedle) {
+    decMilesNeedle.style.transform = `translate(-50%, -50%) rotate(${angle_dec_miles}deg)`;
+  }
+
+  // Valor numérico central
   document.getElementById("altimeter-value").textContent =
     Math.round(heading);
-};
+}
