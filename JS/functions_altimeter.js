@@ -29,7 +29,7 @@ function updateAltimeterAndValue(altitud) {
 
   // Aguja de miles de pies (0-9999)
   let miles_pies = heading / 10;
-  let angle_miles = (miles_pies % 1000) / 360 * 1000;
+  let angle_miles = (miles_pies % 1000) * 360 / 1000;
   let milesNeedle = document.getElementById("aguja_miles");
   if (milesNeedle) {
     milesNeedle.style.transform = `translate(-50%, -50%) rotate(${angle_miles}deg)`;
