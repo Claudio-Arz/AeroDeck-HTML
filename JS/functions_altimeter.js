@@ -28,16 +28,15 @@ function updateAltimeterAndValue(altitud) {
     `translate(-50%, -50%) rotate(${angle_pies}deg)`;
 
   // Aguja de miles de pies (0-9999)
-  // Primer <img> en .aguja-altimeter es decenas de miles, segundo es miles
   let angle_miles = ((heading % 10000) / 10000) * 360;
-  let milesNeedle = document.querySelectorAll("#aguja-altimeter img")[1];
+  let milesNeedle = document.getElementById("aguja_miles");
   if (milesNeedle) {
     milesNeedle.style.transform = `translate(-50%, -50%) rotate(${angle_miles}deg)`;
   }
 
   // Aguja de decenas de miles de pies (0-20000)
-  let angle_dec_miles = (heading / 100000) * 360;
-  let decMilesNeedle = document.querySelectorAll("#aguja-altimeter img")[0];
+  let angle_dec_miles = (heading / 20000) * 360;
+  let decMilesNeedle = document.getElementById("aguja_decenas_miles");
   if (decMilesNeedle) {
     decMilesNeedle.style.transform = `translate(-50%, -50%) rotate(${angle_dec_miles}deg)`;
   }
