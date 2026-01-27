@@ -35,7 +35,7 @@ function updateAltimeterAndValue(altitud) {
   }
 
   // Aguja de decenas de miles de pies (0-20000)
-  let angle_dec_miles = (heading / 100000) * 360;
+  let angle_dec_miles = (heading % 20000) * 360 / 20000;
   let decMilesNeedle = document.getElementById("aguja_decenas_miles");
   if (decMilesNeedle) {
     decMilesNeedle.style.transform = `translate(-50%, -50%) rotate(${angle_dec_miles}deg)`;
