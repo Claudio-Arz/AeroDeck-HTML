@@ -28,6 +28,7 @@ function updateAltimeterAndValue(altitud) {
     `translate(-50%, -50%) rotate(${angle_pies}deg)`;
 
   // Aguja de miles de pies (0-9999)
+  let miles_pies = heading / 10;
   let angle_miles = ((heading % 10000) / 10000) * 360;
   let milesNeedle = document.getElementById("aguja_miles");
   if (milesNeedle) {
@@ -35,7 +36,8 @@ function updateAltimeterAndValue(altitud) {
   }
 
   // Aguja de decenas de miles de pies (0-20000)
-  let angle_dec_miles = ((heading % 10000)) * 36;
+  let dec_miles = miles_pies / 10;
+  let angle_dec_miles = ((dec_miles % 1000)) * 360 / 1000;
   let decMilesNeedle = document.getElementById("aguja_decenas_miles");
   if (decMilesNeedle) {
     decMilesNeedle.style.transform = `translate(-50%, -50%) rotate(${angle_dec_miles}deg)`;
