@@ -49,7 +49,7 @@ function updateAltimeterAndValue(altitud) {
 }
 
 function updateAltimeterFlag(estado) {
-  // Si estado es true, bandera a 180°, si es false, bandera a 0°
+  // Bandera visible entre 19000 y 20000 pies (estado true)
   let angle_flag = estado ? 180 : 0;
   let flagNeedle = document.getElementById("altimeter-flag");
   if (flagNeedle) {
