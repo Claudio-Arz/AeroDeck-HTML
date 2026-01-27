@@ -49,8 +49,8 @@ function updateAltimeterAndValue(altitud) {
 }
 
 function updateAltimeterFlag(estado) {
-  // Si estado es true, bandera a 0°, si es false, bandera a 180°
-  let angle_flag = estado ? 0 : 180;
+  // Si estado es true, bandera a 180°, si es false, bandera a 0°
+  let angle_flag = estado ? 180 : 0;
   let flagNeedle = document.getElementById("altimeter-flag");
   if (flagNeedle) {
     flagNeedle.style.transform = `translate(-50%, -50%) rotate(${angle_flag}deg)`;

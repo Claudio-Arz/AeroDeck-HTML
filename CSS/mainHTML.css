@@ -231,7 +231,19 @@
   object-fit: contain;
 }
 
-.altimeter-flag,
+.altimeter-flag {
+  width: 48%;
+  height: 48%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  pointer-events: none;
+  border-radius: 50%;
+  object-fit: contain;
+  transition: transform 1.5s cubic-bezier(.4,2,.6,1);
+}
 .altimeter-cover {
   width: 48%;
   height: 48%;
