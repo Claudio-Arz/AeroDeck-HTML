@@ -100,7 +100,10 @@ ws.onmessage = (msg) => {
   // if (data.fuelFlow !== undefined) updateFuelFlowInstrument(data.fuelFlow);
   if (data.verticalSpeed !== undefined) updateVariometerAndValue(data.verticalSpeed);
   if (data.varAltitud !== undefined) updateAltimeterAndValue(data.varAltitud);
+  if (data.bandera_off !== undefined) updateAltimeterFlag(data.bandera_off);
 
+
+  
   // --- Sincronizar visualmente el botón Noice en todos los clientes ---
   if (data.rpmNoiceOn !== undefined) {
     // Función para actualizar el estado visual del botón Noice y la variable global

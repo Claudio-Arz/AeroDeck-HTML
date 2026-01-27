@@ -29,7 +29,7 @@ function updateAltimeterAndValue(altitud) {
 
   // Aguja de miles de pies (0-9999)
   let miles_pies = heading / 10;
-  let angle_miles = ((heading % 10000) / 10000) * 360;
+  let angle_miles = (miles_pies % 1000) / 360 * 1000;
   let milesNeedle = document.getElementById("aguja_miles");
   if (milesNeedle) {
     milesNeedle.style.transform = `translate(-50%, -50%) rotate(${angle_miles}deg)`;
@@ -37,7 +37,7 @@ function updateAltimeterAndValue(altitud) {
 
   // Aguja de decenas de miles de pies (0-20000)
   let dec_miles = miles_pies / 10;
-  let angle_dec_miles = ((dec_miles % 1000)) * 360 / 1000;
+  let angle_dec_miles = (dec_miles % 1000) * 360 / 1000;
   let decMilesNeedle = document.getElementById("aguja_decenas_miles");
   if (decMilesNeedle) {
     decMilesNeedle.style.transform = `translate(-50%, -50%) rotate(${angle_dec_miles}deg)`;
@@ -46,4 +46,13 @@ function updateAltimeterAndValue(altitud) {
   // Valor numérico central
   document.getElementById("altimeter-value").textContent =
     Math.round(heading);
+}
+
+function updateAltimeterFlag(estado) {
+  // Si estado es true, bandera a 180°, si es false, bandera a 0°
+  let angle_flag = estado ? 180 : 0;
+  let flagNeedle = document.getElementById("altimeter-flag");
+  if (flagNeedle) {
+    flagNeedle.style.transform = `translate(-50%, -50%) rotate(${angle_flag}deg)`;
+  }
 }
