@@ -103,7 +103,7 @@ ws.onmessage = (msg) => {
   if (data.bandera_off !== undefined) updateAltimeterFlag(data.bandera_off);
 
 
-  
+
   // --- Sincronizar visualmente el botón Noice en todos los clientes ---
   if (data.rpmNoiceOn !== undefined) {
     // Función para actualizar el estado visual del botón Noice y la variable global
@@ -189,6 +189,21 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     });
 });      
+// Cargar el HTML del instrumento AttitudeControl de forma dinámica
+window.addEventListener('DOMContentLoaded', () => {
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/AttitudeControl.html")
+    .then(r => r.text())
+    .then(html => {
+      document.getElementById("inst02").innerHTML = html;
+      if (typeof setupVariometerControls === 'function') {
+        setupVariometerControls(ws);
+      }
+    });
+});      
+
+
+
+
 </script>
 </html>
 )rawliteral";
