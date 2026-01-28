@@ -50,7 +50,7 @@ function updateAltimeterAndValue(altitud) {
 
 function updateAltimeterFlag(estado) {
   // Bandera visible entre 19000 y 20000 pies (estado true)
-  let angle_flag = estado ? 180 : 0;
+  let angle_flag = estado ? 0 : 180;
   let flagNeedle = document.getElementById("altimeter-flag");
   if (flagNeedle) {
     flagNeedle.style.transform = `translate(-50%, -50%) rotate(${angle_flag}deg)`;
