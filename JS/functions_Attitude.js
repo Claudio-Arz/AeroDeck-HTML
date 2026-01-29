@@ -6,32 +6,20 @@
   o que ejecuta.
 */
 
-// Referencias a los sliders y valores
-const vsSlider = document.getElementById("vs-slider");
-const varManifold = document.getElementById("vs-slider-value");
+
+// Referencias a los sliders y valores (por id)
 const rollSlider = document.getElementById("roll-slider");
 const rollSliderValue = document.getElementById("roll-slider-value");
 const pitchSlider = document.getElementById("pitch-slider");
 const pitchSliderValue = document.getElementById("pitch-slider-value");
 
-// Referencias a las imágenes
-const fondoImg = document.querySelector('img[alt="Fondo Attitude"]');
-const ballImg = document.querySelector('img[alt="Ball Attitude"]');
-const dialImg = document.querySelector('img[alt="Dial Attitude"]');
-
-// Roll
-rollSlider.addEventListener("input", function() {
-  rollSliderValue.textContent = parseFloat(this.value).toFixed(1);
-  updateAttitudeInstrument();
-});
-
-// Pitch
-pitchSlider.addEventListener("input", function() {
-  pitchSliderValue.textContent = parseInt(this.value);
-  updateAttitudeInstrument();
-});
+// Referencias a las imágenes por id (según AttitudeControl.html)
+const fondoImg = document.getElementById("AttCon_fondo");
+const ballImg = document.getElementById("AttCon_ball");
+const dialImg = document.getElementById("AttCon_dial");
 
 function updateAttitudeInstrument() {
+  if (!rollSlider || !pitchSlider) return;
   const roll = parseFloat(rollSlider.value);
   const pitch = parseInt(pitchSlider.value);
   // Aplica rotación y desplazamiento
@@ -46,7 +34,25 @@ function updateAttitudeInstrument() {
   }
 }
 
-// Inicializar valores
-rollSliderValue.textContent = parseFloat(rollSlider.value).toFixed(1);
-pitchSliderValue.textContent = parseInt(pitchSlider.value);
-updateAttitudeInstrument();
+if (rollSlider && rollSliderValue) {
+  rollSlider.addEventListener("input", function() {
+    rollSliderValue.textContent = parseFloat(this.value).toFixed(1);
+    updateAttitudeInstrument();
+  });
+  // Inicializar valor
+  rollSliderValue.textContent = parseFloat(rollSlider.value).toFixed(1);
+}
+
+if (pitchSlider && pitchSliderValue) {
+  pitchSlider.addEventListener("input", function() {
+    pitchSliderValue.textContent = parseInt(this.value);
+    updateAttitudeInstrument();
+  });
+  // Inicializar valor
+  pitchSliderValue.textContent = parseInt(pitchSlider.value);
+}
+
+// Inicializar instrumento si existen sliders
+if (rollSlider && pitchSlider) {
+  updateAttitudeInstrument();
+}
