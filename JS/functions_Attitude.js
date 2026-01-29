@@ -68,7 +68,6 @@ function updateAttitudeControl() {
   }
 
   function animateToCenter() {
-    if (dragging) return;
     const start = {x: knobPos.x, y: knobPos.y};
     const duration = 4000;
     const startTime = performance.now();
