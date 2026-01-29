@@ -157,9 +157,15 @@ window.addEventListener('DOMContentLoaded', () => {
     .then(r => r.text())
     .then(html => {
       document.getElementById("inst06").innerHTML = html;
-      if (typeof setupRPMControls === 'function') {
-        setupRPMControls(ws);
+      // Esperar a que setupRPMControls esté disponible si aún no lo está
+      function trySetupRPMControls() {
+        if (typeof setupRPMControls === 'function') {
+          setupRPMControls(ws);
+        } else {
+          setTimeout(trySetupRPMControls, 50);
+        }
       }
+      trySetupRPMControls();
     });
 });
 // Cargar el HTML del instrumento Variometer de forma dinámica
