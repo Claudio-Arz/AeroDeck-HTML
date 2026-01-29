@@ -102,6 +102,7 @@ ws.onmessage = (msg) => {
   if (data.verticalSpeed !== undefined) updateVariometerAndValue(data.verticalSpeed);
   if (data.varAltitud !== undefined) updateAltimeterAndValue(data.varAltitud);
   if (data.bandera_off !== undefined) updateAltimeterFlag(data.bandera_off);
+  if (data.roll !== undefined || data.pitch !== undefined) setupAttitudeControls(ws);
 
 
 
