@@ -348,7 +348,7 @@ proporcionalmente para que encajen bien.
   transition: transform 0.2s cubic-bezier(.4,2,.6,1);
 }
 
-
+/* 
 .joystick-container {
   position: relative;
   width: 200px;
@@ -387,5 +387,5 @@ proporcionalmente para que encajen bien.
   font-size: 1.2em;
   margin-top: 12px;
   letter-spacing: 1px;
-}
+} */
 
