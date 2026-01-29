@@ -9,7 +9,7 @@ o que ejecuta.
 */
 
 
-let ws;
+// ws será asignada desde setupAttitudeControls, no se redeclara aquí si ya existe
 function setupAttitudeControls(wsParam) {
   ws = wsParam;
   fondoImg = document.getElementById('AttCon_fondo');
