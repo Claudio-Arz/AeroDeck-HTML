@@ -9,9 +9,9 @@ o que ejecuta.
 */
 
 
-// ws será asignada desde setupAttitudeControls, no se redeclara aquí si ya existe
-function setupAttitudeControls(wsParam) {
-  ws = wsParam;
+// ws será asignada desde updateAttitudeControl, no se redeclara aquí si ya existe
+function updateAttitudeControl() {
+
   fondoImg = document.getElementById('AttCon_fondo');
   ballImg = document.getElementById('AttCon_ball');
   dialImg = document.getElementById('AttCon_dial');

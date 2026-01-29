@@ -101,8 +101,7 @@ ws.onmessage = (msg) => {
   // if (data.fuelFlow !== undefined) updateFuelFlowInstrument(data.fuelFlow);
   if (data.verticalSpeed !== undefined) updateVariometerAndValue(data.verticalSpeed);
   if (data.varAltitud !== undefined) updateAltimeterAndValue(data.varAltitud);
-  if (data.bandera_off !== undefined) updateAltimeterFlag(data.bandera_off);
-  // if (data.roll !== undefined || data.pitch !== undefined) updateAttitudeInstrument();
+  if (data.roll !== undefined || data.pitch !== undefined) updateAttitudeInstrument();
 
 
 
@@ -197,7 +196,7 @@ window.addEventListener('DOMContentLoaded', () => {
     .then(r => r.text())
     .then(html => {
       document.getElementById("inst02").innerHTML = html;
-      // Solo se inicializa setupAttitudeControls en el joystick (inst05)
+      // Solo se inicializa updateAttitudeControl en el joystick (inst05)
     });
 });      
 // Cargar el HTML de los sliders para Pitch y Roll del instrumento AttitudeControl de forma dinámica
@@ -206,8 +205,8 @@ window.addEventListener('DOMContentLoaded', () => {
     .then(r => r.text())
     .then(html => {
       document.getElementById("inst05").innerHTML = html;
-      if (typeof setupAttitudeControls === 'function') {
-        setupAttitudeControls(ws);
+      if (typeof updateAttitudeControl === 'function') {
+        updateAttitudeControl(ws);
       }
     });
 });      
