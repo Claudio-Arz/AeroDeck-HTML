@@ -1,18 +1,21 @@
-<h2>Control Pitch & Roll</h2>
-<div class="joystick-container" id="joystick">
-  <div class="joystick-base"></div>
-  <div class="joystick-knob" id="knob"></div>
+<div style="display: flex; flex-direction: column; align-items: center;">
+  <h2 style="margin-bottom: 10px;">Control Pitch & Roll</h2>
+  <div class="joystick-container" id="joystick">
+    <div class="joystick-base"></div>
+    <div class="joystick-knob" id="knob"></div>
+  </div>
+  <div class="coords" id="coords">roll: 0°, pitch: 0°</div>
 </div>
-<div class="coords" id="coords">roll: 0°, pitch: 0°</div>
 
 <style>
   .joystick-container {
     position: relative;
     width: 200px;
     height: 200px;
-    margin-bottom: 24px;
+    margin: 0 auto;
     user-select: none;
     touch-action: none;
+    display: block;
   }
   .joystick-base {
     position: absolute;
@@ -47,6 +50,8 @@
     font-size: 1.2em;
     margin-top: 12px;
     letter-spacing: 1px;
+    text-align: center;
+    width: 200px;
   }
 </style>
 
