@@ -101,7 +101,9 @@ ws.onmessage = (msg) => {
   // if (data.fuelFlow !== undefined) updateFuelFlowInstrument(data.fuelFlow);
   if (data.verticalSpeed !== undefined) updateVariometerAndValue(data.verticalSpeed);
   if (data.varAltitud !== undefined) updateAltimeterAndValue(data.varAltitud);
-  if (data.roll !== undefined || data.pitch !== undefined) updateAttitudeControl();
+  if (typeof window.updateAttitudeInstrument === 'function' && typeof data.roll === 'number' && typeof data.pitch === 'number') {
+    window.updateAttitudeInstrument(data.roll, data.pitch);
+  }
 
 
 

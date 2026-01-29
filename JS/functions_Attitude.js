@@ -107,20 +107,14 @@ function updateAttitudeControl() {
     document.addEventListener('touchend', onEnd);
   });
 
-  // Handler para datos recibidos por WebSocket: solo si NO se está arrastrando
-  if (ws) {
-    ws.addEventListener('message', function(event) {
-      if (dragging) return; // Ignorar mientras se arrastra el knob
-      let data = {};
-      try { data = JSON.parse(event.data); } catch (e) {}
-      if (typeof data.roll === 'number' && typeof data.pitch === 'number') {
-        // Actualizar instrumento visualmente SOLO si no se está arrastrando
-        if (fondoImg) fondoImg.style.transform = `rotate(${data.roll}deg)`;
-        if (ballImg) ballImg.style.transform = `rotate(${data.roll}deg) translateY(${data.pitch * 2.5}px)`;
-        if (dialImg) dialImg.style.transform = `rotate(${data.roll}deg)`;
-        if (coords) coords.textContent = `roll: ${data.roll}°, pitch: ${data.pitch}°`;
-      }
-    });
+
+  // Exponer función global para actualizar el instrumento desde mainHTML.cpp
+  window.updateAttitudeInstrument = function(roll, pitch, isDragging) {
+    if (dragging && isDragging !== true) return; // Solo actualizar si no se está arrastrando, o si se fuerza
+    if (fondoImg) fondoImg.style.transform = `rotate(${roll}deg)`;
+    if (ballImg) ballImg.style.transform = `rotate(${roll}deg) translateY(${pitch * 2.5}px)`;
+    if (dialImg) dialImg.style.transform = `rotate(${roll}deg)`;
+    if (coords) coords.textContent = `roll: ${roll}°, pitch: ${pitch}°`;
   }
 
   // Inicializar en el centro
