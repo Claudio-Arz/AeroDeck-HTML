@@ -7,112 +7,105 @@ o que ejecuta.
 */
 
 
-// (Sliders eliminados, solo joystick)
-
-// Referencias a las imágenes por id (según AttitudeControl.html)
-// Inicialización y WebSocket para Attitude Control
 function setupAttitudeControls(wsParam) {
   ws = wsParam;
   fondoImg = document.getElementById('AttCon_fondo');
   ballImg = document.getElementById('AttCon_ball');
   dialImg = document.getElementById('AttCon_dial');
-  // El joystick y WebSocket ya actualizan el instrumento
-}
-// ...sliders eliminados, solo joystick...
 
-// Joystick para controlar roll y pitch
+  // Joystick: buscar elementos y asignar eventos SOLO cuando existen
+  const container = document.getElementById('joystick');
+  const knob = document.getElementById('knob');
+  const coords = document.getElementById('coords');
+  const size = 200;
+  const knobSize = 20;
+  const radius = (size - knobSize) / 2;
+  let dragging = false;
+  let knobPos = {x: 0, y: 0};
 
-const container = document.getElementById('joystick');
-const knob = document.getElementById('knob');
-const coords = document.getElementById('coords');
-const size = 200;
-const knobSize = 20;
-const radius = (size - knobSize) / 2;
-let dragging = false;
-
-let knobPos = {x: 0, y: 0};
-function setKnob(x, y) {
-  knobPos.x = x;
-  knobPos.y = y;
-  knob.style.left = `${x + size/2}px`;
-  knob.style.top = `${y + size/2}px`;
-  // Mapear x a roll (-30 a 30)
-  const roll = Math.round((x / radius) * 30 * 10) / 10; // 1 decimal
-  // Mapear y a pitch (-50 a 50)
-  const pitchRaw = Math.round((y / radius) * 50 * 10) / 10; // -50 a 50
-  // Convertir pitch a grados según escala: 25=10°, 12.5=5°, 50=20°
-  // pitchGrados = pitchRaw * 0.4
-  const pitchDeg = Math.round((pitchRaw * 0.4) * 10) / 10;
-  coords.textContent = `roll: ${roll}°, pitch: ${pitchDeg}°`;
-  // Actualizar instrumento Attitude directamente
-  if (fondoImg) fondoImg.style.transform = `rotate(${roll}deg)`;
-  if (ballImg) ballImg.style.transform = `rotate(${roll}deg) translateY(${pitchDeg * 2.5}px)`;
-  if (dialImg) dialImg.style.transform = `rotate(${roll}deg)`;
-  // Enviar roll y pitch (en grados reales) por WebSocket
-  if (typeof ws !== 'undefined' && ws && ws.readyState === 1) {
-    ws.send(JSON.stringify({ roll: roll, pitch: pitchDeg }));
-  }
-}
-
-function getRelativeCoords(e) {
-  const rect = container.getBoundingClientRect();
-  let clientX = e.touches ? e.touches[0].clientX : e.clientX;
-  let clientY = e.touches ? e.touches[0].clientY : e.clientY;
-  let x = clientX - rect.left - size/2;
-  let y = clientY - rect.top - size/2;
-  // Limitar dentro del círculo
-  const dist = Math.sqrt(x*x + y*y);
-  if (dist > radius) {
-    x = x * radius / dist;
-    y = y * radius / dist;
-  }
-  return {x: Math.round(x), y: Math.round(y)};
-}
-
-function onMove(e) {
-  if (!dragging) return;
-  e.preventDefault();
-  const {x, y} = getRelativeCoords(e);
-  setKnob(x, y);
-}
-
-function animateToCenter() {
-  const start = {x: knobPos.x, y: knobPos.y};
-  const duration = 4000; // ms
-  const startTime = performance.now();
-  function animate(now) {
-    const elapsed = now - startTime;
-    const t = Math.min(elapsed / duration, 1);
-    // Ease-out
-    const ease = 1 - Math.pow(1 - t, 2);
-    const x = Math.round(start.x * (1 - ease));
-    const y = Math.round(start.y * (1 - ease));
-    setKnob(x, y);
-    if (t < 1) {
-      requestAnimationFrame(animate);
-    } else {
-      setKnob(0, 0);
+  function setKnob(x, y) {
+    knobPos.x = x;
+    knobPos.y = y;
+    knob.style.left = `${x + size/2}px`;
+    knob.style.top = `${y + size/2}px`;
+    // Mapear x a roll (-30 a 30)
+    const roll = Math.round((x / radius) * 30 * 10) / 10;
+    // Mapear y a pitch (-50 a 50)
+    const pitchRaw = Math.round((y / radius) * 50 * 10) / 10;
+    const pitchDeg = Math.round((pitchRaw * 0.4) * 10) / 10;
+    coords.textContent = `roll: ${roll}°, pitch: ${pitchDeg}°`;
+    if (fondoImg) fondoImg.style.transform = `rotate(${roll}deg)`;
+    if (ballImg) ballImg.style.transform = `rotate(${roll}deg) translateY(${pitchDeg * 2.5}px)`;
+    if (dialImg) dialImg.style.transform = `rotate(${roll}deg)`;
+    if (typeof ws !== 'undefined' && ws && ws.readyState === 1) {
+      ws.send(JSON.stringify({ roll: roll, pitch: pitchDeg }));
     }
   }
-  requestAnimationFrame(animate);
-}
-function onEnd() {
-  dragging = false;
-  animateToCenter();
-  document.removeEventListener('mousemove', onMove);
-  document.removeEventListener('mouseup', onEnd);
-  document.removeEventListener('touchmove', onMove);
-  document.removeEventListener('touchend', onEnd);
-}
 
-knob.addEventListener('mousedown', function(e) {
-  dragging = true;
-  document.addEventListener('mousemove', onMove);
-  document.addEventListener('mouseup', onEnd);
-});
-knob.addEventListener('touchstart', function(e) {
-  dragging = true;
-  document.addEventListener('touchmove', onMove, {passive: false});
+  function getRelativeCoords(e) {
+    const rect = container.getBoundingClientRect();
+    let clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    let clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    let x = clientX - rect.left - size/2;
+    let y = clientY - rect.top - size/2;
+    const dist = Math.sqrt(x*x + y*y);
+    if (dist > radius) {
+      x = x * radius / dist;
+      y = y * radius / dist;
+    }
+    return {x: Math.round(x), y: Math.round(y)};
+  }
+
+  function onMove(e) {
+    if (!dragging) return;
+    e.preventDefault();
+    const {x, y} = getRelativeCoords(e);
+    setKnob(x, y);
+  }
+
+  function animateToCenter() {
+    const start = {x: knobPos.x, y: knobPos.y};
+    const duration = 4000;
+    const startTime = performance.now();
+    function animate(now) {
+      const elapsed = now - startTime;
+      const t = Math.min(elapsed / duration, 1);
+      const ease = 1 - Math.pow(1 - t, 2);
+      const x = Math.round(start.x * (1 - ease));
+      const y = Math.round(start.y * (1 - ease));
+      setKnob(x, y);
+      if (t < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        setKnob(0, 0);
+      }
+    }
+    requestAnimationFrame(animate);
+  }
+  function onEnd() {
+    dragging = false;
+    animateToCenter();
+    document.removeEventListener('mousemove', onMove);
+    document.removeEventListener('mouseup', onEnd);
+    document.removeEventListener('touchmove', onMove);
+    document.removeEventListener('touchend', onEnd);
+  }
+
+  knob.addEventListener('mousedown', function(e) {
+    dragging = true;
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onEnd);
+  });
+  knob.addEventListener('touchstart', function(e) {
+    dragging = true;
+    document.addEventListener('touchmove', onMove, {passive: false});
+    document.addEventListener('touchend', onEnd);
+  });
+
+  // Inicializar en el centro
+  setKnob(0, 0);
+}
+  ballImg = document.getElementById('AttCon_ball');
   document.addEventListener('touchend', onEnd);
 });
 
