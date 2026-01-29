@@ -105,9 +105,3 @@ function setupAttitudeControls(wsParam) {
   // Inicializar en el centro
   setKnob(0, 0);
 }
-  ballImg = document.getElementById('AttCon_ball');
-  document.addEventListener('touchend', onEnd);
-});
-
-// Inicializar en el centro
-setKnob(0, 0);
