@@ -1,9 +1,9 @@
 // functions_Attitude.js
 /*
-  Lógica simple y modular para Attitude Indicator.
-  Cada función debe tener una buena documentación. Indicando en comienzo de la 
-  función qué hace, y en los parámetros qué espera y qué devuelve,
-  o que ejecuta.
+Lógica simple y modular para Attitude Indicator.
+Cada función debe tener una buena documentación. Indicando en comienzo de la 
+función qué hace, y en los parámetros qué espera y qué devuelve,
+o que ejecuta.
 */
 
 
@@ -24,7 +24,7 @@ function setupAttitudeControls( ws ) {
   const fondoImg = document.getElementById("AttCon_fondo");
   const ballImg = document.getElementById("AttCon_ball");
   const dialImg = document.getElementById("AttCon_dial");
-
+  
   function updateAttitudeInstrument(roll, pitch) {
     // Si no se pasan valores, tomar de sliders
     if (roll === undefined && rollSlider) roll = parseFloat(rollSlider.value);
@@ -33,7 +33,7 @@ function setupAttitudeControls( ws ) {
     if (ballImg && roll !== undefined && pitch !== undefined) ballImg.style.transform = `rotate(${roll}deg) translateY(${pitch}px)`;
     if (dialImg && roll !== undefined) dialImg.style.transform = `rotate(${roll}deg)`;
   }
-
+  
   // Sliders locales
   if (rollSlider && rollSliderValue) {
     rollSlider.addEventListener("input", function() {
@@ -57,7 +57,7 @@ function setupAttitudeControls( ws ) {
     });
     pitchSliderValue.textContent = parseInt(pitchSlider.value);
   }
-
+  
   // Handler WebSocket para recibir valores de roll y pitch
   if (ws) {
     ws.addEventListener('message', function(event) {
@@ -72,7 +72,7 @@ function setupAttitudeControls( ws ) {
       }
     });
   }
-
+  
   // Inicializar instrumento
   updateAttitudeInstrument();
 }
