@@ -1,4 +1,10 @@
-let ws = new WebSocket("ws://" + location.hostname + ":81");
+// functions_Attitude.js
+/*
+  Lógica simple y modular para Attitude Indicator.
+  Cada función debe tener una buena documentación. Indicando en comienzo de la 
+  función qué hace, y en los parámetros qué espera y qué devuelve,
+  o que ejecuta.
+*/
 
 // Referencias a los sliders y valores
 const vsSlider = document.getElementById("vs-slider");

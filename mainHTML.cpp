@@ -40,6 +40,7 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_rpm.js"></script>
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_variometer.js"></script>
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_altimeter.js"></script>
+<script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_Attitude.js"></script>
 <script>
 
 
@@ -195,19 +196,19 @@ window.addEventListener('DOMContentLoaded', () => {
     .then(r => r.text())
     .then(html => {
       document.getElementById("inst02").innerHTML = html;
-      if (typeof setupVariometerControls === 'function') {
-        setupVariometerControls(ws);
+      if (typeof setupAttitudeControls === 'function') {
+        setupAttitudeControls(ws);
       }
     });
 });      
 // Cargar el HTML de los sliders para Pitch y Roll del instrumento AttitudeControl de forma dinámica
 window.addEventListener('DOMContentLoaded', () => {
-  fetch("https://claudio-arz.github.io/AeroDeck-HTML/js/AttitudeControl_Control.html")
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/AttitudeControl_Control.html")
     .then(r => r.text())
     .then(html => {
       document.getElementById("inst05").innerHTML = html;
-      if (typeof setupVariometerControls === 'function') {
-        setupVariometerControls(ws);
+      if (typeof setupAttitudeControls === 'function') {
+        setupAttitudeControls(ws);
       }
     });
 });      
