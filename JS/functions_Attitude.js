@@ -15,7 +15,7 @@ const pitchSliderValue = document.getElementById("pitch-slider-value");
 
 // Referencias a las imágenes por id (según AttitudeControl.html)
 // Inicialización y WebSocket para Attitude Control
-function setupAttitudeControls(dataRoll, dataPitch, ws ) {
+function setupAttitudeControls( ws ) {
   // Referencias a sliders e imágenes
   const rollSlider = document.getElementById("roll-slider");
   const rollSliderValue = document.getElementById("roll-slider-value");
