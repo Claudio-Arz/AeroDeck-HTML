@@ -1,3 +1,5 @@
+// Variables globales para los elementos del instrumento
+let fondoImg, ballImg, dialImg;
 // functions_Attitude.js
 /*
 Lógica simple y modular para Attitude Indicator.
@@ -7,6 +9,7 @@ o que ejecuta.
 */
 
 
+let ws;
 function setupAttitudeControls(wsParam) {
   ws = wsParam;
   fondoImg = document.getElementById('AttCon_fondo');
