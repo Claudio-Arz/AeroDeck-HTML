@@ -20,20 +20,9 @@ function updateAttitudeControl() {
   const container = document.getElementById('joystick');
   const knob = document.getElementById('knob');
   const coords = document.getElementById('coords');
-  if (!container) {
-    console.error('[Attitude] No se encontró el contenedor del joystick (#joystick)');
-    return;
-  }
-  if (!knob) {
-    console.error('[Attitude] No se encontró el knob del joystick (#knob)');
-    return;
-  }
-  if (!coords) {
-    console.error('[Attitude] No se encontró el div de coordenadas (#coords)');
-    return;
-  }
+
   const size = 200;
-  const knobSize = 40;
+  const knobSize = 30;
   const radius = (size - knobSize) / 2;
   let dragging = false;
   let knobPos = {x: 0, y: 0};
@@ -116,6 +105,22 @@ function updateAttitudeControl() {
     document.addEventListener('touchmove', onMove, {passive: false});
     document.addEventListener('touchend', onEnd);
   });
+
+  // Handler para datos recibidos por WebSocket: solo si NO se está arrastrando
+  if (ws) {
+    ws.addEventListener('message', function(event) {
+      if (dragging) return; // Ignorar mientras se arrastra el knob
+      let data = {};
+      try { data = JSON.parse(event.data); } catch (e) {}
+      if (typeof data.roll === 'number' && typeof data.pitch === 'number') {
+        // Actualizar instrumento visualmente SOLO si no se está arrastrando
+        if (fondoImg) fondoImg.style.transform = `rotate(${data.roll}deg)`;
+        if (ballImg) ballImg.style.transform = `rotate(${data.roll}deg) translateY(${data.pitch * 2.5}px)`;
+        if (dialImg) dialImg.style.transform = `rotate(${data.roll}deg)`;
+        if (coords) coords.textContent = `roll: ${data.roll}°, pitch: ${data.pitch}°`;
+      }
+    });
+  }
 
   // Inicializar en el centro
   setKnob(0, 0);
