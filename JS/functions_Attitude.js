@@ -18,7 +18,7 @@ function setupAttitudeControls(wsParam) {
   const knob = document.getElementById('knob');
   const coords = document.getElementById('coords');
   const size = 200;
-  const knobSize = 20;
+  const knobSize = 40;
   const radius = (size - knobSize) / 2;
   let dragging = false;
   let knobPos = {x: 0, y: 0};
