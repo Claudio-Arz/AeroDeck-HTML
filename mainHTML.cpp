@@ -200,6 +200,17 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     });
 });      
+// Cargar el HTML de los sliders para Pitch y Roll del instrumento AttitudeControl de forma dinámica
+window.addEventListener('DOMContentLoaded', () => {
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/js/AttitudeControl_Control.html")
+    .then(r => r.text())
+    .then(html => {
+      document.getElementById("inst05").innerHTML = html;
+      if (typeof setupVariometerControls === 'function') {
+        setupVariometerControls(ws);
+      }
+    });
+});      
 
 
 
