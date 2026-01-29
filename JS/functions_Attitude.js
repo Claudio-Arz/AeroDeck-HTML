@@ -115,6 +115,6 @@ if (pitchSlider && pitchSliderValue) {
 }
 
 // Inicializar instrumento si existen sliders
-if (rollSlider && pitchSlider) {
-  updateAttitudeInstrument();
-}
+// if (rollSlider && pitchSlider) {
+//   updateAttitudeInstrument();
+// }
