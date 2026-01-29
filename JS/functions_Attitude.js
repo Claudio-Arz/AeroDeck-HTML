@@ -17,6 +17,18 @@ function setupAttitudeControls(wsParam) {
   const container = document.getElementById('joystick');
   const knob = document.getElementById('knob');
   const coords = document.getElementById('coords');
+  if (!container) {
+    console.error('[Attitude] No se encontró el contenedor del joystick (#joystick)');
+    return;
+  }
+  if (!knob) {
+    console.error('[Attitude] No se encontró el knob del joystick (#knob)');
+    return;
+  }
+  if (!coords) {
+    console.error('[Attitude] No se encontró el div de coordenadas (#coords)');
+    return;
+  }
   const size = 200;
   const knobSize = 40;
   const radius = (size - knobSize) / 2;
