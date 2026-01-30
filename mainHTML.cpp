@@ -102,7 +102,7 @@ ws.onmessage = (msg) => {
   if (data.verticalSpeed !== undefined) updateVariometerAndValue(data.verticalSpeed);
   if (data.varAltitud !== undefined) updateAltimeterAndValue(data.varAltitud);
   if (typeof window.updateAttitudeInstrument === 'function' && typeof data.roll === 'number' && typeof data.pitch === 'number') {
-    window.updateAttitudeInstrument(data.roll, data.pitch);
+    window.updateAttitudeInstrument(data.roll, data.pitch, data.atti_zero);
   }
 
 
