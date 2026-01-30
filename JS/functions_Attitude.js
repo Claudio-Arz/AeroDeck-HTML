@@ -55,7 +55,7 @@ function updateAttitudeControl() {
     // Mapear y a pitch (-50 a 50)
     const pitchRaw = Math.round((y / radius) * 50 * 10) / 10;
     const pitchDeg = Math.round((pitchRaw * 0.4) * 10) / 10;
-    coords.textContent = `roll: ${roll}°, pitch: ${pitchDeg}°`;
+    coords.textContent = `roll: ${roll.toFixed(1)}°, pitch: ${pitchDeg.toFixed(1)}°`;
     if (fondoImg) fondoImg.style.transform = `rotate(${roll}deg)`;
     if (ballImg) ballImg.style.transform = `rotate(${roll}deg) translateY(${pitchDeg * 2.5}px)`;
     if (dialImg) dialImg.style.transform = `rotate(${roll}deg)`;
@@ -129,7 +129,7 @@ function updateAttitudeControl() {
     if (fondoImg) fondoImg.style.transform = `rotate(${roll}deg)`;
     if (ballImg) ballImg.style.transform = `rotate(${roll}deg) translateY(${pitch * 2.5}px)`;
     if (dialImg) dialImg.style.transform = `rotate(${roll}deg)`;
-    if (coords) coords.textContent = `roll: ${roll}°, pitch: ${pitch}°`;
+    if (coords) coords.textContent = `roll: ${Number(roll).toFixed(1)}°, pitch: ${Number(pitch).toFixed(1)}°`;
     if (atti_zero_btn && !isDragging) {
       animateToCenter();
     }
