@@ -26,12 +26,15 @@
     border: 4px solid #888;
     box-shadow: 0 0 16px #000a;
   }
+
   .joystick-knob {
     position: absolute;
     width: 30px;
     height: 30px;
-    left: calc(50%+80px);
-    top: calc(50%+80px);
+    left: 50%;
+    top: 50%;
+    transform-origin: 50% 50%; /* pivote en el centro */
+    transform: translate(-50%, -50%);
     box-sizing: border-box;
     border-radius: 50%;
     background: #fff;
