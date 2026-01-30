@@ -41,8 +41,8 @@ function updateAttitudeControl() {
     knobPos.x = x;
     knobPos.y = y;
     // Offset visual para centrar el knob
-    const offsetX = -10; // px a la derecha
-    const offsetY = -10; // px abajo
+    const offsetX = -9; // px a la derecha
+    const offsetY = -9; // px abajo
     knob.style.left = `${x + size/2 + offsetX}px`;
     knob.style.top = `${y + size/2 + offsetY}px`;
     // Mapear x a roll (-30 a 30)
@@ -81,6 +81,7 @@ function updateAttitudeControl() {
   }
 
   function animateToCenter() {
+    if (atti_zero_btn) {return;} // No animar si el botón está activo
     const start = {x: knobPos.x, y: knobPos.y};
     const duration = 4000;
     const startTime = performance.now();
