@@ -86,10 +86,9 @@ function updateAttitudeControl() {
   }
 
   function animateToCenter() {
-    // Mientras attiZeroActive sea true, el knob se mantiene centrando
-    if (!dragging) return;
+    // El knob solo vuelve al centro cuando se suelta Y attiZeroActive está en ON
+    if (!attiZeroActive) return;
     function loop() {
-      if (!attiZeroActive) return;
       // Si ya está en el centro, no hacer nada
       if (Math.abs(knobPos.x) < 1 && Math.abs(knobPos.y) < 1) {
         setKnob(0, 0);
@@ -98,14 +97,16 @@ function updateAttitudeControl() {
         knobPos.x *= 0.85;
         knobPos.y *= 0.85;
         setKnob(knobPos.x, knobPos.y);
+        requestAnimationFrame(loop);
       }
-      requestAnimationFrame(loop);
     }
     loop();
   }
   function onEnd() {
     dragging = false;
-    animateToCenter();
+    if (attiZeroActive) {
+      animateToCenter();
+    }
     document.removeEventListener('mousemove', onMove);
     document.removeEventListener('mouseup', onEnd);
     document.removeEventListener('touchmove', onMove);
