@@ -1,5 +1,6 @@
 <div style="display: flex; flex-direction: column; align-items: center;">
-  <h2 style="margin-bottom: 10px;">Control Pitch & Roll</h2>
+  <h4 style="margin-bottom: 10px;">Control Pitch & Roll</h4>
+  <button class="atti-zero-btn" id="atti-zero-btn">Zero: OFF</button>
   <div class="joystick-container" id="joystick">
     <div class="joystick-base"></div>
     <div class="joystick-knob" id="knob"></div>
@@ -8,6 +9,21 @@
 </div>
 
 <style>
+  .atti-zero-btn {
+    height:40px;
+    width: 100px;
+    margin-bottom: 10px;  
+    font-size:12px;
+    padding:6px 10px;
+    background:#444;
+    color:#fff;
+    border-radius:8px;
+    border:none;
+    cursor:pointer;
+    stroke: #ff0000;
+    stroke-width: 2;
+  }
+
   .joystick-container {
     position: relative;
     width: 200px;

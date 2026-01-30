@@ -1,5 +1,6 @@
 // Variables globales para los elementos del instrumento
 let fondoImg, ballImg, dialImg;
+let atti_zero_btn = false;
 // functions_Attitude.js
 /*
 Lógica simple y modular para Attitude Indicator.
@@ -11,6 +12,15 @@ o que ejecuta.
 
 // ws será asignada desde updateAttitudeControl, no se redeclara aquí si ya existe
 function updateAttitudeControl() {
+  const atti_zero_btn = document.getElementById("atti-zero-btn");
+  if (atti_zero_btn) {
+    atti_zero_btn.addEventListener("click", function() {
+      if(ws.readyState === 1) {
+        ws.send(JSON.stringify({ atti_zero: true }));
+      }
+      atti_zero_btn.textContent = atti_zero_btn.textContent.includes("OFF") ? "Zero: ON" : "Zero: OFF";
+    });
+  }
 
   fondoImg = document.getElementById('AttCon_fondo');
   ballImg = document.getElementById('AttCon_ball');
