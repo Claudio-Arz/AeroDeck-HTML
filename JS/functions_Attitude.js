@@ -30,8 +30,11 @@ function updateAttitudeControl() {
   function setKnob(x, y) {
     knobPos.x = x;
     knobPos.y = y;
-    knob.style.left = `${x + size/2}px`;
-    knob.style.top = `${y + size/2}px`;
+    // Offset visual para centrar el knob
+    const offsetX = 4; // px a la derecha
+    const offsetY = 4; // px abajo
+    knob.style.left = `${x + size/2 + offsetX}px`;
+    knob.style.top = `${y + size/2 + offsetY}px`;
     // Mapear x a roll (-30 a 30)
     const roll = Math.round((x / radius) * 30 * 10) / 10;
     // Mapear y a pitch (-50 a 50)
