@@ -1,6 +1,6 @@
 // Variables globales para los elementos del instrumento
 let fondoImg, ballImg, dialImg;
-let atti_zero_btn = false;
+let attiZeroActive = false;
 // functions_Attitude.js
 /*
 Lógica simple y modular para Attitude Indicator.
@@ -12,13 +12,15 @@ o que ejecuta.
 
 // ws será asignada desde updateAttitudeControl, no se redeclara aquí si ya existe
 function updateAttitudeControl() {
-  const atti_zero_btn = document.getElementById("atti-zero-btn");
-  if (atti_zero_btn) {
-    atti_zero_btn.addEventListener("click", function() {
-      if(ws.readyState === 1) {
-        ws.send(JSON.stringify({ atti_zero: true }));
-      }
-      atti_zero_btn.textContent = atti_zero_btn.textContent.includes("OFF") ? "Zero: ON" : "Zero: OFF";
+  const attiZeroBtn = document.getElementById("atti-zero-btn");
+  if (attiZeroBtn) {
+    attiZeroBtn.addEventListener("click", function() {
+      attiZeroActive = !attiZeroActive;
+      attiZeroBtn.textContent = attiZeroActive ? "Zero: ON" : "Zero: OFF";
+      // Si quieres enviar por WebSocket el estado, descomenta:
+      // if(ws.readyState === 1) {
+      //   ws.send(JSON.stringify({ atti_zero: attiZeroActive }));
+      // }
     });
   }
 
@@ -81,7 +83,7 @@ function updateAttitudeControl() {
   }
 
   function animateToCenter() {
-    if (atti_zero_btn) {return;} // No animar si el botón está activo
+    if (!attiZeroActive) return; // Solo animar si está en ON
     const start = {x: knobPos.x, y: knobPos.y};
     const duration = 4000;
     const startTime = performance.now();
