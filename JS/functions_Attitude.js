@@ -17,6 +17,9 @@ function updateAttitudeControl() {
     attiZeroBtn.addEventListener("click", function() {
       attiZeroActive = !attiZeroActive;
       attiZeroBtn.textContent = attiZeroActive ? "Zero: ON" : "Zero: OFF";
+      if (attiZeroActive) {
+        animateToCenter();
+      }
       // Si quieres enviar por WebSocket el estado, descomenta:
       // if(ws.readyState === 1) {
       //   ws.send(JSON.stringify({ atti_zero: attiZeroActive }));
@@ -83,24 +86,21 @@ function updateAttitudeControl() {
   }
 
   function animateToCenter() {
-    if (!attiZeroActive) return; // Solo animar si está en ON
-    const start = {x: knobPos.x, y: knobPos.y};
-    const duration = 4000;
-    const startTime = performance.now();
-    function animate(now) {
-      const elapsed = now - startTime;
-      const t = Math.min(elapsed / duration, 1);
-      const ease = 1 - Math.pow(1 - t, 2);
-      const x = Math.round(start.x * (1 - ease));
-      const y = Math.round(start.y * (1 - ease));
-      setKnob(x, y);
-      if (t < 1) {
-        requestAnimationFrame(animate);
-      } else {
+    // Mientras attiZeroActive sea true, el knob se mantiene centrando
+    function loop() {
+      if (!attiZeroActive) return;
+      // Si ya está en el centro, no hacer nada
+      if (Math.abs(knobPos.x) < 1 && Math.abs(knobPos.y) < 1) {
         setKnob(0, 0);
+      } else {
+        // Animar suavemente hacia el centro
+        knobPos.x *= 0.85;
+        knobPos.y *= 0.85;
+        setKnob(knobPos.x, knobPos.y);
       }
+      requestAnimationFrame(loop);
     }
-    requestAnimationFrame(animate);
+    loop();
   }
   function onEnd() {
     dragging = false;

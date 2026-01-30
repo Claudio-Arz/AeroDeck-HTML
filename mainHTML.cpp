@@ -102,14 +102,13 @@ ws.onmessage = (msg) => {
   if (data.verticalSpeed !== undefined) updateVariometerAndValue(data.verticalSpeed);
   if (data.varAltitud !== undefined) updateAltimeterAndValue(data.varAltitud);
   if (typeof window.updateAttitudeInstrument === 'function' && typeof data.roll === 'number' && typeof data.pitch === 'number') {
-    window.updateAttitudeInstrument(data.roll, data.pitch, data.atti_zero);
+    window.updateAttitudeInstrument(data.roll, data.pitch);
   }
 
 
 
   // --- Sincronizar visualmente el botón Noice en todos los clientes ---
   if (data.rpmNoiceOn !== undefined) {
-    // Función para actualizar el estado visual del botón Noice y la variable global
     function updateNoiceButtonState(state) {
       window.noiceOn = !!state;
       const btn = document.getElementById('noice-btn');
@@ -123,15 +122,37 @@ ws.onmessage = (msg) => {
         }
       }
     }
-    // Si el botón ya está en el DOM, actualizarlo
     if (document.getElementById('noice-btn')) {
       updateNoiceButtonState(data.rpmNoiceOn);
     } else {
-      // Si el botón se carga dinámicamente, observar el DOM hasta que aparezca
       const observer = new MutationObserver((mutations, obs) => {
         const btn = document.getElementById('noice-btn');
         if (btn) {
           updateNoiceButtonState(data.rpmNoiceOn);
+          obs.disconnect();
+        }
+      });
+      observer.observe(document.body, { childList: true, subtree: true });
+    }
+  }
+
+  // --- Sincronizar visualmente el botón Zero en todos los clientes ---
+  if (data.atti_zero !== undefined) {
+    function updateZeroButtonState(state) {
+      window.attiZeroActive = !!state;
+      const btn = document.getElementById('atti-zero-btn');
+      if (btn) {
+        btn.textContent = state ? 'Zero: ON' : 'Zero: OFF';
+        btn.classList.toggle('active', !!state);
+      }
+    }
+    if (document.getElementById('atti-zero-btn')) {
+      updateZeroButtonState(data.atti_zero);
+    } else {
+      const observer = new MutationObserver((mutations, obs) => {
+        const btn = document.getElementById('atti-zero-btn');
+        if (btn) {
+          updateZeroButtonState(data.atti_zero);
           obs.disconnect();
         }
       });
