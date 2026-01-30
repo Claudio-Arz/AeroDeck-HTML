@@ -239,8 +239,25 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     });
 });      
-
-
+// Cargar el HTML del instrumento AirSpeed de forma dinámica
+window.addEventListener('DOMContentLoaded', () => {
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/airSpeed.html")
+    .then(r => r.text())
+    .then(html => {
+      document.getElementById("inst01").innerHTML = html;
+    });
+}); 
+// Cargar el HTML del slider del instrumento AirSpeed de forma dinámica
+window.addEventListener('DOMContentLoaded', () => {
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/airSpeed_Control.html")
+    .then(r => r.text())
+    .then(html => {
+      document.getElementById("inst08").innerHTML = html;
+      if (typeof updateAttitudeControl === 'function') {
+        // updateAttitudeControl(ws);
+      }
+    });
+});   
 
 
 </script>
