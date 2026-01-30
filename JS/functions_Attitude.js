@@ -87,9 +87,9 @@ function updateAttitudeControl() {
 
   function animateToCenter() {
     // Mientras attiZeroActive sea true, el knob se mantiene centrando
+    if (dragging) return;
     function loop() {
       if (!attiZeroActive) return;
-      if (dragging) return;
       // Si ya está en el centro, no hacer nada
       if (Math.abs(knobPos.x) < 1 && Math.abs(knobPos.y) < 1) {
         setKnob(0, 0);
