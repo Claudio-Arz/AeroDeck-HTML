@@ -230,6 +230,39 @@ proporcionalmente para que encajen bien.
   border-radius: 50%;
   object-fit: contain;
 }
+.att-ball {
+  width: 81.66%;
+  height: 100%;
+  position:absolute;
+  top:0;
+  left:50%;
+  z-index:2;
+  pointer-events:none;
+  border-radius: 50%;
+  object-fit: contain;  
+}
+
+.att-front {
+  width:81.25%;
+  height:89.58%;
+  position:absolute;
+  top:10.42%;
+  left:9.375;
+  z-index:5;
+  pointer-events:none;
+}
+
+.att-dial {
+  width: 100%;
+  height: 100%;
+  position:absolute;
+  top:0;
+  left:0%;
+  z-index:3;
+  pointer-events:none;
+  border-radius: 50%;
+}
+
 .as-dial{
   width: 100%;
   height: 100%;
@@ -384,42 +417,42 @@ proporcionalmente para que encajen bien.
 
 /* 
 .joystick-container {
-  position: relative;
-  width: 200px;
-  height: 200px;
-  margin-bottom: 24px;
+position: relative;
+width: 200px;
+height: 200px;
+margin-bottom: 24px;
 }
 .joystick-base {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background: #444;
-  border: 4px solid #888;
-  box-shadow: 0 0 24px #000a;
+position: absolute;
+width: 100%;
+height: 100%;
+border-radius: 50%;
+background: #444;
+border: 4px solid #888;
+box-shadow: 0 0 24px #000a;
 }
 .joystick-knob {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  background: #fff;
-  border: 3px solid #2196f3;
-  box-shadow: 0 0 12px #2196f388;
-  cursor: grab;
-  transition: box-shadow 0.2s;
-  z-index: 2;
+position: absolute;
+width: 20px;
+height: 20px;
+left: 50%;
+top: 50%;
+transform: translate(-50%, -50%);
+border-radius: 50%;
+background: #fff;
+border: 3px solid #2196f3;
+box-shadow: 0 0 12px #2196f388;
+cursor: grab;
+transition: box-shadow 0.2s;
+z-index: 2;
 }
 .joystick-knob:active {
-  box-shadow: 0 0 24px #2196f3cc;
-  cursor: grabbing;
+box-shadow: 0 0 24px #2196f3cc;
+cursor: grabbing;
 }
 .coords {
-  font-size: 1.2em;
-  margin-top: 12px;
-  letter-spacing: 1px;
+font-size: 1.2em;
+margin-top: 12px;
+letter-spacing: 1px;
 } */
 
