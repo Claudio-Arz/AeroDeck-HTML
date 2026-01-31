@@ -234,8 +234,8 @@ proporcionalmente para que encajen bien.
   width: 163%;
   height: 163%;
   position:absolute;
-  top:-50%;
-  left:31.56%;
+  top:-25%;
+  left:-31.56%;
   z-index:2;
   pointer-events:none;
   object-fit: contain;  
