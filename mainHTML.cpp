@@ -96,7 +96,7 @@ ws.onmessage = (msg) => {
     console.warn('Mensaje WebSocket no es JSON:', msg.data);
     return;
   }
-  // if (data.airspeed !== undefined) updateAirspeedInstrument(data.airspeed);
+  if (data.airspeed !== undefined) updateAirspeed(data.airspeed);
   if (data.rpm !== undefined) updateNeedleAndValue(data.rpm);
   // if (data.fuelFlow !== undefined) updateFuelFlowInstrument(data.fuelFlow);
   if (data.verticalSpeed !== undefined) updateVariometerAndValue(data.verticalSpeed);
@@ -253,8 +253,8 @@ window.addEventListener('DOMContentLoaded', () => {
     .then(r => r.text())
     .then(html => {
       document.getElementById("inst08").innerHTML = html;
-      if (typeof updateAttitudeControl === 'function') {
-        // updateAttitudeControl(ws);
+      if (typeof updateAirSpeed === 'function') {
+        updateAirSpeed(ws);
       }
     });
 });   
