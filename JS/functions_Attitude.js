@@ -129,9 +129,7 @@ function updateAttitudeControl() {
     if (ballImg) ballImg.style.transform = `rotate(${roll}deg) translateY(${pitch * 2.5}px)`;
     if (dialImg) dialImg.style.transform = `rotate(${roll}deg)`;
     if (coords) coords.textContent = `roll: ${Number(roll).toFixed(1)}°, pitch: ${Number(pitch).toFixed(1)}°`;
-    if (atti_zero_btn && !isDragging) {
-      animateToCenter();
-    }
+
   }
 
   // Inicializar en el centro
