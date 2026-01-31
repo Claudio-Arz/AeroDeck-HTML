@@ -4,7 +4,7 @@
 // Fecha: 2026-01-31
 
 const AirSpeed = (function() {
-    return;
+ 
   // Referencias a elementos
   let imgs = {};
   let sliders = {};
@@ -28,8 +28,8 @@ const AirSpeed = (function() {
       // Actualiza valor numérico si existe
       const valueEl = getEl('as-value');
       if (valueEl) valueEl.textContent = Math.round(safeVal);
-      // Si hay slider y el valor viene de parámetro, sincroniza el slider
-      if (typeof airspeed === 'number' && sliders.valor) {
+      // Solo sincronizar el slider si el cambio viene de WebSocket (no de interacción del usuario)
+      if (typeof airspeed === 'number' && sliders.valor && document.activeElement !== sliders.valor) {
         sliders.valor.value = safeVal;
       }
     }
@@ -38,16 +38,19 @@ const AirSpeed = (function() {
   function init(config) {
     // Cargar referencias a imágenes
     imgs = {};
-    for (const key in config.imgIds) {
-      imgs[key] = getEl(config.imgIds[key]);
-    }
-    // Cargar referencias a sliders
+    imgs.aguja = getEl(config.imgIds.aguja);
+    // Slider único
     sliders = {};
-    for (const key in config.sliderIds) {
-      sliders[key] = getEl(config.sliderIds[key]);
-      if (sliders[key]) {
-        sliders[key].addEventListener('input', updateAirspeed);
-      }
+    sliders.valor = getEl(config.sliderIds.valor);
+    if (sliders.valor) {
+      sliders.valor.addEventListener('input', function(e) {
+        updateAirspeed();
+      });
+      sliders.valor.addEventListener('change', function(e) {
+        if (typeof ws !== 'undefined' && ws && ws.readyState === 1) {
+          ws.send(JSON.stringify({ airspeed: parseFloat(e.target.value) }));
+        }
+      });
     }
     // Inicializar valores
     updateAirspeed();
