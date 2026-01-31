@@ -79,7 +79,6 @@ function updateVariometerAndValue(variometer) {
 function setupVariometerControls(ws) {
   const variometerSlider = document.getElementById("variometer-slider");
   const variometerSliderValue = document.getElementById("variometer-slider-value");
-  const estado = (document.getElementById("altimeter-flag").style.transform.includes("rotate(0deg)")) ? true : false;
   if (variometerSlider && variometerSliderValue) {
     variometerSlider.addEventListener("input", function(e) {
       isUserSlidingVariometer = true;

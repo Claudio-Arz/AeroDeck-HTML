@@ -12,16 +12,20 @@ const AirSpeed = (function() {
     return document.getElementById(id);
   }
 
-  // Actualiza la aguja según el valor del slider (0-200)
-  function updateAirSpeed() {
-    if (imgs.aguja && sliders.valor) {
-      const val = parseFloat(sliders.valor.value);
+  // Actualiza la aguja según el valor del slider (0-200) o un valor recibido
+  function updateAirSpeed(airspeed) {
+    if (imgs.aguja && (sliders.valor || typeof airspeed === 'number')) {
+      const val = (typeof airspeed === 'number') ? airspeed : parseFloat(sliders.valor.value);
       // Mapea 0-200 nudos a 225° a -45° (giro antihorario)
       let angle = 225 - (Math.max(0, Math.min(val, 200)) * 270) / 200;
       imgs.aguja.style.transform = `rotate(${angle}deg)`;
       // Actualiza valor numérico si existe
       const valueEl = getEl('as-value');
       if (valueEl) valueEl.textContent = Math.round(val);
+      // Si hay slider y el valor viene de parámetro, sincroniza el slider
+      if (typeof airspeed === 'number' && sliders.valor) {
+        sliders.valor.value = val;
+      }
     }
   }
 
