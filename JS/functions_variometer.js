@@ -94,7 +94,8 @@ function setupVariometerControls(ws) {
     variometerSlider.addEventListener("mouseup", stopSliding);
     variometerSlider.addEventListener("touchend", stopSliding);
   }
-  updateAltimeterFlag(estado)
+  // Si necesitas actualizar la bandera del altímetro aquí, define 'estado' antes o elimina esta línea si no es necesaria.
+  // updateAltimeterFlag(estado);
 }
 
 // Interceptar mensajes del ESP32 solo si el usuario NO está moviendo el slider

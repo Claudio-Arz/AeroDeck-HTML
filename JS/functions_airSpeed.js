@@ -48,9 +48,11 @@ const AirSpeed = (function() {
   }
 
   // API pública
+  // También exponer la función global para WebSocket
+  window.updateAirspeed = updateAirspeed;
   return {
     init,
-    update: updateAirSpeed
+    update: updateAirspeed
   };
 })();
 
