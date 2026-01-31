@@ -219,7 +219,7 @@ proporcionalmente para que encajen bien.
 
 
 /* === ALTÍMETRO: Estilos exclusivos === */
-.altimeter-dial .as-dial{
+.altimeter-dial {
   width: 100%;
   height: 100%;
   position: absolute;
