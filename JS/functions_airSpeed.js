@@ -19,17 +19,19 @@ const AirSpeed = (function() {
       // El slider y el valor pueden ir de 40 a 200 (según tu HTML)
       const min = 40;
       const max = 200;
-      const val = (typeof airspeed === 'number') ? airspeed : parseFloat(sliders.valor.value);
+      // const val = (typeof airspeed === 'number') ? airspeed : parseFloat(sliders.valor.value);
+      const val = parseFloat(sliders.valor.value);
       // Limitar el valor al rango real
       const safeVal = Math.max(min, Math.min(val, max));
       // Mapea 40-200 nudos a 30° (mínimo) a 305° (máximo) (giro horario)
-      let angle = 30 + ((safeVal - min) * (305 - 30)) / (max - min);
+      let angle = 28 + ((safeVal - min) * (310 - 28)) / (max - min);
       imgs.aguja.style.transform = `rotate(${angle}deg)`;
       // Actualiza valor numérico si existe
       const valueEl = getEl('as-value');
       if (valueEl) valueEl.textContent = Math.round(safeVal);
       // Solo sincronizar el slider si el cambio viene de WebSocket (no de interacción del usuario)
-      if (typeof airspeed === 'number' && sliders.valor && document.activeElement !== sliders.valor) {
+      // if (typeof airspeed === 'number' && sliders.valor && document.activeElement !== sliders.valor) {
+      if (sliders.valor && document.activeElement !== sliders.valor) {
         sliders.valor.value = safeVal;
       }
     }
