@@ -278,12 +278,13 @@ proporcionalmente para que encajen bien.
   width: 5%;
   height: 100%;
   position: absolute;
-  top: 0%;
+  top: 50%;
   left: 50%;
-  transform: translate(50%, 50%);
+  transform: translate(-50%, -50%);
   z-index: 8;
   pointer-events: none;
   object-fit: contain;
+  transform-origin: 50% 50%; /* el 90% asume que el pivote está cerca de la base de la imagen */
 }
 .as-front {
   width: 12.5%;
