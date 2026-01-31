@@ -241,7 +241,7 @@ proporcionalmente para que encajen bien.
   border-radius: 50%;
   object-fit: contain;
 }
-.as-needle img {
+.as-needle {
   width: 5%;
   height: 100%;
   position: absolute;
@@ -252,7 +252,7 @@ proporcionalmente para que encajen bien.
   pointer-events: none;
   object-fit: contain;
 }
-.as_front {
+.as-front {
   width: 12.5%;
   height: 12.5%;
   position: absolute;
