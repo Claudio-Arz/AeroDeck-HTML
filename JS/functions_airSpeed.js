@@ -14,7 +14,7 @@ const AirSpeed = (function() {
 
   // Actualiza la aguja según el valor del slider (0-200) o un valor recibido
   function updateAirspeed(airspeed) {
-    if (imgs.aguja && (sliders.valor || typeof airspeed === 'number')) {
+    if (imgs.aguja && sliders.valor ) {
       const val = (typeof airspeed === 'number') ? airspeed : parseFloat(sliders.valor.value);
       // Mapea 0-200 nudos a 40° a 310° (giro horario)
       let angle = -270 + (Math.max(0, Math.min(val, 200)) * 270) / 200;
