@@ -232,9 +232,9 @@ proporcionalmente para que encajen bien.
 }
 .att-ball {
   width: 81.66%;
-  height: 392px;
+  height: 163%;
   position:absolute;
-  top:0;
+  top:-63%;
   left:9.17%;
   z-index:2;
   pointer-events:none;
