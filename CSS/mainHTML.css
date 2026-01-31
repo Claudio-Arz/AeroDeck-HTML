@@ -232,13 +232,14 @@ proporcionalmente para que encajen bien.
 }
 .att-ball {
   width: 81.66%;
-  height: 100%;
+  height: 392px;
   position:absolute;
   top:0;
   left:9.17%;
   z-index:2;
   pointer-events:none;
   object-fit: contain;  
+  border-radius: 392px;
 }
 
 .att-front {
