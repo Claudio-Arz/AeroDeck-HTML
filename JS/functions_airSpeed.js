@@ -4,6 +4,7 @@
 // Fecha: 2026-01-31
 
 const AirSpeed = (function() {
+    return;
   // Referencias a elementos
   let imgs = {};
   let sliders = {};
