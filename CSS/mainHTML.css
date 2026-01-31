@@ -231,11 +231,11 @@ proporcionalmente para que encajen bien.
   object-fit: contain;
 }
 .att-ball {
-  width: 81.66%;
+  width: 163%;
   height: 163%;
   position:absolute;
-  top:-63%;
-  left:9.17%;
+  top:-50%;
+  left:31.56%;
   z-index:2;
   pointer-events:none;
   object-fit: contain;  
