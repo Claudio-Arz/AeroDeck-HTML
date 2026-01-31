@@ -238,7 +238,6 @@ proporcionalmente para que encajen bien.
   left:9.17%;
   z-index:2;
   pointer-events:none;
-  border-radius: 50%;
   object-fit: contain;  
 }
 
