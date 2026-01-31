@@ -1,5 +1,5 @@
 // Variables globales para los elementos del instrumento
-let fondoImg, ballImg, dialImg;
+let ballImg, dialImg;
 let attiZeroActive = false;
 // functions_Attitude.js
 /*
@@ -27,7 +27,6 @@ function updateAttitudeControl() {
     });
   }
 
-  fondoImg = document.getElementById('AttCon_fondo');
   ballImg = document.getElementById('AttCon_ball');
   dialImg = document.getElementById('AttCon_dial');
 
@@ -56,7 +55,6 @@ function updateAttitudeControl() {
     const pitchRaw = Math.round((y / radius) * 50 * 10) / 10;
     const pitchDeg = Math.round((pitchRaw * 0.4) * 10) / 10;
     coords.textContent = `roll: ${roll.toFixed(1)}°, pitch: ${pitchDeg.toFixed(1)}°`;
-    if (fondoImg) fondoImg.style.transform = `rotate(${roll}deg)`;
     if (ballImg) ballImg.style.transform = `rotate(${roll}deg) translateY(${pitchDeg * 2.5}px)`;
     if (dialImg) dialImg.style.transform = `rotate(${roll}deg)`;
     if (typeof ws !== 'undefined' && ws && ws.readyState === 1) {
@@ -128,7 +126,6 @@ function updateAttitudeControl() {
   // Exponer función global para actualizar el instrumento desde mainHTML.cpp
   window.updateAttitudeInstrument = function(roll, pitch, isDragging) {
     if (dragging && isDragging !== true) return; // Solo actualizar si no se está arrastrando, o si se fuerza
-    if (fondoImg) fondoImg.style.transform = `rotate(${roll}deg)`;
     if (ballImg) ballImg.style.transform = `rotate(${roll}deg) translateY(${pitch * 2.5}px)`;
     if (dialImg) dialImg.style.transform = `rotate(${roll}deg)`;
     if (coords) coords.textContent = `roll: ${Number(roll).toFixed(1)}°, pitch: ${Number(pitch).toFixed(1)}°`;
