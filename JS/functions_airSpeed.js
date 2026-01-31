@@ -16,8 +16,8 @@ const AirSpeed = (function() {
   function updateAirspeed(airspeed) {
     if (imgs.aguja && (sliders.valor || typeof airspeed === 'number')) {
       const val = (typeof airspeed === 'number') ? airspeed : parseFloat(sliders.valor.value);
-      // Mapea 0-200 nudos a 225° a -45° (giro antihorario)
-      let angle = 225 - (Math.max(0, Math.min(val, 200)) * 270) / 200;
+      // Mapea 0-200 nudos a 40° a 310° (giro horario)
+      let angle = 40 + (Math.max(0, Math.min(val, 200)) * 270) / 200;
       imgs.aguja.style.transform = `rotate(${angle}deg)`;
       // Actualiza valor numérico si existe
       const valueEl = getEl('as-value');
