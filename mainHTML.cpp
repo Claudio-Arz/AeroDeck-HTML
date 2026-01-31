@@ -254,8 +254,12 @@ window.addEventListener('DOMContentLoaded', () => {
     .then(r => r.text())
     .then(html => {
       document.getElementById("inst08").innerHTML = html;
-      if (typeof updateAirSpeed === 'function') {
-        updateAirSpeed(ws);
+      // Inicializar AirSpeed solo cuando ambos HTML estén cargados
+      if (typeof AirSpeed !== 'undefined' && typeof AirSpeed.init === 'function') {
+        AirSpeed.init({
+          imgIds: { aguja: 'as-needle' },
+          sliderIds: { valor: 'as-slider-value' }
+        });
       }
     });
 });   
