@@ -1,3 +1,5 @@
+  // Bandera para ignorar actualizaciones remotas mientras el usuario interactúa
+  let isUserSliding = false;
 
 // AirSpeed.js - Lógica específica para el instrumento AirSpeed
 // Autor: Claudio Arzamendia Systems
@@ -23,7 +25,7 @@ const AirSpeed = (function() {
       // Limitar el valor al rango real
       const safeVal = Math.max(min, Math.min(val, max));
       // Mapea 40-200 nudos a 26° (mínimo) a 316.5° (máximo) (giro horario)
-      let angle = 26 + ((safeVal - min) * (316.5 - 23)) / (max - min);
+      let angle = 26 + ((safeVal - min) * (316.5 - 20)) / (max - min); // Ajuste afinado.
       imgs.aguja.style.transform = `rotate(${angle}deg)`;
       // Actualiza valor numérico si existe
       const valueEl = getEl('as-value');
@@ -44,9 +46,11 @@ const AirSpeed = (function() {
     sliders.valor = getEl(config.sliderIds.valor);
     if (sliders.valor) {
       sliders.valor.addEventListener('input', function(e) {
+        isUserSliding = true;
         updateAirspeed();
       });
       sliders.valor.addEventListener('change', function(e) {
+        isUserSliding = false;
         if (typeof ws !== 'undefined' && ws && ws.readyState === 1) {
           ws.send(JSON.stringify({ airspeed: parseFloat(e.target.value) }));
         }
@@ -58,7 +62,9 @@ const AirSpeed = (function() {
 
   // API pública
   // También exponer la función global para WebSocket
-  window.updateAirspeed = updateAirspeed;
+  window.updateAirspeed = function(airspeed) {
+    if (!isUserSliding) updateAirspeed(airspeed);
+  };
   return {
     init,
     update: updateAirspeed
