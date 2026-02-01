@@ -19,8 +19,8 @@ const AirSpeed = (function() {
   // Actualiza la aguja según el valor del slider (0-200) o un valor recibido
   function updateAirspeed(airspeed) {
     if (imgs.aguja && sliders.valor ) {
-      // El slider y el valor pueden ir de 40 a 200 (según tu HTML)
-      const min = 40;
+      // El slider y el valor pueden ir de 0 a 200 (según tu HTML)
+      const min = 0;
       const max = 200;
       const val = (typeof airspeed === 'number') ? airspeed : parseFloat(sliders.valor.value);
       // Limitar el valor al rango real
