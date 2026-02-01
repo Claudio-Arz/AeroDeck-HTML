@@ -45,37 +45,35 @@ const Gyro = (function() {
     // Cargar referencias a imágenes
     imgs = {};
     imgs.aguja = getEl(config.imgIds.aguja);
-    // Slider único
     sliders = {};
     sliders.valor = getEl(config.sliderIds.valor);
 
-    // Botones de control para el slider
-    const btnMin = getEl('gyr-slider-min');
-    const btnMid = getEl('gyr-slider-mid');
-    const btnSou = getEl('gyr-slider-sou');
-    const btnMax = getEl('gyr-slider-max');
-    if (btnMin && sliders.valor) {
-      btnMin.addEventListener('click', () => {
-        sliders.valor.value = sliders.valor.min;
+    // Botones de control para ángulos fijos
+    const btn0 = getEl('gyr-btn-0');
+    const btn90 = getEl('gyr-btn-90');
+    const btn180 = getEl('gyr-btn-180');
+    const btn270 = getEl('gyr-btn-270');
+    if (btn0 && sliders.valor) {
+      btn0.addEventListener('click', () => {
+        sliders.valor.value = 0;
         sliders.valor.dispatchEvent(new Event('input'));
       });
     }
-    if (btnMid && sliders.valor) {
-      btnMid.addEventListener('click', () => {
-        const max = Number(sliders.valor.max);
-        sliders.valor.value = Math.round((max) / 4); // Un cuarto del máximo
+    if (btn90 && sliders.valor) {
+      btn90.addEventListener('click', () => {
+        sliders.valor.value = 90;
         sliders.valor.dispatchEvent(new Event('input'));
       });
     }
-    if (btnSou && sliders.valor) {
-      btnSou.addEventListener('click', () => {
-        sliders.valor.value = Math.round((max) / 2); // Mitad del máximo
+    if (btn180 && sliders.valor) {
+      btn180.addEventListener('click', () => {
+        sliders.valor.value = 180;
         sliders.valor.dispatchEvent(new Event('input'));
       });
     }
-    if (btnMax && sliders.valor) {
-      btnMax.addEventListener('click', () => {
-        sliders.valor.value = Math.round((max) - 90); // 3 cuartos del máximo
+    if (btn270 && sliders.valor) {
+      btn270.addEventListener('click', () => {
+        sliders.valor.value = 270;
         sliders.valor.dispatchEvent(new Event('input'));
       });
     }
@@ -108,8 +106,11 @@ const Gyro = (function() {
   };
 })();
 
-// Inicialización ejemplo (ajusta los IDs según tu HTML)
-// AirSpeed.init({
-//   imgIds: { fondo: 'AirSpeed_fondo', aguja: 'AirSpeed_aguja' },
-//   sliderIds: { valor: 'as-slider-value' }
-// });
+
+// Inicialización para Gyro
+window.addEventListener('DOMContentLoaded', function() {
+  Gyro.init({
+    imgIds: { aguja: 'gyr-dial' },
+    sliderIds: { valor: 'gyr-slider' }
+  });
+});

@@ -5,4 +5,15 @@
   <img id="gyr-front" class="gyr-front" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/Gyro/gyro_front.png" alt="Gyro Front">
 
   <div id="gyr-value" class="instrument-center-label">--</div>
+
+  <div style="display:flex; flex-direction:row; align-items:center; gap:16px; margin-top:18px;">
+    <input type="range" min="0" max="360" value="0" id="gyr-slider" style="width:120px;">
+    <span id="gyr-slider-value-label">0</span>
+    <div style="display:flex; flex-direction:column; gap:6px; margin-left:12px;">
+      <button id="gyr-btn-0" class="slider-glow-btn slider-btn slider-btn-max" title="0°">0°</button>
+      <button id="gyr-btn-90" class="slider-glow-btn slider-btn slider-btn-mid" title="90°">90°</button>
+      <button id="gyr-btn-180" class="slider-glow-btn slider-btn slider-btn-min" title="180°">180°</button>
+      <button id="gyr-btn-270" class="slider-glow-btn slider-btn slider-btn-mid" title="270°">270°</button>
+    </div>
+  </div>
 </div>
