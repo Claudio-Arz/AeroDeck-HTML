@@ -29,8 +29,7 @@ const AirSpeed = (function() {
       const valueEl = getEl('as-value');
       if (valueEl) valueEl.textContent = Math.round(safeVal);
       // Solo sincronizar el slider si el cambio viene de WebSocket (no de interacción del usuario)
-      // if (typeof airspeed === 'number' && sliders.valor && document.activeElement !== sliders.valor) {
-      if (sliders.valor && document.activeElement !== sliders.valor) {
+      if (typeof airspeed === 'number' && sliders.valor && document.activeElement !== sliders.valor) {
         sliders.valor.value = safeVal;
       }
     }
