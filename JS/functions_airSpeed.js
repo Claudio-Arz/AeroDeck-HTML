@@ -19,8 +19,7 @@ const AirSpeed = (function() {
       // El slider y el valor pueden ir de 40 a 200 (según tu HTML)
       const min = 40;
       const max = 200;
-      // const val = (typeof airspeed === 'number') ? airspeed : parseFloat(sliders.valor.value);
-      const val = parseFloat(sliders.valor.value);
+      const val = (typeof airspeed === 'number') ? airspeed : parseFloat(sliders.valor.value);
       // Limitar el valor al rango real
       const safeVal = Math.max(min, Math.min(val, max));
       // Mapea 40-200 nudos a 30° (mínimo) a 305° (máximo) (giro horario)
