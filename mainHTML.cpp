@@ -276,7 +276,7 @@ window.addEventListener('DOMContentLoaded', () => {
 }); 
 // Cargar el HTML del slider del instrumento Gyro de forma dinámica
 window.addEventListener('DOMContentLoaded', () => {
-  fetch("https://claudio-arz.github.io/AeroDeck-HTML/gyro_Control.html")
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/Gyro_Control.html")
     .then(r => r.text())
     .then(html => {
       document.getElementById("inst07").innerHTML = html;
