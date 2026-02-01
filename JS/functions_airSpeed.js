@@ -25,12 +25,15 @@ const AirSpeed = (function() {
       const val = (typeof airspeed === 'number') ? airspeed : parseFloat(sliders.valor.value);
       // Limitar el valor al rango real
       const safeVal = Math.max(min, Math.min(val, max));
-      // Mapea 40-200 nudos a 29° (mínimo) a 316.5° (máximo) (giro horario)
-      let angle = 29 + ((safeVal - min) * (316.5 - 29)) / (max - min); // Ajuste afinado.
+      // Mapea 40-200 nudos a 26° (mínimo) a 316.5° (máximo) (giro horario)
+      let angle = 26 + ((safeVal - min) * (316.5 - 26)) / (max - min); // Ajuste afinado.
       imgs.aguja.style.transform = `rotate(${angle}deg)`;
-      // Actualiza valor numérico si existe
+      // Actualiza valor numérico en el instrumento principal
       const valueEl = getEl('as-value');
       if (valueEl) valueEl.textContent = Math.round(safeVal);
+      // Actualiza valor numérico junto al slider de control
+      const sliderLabel = getEl('as-slider-value-label');
+      if (sliderLabel) sliderLabel.textContent = Math.round(safeVal);
       // Solo sincronizar el slider si el cambio viene de WebSocket (no de interacción del usuario)
       if (typeof airspeed === 'number' && sliders.valor && document.activeElement !== sliders.valor) {
         sliders.valor.value = safeVal;
@@ -49,12 +52,14 @@ const AirSpeed = (function() {
       sliders.valor.addEventListener('input', function(e) {
         isUserSliding = true;
         updateAirspeed();
-      });
-      sliders.valor.addEventListener('change', function(e) {
-        isUserSliding = false;
+        // Transmitir en tiempo real mientras se mueve el slider
         if (typeof ws !== 'undefined' && ws && ws.readyState === 1) {
           ws.send(JSON.stringify({ airspeed: parseFloat(e.target.value) }));
         }
+      });
+      sliders.valor.addEventListener('change', function(e) {
+        isUserSliding = false;
+        // (Opcional) También puedes transmitir aquí, pero ya se transmite en 'input'
       });
     }
     // Inicializar valores
