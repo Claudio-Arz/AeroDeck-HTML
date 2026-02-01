@@ -15,6 +15,9 @@
   
 
 */
+
+
+
 // Actualiza la aguja del altímetro y el valor numérico.
 // Parámetros:
 //   altitud: número, valor de altitud en pies (0 a 20000).
@@ -46,6 +49,11 @@ function updateAltimeterAndValue(altitud) {
   // Valor numérico central
   document.getElementById("altimeter-value").textContent =
     Math.round(heading);
+
+  // Actualiza bandera_off según altitud
+  // Bandera visible entre 19000 y 20000 pies
+  let bandera_off = (heading >= 19000 );
+  updateAltimeterFlag(bandera_off);
 }
 
 function updateAltimeterFlag(estado) {
