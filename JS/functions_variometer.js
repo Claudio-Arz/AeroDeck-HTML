@@ -79,6 +79,30 @@ function updateVariometerAndValue(variometer) {
 function setupVariometerControls(ws) {
   const variometerSlider = document.getElementById("variometer-slider");
   const variometerSliderValue = document.getElementById("variometer-slider-value");
+  // Botones de control para el slider
+  const btnMin = document.getElementById("variometer-slider-min");
+  const btnMid = document.getElementById("variometer-slider-mid");
+  const btnMax = document.getElementById("variometer-slider-max");
+  if (btnMin && variometerSlider) {
+    btnMin.addEventListener("click", () => {
+      variometerSlider.value = variometerSlider.min;
+      variometerSlider.dispatchEvent(new Event("input"));
+    });
+  }
+  if (btnMid && variometerSlider) {
+    btnMid.addEventListener("click", () => {
+      const min = Number(variometerSlider.min);
+      const max = Number(variometerSlider.max);
+      variometerSlider.value = Math.round((min + max) / 2);
+      variometerSlider.dispatchEvent(new Event("input"));
+    });
+  }
+  if (btnMax && variometerSlider) {
+    btnMax.addEventListener("click", () => {
+      variometerSlider.value = variometerSlider.max;
+      variometerSlider.dispatchEvent(new Event("input"));
+    });
+  }
   if (variometerSlider && variometerSliderValue) {
     variometerSlider.addEventListener("input", function(e) {
       isUserSlidingVariometer = true;

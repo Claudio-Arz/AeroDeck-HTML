@@ -48,6 +48,31 @@ const AirSpeed = (function() {
     // Slider único
     sliders = {};
     sliders.valor = getEl(config.sliderIds.valor);
+
+    // Botones de control para el slider
+    const btnMin = getEl('as-slider-min');
+    const btnMid = getEl('as-slider-mid');
+    const btnMax = getEl('as-slider-max');
+    if (btnMin && sliders.valor) {
+      btnMin.addEventListener('click', () => {
+        sliders.valor.value = sliders.valor.min;
+        sliders.valor.dispatchEvent(new Event('input'));
+      });
+    }
+    if (btnMid && sliders.valor) {
+      btnMid.addEventListener('click', () => {
+        const min = Number(sliders.valor.min);
+        const max = Number(sliders.valor.max);
+        sliders.valor.value = Math.round((min + max) / 2);
+        sliders.valor.dispatchEvent(new Event('input'));
+      });
+    }
+    if (btnMax && sliders.valor) {
+      btnMax.addEventListener('click', () => {
+        sliders.valor.value = sliders.valor.max;
+        sliders.valor.dispatchEvent(new Event('input'));
+      });
+    }
     if (sliders.valor) {
       sliders.valor.addEventListener('input', function(e) {
         isUserSliding = true;

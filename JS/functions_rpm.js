@@ -103,6 +103,30 @@ function setupRPMControls(ws) {
 
   const rpmSlider = document.getElementById("rpm-slider");
   const rpmSliderValue = document.getElementById("rpm-slider-value");
+  // Botones de control para el slider
+  const btnMin = document.getElementById("rpm-slider-min");
+  const btnMid = document.getElementById("rpm-slider-mid");
+  const btnMax = document.getElementById("rpm-slider-max");
+  if (btnMin && rpmSlider) {
+    btnMin.addEventListener("click", () => {
+      rpmSlider.value = rpmSlider.min;
+      rpmSlider.dispatchEvent(new Event("input"));
+    });
+  }
+  if (btnMid && rpmSlider) {
+    btnMid.addEventListener("click", () => {
+      const min = Number(rpmSlider.min);
+      const max = Number(rpmSlider.max);
+      rpmSlider.value = Math.round((min + max) / 2);
+      rpmSlider.dispatchEvent(new Event("input"));
+    });
+  }
+  if (btnMax && rpmSlider) {
+    btnMax.addEventListener("click", () => {
+      rpmSlider.value = rpmSlider.max;
+      rpmSlider.dispatchEvent(new Event("input"));
+    });
+  }
   
   if (rpmSlider && rpmSliderValue) {
     rpmSlider.addEventListener("input", function(e) {
