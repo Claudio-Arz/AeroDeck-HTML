@@ -25,8 +25,8 @@ const AirSpeed = (function() {
       const val = (typeof airspeed === 'number') ? airspeed : parseFloat(sliders.valor.value);
       // Limitar el valor al rango real
       const safeVal = Math.max(min, Math.min(val, max));
-      // Mapea 40-200 nudos a 34° (mínimo) a 318° (máximo) (giro horario)
-      let angle = 34 + ((safeVal - min) * (318 - 34)) / (max - min); // Ajuste afinado.
+      // Mapea 40-200 nudos a 35° (mínimo) a 318° (máximo) (giro horario)
+      let angle = 35 + ((safeVal - min) * (318 - 35)) / (max - min); // Ajuste afinado.
       imgs.aguja.style.transform = `rotate(${angle}deg)`;
       // Actualiza valor numérico en el instrumento principal
       const valueEl = getEl('as-value');
