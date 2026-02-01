@@ -1,11 +1,12 @@
   // Bandera para ignorar actualizaciones remotas mientras el usuario interactúa
-  let isUserSliding = false;
 
 // AirSpeed.js - Lógica específica para el instrumento AirSpeed
 // Autor: Claudio Arzamendia Systems
 // Fecha: 2026-01-31
 
 const AirSpeed = (function() {
+    // Bandera para ignorar actualizaciones remotas mientras el usuario interactúa
+    let isUserSliding = false;
  
   // Referencias a elementos
   let imgs = {};
