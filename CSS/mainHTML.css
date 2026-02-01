@@ -23,8 +23,8 @@
 }
 /* === Efecto luminoso para botones de slider (mín, med, máx) === */
 .slider-glow-btn:active {
-  box-shadow: 0 0 8px 4px #fff, 0 0 16px 8px currentColor;
-  filter: brightness(1.7) drop-shadow(0 0 6px currentColor);
+  box-shadow: 0 0 8px 4px #1ab0a6, 0 0 16px 8px #1ab0a6;
+  filter: brightness(1.7) drop-shadow(0 0 6px #1ab0a6);
   outline: none;
   transition: box-shadow 0.1s, filter 0.1s;
 }
@@ -101,6 +101,7 @@ para indicar visualmente su estado.
   aspect-ratio: 1/1;
   position: relative;
   border-radius: 120px;
+  box-shadow: 0 0 32px 8px #1ab0a6, 0 0 8px 2px #1ab0a6;
   overflow: hidden;
   box-shadow: 0 0 20px 10px #000a;
   background: #1d3958;
