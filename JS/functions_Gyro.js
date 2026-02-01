@@ -19,14 +19,14 @@ const Gyro = (function() {
   // Actualiza la aguja según el valor del slider (0-200) o un valor recibido
   function updateGyro(gyro) {
     if (imgs.aguja && sliders.valor ) {
-      // El slider y el valor pueden ir de 0 a 200 (según tu HTML)
-      const min = 40;
-      const max = 200;
+      // El slider y el valor pueden ir de 0 a 360 
+      const min = 0;
+      const max = 360;
       const val = (typeof gyro === 'number') ? gyro : parseFloat(sliders.valor.value);
       // Limitar el valor al rango real
       const safeVal = Math.max(min, Math.min(val, max));
-      // Mapea 0-200 nudos a 36° (mínimo) a 324° (máximo) (giro horario)
-      let angle =  ((safeVal - min) * (324 - 36) ) / (max - min) + 36; // Ajuste afinado.
+      // Mapea 0-360 grados a 0° (mínimo) a 360° (máximo) (giro horario)
+      let angle =  safeVal; // Ajuste afinado.
       imgs.aguja.style.transform = `rotate(${angle}deg)`;
       // Actualiza valor numérico en el instrumento principal
       const valueEl = getEl('gyr-value');
@@ -52,6 +52,7 @@ const Gyro = (function() {
     // Botones de control para el slider
     const btnMin = getEl('gyr-slider-min');
     const btnMid = getEl('gyr-slider-mid');
+    const btnSou = getEl('gyr-slider-sou');
     const btnMax = getEl('gyr-slider-max');
     if (btnMin && sliders.valor) {
       btnMin.addEventListener('click', () => {
@@ -61,15 +62,20 @@ const Gyro = (function() {
     }
     if (btnMid && sliders.valor) {
       btnMid.addEventListener('click', () => {
-        const min = Number(sliders.valor.min);
         const max = Number(sliders.valor.max);
-        sliders.valor.value = Math.round((min + max) / 2);
+        sliders.valor.value = Math.round((max) / 4); // Un cuarto del máximo
+        sliders.valor.dispatchEvent(new Event('input'));
+      });
+    }
+    if (btnSou && sliders.valor) {
+      btnSou.addEventListener('click', () => {
+        sliders.valor.value = Math.round((max) / 2); // Mitad del máximo
         sliders.valor.dispatchEvent(new Event('input'));
       });
     }
     if (btnMax && sliders.valor) {
       btnMax.addEventListener('click', () => {
-        sliders.valor.value = sliders.valor.max;
+        sliders.valor.value = Math.round((max) - 90); // 3 cuartos del máximo
         sliders.valor.dispatchEvent(new Event('input'));
       });
     }

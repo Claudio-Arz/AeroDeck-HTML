@@ -17,8 +17,12 @@
   background: #f1c40f;
   margin: 2px 0;
 }
+.slider-btn-sou {
+  background: #f1660f;
+  margin: 2px 0;
+}
 .slider-btn-min {
-  background: #e74c3c;
+  background: #e31111;
   margin-top: 4px;
 }
 /* === Efecto luminoso para botones de slider (mín, med, máx) === */
