@@ -44,7 +44,7 @@ function animateNeedleRPM(newValue) {
   if (!rpmAnimationFrame) {
     function step() {
       currentRPM += (targetRPM - currentRPM) * 1; // valor original 0.2, valor propuesto por copilot o.5 para más rapidez
-      if (Math.abs(targetRPM - currentRPM) < 0.5) {
+      if (Math.abs(targetRPM - currentRPM) < 1) {
         currentRPM = targetRPM;
         rpmAnimationFrame = null;
       } else {
