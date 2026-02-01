@@ -42,6 +42,7 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_altimeter.js"></script>
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_Attitude.js"></script>
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_airSpeed.js"></script>
+<script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_gyro.js"></script>
 <script>
 
 
@@ -105,7 +106,9 @@ ws.onmessage = (msg) => {
   if (typeof window.updateAttitudeInstrument === 'function' && typeof data.roll === 'number' && typeof data.pitch === 'number') {
     window.updateAttitudeInstrument(data.roll, data.pitch);
   }
-
+  if (typeof window.updateGyro === 'function' && typeof data.gyro === 'number') {
+    window.updateGyro(data.gyro);
+  }
 
 
   // --- Sincronizar visualmente el botón Noice en todos los clientes ---
@@ -259,6 +262,29 @@ window.addEventListener('DOMContentLoaded', () => {
         AirSpeed.init({
           imgIds: { aguja: 'as-needle' },
           sliderIds: { valor: 'as-slider-value' }
+        });
+      }
+    });
+});   
+// Cargar el HTML del instrumento Gyro de forma dinámica
+window.addEventListener('DOMContentLoaded', () => {
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/gyro.html")
+    .then(r => r.text())
+    .then(html => {
+      document.getElementById("inst10").innerHTML = html;
+    });
+}); 
+// Cargar el HTML del slider del instrumento Gyro de forma dinámica
+window.addEventListener('DOMContentLoaded', () => {
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/gyro_Control.html")
+    .then(r => r.text())
+    .then(html => {
+      document.getElementById("inst07").innerHTML = html;
+      // Inicializar Gyro solo cuando ambos HTML estén cargados
+      if (typeof Gyro !== 'undefined' && typeof Gyro.init === 'function') {
+        Gyro.init({
+          imgIds: { giro_dial: 'gyr-dial' },
+          sliderIds: { valor: 'gyro-slider-value' }
         });
       }
     });

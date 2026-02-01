@@ -1,3 +1,33 @@
+/* === Botones de control de slider (mín, med, máx) === */
+.slider-btn {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  padding: 0;
+  display: block;
+}
+.slider-btn-max {
+  background: #2ecc71;
+  margin-bottom: 4px;
+}
+.slider-btn-mid {
+  background: #f1c40f;
+  margin: 2px 0;
+}
+.slider-btn-min {
+  background: #e74c3c;
+  margin-top: 4px;
+}
+/* === Efecto luminoso para botones de slider (mín, med, máx) === */
+.slider-glow-btn:active {
+  box-shadow: 0 0 8px 4px #fff, 0 0 16px 8px currentColor;
+  filter: brightness(1.7) drop-shadow(0 0 6px currentColor);
+  outline: none;
+  transition: box-shadow 0.1s, filter 0.1s;
+}
 /*
 mainHTML.css
 Estilos CSS para el tablero de instrumentos AeroDeck
@@ -263,7 +293,7 @@ proporcionalmente para que encajen bien.
   border-radius: 50%;
 }
 
-.as-dial{
+.as-dial, .gyr-dial {
   width: 100%;
   height: 100%;
   position: absolute;
@@ -274,6 +304,19 @@ proporcionalmente para que encajen bien.
   border-radius: 50%;
   object-fit: contain;
 }
+.gyr-front {
+  width: 75%;
+  height: 75%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  pointer-events: none;
+  border-radius: 50%;
+  object-fit: contain;
+}
+
 .as-needle {
   width: 5%;
   height: 100%;
