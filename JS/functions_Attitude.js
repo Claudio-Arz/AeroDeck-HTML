@@ -20,10 +20,10 @@ function updateAttitudeControl() {
       if (attiZeroActive) {
         animateToCenter();
       }
-      // Si quieres enviar por WebSocket el estado, descomenta:
-      // if(ws.readyState === 1) {
-      //   ws.send(JSON.stringify({ atti_zero: attiZeroActive }));
-      // }
+      // Enviar por WebSocket el estado para sincronizar con otros clientes
+      if (typeof ws !== 'undefined' && ws && ws.readyState === 1) {
+        ws.send(JSON.stringify({ atti_zero: attiZeroActive }));
+      }
     });
   }
 
