@@ -18,6 +18,7 @@ o que ejecuta.
 
 // ws será asignada desde updateAttitudeControl, no se redeclara aquí si ya existe
 function updateAttitudeControl() {
+
   const attiZeroBtn = document.getElementById("atti-zero-btn");
   if (attiZeroBtn) {
     attiZeroBtn.addEventListener("click", function() {
@@ -112,6 +113,7 @@ function updateAttitudeControl() {
     }
     loop();
   }
+
   function onEnd() {
     dragging = false;
     if (attiZeroActive) {
@@ -136,14 +138,12 @@ function updateAttitudeControl() {
     });
   }
 
-
   // Exponer función global para actualizar el instrumento desde mainHTML.cpp
   window.updateAttitudeInstrument = function(roll, pitch, isDragging) {
     if (dragging && isDragging !== true) return; // Solo actualizar si no se está arrastrando, o si se fuerza
     if (ballImg) ballImg.style.transform = `rotate(${roll}deg) translateY(${pitch * 2.5}px)`;
     if (dialImg) dialImg.style.transform = `rotate(${roll}deg)`;
     if (coords) coords.textContent = `roll: ${Number(roll).toFixed(1)}°, pitch: ${Number(pitch).toFixed(1)}°`;
-
   }
 
   // Inicializar en el centro
