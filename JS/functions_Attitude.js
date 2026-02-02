@@ -15,14 +15,20 @@ function updateAttitudeControl() {
   const attiZeroBtn = document.getElementById("atti-zero-btn");
   if (attiZeroBtn) {
     attiZeroBtn.addEventListener("click", function() {
-      attiZeroActive = !attiZeroActive;
-      attiZeroBtn.textContent = attiZeroActive ? "Zero: ON" : "Zero: OFF";
-      if (attiZeroActive) {
-        animateToCenter();
-      }
-      // Enviar por WebSocket el estado para sincronizar con otros clientes
+      attiZeroActive = true;
+      attiZeroBtn.textContent = "Zero: ON";
+      // Centrar el joystick y luego desactivar Zero automáticamente
+      animateToCenter(function() {
+        attiZeroActive = false;
+        attiZeroBtn.textContent = "Zero: OFF";
+        // Enviar por WebSocket el estado actualizado
+        if (typeof ws !== 'undefined' && ws && ws.readyState === 1) {
+          ws.send(JSON.stringify({ atti_zero: false }));
+        }
+      });
+      // Enviar por WebSocket el estado para sincronizar con otros clientes (ON)
       if (typeof ws !== 'undefined' && ws && ws.readyState === 1) {
-        ws.send(JSON.stringify({ atti_zero: attiZeroActive }));
+        ws.send(JSON.stringify({ atti_zero: true }));
       }
     });
   }
@@ -83,13 +89,17 @@ function updateAttitudeControl() {
     setKnob(x, y);
   }
 
-  function animateToCenter() {
+  function animateToCenter(callback) {
     // El knob solo vuelve al centro cuando se suelta Y attiZeroActive está en ON
-    if (!attiZeroActive) return;
+    if (!attiZeroActive) {
+      if (typeof callback === 'function') callback();
+      return;
+    }
     function loop() {
       // Si ya está en el centro, no hacer nada
       if (Math.abs(knobPos.x) < 1 && Math.abs(knobPos.y) < 1) {
         setKnob(0, 0);
+        if (typeof callback === 'function') callback();
       } else {
         // Animar suavemente hacia el centro
         knobPos.x *= 0.85;
