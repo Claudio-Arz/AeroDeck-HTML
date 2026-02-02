@@ -238,9 +238,6 @@ window.addEventListener('DOMContentLoaded', () => {
     .then(r => r.text())
     .then(html => {
       document.getElementById("inst05").innerHTML = html;
-      if (typeof updateAttitudeControl === 'function') {
-        updateAttitudeControl(ws);
-      }
     });
 });      
 // Cargar el HTML del instrumento AirSpeed de forma dinámica
