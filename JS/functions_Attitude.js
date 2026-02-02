@@ -1,6 +1,12 @@
-// Variables globales para los elementos del instrumento
+// Variables globales para los elementos del instrumento y control
 let ballImg, dialImg;
 let attiZeroActive = false;
+let container, knob, coords;
+let size = 200;
+let knobSize = 30;
+let radius = (size - knobSize) / 2;
+let dragging = false;
+let knobPos = {x: 0, y: 0};
 // functions_Attitude.js
 /*
 Lógica simple y modular para Attitude Indicator.
@@ -37,15 +43,10 @@ function updateAttitudeControl() {
   dialImg = document.getElementById('AttCon_dial');
 
   // Joystick: buscar elementos y asignar eventos SOLO cuando existen
-  const container = document.getElementById('joystick');
-  const knob = document.getElementById('knob');
-  const coords = document.getElementById('coords');
-
-  const size = 200;
-  const knobSize = 30;
-  const radius = (size - knobSize) / 2;
-  let dragging = false;
-  let knobPos = {x: 0, y: 0};
+  container = document.getElementById('joystick');
+  knob = document.getElementById('knob');
+  coords = document.getElementById('coords');
+  // size, knobSize, radius, dragging, knobPos ya están globales
 
   function setKnob(x, y) {
     knobPos.x = x;
@@ -145,3 +146,11 @@ function updateAttitudeControl() {
   // Inicializar en el centro
   setKnob(0, 0);
 }
+
+// Inicializar automáticamente el instrumento al cargar la librería
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', updateAttitudeControl);
+} else {
+  updateAttitudeControl();
+}
+
