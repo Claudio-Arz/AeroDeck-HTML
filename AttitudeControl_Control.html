@@ -3,6 +3,20 @@
   <button class="atti-zero-btn" id="atti-zero-btn">Zero: OFF</button>
   <div class="joystick-container" id="joystick">
     <div class="joystick-base"></div>
+    <!-- SVG para el brazo del joystick -->
+    <svg id="joystick-arm" width="200" height="200" style="position:absolute;top:0;left:0;pointer-events:none;z-index:1;">
+      <defs>
+        <linearGradient id="chrome-gradient" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#e0e0e0" />
+          <stop offset="20%" stop-color="#b0b0b0" />
+          <stop offset="40%" stop-color="#f8f8f8" />
+          <stop offset="60%" stop-color="#888" />
+          <stop offset="80%" stop-color="#f8f8f8" />
+          <stop offset="100%" stop-color="#b0b0b0" />
+        </linearGradient>
+      </defs>
+      <line id="joystick-arm-line" x1="100" y1="100" x2="100" y2="100" stroke="url(#chrome-gradient)" stroke-width="8" stroke-linecap="round" />
+    </svg>
     <div class="joystick-knob" id="knob"></div>
   </div>
   <div class="coords" id="coords">roll: 0°, pitch: 0°</div>
@@ -38,7 +52,7 @@
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    background: #444;
+    background: radial-gradient(circle at 50% 50%, #ffb347 0%, #8b4513 100%);
     border: 4px solid #888;
     box-shadow: 0 0 16px #000a;
   }
@@ -47,13 +61,11 @@
     position: absolute;
     width: 30px;
     height: 30px;
-    left: 100px; /* Mueve 4px a la derecha */
-    top: 100px;  /* Mueve 3px abajo */
-    /* transform-origin: 50% 50%;  pivote en el centro */
-    /* transform: translate(-50%, -50%);  Eliminado para que left/top sean efectivos */
+    left: 100px;
+    top: 100px;
     box-sizing: border-box;
     border-radius: 50%;
-    background: #fff;
+    background: radial-gradient(circle at 65% 35%, #fff 0%, #be1111 40%, #7a0707 100%);
     border: 3px solid #2196f3;
     box-shadow: 0 0 8px #2196f388;
     cursor: grab;

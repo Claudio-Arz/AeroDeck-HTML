@@ -26,8 +26,8 @@
       width: 100%;
       height: 100%;
       border-radius: 50%;
-      background: #444;
-      border: 4px solid #888;
+      background: radial-gradient(circle at 50% 50%, #4772ff 0%, #0c095f 100%);
+      border: 4px solid #0c0234;
       box-shadow: 0 0 24px #000a;
     }
     .joystick-knob {
@@ -38,9 +38,9 @@
       top: 50%;
       transform: translate(-50%, -50%);
       border-radius: 50%;
-      background: #fff;
-      border: 3px solid #2196f3;
-      box-shadow: 0 0 12px #2196f388;
+      background: radial-gradient(circle at 65% 35%, #fff 0%, #a41313 40%, #450404 100%);
+      border: 3px solid #a44915;
+      box-shadow: 0 0 12px #f3c22170;
       cursor: grab;
       transition: box-shadow 0.2s;
       z-index: 2;
@@ -60,6 +60,20 @@
   <h2>Control Circular (Joystick)</h2>
   <div class="joystick-container" id="joystick">
     <div class="joystick-base"></div>
+    <!-- SVG para el brazo del joystick -->
+    <svg id="joystick-arm" width="300" height="300" style="position:absolute;top:0;left:0;pointer-events:none;z-index:1;">
+      <defs>
+        <linearGradient id="chrome-gradient" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#e0e0e0" />
+          <stop offset="20%" stop-color="#b0b0b0" />
+          <stop offset="40%" stop-color="#f8f8f8" />
+          <stop offset="60%" stop-color="#888" />
+          <stop offset="80%" stop-color="#f8f8f8" />
+          <stop offset="100%" stop-color="#b0b0b0" />
+        </linearGradient>
+      </defs>
+      <line id="joystick-arm-line" x1="150" y1="150" x2="150" y2="150" stroke="url(#chrome-gradient)" stroke-width="12" stroke-linecap="round" />
+    </svg>
     <div class="joystick-knob" id="knob"></div>
   </div>
   <div class="coords" id="coords">x: 0, y: 0 | roll: 0°, pitch: 0°</div>
@@ -84,6 +98,12 @@
       knobPos.y = y;
       knob.style.left = `${x + size/2}px`;
       knob.style.top = `${y + size/2}px`;
+      // Actualizar el brazo SVG
+      const armLine = document.getElementById('joystick-arm-line');
+      if (armLine) {
+        armLine.setAttribute('x2', (x + size/2).toString());
+        armLine.setAttribute('y2', (y + size/2).toString());
+      }
       // Mapear x a roll (-30 a 30)
       const roll = Math.round((x / radius) * 30 * 10) / 10; // 1 decimal
       // Mapear y a pitch (-50 a 50)
