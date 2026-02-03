@@ -103,8 +103,9 @@ ws.onmessage = (msg) => {
   // if (data.fuelFlow !== undefined) updateFuelFlowInstrument(data.fuelFlow);
   if (data.verticalSpeed !== undefined) updateVariometerAndValue(data.verticalSpeed);
   if (data.varAltitud !== undefined) updateAltimeterAndValue(data.varAltitud);
-  if (data.roll !== undefined ) updateAttitudeInstrument(data.roll, data.pitch, data.atti_zero, data.knobPosXY);
-  
+  if (typeof window.updateAttitudeInstrument === 'function' && typeof data.roll === 'number' && typeof data.pitch === 'number') {
+    window.updateAttitudeInstrument(data.roll, data.pitch);
+  }
   if (typeof window.updateGyro === 'function' && typeof data.gyro === 'number') {
     window.updateGyro(data.gyro);
   }
@@ -222,36 +223,26 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     });
 });      
-// Inicializar todos los instrumentos y controles solo cuando la página y scripts hayan terminado de cargar
-window.onload = function() {
-  // Cargar todos los instrumentos y controles dinámicamente
-  const loads = [
-    fetch("https://claudio-arz.github.io/AeroDeck-HTML/AttitudeControl.html").then(r => r.text()).then(html => { document.getElementById("inst02").innerHTML = html; }),
-    fetch("https://claudio-arz.github.io/AeroDeck-HTML/AttitudeControl_Control.html").then(r => r.text()).then(html => { document.getElementById("inst05").innerHTML = html; }),
-    fetch("https://claudio-arz.github.io/AeroDeck-HTML/RPM.html").then(r => r.text()).then(html => { document.getElementById("inst04").innerHTML = html; }),
-    fetch("https://claudio-arz.github.io/AeroDeck-HTML/RPM_Control.html").then(r => r.text()).then(html => { document.getElementById("inst06").innerHTML = html; }),
-    fetch("https://claudio-arz.github.io/AeroDeck-HTML/variometer.html").then(r => r.text()).then(html => { document.getElementById("inst11").innerHTML = html; }),
-    fetch("https://claudio-arz.github.io/AeroDeck-HTML/variometer_Control.html").then(r => r.text()).then(html => { document.getElementById("inst14").innerHTML = html; }),
-    fetch("https://claudio-arz.github.io/AeroDeck-HTML/altimeter.html").then(r => r.text()).then(html => { document.getElementById("inst03").innerHTML = html; }),
-    fetch("https://claudio-arz.github.io/AeroDeck-HTML/airSpeed.html").then(r => r.text()).then(html => { document.getElementById("inst01").innerHTML = html; }),
-    fetch("https://claudio-arz.github.io/AeroDeck-HTML/airSpeed_Control.html").then(r => r.text()).then(html => { document.getElementById("inst08").innerHTML = html; }),
-    fetch("https://claudio-arz.github.io/AeroDeck-HTML/gyro.html").then(r => r.text()).then(html => { document.getElementById("inst10").innerHTML = html; }),
-    fetch("https://claudio-arz.github.io/AeroDeck-HTML/Gyro_Control.html").then(r => r.text()).then(html => { document.getElementById("inst07").innerHTML = html; })
-  ];
-
-  Promise.all(loads).then(() => {
-    // Inicializar controles/instrumentos que requieren setup después de cargar HTML
-    if (typeof updateAttitudeControl === 'function') updateAttitudeControl();
-    if (typeof setupRPMControls === 'function') setupRPMControls(ws);
-    if (typeof setupVariometerControls === 'function') setupVariometerControls(ws);
-    if (typeof AirSpeed !== 'undefined' && typeof AirSpeed.init === 'function') {
-      AirSpeed.init({ imgIds: { aguja: 'as-needle' }, sliderIds: { valor: 'as-slider-value' } });
-    }
-    if (typeof Gyro !== 'undefined' && typeof Gyro.init === 'function') {
-      Gyro.init({ imgIds: { giro_dial: 'gyr-dial' }, sliderIds: { valor: 'gyro-slider-value' } });
-    }
-  });
-};
+// Cargar el HTML del instrumento AttitudeControl de forma dinámica
+window.addEventListener('DOMContentLoaded', () => {
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/AttitudeControl.html")
+    .then(r => r.text())
+    .then(html => {
+      document.getElementById("inst02").innerHTML = html;
+      // Solo se inicializa updateAttitudeControl en el joystick (inst05)
+    });
+});      
+// Cargar el HTML de los sliders para Pitch y Roll del instrumento AttitudeControl de forma dinámica
+window.addEventListener('DOMContentLoaded', () => {
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/AttitudeControl_Control.html")
+    .then(r => r.text())
+    .then(html => {
+      document.getElementById("inst05").innerHTML = html;
+      if (typeof updateAttitudeControl === 'function') {
+        updateAttitudeControl(ws);
+      }
+    });
+});      
 // Cargar el HTML del instrumento AirSpeed de forma dinámica
 window.addEventListener('DOMContentLoaded', () => {
   fetch("https://claudio-arz.github.io/AeroDeck-HTML/airSpeed.html")
