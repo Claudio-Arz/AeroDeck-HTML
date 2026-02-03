@@ -7,6 +7,7 @@ let knobSize = 30;
 let radius = (size - knobSize) / 2;
 let dragging = false;
 let knobPos = {x: 0, y: 0};
+setKnob(0, 0);
 // functions_Attitude.js
 /*
 Lógica simple y modular para Attitude Indicator.
@@ -148,7 +149,7 @@ function updateAttitudeControl() {
   }
 
   // Inicializar en el centro
-  setKnob(0, 0);
+
 }
 
 // Inicializar automáticamente el instrumento al cargar la librería
