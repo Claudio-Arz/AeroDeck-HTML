@@ -142,11 +142,6 @@ function updateAttitudeControl() {
   // Exponer función global para actualizar el instrumento desde mainHTML.cpp
   window.updateAttitudeInstrument = function(roll, pitch, isDragging) {
     if (dragging && isDragging !== true) return; // Solo actualizar si no se está arrastrando, o si se fuerza
-    // Calcular x, y a partir de roll y pitch para mover el knob
-    // roll: -30 a 30, pitch: -20 a 20 (aprox)
-    let x = (Number(roll) / 30) * radius;
-    let y = (Number(pitch) / 20) * radius / 2.5; // inverso de *0.4*2.5
-    setKnob(x, y);
     if (ballImg && ballImg.style) ballImg.style.transform = `rotate(${roll}deg) translateY(${pitch * 2.5}px)`;
     if (dialImg && dialImg.style) dialImg.style.transform = `rotate(${roll}deg)`;
     if (coords) coords.textContent = `roll: ${Number(roll).toFixed(1)}°, pitch: ${Number(pitch).toFixed(1)}°`;
