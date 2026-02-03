@@ -29,14 +29,27 @@ function updateAttitudeControl() {
       animateToCenter(function() {
         attiZeroActive = false;
         attiZeroBtn.textContent = "Zero: OFF";
-        // Enviar por WebSocket el estado actualizado
+        // Calcular roll y pitchDeg actuales
+        let roll = 0, pitchDeg = 0;
+        if (typeof knobPos !== 'undefined' && typeof radius !== 'undefined') {
+          roll = Math.round((knobPos.x / radius) * 30 * 10) / 10;
+          let pitchRaw = Math.round((knobPos.y / radius) * 50 * 10) / 10;
+          pitchDeg = Math.round((pitchRaw * 0.4) * 10) / 10;
+        }
         if (typeof ws !== 'undefined' && ws && ws.readyState === 1) {
-           ws.send(JSON.stringify({ roll: roll, pitch: pitchDeg, attiZeroActive: attiZeroActive, knobPosXY: {x: knobPos.x, y: knobPos.y} }));
+          ws.send(JSON.stringify({ roll: roll, pitch: pitchDeg, attiZeroActive: attiZeroActive, knobPosXY: {x: knobPos.x, y: knobPos.y} }));
         }
       });
+      // Calcular roll y pitchDeg actuales
+      let roll = 0, pitchDeg = 0;
+      if (typeof knobPos !== 'undefined' && typeof radius !== 'undefined') {
+        roll = Math.round((knobPos.x / radius) * 30 * 10) / 10;
+        let pitchRaw = Math.round((knobPos.y / radius) * 50 * 10) / 10;
+        pitchDeg = Math.round((pitchRaw * 0.4) * 10) / 10;
+      }
       // Enviar por WebSocket el estado para sincronizar con otros clientes (ON)
       if (typeof ws !== 'undefined' && ws && ws.readyState === 1) {
-          ws.send(JSON.stringify({ roll: roll, pitch: pitchDeg, attiZeroActive: attiZeroActive, knobPosXY: {x: knobPos.x, y: knobPos.y} })); 
+        ws.send(JSON.stringify({ roll: roll, pitch: pitchDeg, attiZeroActive: attiZeroActive, knobPosXY: {x: knobPos.x, y: knobPos.y} })); 
       }
     });
   }
