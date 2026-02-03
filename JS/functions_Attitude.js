@@ -155,8 +155,15 @@ if (document.readyState === 'loading') {
 window.updateAttitudeInstrument = function(roll, pitch, isDragging, knobPosXY) {
   // Solo actualizar visualización y knob si no se está arrastrando
   if (!dragging || isDragging === true) {
-    if (typeof setKnob === 'function' && knobPosXY && typeof knobPosXY.x === 'number' && typeof knobPosXY.y === 'number') {
-      setKnob(knobPosXY.x, knobPosXY.y);
+    if (typeof setKnob === 'function') {
+      if (knobPosXY && typeof knobPosXY.x === 'number' && typeof knobPosXY.y === 'number') {
+        setKnob(knobPosXY.x, knobPosXY.y);
+      } else {
+        // Si no se recibe knobPosXY, estimar posición a partir de roll y pitch
+        let x = (Number(roll) / 30) * radius;
+        let y = (Number(pitch) / 50) * radius / 0.4; // inverso de *0.4
+        setKnob(x, y);
+      }
     }
     if (ballImg && ballImg.style) ballImg.style.transform = `rotate(${roll}deg) translateY(${pitch * 2.5}px)`;
     if (dialImg && dialImg.style) dialImg.style.transform = `rotate(${roll}deg)`;
@@ -164,7 +171,7 @@ window.updateAttitudeInstrument = function(roll, pitch, isDragging, knobPosXY) {
   }
   // Siempre transmitir datos por WebSocket si está disponible
   if (typeof ws !== 'undefined' && ws && ws.readyState === 1) {
-    ws.send(JSON.stringify({ roll: roll, pitch: pitch, attiZeroActive: attiZeroActive, knobPosXY: knobPosXY }));
+    ws.send(JSON.stringify({ roll: roll, pitch: pitch, knobPosXY: knobPosXY }));
   }
 }
 
