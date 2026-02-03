@@ -122,16 +122,20 @@ function updateAttitudeControl() {
     document.removeEventListener('touchend', onEnd);
   }
 
-  knob.addEventListener('mousedown', function(e) {
-    dragging = true;
-    document.addEventListener('mousemove', onMove);
-    document.addEventListener('mouseup', onEnd);
-  });
-  knob.addEventListener('touchstart', function(e) {
-    dragging = true;
-    document.addEventListener('touchmove', onMove, {passive: false});
-    document.addEventListener('touchend', onEnd);
-  });
+  if (knob) {
+    knob.addEventListener('mousedown', function(e) {
+      dragging = true;
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onEnd);
+    });
+    knob.addEventListener('touchstart', function(e) {
+      dragging = true;
+      document.addEventListener('touchmove', onMove, {passive: false});
+      document.addEventListener('touchend', onEnd);
+    });
+  } else {
+    console.warn('Elemento knob no encontrado. No se agregan listeners.');
+  }
 
 
   // Exponer función global para actualizar el instrumento desde mainHTML.cpp
