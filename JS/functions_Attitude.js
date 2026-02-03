@@ -7,7 +7,7 @@ let knobSize = 30;
 let radius = (size - knobSize) / 2;
 let dragging = false;
 let knobPos = {x: 0, y: 0};
-setKnob(0, 0);
+// setKnob(0, 0);
 // functions_Attitude.js
 /*
 Lógica simple y modular para Attitude Indicator.
@@ -40,16 +40,16 @@ function updateAttitudeControl() {
       }
     });
   }
-
+  
   ballImg = document.getElementById('AttCon_ball') || null;
   dialImg = document.getElementById('AttCon_dial') || null;
-
+  
   // Joystick: buscar elementos y asignar eventos SOLO cuando existen
   container = document.getElementById('joystick');
   knob = document.getElementById('knob');
   coords = document.getElementById('coords');
   // size, knobSize, radius, dragging, knobPos ya están globales
-
+  
   function setKnob(x, y) {
     knobPos.x = x;
     knobPos.y = y;
@@ -69,10 +69,10 @@ function updateAttitudeControl() {
     if (ballImg && ballImg.style) ballImg.style.transform = `rotate(${roll}deg) translateY(${pitchDeg * 2.5}px)`;
     if (dialImg && dialImg.style) dialImg.style.transform = `rotate(${roll}deg)`;
     if (typeof ws !== 'undefined' && ws && ws.readyState === 1) {
-      ws.send(JSON.stringify({ roll: roll, pitch: pitchDeg }));
+      ws.send(JSON.stringify({ roll: roll, pitch: pitchDeg, knobPosXY: {x: knobPos.x, y: knobPos.y} }));
     }
   }
-
+  
   function getRelativeCoords(e) {
     const rect = container.getBoundingClientRect();
     let clientX = e.touches ? e.touches[0].clientX : e.clientX;
@@ -86,14 +86,14 @@ function updateAttitudeControl() {
     }
     return {x: Math.round(x), y: Math.round(y)};
   }
-
+  
   function onMove(e) {
     if (!dragging) return;
     e.preventDefault();
     const {x, y} = getRelativeCoords(e);
     setKnob(x, y);
   }
-
+  
   function animateToCenter(callback) {
     // El knob solo vuelve al centro cuando se suelta Y attiZeroActive está en ON
     if (!attiZeroActive) {
@@ -115,7 +115,7 @@ function updateAttitudeControl() {
     }
     loop();
   }
-
+  
   function onEnd() {
     dragging = false;
     if (attiZeroActive) {
@@ -126,7 +126,7 @@ function updateAttitudeControl() {
     document.removeEventListener('touchmove', onMove);
     document.removeEventListener('touchend', onEnd);
   }
-
+  
   if (knob) {
     knob.addEventListener('mousedown', function(e) {
       dragging = true;
@@ -139,17 +139,17 @@ function updateAttitudeControl() {
       document.addEventListener('touchend', onEnd);
     });
   } 
-
+  
   // Exponer función global para actualizar el instrumento desde mainHTML.cpp
-  window.updateAttitudeInstrument = function(roll, pitch, isDragging) {
-    if (dragging && isDragging !== true) return; // Solo actualizar si no se está arrastrando, o si se fuerza
-    if (ballImg && ballImg.style) ballImg.style.transform = `rotate(${roll}deg) translateY(${pitch * 2.5}px)`;
-    if (dialImg && dialImg.style) dialImg.style.transform = `rotate(${roll}deg)`;
-    if (coords) coords.textContent = `roll: ${Number(roll).toFixed(1)}°, pitch: ${Number(pitch).toFixed(1)}°`;
-  }
-
+  // window.updateAttitudeInstrument = function(roll, pitch, isDragging) {
+  //   if (dragging && isDragging !== true) return; // Solo actualizar si no se está arrastrando, o si se fuerza
+  //   if (ballImg && ballImg.style) ballImg.style.transform = `rotate(${roll}deg) translateY(${pitch * 2.5}px)`;
+  //   if (dialImg && dialImg.style) dialImg.style.transform = `rotate(${roll}deg)`;
+  //   if (coords) coords.textContent = `roll: ${Number(roll).toFixed(1)}°, pitch: ${Number(pitch).toFixed(1)}°`;
+  // }
+  
   // Inicializar en el centro
-
+  
 }
 
 // Inicializar automáticamente el instrumento al cargar la librería
@@ -158,5 +158,4 @@ if (document.readyState === 'loading') {
 } else {
   updateAttitudeControl();
 }
-    
-  
+
