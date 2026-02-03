@@ -104,34 +104,41 @@ function updateAttitudeControl() {
       } else {
         // Animar suavemente hacia el centro
         knobPos.x *= 0.85;
-        knobPos.y *= 0.85;
-        setKnob(knobPos.x, knobPos.y);
-        requestAnimationFrame(loop);
-      }
-    }
-    loop();
+        knobPos.x = x;
+        knobPos.y = y;
+        if (knob) {
+          // Offset visual para centrar el knob
+          const offsetX = -9; // px a la derecha
+          const offsetY = -9; // px abajo
+          knob.style.left = `${x + size/2 + offsetX}px`;
+          knob.style.top = `${y + size/2 + offsetY}px`;
+        }
+        // Mapear x a roll (-30 a 30)
+        const roll = Math.round((x / radius) * 30 * 10) / 10;
+        // Mapear y a pitch (-50 a 50)
+        const pitchRaw = Math.round((y / radius) * 50 * 10) / 10;
+        const pitchDeg = Math.round((pitchRaw * 0.4) * 10) / 10;
+        if (coords) {
+          coords.textContent = `roll: ${roll.toFixed(1)}°, pitch: ${pitchDeg.toFixed(1)}°`;
+        }
+        if (ballImg) ballImg.style.transform = `rotate(${roll}deg) translateY(${pitchDeg * 2.5}px)`;
+        if (dialImg) dialImg.style.transform = `rotate(${roll}deg)`;
+        if (typeof ws !== 'undefined' && ws && ws.readyState === 1) {
+          ws.send(JSON.stringify({ roll: roll, pitch: pitchDeg }));
+        }
+    knob.addEventListener('mousedown', function(e) {
+      dragging = true;
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onEnd);
+    });
+    knob.addEventListener('touchstart', function(e) {
+      dragging = true;
+      document.addEventListener('touchmove', onMove, {passive: false});
+      document.addEventListener('touchend', onEnd);
+    });
+  } else {
+    console.warn('Elemento knob no encontrado. No se agregan listeners.');
   }
-  function onEnd() {
-    dragging = false;
-    if (attiZeroActive) {
-      animateToCenter();
-    }
-    document.removeEventListener('mousemove', onMove);
-    document.removeEventListener('mouseup', onEnd);
-    document.removeEventListener('touchmove', onMove);
-    document.removeEventListener('touchend', onEnd);
-  }
-
-  knob.addEventListener('mousedown', function(e) {
-    dragging = true;
-    document.addEventListener('mousemove', onMove);
-    document.addEventListener('mouseup', onEnd);
-  });
-  knob.addEventListener('touchstart', function(e) {
-    dragging = true;
-    document.addEventListener('touchmove', onMove, {passive: false});
-    document.addEventListener('touchend', onEnd);
-  });
 
 
   // Exponer función global para actualizar el instrumento desde mainHTML.cpp
@@ -154,3 +161,4 @@ if (document.readyState === 'loading') {
   updateAttitudeControl();
 }
 
+updateAttitudeControl();
