@@ -45,8 +45,8 @@ function updateAttitudeControl() {
     knobPos.x = x;
     knobPos.y = y;
     // Offset visual para centrar el knob
-    const offsetX = 0; // px a la derecha
-    const offsetY = 0; // px abajo
+    const offsetX = -9; // px a la derecha
+    const offsetY = -9; // px abajo
     knob.style.left = `${x + size/2 + offsetX}px`;
     knob.style.top = `${y + size/2 + offsetY}px`;
     // Actualizar el brazo SVG
