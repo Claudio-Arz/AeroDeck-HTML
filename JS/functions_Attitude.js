@@ -40,8 +40,8 @@ function updateAttitudeControl() {
     });
   }
 
-  ballImg = document.getElementById('AttCon_ball');
-  dialImg = document.getElementById('AttCon_dial');
+  ballImg = document.getElementById('AttCon_ball') || null;
+  dialImg = document.getElementById('AttCon_dial') || null;
 
   // Joystick: buscar elementos y asignar eventos SOLO cuando existen
   container = document.getElementById('joystick');
@@ -65,8 +65,8 @@ function updateAttitudeControl() {
     const pitchRaw = Math.round((y / radius) * 50 * 10) / 10;
     const pitchDeg = Math.round((pitchRaw * 0.4) * 10) / 10;
     if (coords) coords.textContent = `roll: ${roll.toFixed(1)}°, pitch: ${pitchDeg.toFixed(1)}°`;
-    if (ballImg) ballImg.style.transform = `rotate(${roll}deg) translateY(${pitchDeg * 2.5}px)`;
-    if (dialImg) dialImg.style.transform = `rotate(${roll}deg)`;
+    if (ballImg && ballImg.style) ballImg.style.transform = `rotate(${roll}deg) translateY(${pitchDeg * 2.5}px)`;
+    if (dialImg && dialImg.style) dialImg.style.transform = `rotate(${roll}deg)`;
     if (typeof ws !== 'undefined' && ws && ws.readyState === 1) {
       ws.send(JSON.stringify({ roll: roll, pitch: pitchDeg }));
     }
@@ -144,8 +144,8 @@ function updateAttitudeControl() {
   // Exponer función global para actualizar el instrumento desde mainHTML.cpp
   window.updateAttitudeInstrument = function(roll, pitch, isDragging) {
     if (dragging && isDragging !== true) return; // Solo actualizar si no se está arrastrando, o si se fuerza
-    if (ballImg) ballImg.style.transform = `rotate(${roll}deg) translateY(${pitch * 2.5}px)`;
-    if (dialImg) dialImg.style.transform = `rotate(${roll}deg)`;
+    if (ballImg && ballImg.style) ballImg.style.transform = `rotate(${roll}deg) translateY(${pitch * 2.5}px)`;
+    if (dialImg && dialImg.style) dialImg.style.transform = `rotate(${roll}deg)`;
     if (coords) coords.textContent = `roll: ${Number(roll).toFixed(1)}°, pitch: ${Number(pitch).toFixed(1)}°`;
   }
 
