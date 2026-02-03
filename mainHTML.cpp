@@ -103,7 +103,7 @@ ws.onmessage = (msg) => {
   // if (data.fuelFlow !== undefined) updateFuelFlowInstrument(data.fuelFlow);
   if (data.verticalSpeed !== undefined) updateVariometerAndValue(data.verticalSpeed);
   if (data.varAltitud !== undefined) updateAltimeterAndValue(data.varAltitud);
-  if (data.roll !== undefined ) updateAttitudeControl();
+  if (data.roll !== undefined ) updateAttitudeInstrument(data.roll, data.pitch, data.atti_zero, data.knobPosXY);
   
   if (typeof window.updateGyro === 'function' && typeof data.gyro === 'number') {
     window.updateGyro(data.gyro);

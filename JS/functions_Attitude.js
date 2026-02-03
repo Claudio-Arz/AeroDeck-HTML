@@ -31,12 +31,12 @@ function updateAttitudeControl() {
         attiZeroBtn.textContent = "Zero: OFF";
         // Enviar por WebSocket el estado actualizado
         if (typeof ws !== 'undefined' && ws && ws.readyState === 1) {
-          ws.send(JSON.stringify({ atti_zero: false }));
+           ws.send(JSON.stringify({ roll: roll, pitch: pitchDeg, attiZeroActive: attiZeroActive, knobPosXY: {x: knobPos.x, y: knobPos.y} }));
         }
       });
       // Enviar por WebSocket el estado para sincronizar con otros clientes (ON)
       if (typeof ws !== 'undefined' && ws && ws.readyState === 1) {
-        ws.send(JSON.stringify({ atti_zero: true }));
+          ws.send(JSON.stringify({ roll: roll, pitch: pitchDeg, attiZeroActive: attiZeroActive, knobPosXY: {x: knobPos.x, y: knobPos.y} })); 
       }
     });
   }
@@ -69,7 +69,7 @@ function updateAttitudeControl() {
     if (ballImg && ballImg.style) ballImg.style.transform = `rotate(${roll}deg) translateY(${pitchDeg * 2.5}px)`;
     if (dialImg && dialImg.style) dialImg.style.transform = `rotate(${roll}deg)`;
     if (typeof ws !== 'undefined' && ws && ws.readyState === 1) {
-      ws.send(JSON.stringify({ roll: roll, pitch: pitchDeg, knobPosXY: {x: knobPos.x, y: knobPos.y} }));
+      ws.send(JSON.stringify({ roll: roll, pitch: pitchDeg, attiZeroActive: attiZeroActive, knobPosXY: {x: knobPos.x, y: knobPos.y} }));
     }
   }
   
@@ -140,15 +140,7 @@ function updateAttitudeControl() {
     });
   } 
   
-  // Exponer función global para actualizar el instrumento desde mainHTML.cpp
-  // window.updateAttitudeInstrument = function(roll, pitch, isDragging) {
-  //   if (dragging && isDragging !== true) return; // Solo actualizar si no se está arrastrando, o si se fuerza
-  //   if (ballImg && ballImg.style) ballImg.style.transform = `rotate(${roll}deg) translateY(${pitch * 2.5}px)`;
-  //   if (dialImg && dialImg.style) dialImg.style.transform = `rotate(${roll}deg)`;
-  //   if (coords) coords.textContent = `roll: ${Number(roll).toFixed(1)}°, pitch: ${Number(pitch).toFixed(1)}°`;
-  // }
-  
-  // Inicializar en el centro
+
   
 }
 
@@ -157,5 +149,22 @@ if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', updateAttitudeControl);
 } else {
   updateAttitudeControl();
+}
+
+// Exponer función global para actualizar el instrumento desde mainHTML.cpp o WebSocket
+window.updateAttitudeInstrument = function(roll, pitch, isDragging, knobPosXY) {
+  // Solo actualizar visualización y knob si no se está arrastrando
+  if (!dragging || isDragging === true) {
+    if (typeof setKnob === 'function' && knobPosXY && typeof knobPosXY.x === 'number' && typeof knobPosXY.y === 'number') {
+      setKnob(knobPosXY.x, knobPosXY.y);
+    }
+    if (ballImg && ballImg.style) ballImg.style.transform = `rotate(${roll}deg) translateY(${pitch * 2.5}px)`;
+    if (dialImg && dialImg.style) dialImg.style.transform = `rotate(${roll}deg)`;
+    if (coords) coords.textContent = `roll: ${Number(roll).toFixed(1)}°, pitch: ${Number(pitch).toFixed(1)}°`;
+  }
+  // Siempre transmitir datos por WebSocket si está disponible
+  if (typeof ws !== 'undefined' && ws && ws.readyState === 1) {
+    ws.send(JSON.stringify({ roll: roll, pitch: pitch, attiZeroActive: attiZeroActive, knobPosXY: knobPosXY }));
+  }
 }
 
