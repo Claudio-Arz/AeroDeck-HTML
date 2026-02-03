@@ -49,6 +49,12 @@ function updateAttitudeControl() {
     const offsetY = -9; // px abajo
     knob.style.left = `${x + size/2 + offsetX}px`;
     knob.style.top = `${y + size/2 + offsetY}px`;
+    // Actualizar el brazo SVG
+    const armLine = document.getElementById('joystick-arm-line');
+    if (armLine) {
+      armLine.setAttribute('x2', (x + size/2).toString());
+      armLine.setAttribute('y2', (y + size/2).toString());
+    }
     // Mapear x a roll (-30 a 30)
     const roll = Math.round((x / radius) * 30 * 10) / 10;
     // Mapear y a pitch (-50 a 50)
