@@ -1,81 +1,123 @@
-<!-- Control deslizante para Gyro -->
 
-<div class="Gyro-label-slider">Gyro</div>
-
-<div style="display: flex; flex-direction: row; align-items: flex-start; gap: 3px;">
-  <div class="Gyro-Slier-Buttons"></div>
-    <div style="display: flex; flex-direction: column; align-items: center;">
-      <div class="slider-Gyro-container">
-        <input type="range" min="0" max="360" value="0" class="slider" id="gyr-slider" orient="vertical">
-      </div>
-      <div class="slider-value" id="gyr-slider-value-label">0</div>
+<div class="gyro-grid">
+  <div class="gyro-title">GYRO</div>
+  <div class="gyro-content">
+    <div class="gyro-slider-col">
+      <input type="range" min="0" max="360" value="0" class="gyro-slider" id="gyr-slider" orient="vertical">
+      <div class="gyro-slider-value" id="gyr-slider-value-label">0</div>
     </div>
-    <div style="display: flex; flex-direction: column; gap: 6px; align-items: center; margin-left: 12px;">
-      <button id="gyr-btn-0" class="slider-glow-btn Giro-slider-btn slider-btn-max" title="0°">0°</button>
-      <button id="gyr-btn-90" class="slider-glow-btn Giro-slider-btn slider-btn-mid" title="90°">90°</button>
-      <button id="gyr-btn-180" class="slider-glow-btn Giro-slider-btn slider-btn-min" title="180°">180°</button>
-      <button id="gyr-btn-270" class="slider-glow-btn Giro-slider-btn slider-btn-270" title="270°">270°</button>
+    <div class="gyro-btns-col">
+      <div class="gyro-btn-row" style="background:#ff00cc;"><button class="gyro-btn" id="gyr-btn-0">0°</button><div class="gyro-btn-label">Zero</div></div>
+      <div class="gyro-btn-row" style="background:#00fff7;"><button class="gyro-btn" id="gyr-btn-90">90°</button><div class="gyro-btn-label">East</div></div>
+      <div class="gyro-btn-row" style="background:#fffb00;"><button class="gyro-btn" id="gyr-btn-180">180°</button><div class="gyro-btn-label">South</div></div>
+      <div class="gyro-btn-row" style="background:#ff0055;"><button class="gyro-btn" id="gyr-btn-270">270°</button><div class="gyro-btn-label">West</div></div>
     </div>
   </div>
 </div>
 
 <style>
-  .Gyro-label-slider {
-    font-size: 14px;
+  .gyro-grid {
+    width: 240px;
+    height: 70px;
+    display: grid;
+    grid-template-rows: 22px 1fr;
+    background: #181a2a;
+    border-radius: 12px;
+    box-shadow: 0 0 16px #0ff8, 0 0 4px #ff00cc;
+    overflow: hidden;
+    font-family: 'Orbitron', 'Arial', sans-serif;
+  }
+  .gyro-title {
+    grid-row: 1;
+    width: 100%;
+    height: 22px;
+    background: linear-gradient(90deg, #ff00cc 0%, #00fff7 100%);
+    color: #fff;
+    font-size: 15px;
     font-weight: bold;
     text-align: center;
-    margin-bottom: 6px;
-    color: #fff;
-    background-color: #8a089e;
-    box-shadow: 0 0 8px rgba(230, 191, 17, 0.667);
-    transition: box-shadow 0.2s, background-color 0.2s;
-    
-  }
-  .Giro-slider-btn {
+    letter-spacing: 2px;
     display: flex;
-    flex-direction: column;    
-    width: 10px;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 8px #fffb00, 0 0 4px #00fff7;
+  }
+  .gyro-content {
+    grid-row: 2;
+    display: grid;
+    grid-template-columns: 55px 15px;
+    height: 48px;
+    gap: 0;
+  }
+  .gyro-slider-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 55px;
+    height: 100%;
+    background: #23234a;
+    border-right: 2px solid #ff00cc;
+    box-shadow: 0 0 8px #00fff7 inset;
+  }
+  .gyro-slider {
+    width: 40px;
+    height: 40px;
+    margin-top: 2px;
+    accent-color: #ff00cc;
+    background: #23234a;
+    border-radius: 8px;
+    box-shadow: 0 0 8px #fffb00 inset;
+  }
+  .gyro-slider-value {
+    font-size: 12px;
+    color: #00fff7;
+    text-align: center;
+    margin-top: 2px;
+    font-family: 'Orbitron', 'Arial', sans-serif;
+    letter-spacing: 1px;
+  }
+  .gyro-btns-col {
+    display: flex;
+    flex-direction: column;
+    width: 15px;
+    height: 100%;
+    gap: 0;
+  }
+  .gyro-btn-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     height: 25%;
-    font-size: 9px;
-    padding: 0;
+    width: 100%;
     border-radius: 6px;
-    border: rgb(249, 252, 249);
+    margin: 0;
+    box-shadow: 0 0 6px #fff8, 0 0 2px #ff00cc;
+  }
+  .gyro-btn {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: none;
+    margin: 0 auto;
+    box-shadow: 0 0 6px #fff8, 0 0 2px #ff00cc;
     cursor: pointer;
+    font-size: 9px;
+    color: #181a2a;
+    font-weight: bold;
+    background: transparent;
+    transition: box-shadow 0.2s, background 0.2s;
+  }
+  .gyro-btn-label {
+    font-size: 8px;
     color: #fff;
-    background-color: #444;
-    box-shadow: 0 0 8px rgba(247, 243, 195, 0.667);
-    transition: box-shadow 0.2s, background-color 0.2s;
-
-
-  }
-  .slider-Gyro-container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;    
-    width: 60px;
-    height: 150px;
-    margin-bottom: 4px;
-    background-color: #473f90;
-    box-shadow: 0 0 8px rgba(240, 240, 239, 0.667);
-    transition: box-shadow 0.2s, background-color 0.2s;
-    border-radius: 0.05%;
-    border-color: blueviolet;
-    rotate: 90deg;
-  }
-  .Gyro-Slier-Buttons {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;    
-    width: 70px;
-    height: 150px;
-    margin-bottom: 4px;
-    background-color: #473f90;
-    box-shadow: 0 0 8px rgba(240, 240, 239, 0.667);
-    transition: box-shadow 0.2s, background-color 0.2s;
-    border-radius: 0.05%;
-    border-color: blueviolet;
+    text-align: center;
+    margin-top: 1px;
+    font-family: 'Orbitron', 'Arial', sans-serif;
+    letter-spacing: 1px;
+    font-weight: bold;
+    text-shadow: 0 0 2px #00fff7, 0 0 2px #ff00cc;
   }
   .Gyro-slider-value {
     font-size: 12px;
