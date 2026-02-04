@@ -110,7 +110,7 @@ para indicar visualmente su estado.
     0 0 8px 2px #1ab0a6,   /* luz turquesa */
     0 0 0 6px #c97a1a;     /* borde naranja oscuro */
   overflow: hidden;
-  box-shadow: 0 0 20px 10px #000a;
+  box-shadow: 0 0 20px 10px rgba(174, 238, 95, 0.545);
   background: #1d3958;
   border: 8px solid #0a1a2f;
   box-sizing: border-box;
@@ -467,44 +467,4 @@ proporcionalmente para que encajen bien.
   transition: transform 0.2s cubic-bezier(.4,2,.6,1);
 }
 
-/* 
-.joystick-container {
-position: relative;
-width: 200px;
-height: 200px;
-margin-bottom: 24px;
-}
-.joystick-base {
-position: absolute;
-width: 100%;
-height: 100%;
-border-radius: 50%;
-background: #444;
-border: 4px solid #888;
-box-shadow: 0 0 24px #000a;
-}
-.joystick-knob {
-position: absolute;
-width: 20px;
-height: 20px;
-left: 50%;
-top: 50%;
-transform: translate(-50%, -50%);
-border-radius: 50%;
-background: #fff;
-border: 3px solid #2196f3;
-box-shadow: 0 0 12px #2196f388;
-cursor: grab;
-transition: box-shadow 0.2s;
-z-index: 2;
-}
-.joystick-knob:active {
-box-shadow: 0 0 24px #2196f3cc;
-cursor: grabbing;
-}
-.coords {
-font-size: 1.2em;
-margin-top: 12px;
-letter-spacing: 1px;
-} */
 
