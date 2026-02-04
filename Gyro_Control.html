@@ -1,18 +1,101 @@
 <!-- Control deslizante para Gyro -->
 
-<div class="label-slider">Gyro</div>
+<div class="Gyro-label-slider">Gyro</div>
 
-<div style="display: flex; flex-direction: row; align-items: flex-start; gap: 30px;">
-  <div style="display: flex; flex-direction: column; align-items: center;">
-    <div class="slider">
-      <input type="range" min="0" max="360" value="0" class="slider" id="gyr-slider" orient="vertical">
+<div style="display: flex; flex-direction: row; align-items: flex-start; gap: 3px;">
+  <div class="Gyro-Slier-Buttons"></div>
+    <div style="display: flex; flex-direction: column; align-items: center;">
+      <div class="slider-Gyro-container">
+        <input type="range" min="0" max="360" value="0" class="slider" id="gyr-slider" orient="vertical">
+      </div>
+      <div class="slider-value" id="gyr-slider-value-label">0</div>
     </div>
-    <div class="slider-value" id="gyr-slider-value-label">0</div>
-  </div>
-  <div style="display: flex; flex-direction: column; gap: 6px; align-items: center; margin-left: 12px;">
-    <button id="gyr-btn-0" class="slider-glow-btn slider-btn slider-btn-max" title="0°">0°</button>
-    <button id="gyr-btn-90" class="slider-glow-btn slider-btn slider-btn-mid" title="90°">90°</button>
-    <button id="gyr-btn-180" class="slider-glow-btn slider-btn slider-btn-min" title="180°">180°</button>
-    <button id="gyr-btn-270" class="slider-glow-btn slider-btn slider-btn-mid" title="270°">270°</button>
+    <div style="display: flex; flex-direction: column; gap: 6px; align-items: center; margin-left: 12px;">
+      <button id="gyr-btn-0" class="slider-glow-btn Giro-slider-btn slider-btn-max" title="0°">0°</button>
+      <button id="gyr-btn-90" class="slider-glow-btn Giro-slider-btn slider-btn-mid" title="90°">90°</button>
+      <button id="gyr-btn-180" class="slider-glow-btn Giro-slider-btn slider-btn-min" title="180°">180°</button>
+      <button id="gyr-btn-270" class="slider-glow-btn Giro-slider-btn slider-btn-270" title="270°">270°</button>
+    </div>
   </div>
 </div>
+
+<style>
+  .Gyro-label-slider {
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 6px;
+    color: #fff;
+    background-color: #8a089e;
+    box-shadow: 0 0 8px rgba(230, 191, 17, 0.667);
+    transition: box-shadow 0.2s, background-color 0.2s;
+    
+  }
+  .Giro-slider-btn {
+    display: flex;
+    flex-direction: column;    
+    width: 10px;
+    height: 25%;
+    font-size: 9px;
+    padding: 0;
+    border-radius: 6px;
+    border: rgb(249, 252, 249);
+    cursor: pointer;
+    color: #fff;
+    background-color: #444;
+    box-shadow: 0 0 8px rgba(247, 243, 195, 0.667);
+    transition: box-shadow 0.2s, background-color 0.2s;
+
+
+  }
+  .slider-Gyro-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;    
+    width: 60px;
+    height: 150px;
+    margin-bottom: 4px;
+    background-color: #473f90;
+    box-shadow: 0 0 8px rgba(240, 240, 239, 0.667);
+    transition: box-shadow 0.2s, background-color 0.2s;
+    border-radius: 0.05%;
+    border-color: blueviolet;
+  }
+  .Gyro-Slier-Buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;    
+    width: 70px;
+    height: 150px;
+    margin-bottom: 4px;
+    background-color: #473f90;
+    box-shadow: 0 0 8px rgba(240, 240, 239, 0.667);
+    transition: box-shadow 0.2s, background-color 0.2s;
+    border-radius: 0.05%;
+    border-color: blueviolet;
+  }
+  .Gyro-slider-value {
+    font-size: 12px;
+    text-align: center;
+    margin-top: 4px;
+  }
+  .Gyroslider-glow-btn {
+    width: 50px;
+    height: 24px;
+    font-size: 12px;
+    padding: 4px 0;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    background-color: #444;
+    box-shadow: 0 0 8px #000a;
+    transition: box-shadow 0.2s, background-color 0.2s;
+  }
+  .slider-glow-btn:hover {
+    box-shadow: 0 0 12px #2196f3cc;
+    background-color: #555;
+  }
+</style>
