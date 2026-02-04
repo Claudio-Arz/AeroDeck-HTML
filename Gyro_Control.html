@@ -43,11 +43,10 @@
     box-shadow: 0 0 8px #fffb00, 0 0 4px #00fff7;
   }
   .gyro-content {
-    grid-column: 2;
     display: grid;
-    grid-template-columns: 1fr;
     grid-template-columns: 55px 15px;
-    height: 100%;
+    grid-template-rows: 1fr;
+    height: 208px;
     gap: 0;
   }
   .gyro-slider-col {
@@ -55,15 +54,15 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 100%;
+    width: 55px;
     height: 100%;
     background: #23234a;
     border-right: 2px solid #ff00cc;
     box-shadow: 0 0 8px #00fff7 inset;
   }
   .gyro-slider {
-    width: 55px;
-    height: 100%;
+    width: 40px;
+    height: 170px;
     margin-top: 2px;
     accent-color: #ff00cc;
     background: #23234a;
@@ -80,7 +79,7 @@
   }
   .gyro-btns-col {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     width: 15px;
     height: 100%;
     gap: 0;
@@ -90,15 +89,18 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 25%;
-    height: 100%;
+    width: 15px;
+    height: calc(25% - 1px);
+    min-width: 15px;
+    max-width: 15px;
+    min-height: 0;
     border-radius: 6px;
     margin: 0;
     box-shadow: 0 0 6px #fff8, 0 0 2px #ff00cc;
   }
   .gyro-btn {
     width: 15px;
-    height: 25%;
+    height: 15px;
     border-radius: 50%;
     border: none;
     margin: 0 auto;
@@ -109,6 +111,9 @@
     font-weight: bold;
     background: transparent;
     transition: box-shadow 0.2s, background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .gyro-btn-label {
     font-size: 8px;
