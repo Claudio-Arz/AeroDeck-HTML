@@ -285,7 +285,7 @@ window.addEventListener('DOMContentLoaded', () => {
       if (typeof Gyro !== 'undefined' && typeof Gyro.init === 'function') {
         Gyro.init({
           imgIds: { giro_dial: 'gyr-dial' },
-          sliderIds: { valor: 'gyro-slider-value' }
+          sliderIds: { valor: 'gyr-slider' }
         });
       }
       // Inicializar controles del Gyro
