@@ -8,7 +8,7 @@ let isUserSlidingGyro = false;
 let currentGyro = 0;
 let targetGyro = 0;
 let gyroAnimationFrame = null;
-
+setupGyroControls(ws);
 // Animación del dial
 function animateDialGyro(newValue) {
   targetGyro = newValue;
