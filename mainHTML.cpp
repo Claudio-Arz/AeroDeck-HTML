@@ -289,9 +289,15 @@ window.addEventListener('DOMContentLoaded', () => {
         });
       }
       // Inicializar controles del Gyro
-      if (typeof setupGyroControls === 'function') {
-        setupGyroControls(ws);
+      // Esperar a que el DOM esté listo antes de inicializar controles Gyro
+      function trySetupGyroControls() {
+        if (typeof setupGyroControls === 'function' && document.getElementById('gyr-slider') && document.getElementById('gyr-dial')) {
+          setupGyroControls(ws);
+        } else {
+          setTimeout(trySetupGyroControls, 50);
+        }
       }
+      trySetupGyroControls();
     });
 });   
 
