@@ -19,7 +19,7 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_altimeter.js"></script>
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_Attitude.js"></script>
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_airSpeed.js"></script>
-<script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_Gyro.js"></script>
+<script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_Gyro2.js"></script>
 </head>
 <body>
 <h1 style="text-align:center; margin-top: 24px;">Banco de Prueba y Calibración</h1>
@@ -45,20 +45,17 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 const ws = new WebSocket('ws://' + location.hostname + ':81/');
 // Ejemplo para Gyro: cargar un solo archivo y distribuir los divs
 window.addEventListener('DOMContentLoaded', () => {
-  fetch("https://claudio-arz.github.io/AeroDeck-HTML/gyro_full.html")
+  fetch("gyro_full.html")
     .then(r => r.text())
     .then(html => {
-      // Crear un contenedor temporal para parsear el HTML
       const tempDiv = document.createElement('div');
       tempDiv.innerHTML = html;
-      // Distribuir cada sección/div en la celda correspondiente
+      // Instrumento en row 2 col 2
       const dialDiv = tempDiv.querySelector('#gyro-instrument');
-      const controlsDiv = tempDiv.querySelector('#gyro-controls');
-      const btnsDiv = tempDiv.querySelector('#gyro-btns');
       if (dialDiv) document.getElementById('inst10').appendChild(dialDiv);
+      // Controles (slider+botones) en row 1 col 7
+      const controlsDiv = tempDiv.querySelector('#gyro-controls');
       if (controlsDiv) document.getElementById('inst07').appendChild(controlsDiv);
-      if (btnsDiv) document.getElementById('inst06').appendChild(btnsDiv);
-      // Inicializar controles si es necesario
       if (typeof setupGyroControls === 'function') setupGyroControls(ws);
     });
 });
