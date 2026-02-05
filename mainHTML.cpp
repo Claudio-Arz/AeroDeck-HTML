@@ -56,27 +56,27 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 
 <div id="main-grid" class="grid-container">
   
-  <div class="grid-item" id="inst01" style="grid-row: 1; grid-column: 1;"></div>  
-  <div class="grid-item" id="inst02" style="grid-row: 1; grid-column: 2;"></div>  
-  <div class="grid-item" id="inst03" style="grid-row: 1; grid-column: 3;"></div>  
-  <div class="grid-item" id="inst04" style="grid-row: 1; grid-column: 4;"></div>  
-  <div class="grid-item" id="inst05" style="grid-row: 1; grid-column: 5;"></div>  
-  <div class="grid-item" id="inst06" style="grid-row: 1; grid-column: 6;"></div>  
-  <div class="grid-item" id="inst07" style="grid-row: 1; grid-column: 7;"></div>  
-  <div class="grid-item" id="inst08" style="grid-row: 1; grid-column: 8;"></div>  
+  <div class="grid-item" id="inst01" style="grid-row: 1; grid-column: 1;">Air Speed</div>  
+  <div class="grid-item" id="inst02" style="grid-row: 1; grid-column: 2;">Attitude Control</div>  
+  <div class="grid-item" id="inst03" style="grid-row: 1; grid-column: 3;">Altimeter</div>  
+  <div class="grid-item" id="inst04" style="grid-row: 1; grid-column: 4;">RPM</div>  
+  <div class="grid-item" id="inst05" style="grid-row: 1; grid-column: 5;">Controles Pitch & Roll</div>  
+  <div class="grid-item" id="inst06" style="grid-row: 1; grid-column: 6;">Controles RPM</div>  
+  <div class="grid-item" id="inst07" style="grid-row: 1; grid-column: 7;">Controles Gyro</div>  
+  <div class="grid-item" id="inst08" style="grid-row: 1; grid-column: 8;">Controles Air Speed</div>  
   <div class="grid-item" id="inst09" style="grid-row: 2; grid-column: 1;"></div>  
-  <div class="grid-item" id="inst10" style="grid-row: 2; grid-column: 2;"></div>  
-  <div class="grid-item" id="inst11" style="grid-row: 2; grid-column: 3;"></div>  
+  <div class="grid-item" id="inst10" style="grid-row: 2; grid-column: 2;">Gyro</div>  
+  <div class="grid-item" id="inst11" style="grid-row: 2; grid-column: 3;">Vertical Speed</div>  
   <div class="grid-item" id="inst12" style="grid-row: 2; grid-column: 4;"></div>  
   <div class="grid-item" id="inst13" style="grid-row: 2; grid-column: 5;"></div>  
-  <div class="grid-item" id="inst14" style="grid-row: 2; grid-column: 6;"></div>  
+  <div class="grid-item" id="inst14" style="grid-row: 2; grid-column: 6;">Controles Vertical Speed</div>  
   <div class="grid-item" id="inst15" style="grid-row: 2; grid-column: 7;"></div>  
   <div class="grid-item" id="inst16" style="grid-row: 2; grid-column: 8;"></div>
 
 </div>
 
 <!-- El contenido HTML principal se cargará aquí dinámicamente -->
-</div>
+
 </body>
 
 <script>
@@ -89,7 +89,7 @@ const ws = new WebSocket('ws://' + location.hostname + ':81/');
 
 
 
-// Handler WebSocket: actualiza todos los instrumentos y el botón Noice
+// Handler WebSocket: actualiza todos los instrumentos y botones según los datos recibidos
 ws.onmessage = (msg) => {
   let data = {};
   try {
@@ -98,6 +98,7 @@ ws.onmessage = (msg) => {
     console.warn('Mensaje WebSocket no es JSON:', msg.data);
     return;
   }
+    
   if (data.airspeed !== undefined) updateAirspeed(data.airspeed);
   if (data.rpm !== undefined) updateNeedleAndValue(data.rpm);
   // if (data.fuelFlow !== undefined) updateFuelFlowInstrument(data.fuelFlow);
