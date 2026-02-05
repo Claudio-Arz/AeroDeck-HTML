@@ -79,5 +79,5 @@ function setupGyroControls(ws) {
 }
 
 // Fin de functions_Gyro.js
-  ];;
+
 
