@@ -281,8 +281,8 @@ window.addEventListener('DOMContentLoaded', () => {
     .then(r => r.text())
     .then(html => {
       document.getElementById("inst07").innerHTML = html;
-      // Inicializar Gyro solo cuando ambos HTML estén cargados
-      if (typeof Gyro !== 'undefined' && typeof Gyro.init === 'function') {
+
+
     });
 });   
 
