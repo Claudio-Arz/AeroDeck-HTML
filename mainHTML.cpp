@@ -98,73 +98,7 @@ ws.onmessage = (msg) => {
     console.warn('Mensaje WebSocket no es JSON:', msg.data);
     return;
   }
-    
-  if (data.airspeed !== undefined) updateAirspeed(data.airspeed);
-  if (data.rpm !== undefined) updateNeedleAndValue(data.rpm);
-  // if (data.fuelFlow !== undefined) updateFuelFlowInstrument(data.fuelFlow);
-  if (data.verticalSpeed !== undefined) updateVariometerAndValue(data.verticalSpeed);
-  if (data.varAltitud !== undefined) updateAltimeterAndValue(data.varAltitud);
-  if (data.gyro !== undefined) updateGyroDialAndValue(data.gyro);
-  if (typeof window.updateAttitudeInstrument === 'function' && typeof data.roll === 'number' && typeof data.pitch === 'number') {
-    window.updateAttitudeInstrument(data.roll, data.pitch);
-  }
 
-
-
-  // --- Sincronizar visualmente el botón Noice en todos los clientes ---
-  if (data.rpmNoiceOn !== undefined) {
-    function updateNoiceButtonState(state) {
-      window.noiceOn = !!state;
-      const btn = document.getElementById('noice-btn');
-      if (btn) {
-        if (state) {
-          btn.classList.add('active');
-          btn.textContent = 'Noice ON';
-        } else {
-          btn.classList.remove('active');
-          btn.textContent = 'Noice OFF';
-        }
-      }
-    }
-    if (document.getElementById('noice-btn')) {
-      updateNoiceButtonState(data.rpmNoiceOn);
-    } else {
-      const observer = new MutationObserver((mutations, obs) => {
-        const btn = document.getElementById('noice-btn');
-        if (btn) {
-          updateNoiceButtonState(data.rpmNoiceOn);
-          obs.disconnect();
-        }
-      });
-      observer.observe(document.body, { childList: true, subtree: true });
-    }
-  }
-
-  // --- Sincronizar visualmente el botón Zero en todos los clientes ---
-  if (data.atti_zero !== undefined) {
-    function updateZeroButtonState(state) {
-      window.attiZeroActive = !!state;
-      const btn = document.getElementById('atti-zero-btn');
-      if (btn) {
-        btn.textContent = state ? 'Zero: ON' : 'Zero: OFF';
-        btn.classList.toggle('active', !!state);
-      }
-    }
-    if (document.getElementById('atti-zero-btn')) {
-      updateZeroButtonState(data.atti_zero);
-    } else {
-      const observer = new MutationObserver((mutations, obs) => {
-        const btn = document.getElementById('atti-zero-btn');
-        if (btn) {
-          updateZeroButtonState(data.atti_zero);
-          obs.disconnect();
-        }
-      });
-      observer.observe(document.body, { childList: true, subtree: true });
-    }
-  }
-
-};
 
 // Cargar el HTML del Controles de RPM de forma dinámica
 window.addEventListener('DOMContentLoaded', () => {
@@ -300,6 +234,74 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 });   
 
+
+    
+  if (data.airspeed !== undefined) updateAirspeed(data.airspeed);
+  if (data.rpm !== undefined) updateNeedleAndValue(data.rpm);
+  // if (data.fuelFlow !== undefined) updateFuelFlowInstrument(data.fuelFlow);
+  if (data.verticalSpeed !== undefined) updateVariometerAndValue(data.verticalSpeed);
+  if (data.varAltitud !== undefined) updateAltimeterAndValue(data.varAltitud);
+  if (data.gyro !== undefined) updateGyroDialAndValue(data.gyro);
+  if (typeof window.updateAttitudeInstrument === 'function' && typeof data.roll === 'number' && typeof data.pitch === 'number') {
+    window.updateAttitudeInstrument(data.roll, data.pitch);
+  }
+
+
+
+  // --- Sincronizar visualmente el botón Noice en todos los clientes ---
+  if (data.rpmNoiceOn !== undefined) {
+    function updateNoiceButtonState(state) {
+      window.noiceOn = !!state;
+      const btn = document.getElementById('noice-btn');
+      if (btn) {
+        if (state) {
+          btn.classList.add('active');
+          btn.textContent = 'Noice ON';
+        } else {
+          btn.classList.remove('active');
+          btn.textContent = 'Noice OFF';
+        }
+      }
+    }
+    if (document.getElementById('noice-btn')) {
+      updateNoiceButtonState(data.rpmNoiceOn);
+    } else {
+      const observer = new MutationObserver((mutations, obs) => {
+        const btn = document.getElementById('noice-btn');
+        if (btn) {
+          updateNoiceButtonState(data.rpmNoiceOn);
+          obs.disconnect();
+        }
+      });
+      observer.observe(document.body, { childList: true, subtree: true });
+    }
+  }
+
+  // --- Sincronizar visualmente el botón Zero en todos los clientes ---
+  if (data.atti_zero !== undefined) {
+    function updateZeroButtonState(state) {
+      window.attiZeroActive = !!state;
+      const btn = document.getElementById('atti-zero-btn');
+      if (btn) {
+        btn.textContent = state ? 'Zero: ON' : 'Zero: OFF';
+        btn.classList.toggle('active', !!state);
+      }
+    }
+    if (document.getElementById('atti-zero-btn')) {
+      updateZeroButtonState(data.atti_zero);
+    } else {
+      const observer = new MutationObserver((mutations, obs) => {
+        const btn = document.getElementById('atti-zero-btn');
+        if (btn) {
+          updateZeroButtonState(data.atti_zero);
+          obs.disconnect();
+        }
+      });
+      observer.observe(document.body, { childList: true, subtree: true });
+    }
+  }
+
+};
 
 </script>
 </html>
