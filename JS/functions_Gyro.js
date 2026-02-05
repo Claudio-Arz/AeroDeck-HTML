@@ -34,7 +34,7 @@ function animateDialGyro(newValue) {
 // Parámetros:
 //   gyro: número, valor del gyro (0 a 360).
 function updateGyroDialAndValue(gyro) {
-  let angle = (Math.max(0, Math.min(gyro, 360))) / 360;
+  let angle = -(Math.max(0, Math.min(gyro, 360))) / 360;
   const gyroDial = document.getElementById("gyr-dial");
   if (gyroDial) {
     // Rotar el dial del gyro
@@ -63,10 +63,13 @@ function updateGyroDialAndValue(gyro) {
 /*
   Configura los controles del Gyro: botón de ajuste rápido y slider del gyro.
   Parámetros:
-    ws: WebSocket abierto y listo para enviar mensajes.
+    valorInicial: número, valor inicial del gyro.
 
 */
-function setupGyroControls(ws) {
+function setupGyroControls(valorInicial) {
+  currentGyro = valorInicial;
+  updateGyroDialAndValue(currentGyro);
+  
   // Slider
   const gyroSlider = document.getElementById("gyr-slider");
   if (gyroSlider && !gyroSlider._gyroListenerSet) {
