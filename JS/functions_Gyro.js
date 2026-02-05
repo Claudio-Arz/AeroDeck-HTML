@@ -9,7 +9,7 @@ let currentGyro = 0;
 let targetGyro = 0;
 let gyroAnimationFrame = null;
 
-setupGyroControls(ws);
+setupGyroControls(currentGyro);
 // Función para animar el dial del gyro a un valor específico
 // Parámetros:
 //   newValue: número, valor objetivo del gyro (0 a 360).
