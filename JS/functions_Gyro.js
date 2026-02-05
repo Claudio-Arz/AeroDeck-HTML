@@ -8,6 +8,11 @@ let isUserSlidingGyro = false;
 let currentGyro = 0;
 let targetGyro = 0;
 let gyroAnimationFrame = null;
+
+setupGyroControls(ws);
+// Función para animar el dial del gyro a un valor específico
+// Parámetros:
+//   newValue: número, valor objetivo del gyro (0 a 360).
 function animateDialGyro(newValue) {
   targetGyro = newValue;
   if (!gyroAnimationFrame) {
@@ -91,29 +96,6 @@ function setupGyroControls(ws) {
     }
   });
 }
-
-// Función para animar el dial del gyro a un valor específico
-// Parámetros:
-//   newValue: número, valor objetivo del gyro (0 a 360).
-function animateDialGyro(newValue) {
-  targetGyro = newValue;
-  if (!gyroAnimationFrame) {
-    function step() {
-      currentGyro += (targetGyro - currentGyro) * 0.2;
-      if (Math.abs(targetGyro - currentGyro) < 0.5) {
-        currentGyro = targetGyro;
-        gyroAnimationFrame = null;
-      } else {
-        gyroAnimationFrame = requestAnimationFrame(step);
-      }
-    }
-    gyroAnimationFrame = requestAnimationFrame(step);
-  }
-}
-
-
-
-
 
 
 // Fin de functions_Gyro.js

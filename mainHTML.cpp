@@ -108,9 +108,7 @@ ws.onmessage = (msg) => {
   if (typeof window.updateAttitudeInstrument === 'function' && typeof data.roll === 'number' && typeof data.pitch === 'number') {
     window.updateAttitudeInstrument(data.roll, data.pitch);
   }
-  // if (typeof window.updateGyro === 'function' && typeof data.gyro === 'number') {
-  //   updateGyroDialAndValue(data.gyro);
-  // }
+
 
 
   // --- Sincronizar visualmente el botón Noice en todos los clientes ---
