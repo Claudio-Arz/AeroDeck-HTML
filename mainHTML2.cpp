@@ -45,7 +45,7 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 const ws = new WebSocket('ws://' + location.hostname + ':81/');
 // Ejemplo para Gyro: cargar un solo archivo y distribuir los divs
 window.addEventListener('DOMContentLoaded', () => {
-  fetch("gyro_full.html")
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/gyro_full.html")
     .then(r => r.text())
     .then(html => {
       const tempDiv = document.createElement('div');
