@@ -80,10 +80,15 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 </body>
 
 <script>
-
 // Inicialización del WebSocket para comunicación con el ESP32
 const ws = new WebSocket('ws://' + location.hostname + ':81/');
+
+
 // === Funciones de actualización de instrumentos ===
+
+
+
+
 // Handler WebSocket: actualiza todos los instrumentos y botones según los datos recibidos
 ws.onmessage = (msg) => {
   let data = {};
@@ -99,11 +104,12 @@ ws.onmessage = (msg) => {
   // if (data.fuelFlow !== undefined) updateFuelFlowInstrument(data.fuelFlow);
   if (data.verticalSpeed !== undefined) updateVariometerAndValue(data.verticalSpeed);
   if (data.varAltitud !== undefined) updateAltimeterAndValue(data.varAltitud);
-  if (data.gyro !== undefined) updateGyroDialAndValue(data.gyro);
   if (typeof window.updateAttitudeInstrument === 'function' && typeof data.roll === 'number' && typeof data.pitch === 'number') {
     window.updateAttitudeInstrument(data.roll, data.pitch);
   }
-
+  if (typeof window.updateGyro === 'function' && typeof data.gyro === 'number') {
+    window.updateGyro(data.gyro);
+  }
 
 
   // --- Sincronizar visualmente el botón Noice en todos los clientes ---
