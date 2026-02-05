@@ -288,6 +288,10 @@ window.addEventListener('DOMContentLoaded', () => {
           sliderIds: { valor: 'gyro-slider-value' }
         });
       }
+      // Inicializar controles del Gyro
+      if (typeof setupGyroControls === 'function') {
+        setupGyroControls(ws);
+      }
     });
 });   
 

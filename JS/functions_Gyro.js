@@ -62,6 +62,18 @@ function updateGyroDialAndValue(gyro) {
 
 */
 function setupGyroControls(ws) {
+
+    // Evento para el slider de Gyro
+    const gyroSlider = document.getElementById("gyr-slider");
+    if (gyroSlider) {
+      gyroSlider.addEventListener("input", function() {
+        isUserSlidingGyro = true;
+        animateDialGyro(Number(gyroSlider.value));
+      });
+      gyroSlider.addEventListener("change", function() {
+        isUserSlidingGyro = false;
+      });
+    }
   const gyroQuickBtns = [
 
     { id: "gyr-btn-0", value: 0 },
