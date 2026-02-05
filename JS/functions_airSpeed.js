@@ -18,27 +18,27 @@ const AirSpeed = (function() {
 
   // Actualiza la aguja según el valor del slider (0-200) o un valor recibido
   function updateAirspeed(airspeed) {
-    if (imgs.aguja && sliders.valor ) {
-      // El slider y el valor pueden ir de 0 a 200 (según tu HTML)
-      const min = 40;
-      const max = 200;
-      const val = (typeof airspeed === 'number') ? airspeed : parseFloat(sliders.valor.value);
-      // Limitar el valor al rango real
-      const safeVal = Math.max(min, Math.min(val, max));
-      // Mapea 0-200 nudos a 36° (mínimo) a 324° (máximo) (giro horario)
-      let angle =  ((safeVal - min) * (324 - 36) ) / (max - min) + 36; // Ajuste afinado.
-      imgs.aguja.style.transform = `rotate(${angle}deg)`;
-      // Actualiza valor numérico en el instrumento principal
-      const valueEl = getEl('as-value');
-      if (valueEl) valueEl.textContent = Math.round(safeVal);
-      // Actualiza valor numérico junto al slider de control
-      const sliderLabel = getEl('as-slider-value-label');
-      if (sliderLabel) sliderLabel.textContent = Math.round(safeVal);
-      // Solo sincronizar el slider si el cambio viene de WebSocket (no de interacción del usuario)
-      if (typeof airspeed === 'number' && sliders.valor && document.activeElement !== sliders.valor) {
-        sliders.valor.value = safeVal;
-      }
-    }
+    // if (imgs.aguja && sliders.valor ) {
+    //   // El slider y el valor pueden ir de 0 a 200 (según tu HTML)
+    //   const min = 40;
+    //   const max = 200;
+    //   const val = (typeof airspeed === 'number') ? airspeed : parseFloat(sliders.valor.value);
+    //   // Limitar el valor al rango real
+    //   const safeVal = Math.max(min, Math.min(val, max));
+    //   // Mapea 0-200 nudos a 36° (mínimo) a 324° (máximo) (giro horario)
+    //   let angle =  ((safeVal - min) * (324 - 36) ) / (max - min) + 36; // Ajuste afinado.
+    //   imgs.aguja.style.transform = `rotate(${angle}deg)`;
+    //   // Actualiza valor numérico en el instrumento principal
+    //   const valueEl = getEl('as-value');
+    //   if (valueEl) valueEl.textContent = Math.round(safeVal);
+    //   // Actualiza valor numérico junto al slider de control
+    //   const sliderLabel = getEl('as-slider-value-label');
+    //   if (sliderLabel) sliderLabel.textContent = Math.round(safeVal);
+    //   // Solo sincronizar el slider si el cambio viene de WebSocket (no de interacción del usuario)
+    //   if (typeof airspeed === 'number' && sliders.valor && document.activeElement !== sliders.valor) {
+    //     sliders.valor.value = safeVal;
+    //   }
+    // }
   }
 
   function init(config) {
