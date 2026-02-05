@@ -9,7 +9,37 @@ let currentGyro = 0;
 let targetGyro = 0;
 let gyroAnimationFrame = null;
 
-setupGyroControls(currentGyro);
+// Asignar event listeners al cargar el script (solo una vez)
+document.addEventListener('DOMContentLoaded', function() {
+  const gyroSlider = document.getElementById("gyr-slider");
+  if (gyroSlider && !gyroSlider._gyroListenerSet) {
+    gyroSlider.addEventListener("input", function() {
+      isUserSlidingGyro = true;
+      animateDialGyro(Number(gyroSlider.value));
+    });
+    gyroSlider.addEventListener("change", function() {
+      isUserSlidingGyro = false;
+    });
+    gyroSlider._gyroListenerSet = true;
+  }
+  const gyroQuickBtns = [
+    { id: "gyr-btn-0", value: 0 },
+    { id: "gyr-btn-90", value: 90 },
+    { id: "gyr-btn-180", value: 180 },
+    { id: "gyr-btn-270", value: 270 }
+  ];
+  gyroQuickBtns.forEach(btnInfo => {
+    const btn = document.getElementById(btnInfo.id);
+    if (btn && !btn._gyroListenerSet) {
+      btn.addEventListener("click", function() {
+        animateDialGyro(btnInfo.value);
+      });
+      btn._gyroListenerSet = true;
+    }
+  });
+});
+
+
 // Función para animar el dial del gyro a un valor específico
 // Parámetros:
 //   newValue: número, valor objetivo del gyro (0 a 360).
@@ -60,45 +90,7 @@ function updateGyroDialAndValue(gyro) {
 }
 
 
-/*
-  Configura los controles del Gyro: botón de ajuste rápido y slider del gyro.
-  Parámetros:
-    valorInicial: número, valor inicial del gyro.
 
-*/
-function setupGyroControls(valorInicial) {
-  currentGyro = valorInicial;
-  updateGyroDialAndValue(currentGyro);
-  
-  // Slider
-  const gyroSlider = document.getElementById("gyr-slider");
-  if (gyroSlider && !gyroSlider._gyroListenerSet) {
-    gyroSlider.addEventListener("input", function() {
-      isUserSlidingGyro = true;
-      animateDialGyro(Number(gyroSlider.value));
-    });
-    gyroSlider.addEventListener("change", function() {
-      isUserSlidingGyro = false;
-    });
-    gyroSlider._gyroListenerSet = true;
-  }
-  // Botones
-  const gyroQuickBtns = [
-    { id: "gyr-btn-0", value: 0 },
-    { id: "gyr-btn-90", value: 90 },
-    { id: "gyr-btn-180", value: 180 },
-    { id: "gyr-btn-270", value: 270 }
-  ];
-  gyroQuickBtns.forEach(btnInfo => {
-    const btn = document.getElementById(btnInfo.id);
-    if (btn && !btn._gyroListenerSet) {
-      btn.addEventListener("click", function() {
-        animateDialGyro(btnInfo.value);
-      });
-      btn._gyroListenerSet = true;
-    }
-  });
-}
 
 
 // Fin de functions_Gyro.js
