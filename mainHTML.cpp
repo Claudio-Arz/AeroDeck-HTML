@@ -283,21 +283,6 @@ window.addEventListener('DOMContentLoaded', () => {
       document.getElementById("inst07").innerHTML = html;
       // Inicializar Gyro solo cuando ambos HTML estén cargados
       if (typeof Gyro !== 'undefined' && typeof Gyro.init === 'function') {
-        Gyro.init({
-          imgIds: { giro_dial: 'gyr-dial' },
-          sliderIds: { valor: 'gyr-slider' }
-        });
-      }
-      // Inicializar controles del Gyro
-      // Esperar a que el DOM esté listo antes de inicializar controles Gyro
-      function trySetupGyroControls() {
-        if (typeof setupGyroControls === 'function' && document.getElementById('gyr-slider') && document.getElementById('gyr-dial')) {
-          setupGyroControls(ws);
-        } else {
-          setTimeout(trySetupGyroControls, 50);
-        }
-      }
-      trySetupGyroControls();
     });
 });   
 
