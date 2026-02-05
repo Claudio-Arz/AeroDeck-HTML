@@ -1,3 +1,16 @@
+/* Fix para dial del Gyro: asegurar centrado y pivote correcto */
+.gyr-dial {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 120px;
+  height: 120px;
+  transform-origin: 50% 50%;
+  transform: translate(-50%, -50%) rotate(0deg);
+  transition: transform 0.2s cubic-bezier(0.4, 2, 0.2, 1);
+  pointer-events: none;
+  z-index: 2;
+}
 /* === Botones de control de slider (mín, med, máx) === */
 .slider-btn {
   width: 8px;
