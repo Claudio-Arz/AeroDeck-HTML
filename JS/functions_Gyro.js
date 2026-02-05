@@ -8,7 +8,16 @@ let isUserSlidingGyro = false;
 let currentGyro = 0;
 let targetGyro = 0;
 let gyroAnimationFrame = null;
-setupGyroControls(ws);
+ws.onmessage = (msg) => {
+  let data = {};
+  try {
+    data = JSON.parse(msg.data);
+  } catch (e) {
+    console.warn('Mensaje WebSocket no es JSON:', msg.data);
+    return;
+  }
+  setupGyroControls(ws);
+}
 // Animación del dial
 function animateDialGyro(newValue) {
   targetGyro = newValue;
