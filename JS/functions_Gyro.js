@@ -62,35 +62,34 @@ function updateGyroDialAndValue(gyro) {
 
 */
 function setupGyroControls(ws) {
-
-    // Evento para el slider de Gyro
-    const gyroSlider = document.getElementById("gyr-slider");
-    if (gyroSlider) {
-      gyroSlider.addEventListener("input", function() {
-        isUserSlidingGyro = true;
-        animateDialGyro(Number(gyroSlider.value));
-      });
-      gyroSlider.addEventListener("change", function() {
-        isUserSlidingGyro = false;
-      });
-    }
+  // Slider
+  const gyroSlider = document.getElementById("gyr-slider");
+  if (gyroSlider && !gyroSlider._gyroListenerSet) {
+    gyroSlider.addEventListener("input", function() {
+      isUserSlidingGyro = true;
+      animateDialGyro(Number(gyroSlider.value));
+    });
+    gyroSlider.addEventListener("change", function() {
+      isUserSlidingGyro = false;
+    });
+    gyroSlider._gyroListenerSet = true;
+  }
+  // Botones
   const gyroQuickBtns = [
-
     { id: "gyr-btn-0", value: 0 },
     { id: "gyr-btn-90", value: 90 },
     { id: "gyr-btn-180", value: 180 },
     { id: "gyr-btn-270", value: 270 }
-  ];;
-
+  ];
   gyroQuickBtns.forEach(btnInfo => {
     const btn = document.getElementById(btnInfo.id);
-    if (btn) {
+    if (btn && !btn._gyroListenerSet) {
       btn.addEventListener("click", function() {
         animateDialGyro(btnInfo.value);
       });
+      btn._gyroListenerSet = true;
     }
   });
-
 }
 
 // Función para animar el dial del gyro a un valor específico
