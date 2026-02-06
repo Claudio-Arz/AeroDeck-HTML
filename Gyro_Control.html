@@ -6,7 +6,7 @@
       <div class="gyro-slider-row" style="height:90%;display:flex;align-items:center;justify-content:center;">
         <input type="range" min="0" max="360" value="0" class="gyro-slider" id="gyr-slider" orient="vertical">
       </div>
-      <div class="gyro-slider-value-row" style="height:10%;display:flex;align-items:center;justify-content:center;">
+      <div class="gyro-slider-value-row" >
         <div class="gyro-slider-value" id="gyr-slider-value-label" >0</div>
       </div>
     </div>
@@ -130,16 +130,7 @@
     align-items: center;
     justify-content: center;
   }
-  .gyro-btn-label {
-    font-size: 8px;
-    color: #d8e3c1;
-    text-align: center;
-    margin-top: 1px;
-    font-family: 'Orbitron', 'Arial', sans-serif;
-    letter-spacing: 1px;
-    font-weight: bold;
-    text-shadow: 0 0 2px #e2e2c6, 0 0 2px #4a5a3a;
-  }
+
   .gyro-slider-value {
     font-size: 9px;
     text-align: center;
@@ -162,4 +153,22 @@
     box-shadow: 0 0 12px #2196f3cc;
     background-color: #555;
   }
+
+  .gyro-slider-value-row {  
+    display:flex;
+    border-radius:6px;
+    background: #232d2d;
+    width: 55px;
+    height: 100%;
+    font-size: 12px;
+    color: #e2e2c6;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Orbitron', 'Arial', sans-serif;
+    letter-spacing: 1px;    
+
+  } 
+
+
 </style>
