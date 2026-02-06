@@ -8,16 +8,8 @@ let isUserSlidingGyro = false;
 let currentGyro = 0;
 let targetGyro = 0;
 let gyroAnimationFrame = null;
-ws.onmessage = (msg) => {
-  let data = {};
-  try {
-    data = JSON.parse(msg.data);
-  } catch (e) {
-    console.warn('Mensaje WebSocket no es JSON:', msg.data);
-    return;
-  }
-  setupGyroControls(ws);
-}
+let initializedGyro = false;
+
 // Animación del dial
 function animateDialGyro(newValue) {
   targetGyro = newValue;
@@ -87,6 +79,25 @@ function setupGyroControls(ws) {
   });
 }
 
+// Interceptar mensajes del ESP32 solo si el usuario NO está moviendo el slider
+if (typeof ws !== 'undefined') {
+  ws.onmessage = (msg) => {
+    if (!isUserSlidingGyro) {
+      let data = {};
+      try {
+        data = JSON.parse(msg.data);
+      } catch (e) {
+        console.warn('Mensaje WebSocket no es JSON:', msg.data);
+        return;
+      }
+      if (!initializedGyro) {
+        setupGyroControls(ws);
+        initializedGyro = true;
+      }
+      if (data.gyro !== undefined) updateGyroDialAndValue(data.gyro);
+    }
+  };
+}
 // Fin de functions_Gyro.js
 
 
