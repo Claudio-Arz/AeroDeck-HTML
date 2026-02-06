@@ -1,24 +1,24 @@
 /*
-  HTML/mainHTML.cpp
-  Claudio Arzamendia Systems
-  Tablero completo con intrumental aeronáutico
-  para ajustar instrumentos analógicos.
+HTML/mainHTML.cpp
+Claudio Arzamendia Systems
+Tablero completo con intrumental aeronáutico
+para ajustar instrumentos analógicos.
 
-  2026-01-24 19:28:29
-  Tenemos un buen punto en el sistema para tenerlo en cuanta
-  en futuros desarrollos.
+2026-01-24 19:28:29
+Tenemos un buen punto en el sistema para tenerlo en cuanta
+en futuros desarrollos.
 
-  Dos instrumentos (RPM y Variometer) funcionan bien con WebSocket.
-  El botón Noice sincroniza su estado en todos los clientes. Pero
-  hay que presionarlo dos veces para que tome el estado correcto.
+Dos instrumentos (RPM y Variometer) funcionan bien con WebSocket.
+El botón Noice sincroniza su estado en todos los clientes. Pero
+hay que presionarlo dos veces para que tome el estado correcto.
 
-  Tenemos que modifica esta librería, de modo que el mainHTML.html
-  se vea en el edetor VS Code como un archivo HTML normal, con
-  su respectivo formato y coloreado de sintaxis. Este archivo
-  mainHTML.cpp debe contener solo el código C++ necesario para
-  embeber el HTML como una cadena de texto en memoria de programa.
+Tenemos que modifica esta librería, de modo que el mainHTML.html
+se vea en el edetor VS Code como un archivo HTML normal, con
+su respectivo formato y coloreado de sintaxis. Este archivo
+mainHTML.cpp debe contener solo el código C++ necesario para
+embeber el HTML como una cadena de texto en memoria de programa.
 
-  
+
 
 
 */
