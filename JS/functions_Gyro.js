@@ -30,7 +30,7 @@ function animateDialGyro(newValue) {
 
 // Actualiza el dial y el valor numérico
 function updateGyroDialAndValue(gyro) {
-  let angle = (Math.max(0, Math.min(gyro, 360))) / 360;
+  let angle = -(Math.max(0, Math.min(gyro, 360))) / 360;
   const gyroDial = document.getElementById("gyr-dial");
   if (gyroDial) {
     gyroDial.style.transform = `translate(-50%, -50%) rotate(${angle * 360}deg)`;

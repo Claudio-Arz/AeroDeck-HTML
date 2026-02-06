@@ -110,9 +110,9 @@ para indicar visualmente su estado.
     0 0 8px 2px #1ab0a6,   /* luz turquesa */
     0 0 0 6px #c97a1a;     /* borde naranja oscuro */
   overflow: hidden;
-  box-shadow: 0 0 20px 10px rgba(174, 238, 95, 0.545);
+  box-shadow: 0 0 20px 10px rgba(79, 181, 245, 0.545);
   background: #1d3958;
-  border: 8px solid #0a1a2f;
+  border: 8px solid #f01f30;
   box-sizing: border-box;
 }
 
