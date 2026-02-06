@@ -281,8 +281,12 @@ window.addEventListener('DOMContentLoaded', () => {
     .then(r => r.text())
     .then(html => {
       document.getElementById("inst07").innerHTML = html;
-
-
+      // Ejecutar solo una vez la configuración de controles Gyro, con retardo de 5 segundos
+      setTimeout(function() {
+        if (typeof setupGyroControls === 'function') {
+          setupGyroControls(ws);
+        }
+      }, 5000);
     });
 });   
 
