@@ -311,6 +311,7 @@ proporcionalmente para que encajen bien.
   pointer-events: none;
   border-radius: 50%;
   object-fit: contain;
+  transform-origin: 50% 50%; /* pivote en el centro */
 }
 .gyr-front {
   width: 75%;
