@@ -54,19 +54,14 @@ function updateGyroDialAndValue(gyro) {
 // Configura los controles del Gyro
 function setupGyroControls(ws) {
  
-  console.log('[Gyro] setupGyroControls called');
-  console.log('[Gyro] ws:', ws);
   const gyroSlider = document.getElementById("gyr-slider");
-  console.log('[Gyro] gyroSlider:', gyroSlider);
   if (gyroSlider) {
     gyroSlider.addEventListener("input", function() {
       isUserSlidingGyro = true;
-      console.log('[Gyro] Slider input, value:', gyroSlider.value);
       animateDialGyro(Number(gyroSlider.value));
     });
     gyroSlider.addEventListener("change", function() {
       isUserSlidingGyro = false;
-      console.log('[Gyro] Slider change, value:', gyroSlider.value);
     });
   }
   const gyroQuickBtns = [
@@ -75,18 +70,14 @@ function setupGyroControls(ws) {
     { id: "gyr-btn-180", value: 180 },
     { id: "gyr-btn-270", value: 270 }
   ];
-  console.log('[Gyro] gyroQuickBtns:', gyroQuickBtns);
   gyroQuickBtns.forEach(btnInfo => {
     const btn = document.getElementById(btnInfo.id);
-    console.log(`[Gyro] Button ${btnInfo.id}:`, btn);
     if (btn) {
       btn.addEventListener("click", function() {
-        console.log(`[Gyro] Button ${btnInfo.id} clicked, value:`, btnInfo.value);
         animateDialGyro(btnInfo.value);
       });
     }
   });
-  console.log('[Gyro] setupGyroControls completed');
   
 }
 
