@@ -53,7 +53,7 @@ function updateGyroDialAndValue(gyro) {
 
 // Configura los controles del Gyro
 function setupGyroControls(ws) {
-  if (initializedGyro) return;
+ 
   console.log('[Gyro] setupGyroControls called');
   console.log('[Gyro] ws:', ws);
   const gyroSlider = document.getElementById("gyr-slider");
@@ -87,7 +87,7 @@ function setupGyroControls(ws) {
     }
   });
   console.log('[Gyro] setupGyroControls completed');
-  let initializedGyro = true;
+  
 }
 
 // Interceptar mensajes del ESP32 solo si el usuario NO está moviendo el slider

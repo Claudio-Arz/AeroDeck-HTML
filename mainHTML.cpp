@@ -285,6 +285,9 @@ window.addEventListener('DOMContentLoaded', () => {
       setTimeout(function() {
         if (typeof setupGyroControls === 'function') {
           setupGyroControls(ws);
+          if (typeof window.updateGyro === 'function' && typeof data.gyro === 'number') {
+            window.updateGyro(data.gyro);
+          }
         }
       }, 5000);
     });
