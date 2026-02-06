@@ -110,7 +110,7 @@ para indicar visualmente su estado.
     0 0 8px 2px #1ab0a6,   /* luz turquesa */
     0 0 0 6px #c97a1a;     /* borde naranja oscuro */
   overflow: hidden;
-  box-shadow: 0 0 20px 10px rgba(79, 181, 245, 0.545);
+  box-shadow: 0 0 20px 10px rgb(242, 1, 1);
   background: #1d3958;
   border: 8px solid #f01f30;
   box-sizing: border-box;
@@ -301,12 +301,25 @@ proporcionalmente para que encajen bien.
   border-radius: 50%;
 }
 
-.as-dial, .gyr-dial {
+.as-dial {
   width: 100%;
   height: 100%;
   position: absolute;
   top: 0;
   left: 0;
+  z-index: 3;
+  pointer-events: none;
+  border-radius: 50%;
+  object-fit: contain;
+  transform-origin: 50% 50%; /* pivote en el centro */
+}
+
+.gyr-dial {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
   z-index: 3;
   pointer-events: none;
   border-radius: 50%;
@@ -327,7 +340,7 @@ proporcionalmente para que encajen bien.
 }
 
 .as-needle {
-  width: 5%;
+  width: 3%;
   height: 100%;
   position: absolute;
   top: 0%;
