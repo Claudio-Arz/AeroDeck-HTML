@@ -112,7 +112,7 @@ para indicar visualmente su estado.
   overflow: hidden;
   box-shadow: 0 0 20px 10px rgb(242, 1, 1);
   background: #1d3958;
-  border: 8px solid #f01f30;
+  border: 8px solid #1f22f0;
   box-sizing: border-box;
 }
 
@@ -324,6 +324,7 @@ proporcionalmente para que encajen bien.
   pointer-events: none;
   border-radius: 50%;
   object-fit: contain;
+  transform: translate(-50%, -50%) rotate(0deg);
   transform-origin: 50% 50%; /* pivote en el centro */
 }
 .gyr-front {
