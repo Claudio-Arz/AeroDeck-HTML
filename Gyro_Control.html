@@ -3,8 +3,12 @@
   <div class="gyro-title">GYRO</div>
   <div class="gyro-content">
     <div class="gyro-slider-col">
-      <input type="range" min="0" max="360" value="0" class="gyro-slider" id="gyr-slider" orient="vertical">
-      <div class="gyro-slider-value" id="gyr-slider-value-label">0</div>
+      <div class="gyro-slider-row" style="height:90%;display:flex;align-items:center;justify-content:center;">
+        <input type="range" min="0" max="360" value="0" class="gyro-slider" id="gyr-slider" orient="vertical">
+      </div>
+      <div class="gyro-slider-value-row" style="height:10%;display:flex;align-items:center;justify-content:center;">
+        <div class="gyro-slider-value" id="gyr-slider-value-label">0</div>
+      </div>
     </div>
     <div class="gyro-btns-col">
       <div class="gyro-btn-row" style="background:#616b58;"><button class="gyro-btn" id="gyr-btn-0">0°</button><div class="gyro-btn-label">North</div></div>
