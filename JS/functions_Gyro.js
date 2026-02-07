@@ -76,9 +76,11 @@ function setupGyroControls(ws) {
     if (btn) {
       btn.addEventListener("click", function() {
         // animateDialGyro(btnInfo.value);
+        isUserSlidingGyro = true;
         updateGyroDialAndValue(btnInfo.value);
       });
     }
+    isUserSlidingGyro = false;
   });
   
 }
