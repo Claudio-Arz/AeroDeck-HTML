@@ -58,8 +58,7 @@ function setupGyroControls(ws) {
   if (gyroSlider) {
     gyroSlider.addEventListener("input", function() {
       isUserSlidingGyro = true;
-      // animateDialGyro(Number(gyroSlider.value));
-      updateGyroDialAndValue(Number(gyroSlider.value));
+      animateDialGyro(Number(gyroSlider.value));
     });
     gyroSlider.addEventListener("change", function() {
       isUserSlidingGyro = false;
@@ -75,12 +74,9 @@ function setupGyroControls(ws) {
     const btn = document.getElementById(btnInfo.id);
     if (btn) {
       btn.addEventListener("click", function() {
-        // animateDialGyro(btnInfo.value);
-        isUserSlidingGyro = true;
-        updateGyroDialAndValue(btnInfo.value);
+        animateDialGyro(btnInfo.value);
       });
     }
-    isUserSlidingGyro = false;
   });
   
 }
