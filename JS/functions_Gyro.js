@@ -15,7 +15,7 @@ function animateDialGyro(newValue) {
   targetGyro = newValue;
   if (!gyroAnimationFrame) {
     function step() {
-      currentGyro += (targetGyro - currentGyro) * 0.2;
+      currentGyro += (targetGyro - currentGyro) * 1; // 0.2
       if (Math.abs(targetGyro - currentGyro) < 0.5) {
         currentGyro = targetGyro;
         gyroAnimationFrame = null;
