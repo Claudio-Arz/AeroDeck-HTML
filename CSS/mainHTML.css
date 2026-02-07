@@ -105,10 +105,6 @@ para indicar visualmente su estado.
   aspect-ratio: 1/1;
   position: relative;
   border-radius: 120px;
-  box-shadow:
-    0 0 32px 8px #1ab0a6, /* luz turquesa */
-    0 0 8px 2px #1ab0a6,   /* luz turquesa */
-    0 0 0 6px #c97a1a;     /* borde naranja oscuro */
   overflow: hidden;
   box-shadow: 0 0 20px 10px rgb(121, 171, 242);
   background: #1d3958;

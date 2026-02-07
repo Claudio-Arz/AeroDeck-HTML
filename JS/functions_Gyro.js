@@ -46,14 +46,14 @@ function updateGyroDialAndValue(gyro) {
       if (gyroSliderValue) gyroSliderValue.textContent = Math.round(gyro);
     }
   }
-  if(ws && ws.readyState === 1) {
+  if(ws && ws.readyState === 1 && !isUserSlidingGyro) {
     ws.send(JSON.stringify({ setGyroHeading: Math.round(gyro) }));
   }
 }
 
 // Configura los controles del Gyro
 function setupGyroControls(ws) {
- 
+  
   const gyroSlider = document.getElementById("gyr-slider");
   if (gyroSlider) {
     gyroSlider.addEventListener("input", function() {
