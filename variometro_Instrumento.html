@@ -61,10 +61,7 @@
 </style>
 <script>
   // JavaScript específico para el instrumento Variometro
-  const variometerSlider = document.getElementById('variometer-slider');
-  const variometerSliderValue = document.getElementById('variometer-slider-value');
-  const maxButton = document.getElementById('variometer-max-button');
-  const midButton = document.getElementById('variometer-mid-button');
+  // Función para actualizar la aguja del variometro y el valor mostrado
   function updateVariometerAndValue(verticalSpeedValue) {
     // Mapear el valor de velocidad vertical a un ángulo de aguja
     const minValue = -2000; // Valor mínimo de velocidad vertical (p. ej., -2000 pies/min)
@@ -86,6 +83,6 @@
     const variometerValueLabel = document.getElementById('variometer-value');
     variometerValueLabel.textContent = `${verticalSpeedValue} ft/min`;
   } 
-  
+
 
 </script>

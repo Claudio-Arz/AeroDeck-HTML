@@ -207,9 +207,9 @@
   function sendVerticalSpeedToESP32(verticalSpeed) {
     // Enviar por WebSocket el estado para sincronizar con otros clientes
     if (typeof ws !== 'undefined' && ws && ws.readyState === 1) {
-      ws.send(JSON.stringify({ verticalSpeed: Number(variometerSliderValue.textContent) }));
+      ws.send(JSON.stringify({ verticalSpeed: verticalSpeed }));
     }    
-  }
+}
 
 
 

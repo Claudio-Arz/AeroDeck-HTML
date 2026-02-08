@@ -79,8 +79,15 @@ window.addEventListener('DOMContentLoaded', () => {
       return;
     }
     // --- Actualizar instrumentos ---
-    if (data.verticalSpeed !== undefined && typeof updateVariometerAndValue === 'function') updateVariometerAndValue(data.verticalSpeed);
-    if (data.altitudValue !== undefined && typeof updateAltimeterAndValue === 'function') updateAltimeterAndValue(data.altitudValue);
+    if (data.verticalSpeed !== undefined && typeof updateVariometerAndValue === 'function') {
+      console.log("mainHTML.cpp data.verticalSpeed: " + data.verticalSpeed);
+      updateVariometerAndValue(data.verticalSpeed);
+      
+      }
+      if (data.altitudValue !== undefined && typeof updateAltimeterAndValue === 'function') {
+        console.log("mainHTML.cpp data.altitudValue: " + data.altitudValue);
+        updateAltimeterAndValue(data.altitudValue);
+    }
   };
 
   // Cargar el HTML del instrumento Variometer de forma dinámica
