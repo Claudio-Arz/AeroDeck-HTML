@@ -179,7 +179,7 @@
   maxButton.addEventListener('click', () => {
     variometerSlider.value = 2000;
     variometerSliderValue.textContent = 2000;
-    updateVariometerAndValue(2000);
+    //updateVariometerAndValue(2000);
     sendVerticalSpeedToESP32(2000); // Enviar el valor al ESP32 cada vez que se actualice el slider
   });
   midButton.addEventListener('click', () => {
@@ -191,14 +191,14 @@
   minButton.addEventListener('click', () => {
     variometerSlider.value = -2000;
     variometerSliderValue.textContent = -2000;
-    updateVariometerAndValue(-2000);
+    //updateVariometerAndValue(-2000);
     sendVerticalSpeedToESP32(-2000); // Enviar el valor al ESP32 cada vez que se actualice el slider
   });
 
   variometerSlider.addEventListener('input', () => {
     const value = variometerSlider.value;
     variometerSliderValue.textContent = value;
-    updateVariometerAndValue(value);
+    //updateVariometerAndValue(value);
     sendVerticalSpeedToESP32(value); // Enviar el valor al ESP32 cada vez que se actualice el slider
   });
 
@@ -207,7 +207,7 @@
   function sendVerticalSpeedToESP32(verticalSpeed) {
     // Enviar por WebSocket el estado para sincronizar con otros clientes
     if (typeof ws !== 'undefined' && ws && ws.readyState === 1) {
-      ws.send(JSON.stringify({ verticalSpeed: Number(verticalSpeed) }));
+      ws.send(JSON.stringify({ verticalSpeed: Number(variometerSliderValue.textContent) }));
     }    
   }
 
