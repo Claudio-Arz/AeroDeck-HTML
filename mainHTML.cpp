@@ -62,31 +62,28 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 </body>
 
 <script>
-// Inicialización del WebSocket para comunicación con el ESP32
-const ws = new WebSocket('ws://' + location.hostname + ':81/');
-
-
-// === Funciones de actualización de instrumentos ===
-
-
-
-
-// Handler WebSocket: actualiza todos los instrumentos y botones según los datos recibidos
-ws.onmessage = (msg) => {
-  let data = {};
-  try {
-    data = JSON.parse(msg.data);
-  } catch (e) {
-    console.warn('Mensaje WebSocket no es JSON:', msg.data);
-    return;
-  }
-  // --- Actualizar instrumentos ---
-  if (data.verticalSpeed !== undefined) updateVariometerAndValue(data.verticalSpeedValue);
-  if (data.altitudValue !== undefined) updateAltimeterAndValue(data.altitudValue);
-};
-
-// Cargar el HTML del instrumento Variometer de forma dinámica
+// Ejecutar todo el JS solo cuando el DOM esté completamente cargado
 window.addEventListener('DOMContentLoaded', () => {
+  // Inicialización del WebSocket para comunicación con el ESP32
+  const ws = new WebSocket('ws://' + location.hostname + ':81/');
+
+  // === Funciones de actualización de instrumentos ===
+
+  // Handler WebSocket: actualiza todos los instrumentos y botones según los datos recibidos
+  ws.onmessage = (msg) => {
+    let data = {};
+    try {
+      data = JSON.parse(msg.data);
+    } catch (e) {
+      console.warn('Mensaje WebSocket no es JSON:', msg.data);
+      return;
+    }
+    // --- Actualizar instrumentos ---
+    if (data.verticalSpeed !== undefined && typeof updateVariometerAndValue === 'function') updateVariometerAndValue(data.verticalSpeed);
+    if (data.altitudValue !== undefined && typeof updateAltimeterAndValue === 'function') updateAltimeterAndValue(data.altitudValue);
+  };
+
+  // Cargar el HTML del instrumento Variometer de forma dinámica
   fetch("https://claudio-arz.github.io/AeroDeck-HTML/variometro_Instrumento.html")
     .then(r => r.text())
     .then(html => {
