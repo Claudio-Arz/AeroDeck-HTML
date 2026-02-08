@@ -63,7 +63,7 @@
 
 <script>
   // Función para actualizar la aguja del variometro
-  function updateVariometerNeedle(verticalSpeed) {
+  function updateVariometerAndValue(verticalSpeed) {
     // Mapear la velocidad vertical a un ángulo de rotación (ejemplo: -2000 a +2000 pies/min -> -90 a +90 grados)
     const maxSpeed = 2000; // velocidad máxima para el mapeo
     const minSpeed = -2000; // velocidad mínima para el mapeo
@@ -80,6 +80,6 @@
     document.documentElement.style.setProperty('--needle-rotation', `${angle}deg`);
 
     // Actualizar el valor numérico en el centro del instrumento
-    document.getElementById('variometer-value').textContent = `${verticalSpeed} ft/min`;
+    document.getElementById('variometer-value').textContent = `${verticalSpeed}0`;
   }
 </script>
