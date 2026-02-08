@@ -30,7 +30,7 @@
   <div class="variometer-control-header">Variometer Control</div>
   <div class="variometer-control-body">
     <div class="variometer-slider-section">
-      <input type="range" min="-2000" max="2000" value="0" class="slider vertical-slider" id="variometer-slider" >
+      <input type="range" min="-2000" max="2000" value="0" class="slider vertical-slider" id="variometer-slider" style="writing-mode: vertical-lr; direction: rtl;">
       <div class="slider-value" id="variometer-slider-value">0</div>
     </div>
     <div class="variometer-buttons-section">
@@ -118,9 +118,8 @@
   .variometer-slider-section .vertical-slider {
     width: 30px;
     height: 120px;
-    writing-mode: bt-lr;
-    -webkit-appearance: slider-vertical;
-    appearance: slider-vertical;
+    writing-mode: vertical-lr;
+    direction: rtl;
     background: #fff;
     border-radius: 8px;
     margin-bottom: 8px;
