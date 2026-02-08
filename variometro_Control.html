@@ -1,0 +1,149 @@
+
+<!-- 
+ Variometer control slider and buttons
+  Este código HTML define el control para el instrumento Variometro, 
+  que incluye un slider vertical para ajustar la velocidad vertical 
+  y tres botones para establecer valores predefinidos (máximo, medio y mínimo).
+
+  Definir una caja de contención como en gyro.
+
+  |----------------------------------|
+  |           Variometer Control     |
+  |----------------------------------|
+  |            |                     |   
+  |      s     |      Máximo         |   
+  |      l     |---------------------|
+  |      i     |                     |   
+  |      d     |      Medio          |   
+  |      e     |---------------------|   
+  |      r     |                     |   
+  |            |      Mínimo         |   
+  |------------|---------------------|   
+  |    value   |                     |   
+  |----------------------------------|
+
+-->
+
+
+
+<div class="variometer-control-cell">
+  <div class="variometer-control-header">Variometer Control</div>
+  <div class="variometer-control-body">
+    <div class="variometer-slider-section">
+      <input type="range" min="-2000" max="2000" value="0" class="slider" id="variometer-slider" orient="vertical">
+      <div class="slider-value" id="variometer-slider-value">0</div>
+    </div>
+    <div class="variometer-buttons-section">
+      <button id="variometer-slider-max" class="slider-glow-btn slider-btn slider-btn-max">Máximo</button>
+      <div class="divider"></div>
+      <button id="variometer-slider-mid" class="slider-glow-btn slider-btn slider-btn-mid">Medio</button>
+      <div class="divider"></div>
+      <button id="variometer-slider-min" class="slider-glow-btn slider-btn slider-btn-min">Mínimo</button>
+    </div>
+  </div>
+</div>
+
+<style>
+/* === Botones de control de slider (mín, med, máx) === */
+.slider-btn {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  padding: 0;
+  display: block;
+}
+.slider-btn-max {
+  background: #2ecc71;
+  margin-bottom: 4px;
+}
+.slider-btn-mid {
+  background: #f1c40f;
+  margin: 2px 0;
+}
+.slider-btn-min {
+  background: #e31111;
+  margin-top: 4px;
+}
+
+ /* === Efecto luminoso para botones de slider (mín, med, máx) === */
+.slider-glow-btn:active {
+  box-shadow: 0 0 8px 4px #1ab0a6, 0 0 16px 8px #1ab0a6;
+  filter: brightness(1.7) drop-shadow(0 0 6px #1ab0a6);
+  outline: none;
+  transition: box-shadow 0.1s, filter 0.1s;
+} 
+.variometer-control-cell {
+  border: 2px solid #888;
+  border-radius: 10px;
+  width: 340px;
+  background: #f8f8f8;
+  box-shadow: 2px 2px 8px #bbb;
+  padding: 10px 0 16px 0;
+  margin: 0 auto;
+}
+.variometer-control-header {
+  border-bottom: 2px solid #888;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.1em;
+  padding-bottom: 6px;
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+}
+.variometer-control-body {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 0;
+}
+.variometer-slider-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-right: 2px solid #888;
+  padding: 0 18px 0 10px;
+  min-width: 70px;
+  justify-content: center;
+}
+.variometer-slider-section .slider {
+  height: 120px;
+  writing-mode: bt-lr; /* vertical */
+}
+.slider-value {
+  margin-top: 10px;
+  font-size: 1.1em;
+  font-weight: bold;
+  color: #333;
+}
+.variometer-buttons-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+  flex: 1;
+  padding: 0 10px;
+}
+.variometer-buttons-section button {
+  width: 100%;
+  margin: 0;
+  font-size: 1em;
+  padding: 6px 0;
+  border-radius: 6px;
+  border: 1px solid #aaa;
+  background: #e0e0e0;
+  margin-bottom: 0;
+}
+.variometer-buttons-section .divider {
+  border-bottom: 1.5px solid #bbb;
+  margin: 6px 0;
+}
+</style>
+
+
+
+
+

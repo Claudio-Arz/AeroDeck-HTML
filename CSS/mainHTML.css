@@ -1,37 +1,4 @@
-/* === Botones de control de slider (mín, med, máx) === */
-.slider-btn {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  outline: none;
-  padding: 0;
-  display: block;
-}
-.slider-btn-max {
-  background: #2ecc71;
-  margin-bottom: 4px;
-}
-.slider-btn-mid {
-  background: #f1c40f;
-  margin: 2px 0;
-}
-.slider-btn-sou {
-  background: #f1660f;
-  margin: 2px 0;
-}
-.slider-btn-min {
-  background: #e31111;
-  margin-top: 4px;
-}
-/* === Efecto luminoso para botones de slider (mín, med, máx) === */
-.slider-glow-btn:active {
-  box-shadow: 0 0 8px 4px #1ab0a6, 0 0 16px 8px #1ab0a6;
-  filter: brightness(1.7) drop-shadow(0 0 6px #1ab0a6);
-  outline: none;
-  transition: box-shadow 0.1s, filter 0.1s;
-}
+
 /*
 mainHTML.css
 Estilos CSS para el tablero de instrumentos AeroDeck
@@ -75,23 +42,6 @@ para indicar visualmente su estado.
   transition: background 0.2s, color 0.2s, box-shadow 0.2s;
 }
 
-.aguja-variometer img {
-  width: 240px !important;
-  height: 10px !important;
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  border-radius: 0 !important;
-  z-index: 19;
-}
-.aguja-variometer {
-  /* ...otros estilos existentes... */
-  /* Permite rotar la aguja usando una variable CSS */
-  --needle-rotation: 0deg;
-  transform: translate(-50%, -50%) rotate(var(--needle-rotation));
-  transition: transform 0.2s cubic-bezier(.4,2,.6,1);
-}
 /* Combina grid-item y container para instrumentos individuales */
 .instrumento-grid {
   display: flex;
@@ -110,14 +60,7 @@ para indicar visualmente su estado.
   background: #1d3958;
   border: 8px solid #1f22f0;
   box-sizing: border-box;
-}
-
-.label-slider {
-  text-align: center;
-  font-weight: bold;
-  color: #fff;
-  margin-bottom: 4px;
-}
+}  
 .instrument-center-label {
   position: absolute;
   left: 50%;
@@ -133,6 +76,14 @@ para indicar visualmente su estado.
   color: #fff;
   box-shadow: 0 0 8px #000;
 }
+
+.label-slider {
+  text-align: center;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
 
 body {
   background: #0a1a2f;
@@ -222,17 +173,7 @@ body {
 /* ===== Container Instrumento redondo ===== */
 /* Aguja del variometro como imagen, sin deformaciones */
 
-.aguja-variometer {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 240px;
-  height: 10px;
-  transform-origin: 50% 50%; /* pivote en el centro */
-  transform: translate(-50%, -50%) rotate(0deg);
-  z-index: 18;
-  pointer-events: none;
-}
+
 
 
 /* ... Imagenes que forman el instrumento Altimeter ... 
@@ -253,17 +194,7 @@ proporcionalmente para que encajen bien.
 
 
 /* === ALTÍMETRO: Estilos exclusivos === */
-.altimeter-dial {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 3;
-  pointer-events: none;
-  border-radius: 50%;
-  object-fit: contain;
-}
+
 .att-ball {
   width: 163%;
   height: 163%;
@@ -361,64 +292,11 @@ proporcionalmente para que encajen bien.
   object-fit: contain;
 }
 
-.altimeter-flag {
-  width: 48%;
-  height: 48%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 10;
-  pointer-events: none;
-  border-radius: 50%;
-  object-fit: contain;
-  transition: transform 1.5s cubic-bezier(.4,2,.6,1);
-}
-.altimeter-cover {
-  width: 48%;
-  height: 48%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 10;
-  pointer-events: none;
-  border-radius: 50%;
-  object-fit: contain;
-}
-.aguja-altimeter img {
-  width: 7.8%;
-  height: 100%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 18;
-  pointer-events: none;
-  object-fit: contain;
-}
-.aguja-altimeter-cientos img {
-  width: 6.1%;
-  height: 100%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 18;
-  pointer-events: none;
-  object-fit: contain;
-}
-.altimeter-bg {
-  width: 85%;
-  height: 85%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1;
-  pointer-events: none;
-  object-fit: contain;
-}
+
+
+
+
+
 
 /* === RPM y VARIOMETER: Restaurar estilos === */
 .rpm-dial,
@@ -463,19 +341,6 @@ proporcionalmente para que encajen bien.
   border: 2px solid #222;
   z-index: 3;
 }
-.aguja-variometer img {
-  width: 240px !important;
-  height: 10px !important;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform-origin: 50% 50%;
-  transform: translate(-50%, -50%) rotate(var(--needle-rotation));
-  border-radius: 0 !important;
-  z-index: 19;
-  pointer-events: none;
-  object-fit: contain;
-  transition: transform 0.2s cubic-bezier(.4,2,.6,1);
-}
+
 
 

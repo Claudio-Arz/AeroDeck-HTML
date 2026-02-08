@@ -4,22 +4,13 @@ Claudio Arzamendia Systems
 Tablero completo con intrumental aeronáutico
 para ajustar instrumentos analógicos.
 
-2026-01-24 19:28:29
-Tenemos un buen punto en el sistema para tenerlo en cuanta
-en futuros desarrollos.
+2026-02-07 18:26:08
+Versión 003
+Los instrumentos solo muestran datos recibidos vía WebSocket
+del ESP32. No hay lógica de simulación en el cliente.
 
-Dos instrumentos (RPM y Variometer) funcionan bien con WebSocket.
-El botón Noice sincroniza su estado en todos los clientes. Pero
-hay que presionarlo dos veces para que tome el estado correcto.
-
-Tenemos que modifica esta librería, de modo que el mainHTML.html
-se vea en el edetor VS Code como un archivo HTML normal, con
-su respectivo formato y coloreado de sintaxis. Este archivo
-mainHTML.cpp debe contener solo el código C++ necesario para
-embeber el HTML como una cadena de texto en memoria de programa.
-
-
-
+Los controles (sliders, botones, joysticks) envían datos vía WebSocket
+al ESP32 para actualizar los valores de los instrumentos.
 
 */
 
@@ -37,16 +28,7 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 
 <link rel="stylesheet" href="https://claudio-arz.github.io/AeroDeck-HTML/CSS/mainHTML.css">
 
-<script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_rpm.js"></script>
-<script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_variometer.js"></script>
-<script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_altimeter.js"></script>
-<script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_Attitude.js"></script>
-<script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_airSpeed.js"></script>
-<script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_Gyro.js"></script>
-<script>
 
-
-</script>
 </head>
 
 <body>
@@ -98,153 +80,68 @@ ws.onmessage = (msg) => {
     console.warn('Mensaje WebSocket no es JSON:', msg.data);
     return;
   }
-    
-  if (data.airspeed !== undefined) updateAirspeed(data.airspeed);
-  if (data.rpm !== undefined) updateNeedleAndValue(data.rpm);
-  // if (data.fuelFlow !== undefined) updateFuelFlowInstrument(data.fuelFlow);
-  if (data.verticalSpeed !== undefined) updateVariometerAndValue(data.verticalSpeed);
-  if (data.varAltitud !== undefined) updateAltimeterAndValue(data.varAltitud);
-  if (data.gyro !== undefined) updateGyroDialAndValue(data.gyro);
-  if (typeof window.updateAttitudeInstrument === 'function' && typeof data.roll === 'number' && typeof data.pitch === 'number') {
-    window.updateAttitudeInstrument(data.roll, data.pitch);
-  }
-  // if (typeof window.updateGyro === 'function' && typeof data.gyro === 'number') {
-  //   window.updateGyro(data.gyro);
-  // }
-
-
-  // --- Sincronizar visualmente el botón Noice en todos los clientes ---
-  if (data.rpmNoiceOn !== undefined) {
-    function updateNoiceButtonState(state) {
-      window.noiceOn = !!state;
-      const btn = document.getElementById('noice-btn');
-      if (btn) {
-        if (state) {
-          btn.classList.add('active');
-          btn.textContent = 'Noice ON';
-        } else {
-          btn.classList.remove('active');
-          btn.textContent = 'Noice OFF';
-        }
-      }
-    }
-    if (document.getElementById('noice-btn')) {
-      updateNoiceButtonState(data.rpmNoiceOn);
-    } else {
-      const observer = new MutationObserver((mutations, obs) => {
-        const btn = document.getElementById('noice-btn');
-        if (btn) {
-          updateNoiceButtonState(data.rpmNoiceOn);
-          obs.disconnect();
-        }
-      });
-      observer.observe(document.body, { childList: true, subtree: true });
-    }
-  }
-
-  // --- Sincronizar visualmente el botón Zero en todos los clientes ---
-  if (data.atti_zero !== undefined) {
-    function updateZeroButtonState(state) {
-      window.attiZeroActive = !!state;
-      const btn = document.getElementById('atti-zero-btn');
-      if (btn) {
-        btn.textContent = state ? 'Zero: ON' : 'Zero: OFF';
-        btn.classList.toggle('active', !!state);
-      }
-    }
-    if (document.getElementById('atti-zero-btn')) {
-      updateZeroButtonState(data.atti_zero);
-    } else {
-      const observer = new MutationObserver((mutations, obs) => {
-        const btn = document.getElementById('atti-zero-btn');
-        if (btn) {
-          updateZeroButtonState(data.atti_zero);
-          obs.disconnect();
-        }
-      });
-      observer.observe(document.body, { childList: true, subtree: true });
-    }
-  }
-
+  // --- Actualizar instrumentos ---
+  if (data.verticalSpeed !== undefined) updateVariometerAndValue(data.verticalSpeedValue);
+  if (data.altitudValue !== undefined) updateAltimeterAndValue(data.altitudValue);
 };
 
-// Cargar el HTML del Controles de RPM de forma dinámica
-window.addEventListener('DOMContentLoaded', () => {
-  fetch("https://claudio-arz.github.io/AeroDeck-HTML/RPM.html")
-    .then(r => r.text())
-    .then(html => {
-      document.getElementById("inst04").innerHTML = html;
-
-    });
-});
-
-// Cargar el HTML del Controles de RPM de forma dinámica
-window.addEventListener('DOMContentLoaded', () => {
-  fetch("https://claudio-arz.github.io/AeroDeck-HTML/RPM_Control.html")
-    .then(r => r.text())
-    .then(html => {
-      document.getElementById("inst06").innerHTML = html;
-      // Esperar a que setupRPMControls esté disponible si aún no lo está
-      function trySetupRPMControls() {
-        if (typeof setupRPMControls === 'function') {
-          setupRPMControls(ws);
-        } else {
-          setTimeout(trySetupRPMControls, 50);
-        }
-      }
-      trySetupRPMControls();
-    });
-});
 // Cargar el HTML del instrumento Variometer de forma dinámica
 window.addEventListener('DOMContentLoaded', () => {
-  fetch("https://claudio-arz.github.io/AeroDeck-HTML/variometer.html")
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/variometro_Instrumento.html")
     .then(r => r.text())
     .then(html => {
       document.getElementById("inst11").innerHTML = html;
     });
 });
+
 // Cargar el HTML del slider del  instrumento Variometer de forma dinámica
 window.addEventListener('DOMContentLoaded', () => {
-  fetch("https://claudio-arz.github.io/AeroDeck-HTML/variometer_Control.html")
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/variometro_Control.html")
     .then(r => r.text())
     .then(html => {
       document.getElementById("inst14").innerHTML = html;
-      if (typeof setupVariometerControls === 'function') {
-        setupVariometerControls(ws);
-      }
-    });
+    )};
 });      
+
 // Cargar el HTML del instrumento Altimeter de forma dinámica
 window.addEventListener('DOMContentLoaded', () => {
-  fetch("https://claudio-arz.github.io/AeroDeck-HTML/altimeter.html")
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/altimetro_Instrumento.html")
     .then(r => r.text())
     .then(html => {
       document.getElementById("inst03").innerHTML = html;
-      if (typeof setupVariometerControls === 'function') {
-        setupVariometerControls(ws);
-      }
     });
 });      
-// Cargar el HTML del instrumento AttitudeControl de forma dinámica
-window.addEventListener('DOMContentLoaded', () => {
-  fetch("https://claudio-arz.github.io/AeroDeck-HTML/AttitudeControl.html")
-    .then(r => r.text())
-    .then(html => {
-      document.getElementById("inst02").innerHTML = html;
-      // Solo se inicializa updateAttitudeControl en el joystick (inst05)
-    });
-});      
-// Cargar el HTML de los sliders para Pitch y Roll del instrumento AttitudeControl de forma dinámica
-window.addEventListener('DOMContentLoaded', () => {
-  fetch("https://claudio-arz.github.io/AeroDeck-HTML/AttitudeControl_Control.html")
-    .then(r => r.text())
-    .then(html => {
-      document.getElementById("inst05").innerHTML = html;
-      if (typeof updateAttitudeControl === 'function') {
-        updateAttitudeControl(ws);
-      }
-    });
-});      
+<<<<<<< HEAD
+// Inicializar todos los instrumentos y controles solo cuando la página y scripts hayan terminado de cargar
+window.onload = function() {
+  // Cargar todos los instrumentos y controles dinámicamente
+  const loads = [
+    fetch("https://claudio-arz.github.io/AeroDeck-HTML/AttitudeControl.html").then(r => r.text()).then(html => { document.getElementById("inst02").innerHTML = html; }),
+    fetch("https://claudio-arz.github.io/AeroDeck-HTML/AttitudeControl_Control.html").then(r => r.text()).then(html => { document.getElementById("inst05").innerHTML = html; }),
+    fetch("https://claudio-arz.github.io/AeroDeck-HTML/RPM.html").then(r => r.text()).then(html => { document.getElementById("inst04").innerHTML = html; }),
+    fetch("https://claudio-arz.github.io/AeroDeck-HTML/RPM_Control.html").then(r => r.text()).then(html => { document.getElementById("inst06").innerHTML = html; }),
+    fetch("https://claudio-arz.github.io/AeroDeck-HTML/variometer.html").then(r => r.text()).then(html => { document.getElementById("inst11").innerHTML = html; }),
+    fetch("https://claudio-arz.github.io/AeroDeck-HTML/variometer_Control.html").then(r => r.text()).then(html => { document.getElementById("inst14").innerHTML = html; }),
+    fetch("https://claudio-arz.github.io/AeroDeck-HTML/altimeter.html").then(r => r.text()).then(html => { document.getElementById("inst03").innerHTML = html; }),
+    fetch("https://claudio-arz.github.io/AeroDeck-HTML/airSpeed.html").then(r => r.text()).then(html => { document.getElementById("inst01").innerHTML = html; }),
+    fetch("https://claudio-arz.github.io/AeroDeck-HTML/airSpeed_Control.html").then(r => r.text()).then(html => { document.getElementById("inst08").innerHTML = html; }),
+    fetch("https://claudio-arz.github.io/AeroDeck-HTML/gyro.html").then(r => r.text()).then(html => { document.getElementById("inst10").innerHTML = html; }),
+    fetch("https://claudio-arz.github.io/AeroDeck-HTML/Gyro_Control.html").then(r => r.text()).then(html => { document.getElementById("inst07").innerHTML = html; })
+  ];
+
+  Promise.all(loads).then(() => {
+    // Inicializar controles/instrumentos que requieren setup después de cargar HTML
+    if (typeof updateAttitudeControl === 'function') updateAttitudeControl();
+    if (typeof setupRPMControls === 'function') setupRPMControls(ws);
+    if (typeof setupVariometerControls === 'function') setupVariometerControls(ws);
+    if (typeof AirSpeed !== 'undefined' && typeof AirSpeed.init === 'function') {
+      AirSpeed.init({ imgIds: { aguja: 'as-needle' }, sliderIds: { valor: 'as-slider-value' } });
+    }
+    if (typeof Gyro !== 'undefined' && typeof Gyro.init === 'function') {
+      Gyro.init({ imgIds: { giro_dial: 'gyr-dial' }, sliderIds: { valor: 'gyro-slider-value' } });
+    }
+  });
+};
 // Cargar el HTML del instrumento AirSpeed de forma dinámica
 window.addEventListener('DOMContentLoaded', () => {
   fetch("https://claudio-arz.github.io/AeroDeck-HTML/airSpeed.html")
@@ -282,18 +179,18 @@ window.addEventListener('DOMContentLoaded', () => {
     .then(r => r.text())
     .then(html => {
       document.getElementById("inst07").innerHTML = html;
-      // Ejecutar solo una vez la configuración de controles Gyro, con retardo de 5 segundos
-      setTimeout(function() {
-        if (typeof setupGyroControls === 'function') {
-          setupGyroControls(ws);
-          if (typeof window.updateGyro === 'function' && typeof data.gyro === 'number') {
-            window.updateGyro(data.gyro);
-          }
-        }
-      }, 5000);
+      // Inicializar Gyro solo cuando ambos HTML estén cargados
+      if (typeof Gyro !== 'undefined' && typeof Gyro.init === 'function') {
+        Gyro.init({
+          imgIds: { giro_dial: 'gyr-dial' },
+          sliderIds: { valor: 'gyro-slider-value' }
+        });
+      }
     });
 });   
 
+=======
+>>>>>>> rama-nueva-desde-905660d3
 
 </script>
 </html>
