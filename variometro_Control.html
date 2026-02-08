@@ -30,7 +30,7 @@
   <div class="variometer-control-header">Variometer Control</div>
   <div class="variometer-control-body">
     <div class="variometer-slider-section">
-      <input type="range" min="-2000" max="2000" value="0" class="slider" id="variometer-slider" >
+      <input type="range" min="-2000" max="2000" value="0" class="slider vertical-slider" id="variometer-slider" >
       <div class="slider-value" id="variometer-slider-value">0</div>
     </div>
     <div class="variometer-buttons-section">
@@ -84,63 +84,89 @@
   padding: 10px 0 16px 0;
   margin: 0 auto;
 }
-.variometer-control-header {
-  border-bottom: 2px solid #888;
-  text-align: center;
-  font-weight: bold;
-  font-size: 1.1em;
-  padding-bottom: 6px;
-  margin-bottom: 8px;
-  letter-spacing: 1px;
-}
-.variometer-control-body {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: stretch;
-  gap: 0;
-}
-.variometer-slider-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border-right: 2px solid #888;
-  padding: 0 18px 0 10px;
-  min-width: 70px;
-  justify-content: center;
-}
-.variometer-slider-section .slider {
-  height: 120px;
-  writing-mode: bt-lr; /* vertical */
-}
+  .variometer-control-header {
+    border-bottom: 2px solid #888;
+    text-align: center;
+    font-weight: bold;
+    font-size: 12px;
+    padding-bottom: 6px;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+    background: #e0f7fa;
+  }
+  .variometer-control-body {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
+    gap: 0;
+    background: #f8f8f8;
+  }
+  .variometer-slider-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-right: 2px solid #888;
+    padding: 0 8px 0 8px;
+    min-width: 60px;
+    max-width: 60px;
+    width: 60px;
+    justify-content: center;
+    background: #e3f2fd;
+  }
+  .variometer-slider-section .slider,
+  .variometer-slider-section .vertical-slider {
+    width: 30px;
+    height: 120px;
+    writing-mode: bt-lr;
+    -webkit-appearance: slider-vertical;
+    appearance: slider-vertical;
+    background: #fff;
+    border-radius: 8px;
+    margin-bottom: 8px;
+  }
+  .variometer-slider-section .slider-value {
+    width: 100%;
+    text-align: center;
+    background: #fffde7;
+    border-radius: 6px;
+    margin-top: 8px;
+    font-size: 1em;
+    font-weight: bold;
+    color: #333;
+    padding: 2px 0;
+  }
 .slider-value {
   margin-top: 10px;
   font-size: 1.1em;
   font-weight: bold;
   color: #333;
 }
-.variometer-buttons-section {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: stretch;
-  flex: 1;
-  padding: 0 10px;
-}
-.variometer-buttons-section button {
-  width: 100%;
-  margin: 0;
-  font-size: 1em;
-  padding: 6px 0;
-  border-radius: 6px;
-  border: 1px solid #aaa;
-  background: #e0e0e0;
-  margin-bottom: 0;
-}
-.variometer-buttons-section .divider {
-  border-bottom: 1.5px solid #bbb;
-  margin: 6px 0;
-}
+  .variometer-buttons-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+    min-width: 40px;
+    max-width: 40px;
+    width: 40px;
+    padding: 0 6px;
+    background: #fce4ec;
+  }
+  .variometer-buttons-section button {
+    width: 100%;
+    margin: 0;
+    font-size: 1em;
+    padding: 6px 0;
+    border-radius: 6px;
+    border: 1px solid #aaa;
+    background: #e0e0e0;
+    margin-bottom: 0;
+  }
+  .variometer-buttons-section .divider {
+    border-bottom: 1.5px solid #bbb;
+    margin: 6px 0;
+  }
 </style>
 
 <script>

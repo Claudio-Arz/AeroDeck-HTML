@@ -81,7 +81,7 @@ ws.onmessage = (msg) => {
     return;
   }
   // --- Actualizar instrumentos ---
-  if (data.verticalSpeed !== undefined) updateVariometerAndValue(data.verticalSpeedValue);
+  if (data.verticalSpeedValue !== undefined) updateVariometerAndValue(data.verticalSpeedValue);
   if (data.altitudValue !== undefined) updateAltimeterAndValue(data.altitudValue);
 };
 
