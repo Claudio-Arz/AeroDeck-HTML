@@ -59,30 +59,33 @@
     /*transition: transform 0.2s cubic-bezier(.4,2,.6,1);*/
   }
 </style>
-
 <script>
-  // Función para actualizar la aguja del variometro
-  function updateVariometerAndValue(verticalSpeed) {
-    // Mapear la velocidad vertical a un ángulo de rotación (ejemplo: -2000 a +2000 pies/min -> -90 a +90 grados)
-    const maxSpeed = 2000; // velocidad máxima para el mapeo
-    const minSpeed = -2000; // velocidad mínima para el mapeo
-    const maxAngle = 144; // ángulo máximo de rotación
-    const minAngle = -144; // ángulo mínimo de rotación
+  // JavaScript específico para el instrumento Variometro
+  const variometerSlider = document.getElementById('variometer-slider');
+  const variometerSliderValue = document.getElementById('variometer-slider-value');
+  const maxButton = document.getElementById('variometer-max-button');
+  const midButton = document.getElementById('variometer-mid-button');
+  function updateVariometerAndValue(verticalSpeedValue) {
+    // Mapear el valor de velocidad vertical a un ángulo de aguja
+    const minValue = -2000; // Valor mínimo de velocidad vertical (p. ej., -2000 pies/min)
+    const maxValue = 2000;  // Valor máximo de velocidad vertical (p. ej., 2000 pies/min)
+    const minAngle = -90;   // Ángulo mínimo de la aguja (p. ej., -90 grados)
+    const maxAngle = 90;    // Ángulo máximo de la aguja (p. ej., 90 grados)
 
-    // Limitar la velocidad vertical al rango definido
-    const clampedSpeed = Math.max(minSpeed, Math.min(maxSpeed, verticalSpeed));
+    // Asegurarse de que el valor esté dentro del rango permitido
+    const clampedValue = Math.max(minValue, Math.min(maxValue, verticalSpeedValue));
 
-    // Calcular el ángulo de rotación proporcional a la velocidad vertical
-    const angle = (clampedSpeed / maxSpeed) * maxAngle;
+    // Calcular el ángulo correspondiente
+    const angle = ((clampedValue - minValue) / (maxValue - minValue)) * (maxAngle - minAngle) + minAngle;
 
-    // Actualizar la variable CSS para la rotación de la aguja
-    // Aplicar la rotación solo a la aguja específica
-    const aguja = document.querySelector('.aguja-variometer img');
-    if (aguja) {
-      aguja.style.setProperty('--needle-rotation', `${angle}deg`);
-    }
+    // Actualizar la rotación de la aguja
+    const agujaVariometer = document.querySelector('.aguja-variometer img');
+    agujaVariometer.style.setProperty('--needle-rotation', `${angle}deg`);
 
-    // Actualizar el valor numérico en el centro del instrumento
-    document.getElementById('variometer-value').textContent = `${verticalSpeed}`;
-  }
+    // Actualizar el valor mostrado en el centro del instrumento
+    const variometerValueLabel = document.getElementById('variometer-value');
+    variometerValueLabel.textContent = `${verticalSpeedValue} ft/min`;
+  } 
+  
+
 </script>

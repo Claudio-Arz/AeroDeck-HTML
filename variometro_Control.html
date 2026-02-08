@@ -78,8 +78,8 @@
 .variometer-control-cell {
   border: 2px solid #888;
   border-radius: 10px;
-  width: 340px;
-  background: #f8f8f8;
+  width: 100px;
+  background: #573c3c;
   box-shadow: 2px 2px 8px #bbb;
   padding: 10px 0 16px 0;
   margin: 0 auto;
@@ -92,7 +92,7 @@
     padding-bottom: 6px;
     margin-bottom: 8px;
     letter-spacing: 1px;
-    background: #e0f7fa;
+    background: #2b0a46;
   }
   .variometer-control-body {
     display: flex;
@@ -100,7 +100,7 @@
     justify-content: space-between;
     align-items: stretch;
     gap: 0;
-    background: #f8f8f8;
+    background: #573c3c;
   }
   .variometer-slider-section {
     display: flex;
@@ -112,7 +112,7 @@
     max-width: 60px;
     width: 60px;
     justify-content: center;
-    background: #e3f2fd;
+    background: #2b0a46;
   }
   .variometer-slider-section .slider,
   .variometer-slider-section .vertical-slider {
@@ -120,26 +120,26 @@
     height: 120px;
     writing-mode: vertical-lr;
     direction: rtl;
-    background: #fff;
+    background: #023248;
     border-radius: 8px;
     margin-bottom: 8px;
   }
   .variometer-slider-section .slider-value {
     width: 100%;
     text-align: center;
-    background: #fffde7;
+    background: #a81837;
     border-radius: 6px;
     margin-top: 8px;
     font-size: 1em;
     font-weight: bold;
-    color: #333;
+    color: #eeb4b4;
     padding: 2px 0;
   }
 .slider-value {
   margin-top: 10px;
-  font-size: 1.1em;
+  font-size: 0.8em;
   font-weight: bold;
-  color: #333;
+  color: #eeb4b4;
 }
   .variometer-buttons-section {
     display: flex;
@@ -150,7 +150,7 @@
     max-width: 40px;
     width: 40px;
     padding: 0 6px;
-    background: #fce4ec;
+    background: #a81837;
   }
   .variometer-buttons-section button {
     width: 100%;
@@ -159,7 +159,7 @@
     padding: 6px 0;
     border-radius: 6px;
     border: 1px solid #aaa;
-    background: #e0e0e0;
+    background: #266dc4;
     margin-bottom: 0;
   }
   .variometer-buttons-section .divider {
@@ -210,6 +210,7 @@
       ws.send(JSON.stringify({ verticalSpeed: Number(verticalSpeed) }));
     }    
   }
+
 
 
 </script>
