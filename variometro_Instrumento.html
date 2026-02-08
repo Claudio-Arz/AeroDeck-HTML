@@ -37,11 +37,10 @@
   .aguja-variometer {
     position: absolute;
     top: 50%;
-    left: 0;
+    left: 50%;
     width: 240px;
     height: 10px;
-    transform-origin: 50% 50%; /* pivote en el centro */
-    transform: translate(-50%, -50%) rotate(0deg);
+    transform: translate(-50%, -50%);
     z-index: 18;
     pointer-events: none;
   }
@@ -49,10 +48,10 @@
     width: 240px;
     height: 10px;
     position: absolute;
-    top: 50%;
+    top: 0;
     left: 0;
-    transform-origin: 50% 50%;
-    transform: translate(-50%, -50%) rotate(var(--needle-rotation));
+    transform-origin: 120px 5px;
+    transform: rotate(var(--needle-rotation, 0deg));
     border-radius: 0;
     z-index: 19;
     pointer-events: none;
@@ -77,9 +76,13 @@
     const angle = (clampedSpeed / maxSpeed) * maxAngle;
 
     // Actualizar la variable CSS para la rotación de la aguja
-    document.documentElement.style.setProperty('--needle-rotation', `${angle}deg`);
+    // Aplicar la rotación solo a la aguja específica
+    const aguja = document.querySelector('.aguja-variometer img');
+    if (aguja) {
+      aguja.style.setProperty('--needle-rotation', `${angle}deg`);
+    }
 
     // Actualizar el valor numérico en el centro del instrumento
-    document.getElementById('variometer-value').textContent = `${verticalSpeed}0`;
+    document.getElementById('variometer-value').textContent = `${verticalSpeed}`;
   }
 </script>
