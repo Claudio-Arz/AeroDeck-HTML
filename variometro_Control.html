@@ -205,10 +205,10 @@
   // función para enviar los datos al ESP32, para que calcule valores para el altímetro.
   // a travez del ws abierto con el ESP32.
   function sendVerticalSpeedToESP32(verticalSpeed) {
-    if (window.esp32WebSocket && window.esp32WebSocket.readyState === WebSocket.OPEN) {
-      const message = JSON.stringify({ verticalSpeed: Number(verticalSpeed) });
-      window.esp32WebSocket.send(message);
-    }
+    // Enviar por WebSocket el estado para sincronizar con otros clientes
+    if (typeof ws !== 'undefined' && ws && ws.readyState === 1) {
+      ws.send(JSON.stringify({ verticalSpeed: Number(verticalSpeed) }));
+    }    
   }
 
 
