@@ -78,6 +78,10 @@ window.addEventListener('DOMContentLoaded', () => {
       console.warn('Mensaje WebSocket no es JSON:', msg.data);
       return;
     }
+
+    console.log("Inicio mainHTML.cpp data.verticalSpeed: " + data.verticalSpeed);
+    console.log("Inicio mainHTML.cpp data.altitudValue.: " + data.altitudValue);
+
     // --- Actualizar instrumentos ---
     if (data.verticalSpeed !== undefined && typeof updateVariometerAndValue === 'function') {
       console.log("mainHTML.cpp data.verticalSpeed: " + data.verticalSpeed);
@@ -85,7 +89,7 @@ window.addEventListener('DOMContentLoaded', () => {
       
       }
       if (data.altitudValue !== undefined && typeof updateAltimeterAndValue === 'function') {
-        console.log("mainHTML.cpp data.altitudValue: " + data.altitudValue);
+        console.log("mainHTML.cpp data.altitudValue.: " + data.altitudValue);
         updateAltimeterAndValue(data.altitudValue);
     }
   };
