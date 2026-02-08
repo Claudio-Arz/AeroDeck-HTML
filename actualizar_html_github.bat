@@ -7,8 +7,9 @@ REM Cambia al directorio de la carpeta HTML
 
 git add .
 set /p COMENTARIO="Ingrese comentario para el commit: "
-set FECHA=%DATE% %TIME%
-git commit -m "%COMENTARIO% [%FECHA%]"
+for /f "tokens=1-3 delims=/ " %%a in ("%DATE%") do set FECHA=%%a-%%b-%%c
+set HORA=%TIME%
+git commit -m "%COMENTARIO% [%FECHA% %HORA%]"
 git push origin main
 
 
