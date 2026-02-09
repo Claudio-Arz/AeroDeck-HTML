@@ -62,7 +62,7 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 </body>
 
 <script>
-// Ejecutar todo el JS solo cuando el DOM esté completamente cargado
+// Ejecutar todo el JS solo cuando el DOM esté completamente cargado --
 window.addEventListener('DOMContentLoaded', () => {
   // Inicialización del WebSocket para comunicación con el ESP32
   const ws = new WebSocket('ws://' + location.hostname + ':81/');
