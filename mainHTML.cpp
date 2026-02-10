@@ -27,6 +27,8 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 
 
 <link rel="stylesheet" href="https://claudio-arz.github.io/AeroDeck-HTML/CSS/mainHTML.css">
+<script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_variometer.js"></script>
+<script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_altimeter.js"></script>
 
 
 </head>

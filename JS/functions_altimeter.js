@@ -4,63 +4,31 @@
   Tablero completo con intrumental aeronáutico
   para ajustar instrumentos analógicos.
 
-  2026-01-26 01:19:18
-    El altimeter y variometer usan el mismo sistema de control.
-
-
-
-*/  
-
-/*
-  
 
 */
 
 
-
-// Actualiza la aguja del altímetro y el valor numérico.
-// Parámetros:
-//   altitud: número, valor de altitud en pies (0 a 20000).
-function updateAltimeterAndValue(altitud) {
-  
-  let heading = altitud; // Valor en pies.
-
-  // Aguja de cientos de pies
-  let angle_pies = (heading % 1000) * 360 / 1000;
-  document.getElementById("aguja_pies").style.transform =
-    `translate(-50%, -50%) rotate(${angle_pies}deg)`;
-
-  // Aguja de miles de pies (0-9999)
-  let miles_pies = heading / 10;
-  let angle_miles = (miles_pies % 1000) * 360 / 1000;
-  let milesNeedle = document.getElementById("aguja_miles");
-  if (milesNeedle) {
-    milesNeedle.style.transform = `translate(-50%, -50%) rotate(${angle_miles}deg)`;
-  }
-
-  // Aguja de decenas de miles de pies (0-20000)
-  let dec_miles = miles_pies / 10;
-  let angle_dec_miles = (dec_miles % 1000) * 360 / 1000;
-  let decMilesNeedle = document.getElementById("aguja_decenas_miles");
-  if (decMilesNeedle) {
-    decMilesNeedle.style.transform = `translate(-50%, -50%) rotate(${angle_dec_miles}deg)`;
-  }
-
-  // Valor numérico central
-  document.getElementById("altimeter-value").textContent =
-    Math.round(heading);
-
-  // Actualiza bandera_off según altitud
-  // Bandera visible entre 19000 y 20000 pies
-  let bandera_off = (heading >= 19000 );
-  updateAltimeterFlag(bandera_off);
-}
-
-function updateAltimeterFlag(estado) {
-  // Bandera visible entre 19000 y 20000 pies (estado true) o invisible (estado false)
-  let angle_flag = estado ? 0 : 180;
-  let flagNeedle = document.getElementById("altimeter-flag");
-  if (flagNeedle) {
-    flagNeedle.style.transform = `translate(-50%, -50%) rotate(${angle_flag}deg)`;
+// Función para actualizar el altímetro con el valor recibido
+function updateAltimeter(altitudValue, bandera_off) {
+  // Actualizar el valor numérico en el centro del instrumento
+  document.getElementById("altimeter-value").textContent = altitudValue + " ft";
+  // Calcular los ángulos de las agujas en función de la altitud
+  const decenasMiles = Math.floor(altitudValue / 10000);
+  const miles = Math.floor((altitudValue % 10000) / 1000);
+  const cientos = Math.floor((altitudValue % 1000) / 100);
+  const anguloDecenasMiles = (decenasMiles / 10) * 360; // 10 divisiones para decenas de miles
+  const anguloMiles = (miles / 10) * 360; // 10 divisiones para miles
+  const anguloCientos = (cientos / 10) * 360; // 10 divisiones para cientos
+  // Rotar las agujas según los ángulos calculados
+  document.getElementById("aguja_decenas_miles").style.transform = `translate(-50%, -50%) rotate(${anguloDecenasMiles}deg)`;
+  document.getElementById("aguja_miles").style.transform = `translate(-50%, -50%) rotate(${anguloMiles}deg)`;
+  document.getElementById("aguja_pies").style.transform = `translate(-50%, -50%) rotate(${anguloCientos}deg)`;
+  // Mostrar u ocultar la bandera OFF según el valor de bandera_off
+  const flagElement = document.getElementById("altimeter-flag");
+  if (bandera_off) {
+    flagElement.style.transform = "translate(-50%, -50%) scale(1)";
+  } else {
+    flagElement.style.transform = "translate(-50%, -50%) scale(0)";
   }
 }
+

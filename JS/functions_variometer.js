@@ -19,122 +19,81 @@
 */
 
 
-/*
-  Actualiza la aguja del variometer y el valor numérico.
-  Parámetros:
-    variometer: número, valor de variometer entre -100 y 100.
+// Lógica para actualizar el valor del slider y los botones
+const variometerSlider = document.getElementById('variometer-slider');
+const variometerSliderValue = document.getElementById('variometer-slider-value');
+const maxButton = document.getElementById('variometer-slider-max');
+const midButton = document.getElementById('variometer-slider-mid');
+const minButton = document.getElementById('variometer-slider-min');
 
-    Comunicaciones:
-      No envía ni recibe mensajes WebSocket.
-
-    Issues:
-      - La aguja no se mueve suavemente, sino en saltos.
-
-
-*/
-let isUserSlidingVariometer = false;
-function updateVariometerAndValue(variometer) {
-  // variometer: valor recibido del backend, rango esperado -100 a 100
-  // Mapeo: -100 a 100 → -2000 a 2000 para visualización
-  const value = Math.round(variometer * 20); // valor mostrado
-  // Ángulo: -100 a 100 → -144° a 144°
-  let angle = (variometer / 100) * 144;
-  const agujaDiv = document.getElementById('aguja-variometer');
-  if (agujaDiv) {
-    const agujaImg = agujaDiv.querySelector('img');
-    if (agujaImg) {
-      agujaImg.style.setProperty('--needle-rotation', `${angle}deg`);
-      agujaImg.style.transform = `translate(-50%, -50%) rotate(${angle}deg)`;
-    }
+maxButton.addEventListener('click', () => {
+  variometerSlider.value = 2000;
+  variometerSliderValue.textContent = 2000;
+  //updateVariometerAndValue(2000);
+  sendVerticalSpeedToESP32(2000); // Enviar el valor al ESP32 cada vez que se actualice el slider
+});
+midButton.addEventListener('click', () => {
+  variometerSlider.value = 0;
+  variometerSliderValue.textContent = 0;
+  updateVariometerAndValue(0);
+  sendVerticalSpeedToESP32(0); // Enviar el valor al ESP32 cada vez que se actualice el slider
+});
+minButton.addEventListener('click', () => {
+  variometerSlider.value = -2000;
+  variometerSliderValue.textContent = -2000;
+  //updateVariometerAndValue(-2000);
+  sendVerticalSpeedToESP32(-2000); // Enviar el valor al ESP32 cada vez que se actualice el slider
+});
+variometerSlider.addEventListener('input', () => {
+  const value = variometerSlider.value;
+  variometerSliderValue.textContent = value;
+  //updateVariometerAndValue(value);
+  sendVerticalSpeedToESP32(value); // Enviar el valor al ESP32 cada vez que se actualice el slider
+});
+// función para enviar los datos al ESP32, para que calcule valores para el altímetro.
+// a travez del ws abierto con el ESP32.
+// Espera a que la variable global ws esté disponible
+function getWebSocketInstance(callback) {
+  if (typeof window.ws !== 'undefined' && window.ws && window.ws.readyState === 1) {
+    callback(window.ws);
+  } else {
+    // Intenta de nuevo después de un pequeño retraso
+    setTimeout(() => getWebSocketInstance(callback), 100);
   }
-  // Mostrar el valor en el centro y al pie del slider
-  const valueDiv = document.getElementById("variometer-value");
-  if (valueDiv) valueDiv.textContent = value;
-  const variometerSliderValue = document.getElementById("variometer-slider-value");
-  if (variometerSliderValue) variometerSliderValue.textContent = value;
-  const variometerSlider = document.getElementById("variometer-slider");
-  // Solo actualizar el slider si el usuario NO está interactuando
-  if (variometerSlider && !isUserSlidingVariometer) {
-    if (Math.abs(variometerSlider.value - variometer) > 1) {
-      variometerSlider.value = variometer;
-      if (variometerSliderValue) variometerSliderValue.textContent = value;
-    }
-  }
-  
+}
+function sendVerticalSpeedToESP32(verticalSpeed) {
+  getWebSocketInstance(function(ws) {
+    console.log('Enviando velocidad vertical al ESP32:', verticalSpeed);
+    ws.send(JSON.stringify({ verticalSpeed: verticalSpeed }));
+  });
 }
 
-/*
-  Configura los controles del variometer: slider de variometer.
-  Parámetros:
-    ws: WebSocket abierto para enviar mensajes al backend.
 
-  Comunicaciones:
-    Envía mensajes JSON:
-      { verticalSpeed: valor }
+// JavaScript específico para el instrumento Variometro
+// Función para actualizar la aguja del variometro y el valor mostrado
+function updateVariometerAndValue(verticalSpeedValue) {
+  // Mapear el valor de velocidad vertical a un ángulo de aguja
+  const minValue = -2000; // Valor mínimo de velocidad vertical (p. ej., -2000 pies/min)
+  const maxValue = 2000;  // Valor máximo de velocidad vertical (p. ej., 2000 pies/min)
+  const minAngle = -90;   // Ángulo mínimo de la aguja (p. ej., -90 grados)
+  const maxAngle = 90;    // Ángulo máximo de la aguja (p. ej., 90 grados)
+  // Asegurarse de que el valor esté dentro del rango permitido
+  const clampedValue = Math.max(minValue, Math.min(maxValue, verticalSpeedValue));
+  // Calcular el ángulo correspondiente
+  const angle = ((clampedValue - minValue) / (maxValue - minValue)) * (maxAngle - minAngle) + minAngle;
+  // Actualizar la rotación de la aguja
+  const agujaVariometer = document.querySelector('.aguja-variometer img');
+  agujaVariometer.style.setProperty('--needle-rotation', `${angle}deg`);
+  console.log('Actualizando aguja del variometro a ángulo:', angle);
+  // Actualizar el valor mostrado en el centro del instrumento
+  const variometerValueLabel = document.getElementById('variometer-value');
+  variometerValueLabel.textContent = `${verticalSpeedValue} ft/min`;
+} 
 
-    Issues:
-      - Ninguno conocido.
-      - Hay que mejorar la suavidad del movimiento de la aguja.
-*/
-function setupVariometerControls(ws) {
-  const variometerSlider = document.getElementById("variometer-slider");
-  const variometerSliderValue = document.getElementById("variometer-slider-value");
-  // Botones de control para el slider
-  const btnMin = document.getElementById("variometer-slider-min");
-  const btnMid = document.getElementById("variometer-slider-mid");
-  const btnMax = document.getElementById("variometer-slider-max");
-  if (btnMin && variometerSlider) {
-    btnMin.addEventListener("click", () => {
-      variometerSlider.value = variometerSlider.min;
-      variometerSlider.dispatchEvent(new Event("input"));
-    });
-  }
-  if (btnMid && variometerSlider) {
-    btnMid.addEventListener("click", () => {
-      const min = Number(variometerSlider.min);
-      const max = Number(variometerSlider.max);
-      variometerSlider.value = Math.round((min + max) / 2);
-      variometerSlider.dispatchEvent(new Event("input"));
-    });
-  }
-  if (btnMax && variometerSlider) {
-    btnMax.addEventListener("click", () => {
-      variometerSlider.value = variometerSlider.max;
-      variometerSlider.dispatchEvent(new Event("input"));
-    });
-  }
-  if (variometerSlider && variometerSliderValue) {
-    variometerSlider.addEventListener("input", function(e) {
-      isUserSlidingVariometer = true;
-      const value = parseInt(e.target.value); // -100 a 100
-      updateVariometerAndValue(value);
-      if(ws.readyState === 1) {
-        ws.send(JSON.stringify({ verticalSpeed: value }));
-      }
-    });
-    // Detectar cuando el usuario deja de interactuar con el slider
-    const stopSliding = function() { isUserSlidingVariometer = false; };
-    variometerSlider.addEventListener("change", stopSliding);
-    variometerSlider.addEventListener("mouseup", stopSliding);
-    variometerSlider.addEventListener("touchend", stopSliding);
-  }
-  // Si necesitas actualizar la bandera del altímetro aquí, define 'estado' antes o elimina esta línea si no es necesaria.
-  // updateAltimeterFlag(estado);
-}
 
-// Interceptar mensajes del ESP32 solo si el usuario NO está moviendo el slider
-if (typeof ws !== 'undefined') {
-  ws.onmessage = (msg) => {
-    if (!isUserSlidingVariometer) {
-      let data = {};
-      try {
-        data = JSON.parse(msg.data);
-      } catch (e) {
-        console.warn('Mensaje WebSocket no es JSON:', msg.data);
-        return;
-      }
-      if (data.verticalSpeed !== undefined) updateVariometerAndValue(data.verticalSpeed);
-    }
-  };
-}
+
+
+
+
+
 
