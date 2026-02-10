@@ -82,8 +82,8 @@ function updateVariometerAndValue(verticalSpeedValue) {
   // Mapear el valor de velocidad vertical a un ángulo de aguja
   const minValue = -2000; // Valor mínimo de velocidad vertical (p. ej., -2000 pies/min)
   const maxValue = 2000;  // Valor máximo de velocidad vertical (p. ej., 2000 pies/min)
-  const minAngle = -90;   // Ángulo mínimo de la aguja (p. ej., -90 grados)
-  const maxAngle = 90;    // Ángulo máximo de la aguja (p. ej., 90 grados)
+  const minAngle = -144;   // Ángulo mínimo de la aguja (p. ej., -144 grados)
+  const maxAngle = 144;    // Ángulo máximo de la aguja (p. ej., 144 grados)
   // Asegurarse de que el valor esté dentro del rango permitido
   const clampedValue = Math.max(minValue, Math.min(maxValue, verticalSpeedValue));
   // Calcular el ángulo correspondiente
@@ -94,7 +94,7 @@ function updateVariometerAndValue(verticalSpeedValue) {
   console.log('Actualizando aguja del variometro a ángulo:', angle);
   // Actualizar el valor mostrado en el centro del instrumento
   const variometerValueLabel = document.getElementById('variometer-value');
-  variometerValueLabel.textContent = `${verticalSpeedValue}`;
+  variometerValueLabel.textContent = `${Math.round(verticalSpeedValue)}`;
 } 
 
 
