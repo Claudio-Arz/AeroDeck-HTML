@@ -17,9 +17,9 @@ function updateAltimeter(altitudValue, bandera_off) {
   // Actualizar el valor numérico en el centro del instrumento
   document.getElementById("altimeter-value").textContent = Math.round(altitudValue);
   // Calcular los ángulos de las agujas en función de la altitud
-  const decenasMiles = Math.floor(altitudValue / 10000);
-  const miles = Math.floor((altitudValue % 10000) / 1000);
-  const cientos = Math.floor((altitudValue % 1000) / 100);
+  const decenasMiles = altitudValue / 10000; // Decenas de miles
+  const miles =   (altitudValue % 10000) / 1000;
+  const cientos = (altitudValue % 1000) / 100;
   const anguloDecenasMiles = (decenasMiles / 10) * 360; // 10 divisiones para decenas de miles
   const anguloMiles = (miles / 10) * 360; // 10 divisiones para miles
   const anguloCientos = (cientos / 10) * 360; // 10 divisiones para cientos
