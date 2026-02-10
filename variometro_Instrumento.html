@@ -78,7 +78,7 @@
     // Actualizar la rotación de la aguja
     const agujaVariometer = document.querySelector('.aguja-variometer img');
     agujaVariometer.style.setProperty('--needle-rotation', `${angle}deg`);
-
+    console.log('Actualizando aguja del variometro a ángulo:', angle);
     // Actualizar el valor mostrado en el centro del instrumento
     const variometerValueLabel = document.getElementById('variometer-value');
     variometerValueLabel.textContent = `${verticalSpeedValue} ft/min`;
