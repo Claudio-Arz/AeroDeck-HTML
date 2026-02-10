@@ -1,3 +1,7 @@
+// Alias para compatibilidad con mainHTML.cpp
+function updateAltimeterAndValue(altitudValue, bandera_off) {
+  updateAltimeter(altitudValue, bandera_off);
+}
 /*
   Sistema AeroDeck
   Claudio Arzamendia Systems

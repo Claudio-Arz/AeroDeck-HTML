@@ -35,25 +35,25 @@ function initVariometerControls() {
   maxButton.addEventListener('click', () => {
     variometerSlider.value = 2000;
     variometerSliderValue.textContent = 2000;
-    updateVariometerAndValue(2000);
+    // updateVariometerAndValue(2000);
     sendVerticalSpeedToESP32(2000);
   });
   midButton.addEventListener('click', () => {
     variometerSlider.value = 0;
     variometerSliderValue.textContent = 0;
-    updateVariometerAndValue(0);
+    // updateVariometerAndValue(0);
     sendVerticalSpeedToESP32(0);
   });
   minButton.addEventListener('click', () => {
     variometerSlider.value = -2000;
     variometerSliderValue.textContent = -2000;
-    updateVariometerAndValue(-2000);
+    //updateVariometerAndValue(-2000);
     sendVerticalSpeedToESP32(-2000);
   });
   variometerSlider.addEventListener('input', () => {
     const value = variometerSlider.value;
     variometerSliderValue.textContent = value;
-    updateVariometerAndValue(value);
+    //updateVariometerAndValue(value);
     sendVerticalSpeedToESP32(value);
   });
 }

@@ -92,7 +92,7 @@ window.addEventListener('DOMContentLoaded', () => {
       }
       if (data.altitudValue !== undefined && typeof updateAltimeterAndValue === 'function') {
         console.log("mainHTML.cpp data.altitudValue.: " + data.altitudValue);
-        updateAltimeterAndValue(data.altitudValue);
+        updateAltimeterAndValue(data.altitudValue, data.bandera_off);
     }
   };
 
