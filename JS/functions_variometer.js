@@ -57,18 +57,6 @@ function initVariometerControls() {
     sendVerticalSpeedToESP32(value);
   });
 }
-minButton.addEventListener('click', () => {
-  variometerSlider.value = -2000;
-  variometerSliderValue.textContent = -2000;
-  //updateVariometerAndValue(-2000);
-  sendVerticalSpeedToESP32(-2000); // Enviar el valor al ESP32 cada vez que se actualice el slider
-});
-variometerSlider.addEventListener('input', () => {
-  const value = variometerSlider.value;
-  variometerSliderValue.textContent = value;
-  //updateVariometerAndValue(value);
-  sendVerticalSpeedToESP32(value); // Enviar el valor al ESP32 cada vez que se actualice el slider
-});
 // función para enviar los datos al ESP32, para que calcule valores para el altímetro.
 // a travez del ws abierto con el ESP32.
 // Espera a que la variable global ws esté disponible
