@@ -68,24 +68,24 @@ function getWebSocketInstance(callback) {
     setTimeout(() => getWebSocketInstance(callback), 100);
   }
 }
-function sendVerticalSpeedToESP32(verticalSpeed) {
+function sendVerticalSpeedToESP32(vertSpeed) {
   getWebSocketInstance(function(ws) {
-    console.log('Enviando velocidad vertical al ESP32:', verticalSpeed);
-    ws.send(JSON.stringify({ verticalSpeed: verticalSpeed }));
+    console.log('Enviando velocidad vertical al ESP32:', vertSpeed);
+    ws.send(JSON.stringify({ verticalSpeed: vertSpeed }));
   });
 }
 
 
 // JavaScript específico para el instrumento Variometro
 // Función para actualizar la aguja del variometro y el valor mostrado
-function updateVariometerAndValue(verticalSpeedValue) {
+function updateVariometerAndValue(vertSpeed) {
   // Mapear el valor de velocidad vertical a un ángulo de aguja
   const minValue = -2000; // Valor mínimo de velocidad vertical (p. ej., -2000 pies/min)
   const maxValue = 2000;  // Valor máximo de velocidad vertical (p. ej., 2000 pies/min)
   const minAngle = -144;   // Ángulo mínimo de la aguja (p. ej., -144 grados)
   const maxAngle = 144;    // Ángulo máximo de la aguja (p. ej., 144 grados)
   // Asegurarse de que el valor esté dentro del rango permitido
-  const clampedValue = Math.max(minValue, Math.min(maxValue, verticalSpeedValue));
+  const clampedValue = Math.max(minValue, Math.min(maxValue, vertSpeed));
   // Calcular el ángulo correspondiente
   const angle = ((clampedValue - minValue) / (maxValue - minValue)) * (maxAngle - minAngle) + minAngle;
   // Actualizar la rotación de la aguja
@@ -94,7 +94,7 @@ function updateVariometerAndValue(verticalSpeedValue) {
   console.log('Actualizando aguja del variometro a ángulo:', angle);
   // Actualizar el valor mostrado en el centro del instrumento
   const variometerValueLabel = document.getElementById('variometer-value');
-  variometerValueLabel.textContent = `${Math.round(verticalSpeedValue)}`;
+  variometerValueLabel.textContent = `${Math.round(vertSpeed)}`;
 } 
 
 
