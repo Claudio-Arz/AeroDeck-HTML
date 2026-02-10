@@ -19,25 +19,44 @@
 */
 
 
-// Lógica para actualizar el valor del slider y los botones
-const variometerSlider = document.getElementById('variometer-slider');
-const variometerSliderValue = document.getElementById('variometer-slider-value');
-const maxButton = document.getElementById('variometer-slider-max');
-const midButton = document.getElementById('variometer-slider-mid');
-const minButton = document.getElementById('variometer-slider-min');
+// Inicialización segura de controles variometer
+function initVariometerControls() {
+  const variometerSlider = document.getElementById('variometer-slider');
+  const variometerSliderValue = document.getElementById('variometer-slider-value');
+  const maxButton = document.getElementById('variometer-slider-max');
+  const midButton = document.getElementById('variometer-slider-mid');
+  const minButton = document.getElementById('variometer-slider-min');
 
-maxButton.addEventListener('click', () => {
-  variometerSlider.value = 2000;
-  variometerSliderValue.textContent = 2000;
-  //updateVariometerAndValue(2000);
-  sendVerticalSpeedToESP32(2000); // Enviar el valor al ESP32 cada vez que se actualice el slider
-});
-midButton.addEventListener('click', () => {
-  variometerSlider.value = 0;
-  variometerSliderValue.textContent = 0;
-  updateVariometerAndValue(0);
-  sendVerticalSpeedToESP32(0); // Enviar el valor al ESP32 cada vez que se actualice el slider
-});
+  if (!variometerSlider || !variometerSliderValue || !maxButton || !midButton || !minButton) {
+    console.warn('No se encontraron los controles del variometer en el DOM.');
+    return;
+  }
+
+  maxButton.addEventListener('click', () => {
+    variometerSlider.value = 2000;
+    variometerSliderValue.textContent = 2000;
+    //updateVariometerAndValue(2000);
+    sendVerticalSpeedToESP32(2000);
+  });
+  midButton.addEventListener('click', () => {
+    variometerSlider.value = 0;
+    variometerSliderValue.textContent = 0;
+    updateVariometerAndValue(0);
+    sendVerticalSpeedToESP32(0);
+  });
+  minButton.addEventListener('click', () => {
+    variometerSlider.value = -2000;
+    variometerSliderValue.textContent = -2000;
+    //updateVariometerAndValue(-2000);
+    sendVerticalSpeedToESP32(-2000);
+  });
+  variometerSlider.addEventListener('input', () => {
+    const value = variometerSlider.value;
+    variometerSliderValue.textContent = value;
+    //updateVariometerAndValue(value);
+    sendVerticalSpeedToESP32(value);
+  });
+}
 minButton.addEventListener('click', () => {
   variometerSlider.value = -2000;
   variometerSliderValue.textContent = -2000;
@@ -87,7 +106,7 @@ function updateVariometerAndValue(verticalSpeedValue) {
   console.log('Actualizando aguja del variometro a ángulo:', angle);
   // Actualizar el valor mostrado en el centro del instrumento
   const variometerValueLabel = document.getElementById('variometer-value');
-  variometerValueLabel.textContent = `${verticalSpeedValue} ft/min`;
+  variometerValueLabel.textContent = `${verticalSpeedValue}`;
 } 
 
 

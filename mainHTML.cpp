@@ -110,6 +110,17 @@ window.addEventListener('DOMContentLoaded', () => {
     .then(r => r.text())
     .then(html => {
       document.getElementById("inst14").innerHTML = html;
+      // Inicializar controles del variometer después de insertar el HTML
+      if (typeof initVariometerControls === 'function') {
+        initVariometerControls();
+      } else {
+        // Si el script aún no está cargado, esperar y reintentar
+        setTimeout(() => {
+          if (typeof initVariometerControls === 'function') {
+            initVariometerControls();
+          }
+        }, 200);
+      }
     });
 });      
 
