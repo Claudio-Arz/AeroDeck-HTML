@@ -35,25 +35,21 @@ function initVariometerControls() {
   maxButton.addEventListener('click', () => {
     variometerSlider.value = 2000;
     variometerSliderValue.textContent = 2000;
-    // updateVariometerAndValue(2000);
     sendVerticalSpeedToESP32(2000);
   });
   midButton.addEventListener('click', () => {
     variometerSlider.value = 0;
     variometerSliderValue.textContent = 0;
-    // updateVariometerAndValue(0);
     sendVerticalSpeedToESP32(0);
   });
   minButton.addEventListener('click', () => {
     variometerSlider.value = -2000;
     variometerSliderValue.textContent = -2000;
-    //updateVariometerAndValue(-2000);
     sendVerticalSpeedToESP32(-2000);
   });
   variometerSlider.addEventListener('input', () => {
     const value = variometerSlider.value;
     variometerSliderValue.textContent = value;
-    //updateVariometerAndValue(value);
     sendVerticalSpeedToESP32(value);
   });
 }
@@ -91,7 +87,6 @@ function updateVariometerAndValue(vertSpeed) {
   // Actualizar la rotación de la aguja
   const agujaVariometer = document.querySelector('.aguja-variometer img');
   agujaVariometer.style.setProperty('--needle-rotation', `${angle}deg`);
-  console.log('Actualizando aguja del variometro a ángulo:', angle);
   // Actualizar el valor mostrado en el centro del instrumento
   const variometerValueLabel = document.getElementById('variometer-value');
   variometerValueLabel.textContent = `${Math.round(vertSpeed)}`;
