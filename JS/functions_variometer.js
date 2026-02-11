@@ -50,6 +50,7 @@ function initVariometerControls() {
   variometerSlider.addEventListener('input', () => {
     const value = variometerSlider.value;
     variometerSliderValue.textContent = value;
+    updateVariometerAndValue(value);
     sendVerticalSpeedToESP32(value);
   });
 }
