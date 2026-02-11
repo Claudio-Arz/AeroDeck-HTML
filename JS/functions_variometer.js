@@ -50,8 +50,8 @@ function initVariometerControls() {
   variometerSlider.addEventListener('input', () => {
     const value = variometerSlider.value;
     variometerSliderValue.textContent = value;
-    updateVariometerAndValue(value);
     sendVerticalSpeedToESP32(value);
+    updateVariometerAndValue(value); // Mueve la aguja localmente
   });
 }
 // función para enviar los datos al ESP32, para que calcule valores para el altímetro.
