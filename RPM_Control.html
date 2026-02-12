@@ -26,7 +26,7 @@
 <!-- Control deslizante para motor y botones Start y Noice -->
 
 <!-- Caja contenedora 120px x 240px -->
-<div style="width: 120px; height: 240px; display: flex; flex-direction: column; box-sizing: border-box;">
+<div style="width: 120px; height: 240px; display: flex; flex-direction: column; box-sizing: border-box; background-color: rgb(63, 155, 158);">
   
   <!-- Título RPM Control -->
   <div style="text-align: center; font-weight: bold; padding: 4px 0; border-bottom: 1px solid #555;">RPM Control</div>
@@ -36,7 +36,7 @@
     
     <!-- Columna slider -->
     <div style="width: 30px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-      <input type="range" min="0" max="3000" value="0" id="rpm-slider" orient="vertical" style="height: 120px; writing-mode: bt-lr; -webkit-appearance: slider-vertical;">
+      <input type="range" min="0" max="3000" value="0" id="rpm-slider" style="height: 120px; writing-mode: vertical-lr; direction: rtl">
     </div>
     
     <!-- Columna +/- -->
@@ -46,7 +46,7 @@
     </div>
     
     <!-- Columna Max/Med/Min -->
-    <div style="flex: 1; display: flex; flex-direction: column; justify-content: space-around; align-items: center; padding: 4px;">
+    <div style="flex: 1; display: flex; flex-direction: column; justify-content: space-around; align-items: center; padding: 4px; color: #fff;">
       <button id="rpm-slider-max" class="slider-glow-btn slider-btn slider-btn-max" style="width: 100%; height: 28px; font-size: 10px;">Máximo</button>
       <button id="rpm-slider-mid" class="slider-glow-btn slider-btn slider-btn-mid" style="width: 100%; height: 28px; font-size: 10px;">Medio</button>
       <button id="rpm-slider-min" class="slider-glow-btn slider-btn slider-btn-min" style="width: 100%; height: 28px; font-size: 10px;">Mínimo</button>
