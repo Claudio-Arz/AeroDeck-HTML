@@ -29,6 +29,7 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 <link rel="stylesheet" href="https://claudio-arz.github.io/AeroDeck-HTML/CSS/mainHTML.css">
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_variometer.js"></script>
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_altimeter.js"></script>
+<script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_rpm.js"></script>
 
 
 </head>
@@ -87,7 +88,7 @@ window.addEventListener('DOMContentLoaded', () => {
       updateAltimeterAndValue(data.altitudValue, data.bandera_off);
     }
     if (data.RPMValue !== undefined && typeof updateRPMAndValue === 'function') {
-      updateRMPAndValue(data.RPMValue, data.RPMNoice);
+      updateRPMAndValue(data.RPMValue, data.RPMNoice);
     }
   };
   
