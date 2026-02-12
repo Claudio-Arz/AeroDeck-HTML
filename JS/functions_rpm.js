@@ -56,12 +56,12 @@ function initRPMControls() {
     sendRPMToESP32("startBtnRPM", startBtnRPM.value);
   });
   rpmBtnPlus.addEventListener('click', () => {
-    rpmSlider.value += rpmSlider.value < 3000 ?  parseFloat(1) : parseFloat(0);
+    rpmSlider.value += (rpmSlider.value < 3000 ?  parseFloat(1) : parseFloat(0));
     rpmSliderValue.textContent = rpmSlider.value;
     sendRPMToESP32("rpmSlider", parseFloat(rpmSlider.value));
   });
   rpmBtnMinus.addEventListener('click', () => {
-    rpmSlider.value -= rpmSlider.value > 0 ?  parseFloat(1) : parseFloat(0);
+    rpmSlider.value -= (rpmSlider.value > 0 ?  parseFloat(1) : parseFloat(0));
     rpmSliderValue.textContent = rpmSlider.value;
     sendRPMToESP32("rpmSlider", parseFloat(rpmSlider.value));
   });
