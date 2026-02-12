@@ -1,0 +1,22 @@
+
+
+<!-- Control deslizante para motor y botones Start y Noice -->
+
+<div class="label-slider">RPM</div>
+<div style="display: flex; flex-direction: row; align-items: flex-start; gap: 30px;">
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <div class="slider">
+      <input type="range" min="0" max="3000" value="0" class="slider" id="rpm-slider" orient="vertical">
+    </div>
+    <div class="slider-value" id="rpm-slider-value">0</div>
+  </div>
+  <div style="display: flex; flex-direction: column; justify-content: space-between; align-items: center; height: 60px; margin-right:10px;">
+    <button id="rpm-slider-max" class="slider-glow-btn slider-btn slider-btn-max"></button>
+    <button id="rpm-slider-mid" class="slider-glow-btn slider-btn slider-btn-mid"></button>
+    <button id="rpm-slider-min" class="slider-glow-btn slider-btn slider-btn-min"></button>
+  </div>
+  <div style="display: flex; flex-direction: column; gap: 10px; align-items: stretch;">
+    <button id="start-btn-rpm" style="height:48px;font-size:18px;padding:8px 12px;border-radius:8px;">Start</button>
+    <button id="noice-btn" style="height:40px;font-size:16px;padding:6px 10px;background:#444;color:#fff;border-radius:8px;border:none;cursor:pointer;">Noice: OFF</button>
+  </div>
+</div>

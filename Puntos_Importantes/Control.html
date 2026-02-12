@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Control Joystick Circular</title>
+  <style>
+    body {
+      background: #222;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .joystick-container {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      margin-bottom: 24px;
+    }
+    .joystick-base {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: radial-gradient(circle at 50% 50%, #4772ff 0%, #0c095f 100%);
+      border: 4px solid #0c0234;
+      box-shadow: 0 0 24px #000a;
+    }
+    .joystick-knob {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: radial-gradient(circle at 65% 35%, #fff 0%, #a41313 40%, #450404 100%);
+      border: 3px solid #a44915;
+      box-shadow: 0 0 12px #f3c22170;
+      cursor: grab;
+      transition: box-shadow 0.2s;
+      z-index: 2;
+    }
+    .joystick-knob:active {
+      box-shadow: 0 0 24px #2196f3cc;
+      cursor: grabbing;
+    }
+    .coords {
+      font-size: 1.2em;
+      margin-top: 12px;
+      letter-spacing: 1px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Control Circular (Joystick)</h2>
+  <div class="joystick-container" id="joystick">
+    <div class="joystick-base"></div>
+    <!-- SVG para el brazo del joystick -->
+    <svg id="joystick-arm" width="300" height="300" style="position:absolute;top:0;left:0;pointer-events:none;z-index:1;">
+      <defs>
+        <linearGradient id="chrome-gradient" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#e0e0e0" />
+          <stop offset="20%" stop-color="#b0b0b0" />
+          <stop offset="40%" stop-color="#f8f8f8" />
+          <stop offset="60%" stop-color="#888" />
+          <stop offset="80%" stop-color="#f8f8f8" />
+          <stop offset="100%" stop-color="#b0b0b0" />
+        </linearGradient>
+      </defs>
+      <line id="joystick-arm-line" x1="150" y1="150" x2="150" y2="150" stroke="url(#chrome-gradient)" stroke-width="12" stroke-linecap="round" />
+    </svg>
+    <div class="joystick-knob" id="knob"></div>
+  </div>
+  <div class="coords" id="coords">x: 0, y: 0 | roll: 0°, pitch: 0°</div>
+
+  <script>
+        // WebSocket para enviar roll y pitch
+        let ws;
+        if (window.location.protocol.startsWith('http')) {
+          ws = new WebSocket('ws://' + location.hostname + ':81/');
+        }
+    const container = document.getElementById('joystick');
+    const knob = document.getElementById('knob');
+    const coords = document.getElementById('coords');
+    const size = 300;
+    const knobSize = 60;
+    const radius = (size - knobSize) / 2;
+    let dragging = false;
+
+    let knobPos = {x: 0, y: 0};
+    function setKnob(x, y) {
+      knobPos.x = x;
+      knobPos.y = y;
+      knob.style.left = `${x + size/2}px`;
+      knob.style.top = `${y + size/2}px`;
+      // Actualizar el brazo SVG
+      const armLine = document.getElementById('joystick-arm-line');
+      if (armLine) {
+        armLine.setAttribute('x2', (x + size/2).toString());
+        armLine.setAttribute('y2', (y + size/2).toString());
+      }
+      // Mapear x a roll (-30 a 30)
+      const roll = Math.round((x / radius) * 30 * 10) / 10; // 1 decimal
+      // Mapear y a pitch (-50 a 50)
+      const pitchRaw = Math.round((y / radius) * 50 * 10) / 10; // -50 a 50
+      // Convertir pitch a grados según escala: 25=10°, 12.5=5°, 50=20°
+      // pitchGrados = pitchRaw * 0.4
+      const pitchDeg = Math.round((pitchRaw * 0.4) * 10) / 10;
+      coords.textContent = `x: ${x}, y: ${-y} | roll: ${roll}°, pitch: ${pitchDeg}°`;
+      // Enviar roll y pitch (en grados reales) por WebSocket
+      if (ws && ws.readyState === 1) {
+        ws.send(JSON.stringify({ roll: roll, pitch: pitchDeg }));
+      }
+    }
+
+    function getRelativeCoords(e) {
+      const rect = container.getBoundingClientRect();
+      let clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      let clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      let x = clientX - rect.left - size/2;
+      let y = clientY - rect.top - size/2;
+      // Limitar dentro del círculo
+      const dist = Math.sqrt(x*x + y*y);
+      if (dist > radius) {
+        x = x * radius / dist;
+        y = y * radius / dist;
+      }
+      return {x: Math.round(x), y: Math.round(y)};
+    }
+
+    function onMove(e) {
+      if (!dragging) return;
+      e.preventDefault();
+      const {x, y} = getRelativeCoords(e);
+      setKnob(x, y);
+    }
+
+    function animateToCenter() {
+      const start = {x: knobPos.x, y: knobPos.y};
+      const duration = 4000; // ms
+      const startTime = performance.now();
+      function animate(now) {
+        const elapsed = now - startTime;
+        const t = Math.min(elapsed / duration, 1);
+        // Ease-out
+        const ease = 1 - Math.pow(1 - t, 2);
+        const x = Math.round(start.x * (1 - ease));
+        const y = Math.round(start.y * (1 - ease));
+        setKnob(x, y);
+        if (t < 1) {
+          requestAnimationFrame(animate);
+        } else {
+          setKnob(0, 0);
+        }
+      }
+      requestAnimationFrame(animate);
+    }
+    function onEnd() {
+      dragging = false;
+      animateToCenter();
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onEnd);
+      document.removeEventListener('touchmove', onMove);
+      document.removeEventListener('touchend', onEnd);
+    }
+
+    knob.addEventListener('mousedown', function(e) {
+      dragging = true;
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onEnd);
+    });
+    knob.addEventListener('touchstart', function(e) {
+      dragging = true;
+      document.addEventListener('touchmove', onMove, {passive: false});
+      document.addEventListener('touchend', onEnd);
+    });
+
+    // Inicializar en el centro
+    setKnob(0, 0);
+  </script>
+</body>
+</html>

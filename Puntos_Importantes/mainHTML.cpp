@@ -97,16 +97,6 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Cargar el HTML del instrumento RPM de forma dinámica
-window.addEventListener('DOMContentLoaded', () => {
-  fetch("https://claudio-arz.github.io/AeroDeck-HTML/RPM_Instrumento.html")
-    .then(r => r.text())
-    .then(html => {
-      document.getElementById("inst04").innerHTML = html;
-    });
-});      
-
-
 // Cargar el HTML del slider del  instrumento Variometer de forma dinámica
 window.addEventListener('DOMContentLoaded', () => {
   fetch("https://claudio-arz.github.io/AeroDeck-HTML/variometro_Control.html")

@@ -1,0 +1,17 @@
+<!-- Control deslizante para AeroSpeed -->
+
+<div class="label-slider">AirSpeed</div>
+
+<div style="display: flex; flex-direction: row; align-items: flex-start; gap: 30px;">
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <div class="slider">
+      <input type="range" min="40" max="200" value="40" class="slider" id="as-slider-value" orient="vertical">
+    </div>
+    <div class="slider-value" id="as-slider-value-label">0</div>
+  </div>
+  <div style="display: flex; flex-direction: column; justify-content: space-between; align-items: center; height: 60px;">
+    <button id="as-slider-max" class="slider-glow-btn slider-btn slider-btn-max"></button>
+    <button id="as-slider-mid" class="slider-glow-btn slider-btn slider-btn-mid"></button>
+    <button id="as-slider-min" class="slider-glow-btn slider-btn slider-btn-min"></button>
+  </div>
+</div>
