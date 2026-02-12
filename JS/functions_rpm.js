@@ -58,27 +58,27 @@ function initRPMControls() {
   rpmBtnPlus.addEventListener('click', () => {
     rpmSlider.value += rpmSlider.value < 3000 ?  parseFloat(1) : parseFloat(0);
     rpmSliderValue.textContent = rpmSlider.value;
-    sendRPMToESP32("rpmSlider", rpmSlider.value);
+    sendRPMToESP32("rpmSlider", parseFloat(rpmSlider.value));
   });
   rpmBtnMinus.addEventListener('click', () => {
     rpmSlider.value -= rpmSlider.value > 0 ?  parseFloat(1) : parseFloat(0);
     rpmSliderValue.textContent = rpmSlider.value;
-    sendRPMToESP32("rpmSlider", rpmSlider.value);
+    sendRPMToESP32("rpmSlider", parseFloat(rpmSlider.value));
   });
   maxButton.addEventListener('click', () => {
     rpmSlider.value = parseFloat(3000);
     rpmSliderValue.textContent = 3000;
-    sendRPMToESP32("rpmSlider", 3000);
+    sendRPMToESP32("rpmSlider", 3000.0);
   });
   midButton.addEventListener('click', () => {
     rpmSlider.value = parseFloat(1500);
     rpmSliderValue.textContent = 1500;
-    sendRPMToESP32("rpmSlider", 1500);
+    sendRPMToESP32("rpmSlider", 1500.0);
   });
   minButton.addEventListener('click', () => {
     rpmSlider.value = parseFloat(0);
     rpmSliderValue.textContent = 0;
-    sendRPMToESP32("rpmSlider", 0);
+    sendRPMToESP32("rpmSlider", 0.0);
   });
   rpmSlider.addEventListener('input', () => {
     const value = parseFloat(rpmSlider.value);
