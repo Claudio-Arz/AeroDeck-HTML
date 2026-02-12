@@ -26,14 +26,7 @@
   Actualiza la aguja del tacómetro y el valor numérico de RPM.
   Parámetros:
     rpm: número, valor de RPM entre 0 y 3000.
-
-  Comunicaciones:
-    No envía ni recibe mensajes WebSocket.
-
-  Issues:
-    - La aguja no se mueve suavemente, sino en saltos.
-
-
+    noice: booleano o número, indica si el modo "noice" está activo (true/1) o no (false/0).
 */ 
 function initRPMControls() {
   // Aquí podríamos agregar event listeners para controles interactivos
@@ -90,7 +83,6 @@ function initRPMControls() {
   rpmSlider.addEventListener('input', () => {
     const value = parseFloat(rpmSlider.value);
     rpmSliderValue.textContent = value;
-    sendRPMToESP32(value);
     sendRPMToESP32("rpmSlider", value);
   });
 
@@ -99,7 +91,7 @@ function initRPMControls() {
 function sendRPMToESP32(DataVar, DataValue) {
   getWebSocketInstance(function(ws) {
     console.log('Enviando RPM al ESP32:', DataVar, DataValue);
-    ws.send(JSON.stringify({ DataVar, DataValue :  }));
+    ws.send(JSON.stringify({ [DataVar]: DataValue }));
   });
 }
 
