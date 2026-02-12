@@ -51,7 +51,7 @@ function initVariometerControls() {
     const value = parseFloat(variometerSlider.value);
     variometerSliderValue.textContent = value;
     sendVerticalSpeedToESP32(value);
-    console.log('Slider variometer ajustado a:', value);
+    // console.log('Slider variometer ajustado a:', value);
     // updateVariometerAndValue(value); // Mueve la aguja localmente
   });
 }
