@@ -51,7 +51,7 @@ function initVariometerControls() {
     const value = variometerSlider.value;
     variometerSliderValue.textContent = value;
     sendVerticalSpeedToESP32(value);
-    updateVariometerAndValue(value); // Mueve la aguja localmente
+    // updateVariometerAndValue(value); // Mueve la aguja localmente
   });
 }
 // función para enviar los datos al ESP32, para que calcule valores para el altímetro.
@@ -82,7 +82,7 @@ function updateVariometerAndValue(vertSpeed) {
   const minAngle = -144;   // Ángulo mínimo de la aguja (p. ej., -144 grados)
   const maxAngle = 144;    // Ángulo máximo de la aguja (p. ej., 144 grados)
   // Asegurarse de que el valor esté dentro del rango permitido
-  const clampedValue = Math.max(minValue, Math.min(maxValue, vertSpeed));
+  const clampedValue = vertSpeed;
   // Calcular el ángulo correspondiente
   const angle = ((clampedValue - minValue) / (maxValue - minValue)) * (maxAngle - minAngle) + minAngle;
   // Actualizar la rotación de la aguja
