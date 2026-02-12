@@ -95,7 +95,7 @@ function sendRPMToESP32(DataVar, DataValue) {
   });
 }
 
-function updateRMPAndValue(RPMValue, RPMNoice) {
+function updateRPMAndValue(RPMValue, RPMNoice) {
   // Actualizar el valor numérico en el centro del instrumento
   document.getElementById("rpm-value").textContent = Math.round(RPMValue);
   // Calcular los ángulos de las agujas en función de la altitud
