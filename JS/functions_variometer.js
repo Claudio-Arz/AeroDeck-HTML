@@ -37,7 +37,7 @@ function initVariometerControls() {
   if (btnPlus) {
     btnPlus.addEventListener('click', () => {
       let currentValue = parseFloat(variometerSlider.value);
-      let newValue = currentValue < 2000 ? currentValue + 100 : currentValue;
+      let newValue = currentValue < 2000 ? currentValue + 1 : currentValue;
       variometerSlider.value = newValue;
       variometerSliderValue.textContent = newValue;
       sendVerticalSpeedToESP32(newValue);
@@ -46,7 +46,7 @@ function initVariometerControls() {
   if (btnMinus) {
     btnMinus.addEventListener('click', () => {
       let currentValue = parseFloat(variometerSlider.value);
-      let newValue = currentValue > -2000 ? currentValue - 100 : currentValue;
+      let newValue = currentValue > -2000 ? currentValue - 1 : currentValue;
       variometerSlider.value = newValue;
       variometerSliderValue.textContent = newValue;
       sendVerticalSpeedToESP32(newValue);
