@@ -48,20 +48,22 @@ function initRPMControls() {
 
 
   noiceBtnRPM.addEventListener('click', () => {
-    noiceBtnRPM.value = noiceBtnRPM.value === 1 ?  0 : 1;
+    noiceBtnRPM.value = noiceBtnRPM.value === true ?  false : true;
     sendRPMToESP32("noiceBtnRPM", noiceBtnRPM.value);
   });
   startBtnRPM.addEventListener('click', () => {
-    startBtnRPM.value = startBtnRPM.value === 1 ?  0 : 1;
+    startBtnRPM.value = startBtnRPM.value === true ?  false : true;
     sendRPMToESP32("startBtnRPM", startBtnRPM.value);
   });
   rpmBtnPlus.addEventListener('click', () => {
-    rpmSlider.value += (rpmSlider.value < 3000 ?  parseFloat(1) : parseFloat(0));
+    let currentValue = parseFloat(rpmSlider.value);
+    rpmSlider.value = currentValue < 3000 ? currentValue + 1 : currentValue;
     rpmSliderValue.textContent = rpmSlider.value;
     sendRPMToESP32("rpmSlider", parseFloat(rpmSlider.value));
   });
   rpmBtnMinus.addEventListener('click', () => {
-    rpmSlider.value -= (rpmSlider.value > 0 ?  parseFloat(1) : parseFloat(0));
+    let currentValue = parseFloat(rpmSlider.value);
+    rpmSlider.value = currentValue > 0 ? currentValue - 1 : currentValue;
     rpmSliderValue.textContent = rpmSlider.value;
     sendRPMToESP32("rpmSlider", parseFloat(rpmSlider.value));
   });
