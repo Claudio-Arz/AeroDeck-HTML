@@ -117,13 +117,16 @@ function updateRPMAndValue(RPMValue, RPMNoice) {
     RPMSlider.textContent = Math.round(RPMValue);
   }
 
-  // Cambiar el color del boton Noice según el estado
+  // Cambiar el color del boton Noice y crystal según el estado
   const noiceBtnRPM = document.getElementById('noice-btn-rpm');
+  const rpmCrystal = document.getElementById('rpm-crystal');
   const noiceActive = (RPMNoice === true || RPMNoice === 1);
   if (noiceActive) {
-    noiceBtnRPM.style.background = '#0f0';  
+    noiceBtnRPM.style.background = '#0f0';
+    if (rpmCrystal) rpmCrystal.style.background = 'rgba(0, 255, 0, 0.15)';
   } else {
-    noiceBtnRPM.style.background = '#444';  
+    noiceBtnRPM.style.background = '#444';
+    if (rpmCrystal) rpmCrystal.style.background = '';
   }
   
 }
