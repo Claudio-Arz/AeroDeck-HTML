@@ -46,14 +46,17 @@ function initRPMControls() {
     return;
   }
 
+  // Variables de estado para los toggles (no usar .value que convierte a string)
+  let noiceState = false;
+  let startState = false;
 
   noiceBtnRPM.addEventListener('click', () => {
-    noiceBtnRPM.value = noiceBtnRPM.value === true ?  false : true;
-    sendRPMToESP32("noiceBtnRPM", noiceBtnRPM.value);
+    noiceState = !noiceState;
+    sendRPMToESP32("noiceBtnRPM", noiceState);
   });
   startBtnRPM.addEventListener('click', () => {
-    startBtnRPM.value = startBtnRPM.value === true ?  false : true;
-    sendRPMToESP32("startBtnRPM", startBtnRPM.value);
+    startState = !startState;
+    sendRPMToESP32("startBtnRPM", startState);
   });
   rpmBtnPlus.addEventListener('click', () => {
     let currentValue = parseFloat(rpmSlider.value);
