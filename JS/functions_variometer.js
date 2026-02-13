@@ -26,10 +26,31 @@ function initVariometerControls() {
   const maxButton = document.getElementById('variometer-slider-max');
   const midButton = document.getElementById('variometer-slider-mid');
   const minButton = document.getElementById('variometer-slider-min');
+  const btnPlus = document.getElementById('variometer-btn-plus');
+  const btnMinus = document.getElementById('variometer-btn-minus');
 
   if (!variometerSlider || !variometerSliderValue || !maxButton || !midButton || !minButton) {
     console.warn('No se encontraron los controles del variometer en el DOM.');
     return;
+  }
+
+  if (btnPlus) {
+    btnPlus.addEventListener('click', () => {
+      let currentValue = parseFloat(variometerSlider.value);
+      let newValue = currentValue < 2000 ? currentValue + 100 : currentValue;
+      variometerSlider.value = newValue;
+      variometerSliderValue.textContent = newValue;
+      sendVerticalSpeedToESP32(newValue);
+    });
+  }
+  if (btnMinus) {
+    btnMinus.addEventListener('click', () => {
+      let currentValue = parseFloat(variometerSlider.value);
+      let newValue = currentValue > -2000 ? currentValue - 100 : currentValue;
+      variometerSlider.value = newValue;
+      variometerSliderValue.textContent = newValue;
+      sendVerticalSpeedToESP32(newValue);
+    });
   }
 
   maxButton.addEventListener('click', () => {

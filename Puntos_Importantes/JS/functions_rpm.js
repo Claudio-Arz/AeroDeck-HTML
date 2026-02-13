@@ -26,132 +26,107 @@
   Actualiza la aguja del tacómetro y el valor numérico de RPM.
   Parámetros:
     rpm: número, valor de RPM entre 0 y 3000.
-
-  Comunicaciones:
-    No envía ni recibe mensajes WebSocket.
-
-  Issues:
-    - La aguja no se mueve suavemente, sino en saltos.
-
-
+    noice: booleano o número, indica si el modo "noice" está activo (true/1) o no (false/0).
 */ 
-let isUserSliding = false;
-let currentRPM = 0;
-let targetRPM = 0;
-let rpmAnimationFrame = null;
-function animateNeedleRPM(newValue) {
-  targetRPM = newValue;
-  if (!rpmAnimationFrame) {
-    function step() {
-      currentRPM += (targetRPM - currentRPM) * 0.2;
-      if (Math.abs(targetRPM - currentRPM) < 0.5) {
-        currentRPM = targetRPM;
-        rpmAnimationFrame = null;
-      } else {
-        rpmAnimationFrame = requestAnimationFrame(step);
-      }
-      updateNeedleAndValue(currentRPM);
-    }
-    rpmAnimationFrame = requestAnimationFrame(step);
+function initRPMControls() {
+  // Aquí podríamos agregar event listeners para controles interactivos
+  const rpmSlider = document.getElementById('rpm-slider');
+  const rpmSliderValue = document.getElementById('rpm-slider-value');
+  const maxButton = document.getElementById('rpm-slider-max');
+  const midButton = document.getElementById('rpm-slider-mid');
+  const minButton = document.getElementById('rpm-slider-min');
+  const rpmBtnPlus = document.getElementById('rpm-btn-plus');
+  const rpmBtnMinus = document.getElementById('rpm-btn-minus');
+  const startBtnRPM = document.getElementById('start-btn-rpm');
+  const noiceBtnRPM = document.getElementById('noice-btn-rpm');
+
+  if (!rpmSlider || !rpmSliderValue || !maxButton || !midButton || 
+    !minButton || !rpmBtnPlus || !rpmBtnMinus || !startBtnRPM || !noiceBtnRPM  ) {
+    console.warn('No se encontraron los controles del RPM en el DOM.');
+    return;
   }
+
+  // Variables de estado para los toggles (no usar .value que convierte a string)
+  let noiceState = false;
+  let startState = false;
+
+  noiceBtnRPM.addEventListener('click', () => {
+    noiceState = !noiceState;
+    sendRPMToESP32("noiceBtnRPM", noiceState);
+  });
+  startBtnRPM.addEventListener('click', () => {
+    startState = !startState;
+    sendRPMToESP32("startBtnRPM", startState);
+  });
+  rpmBtnPlus.addEventListener('click', () => {
+    let currentValue = parseFloat(rpmSlider.value);
+    rpmSlider.value = currentValue < 3000 ? currentValue + 1 : currentValue;
+    rpmSliderValue.textContent = rpmSlider.value;
+    sendRPMToESP32("rpmSlider", parseFloat(rpmSlider.value));
+  });
+  rpmBtnMinus.addEventListener('click', () => {
+    let currentValue = parseFloat(rpmSlider.value);
+    rpmSlider.value = currentValue > 0 ? currentValue - 1 : currentValue;
+    rpmSliderValue.textContent = rpmSlider.value;
+    sendRPMToESP32("rpmSlider", parseFloat(rpmSlider.value));
+  });
+  maxButton.addEventListener('click', () => {
+    rpmSlider.value = parseFloat(3000);
+    rpmSliderValue.textContent = 3000;
+    sendRPMToESP32("rpmSlider", 3000.0);
+  });
+  midButton.addEventListener('click', () => {
+    rpmSlider.value = parseFloat(1500);
+    rpmSliderValue.textContent = 1500;
+    sendRPMToESP32("rpmSlider", 1500.0);
+  });
+  minButton.addEventListener('click', () => {
+    rpmSlider.value = parseFloat(0);
+    rpmSliderValue.textContent = 0;
+    sendRPMToESP32("rpmSlider", 0.0);
+  });
+  rpmSlider.addEventListener('input', () => {
+    const value = parseFloat(rpmSlider.value);
+    rpmSliderValue.textContent = value;
+    sendRPMToESP32("rpmSlider", value);
+  });
+
 }
-function updateNeedleAndValue(rpm) {
-  let angle = 225 + (Math.max(0, Math.min(rpm, 3000)) * 270) / 3000;
-  const needle = document.getElementById("needle");
-  if (needle) {
-    needle.style.setProperty('--needle-rotation', `${angle}deg`);
-    needle.style.transform = `translate(-50%, -100%) rotate(${angle}deg)`;
-  }
-  const rpmValueDiv = document.getElementById("rpm-value");
-  if (rpmValueDiv) rpmValueDiv.textContent = Math.round(rpm);
-  const rpmSlider = document.getElementById("rpm-slider");
-  const rpmSliderValue = document.getElementById("rpm-slider-value");
-  if (rpmSliderValue) rpmSliderValue.textContent = Math.round(rpm);
-  // Solo actualizar el slider si el usuario NO está interactuando
-  if (rpmSlider && !isUserSliding) {
-    if (Math.abs(Number(rpmSlider.value) - rpm) > 1) {
-      rpmSlider.value = rpm;
-      if (rpmSliderValue) rpmSliderValue.textContent = Math.round(rpm);
-    }
-  }
+
+function sendRPMToESP32(DataVar, DataValue) {
+  getWebSocketInstance(function(ws) {
+    console.log('Enviando RPM al ESP32:', DataVar, DataValue);
+    ws.send(JSON.stringify({ [DataVar]: DataValue }));
+  });
 }
 
-
-/*
-  Configura los controles de RPM: botón de inicio, slider de RPM,
-  y botón de ruido (noice).
-  Parámetros:
-    ws: WebSocket abierto y listo para enviar mensajes.
-
-  Comunicaciones:
-    Envía mensajes JSON:
-      { startMotorRoutine: true }
-      { setRPMSpeed: valor }
-      { setNoice: toggle }
-
-
-*/
-function setupRPMControls(ws) {
-  const startBtnRpm = document.getElementById("start-btn-rpm");
-  if (startBtnRpm) {
-    startBtnRpm.addEventListener("click", function() {
-      if(ws.readyState === 1) {
-        ws.send(JSON.stringify({ startMotorRoutine: true }));
-      }
-    });
+function updateRPMAndValue(RPMValue, RPMNoice) {
+  // Actualizar el valor numérico en el centro del instrumento
+  document.getElementById("rpm-value").textContent = Math.round(RPMValue);
+  // Calcular los ángulos de las agujas en función de la altitud
+  // 0 rpm = 225°, 3000 rpm = 495° (225° + 270°), recorre 270° antihorario
+  let angle = 225 + (Math.max(0, Math.min(RPMValue, 3000)) * 270) / 3000;
+  document.getElementById("rpm-needle").style.transform =
+    `translate(-50%, -50%) rotate(${angle}deg)`;
+  document.getElementById("rpm-value").textContent = Math.round(RPMValue);
+  // Actualizar el valor del slider y su display si cambia por rutina automática
+  const RPMValor = document.getElementById("rpm-value");
+  const   RPMSlider = document.getElementById("rpm-slider");
+  if (RPMSlider && Math.abs(RPMSlider.value - RPMValue) > 1) {
+    RPMSlider.value = RPMValue;
+    RPMSlider.textContent = Math.round(RPMValue);
   }
 
-  const rpmSlider = document.getElementById("rpm-slider");
-  const rpmSliderValue = document.getElementById("rpm-slider-value");
-  // Botones de control para el slider
-  const btnMin = document.getElementById("rpm-slider-min");
-  const btnMid = document.getElementById("rpm-slider-mid");
-  const btnMax = document.getElementById("rpm-slider-max");
-  if (btnMin && rpmSlider) {
-    btnMin.addEventListener("click", () => {
-      rpmSlider.value = rpmSlider.min;
-      rpmSlider.dispatchEvent(new Event("input"));
-    });
-  }
-  if (btnMid && rpmSlider) {
-    btnMid.addEventListener("click", () => {
-      const min = Number(rpmSlider.min);
-      const max = Number(rpmSlider.max);
-      rpmSlider.value = Math.round((min + max) / 2);
-      rpmSlider.dispatchEvent(new Event("input"));
-    });
-  }
-  if (btnMax && rpmSlider) {
-    btnMax.addEventListener("click", () => {
-      rpmSlider.value = rpmSlider.max;
-      rpmSlider.dispatchEvent(new Event("input"));
-    });
+  // Cambiar el color del boton Noice y crystal según el estado
+  const noiceBtnRPM = document.getElementById('noice-btn-rpm');
+  const rpmCrystal = document.getElementById('rpm-crystal');
+  const noiceActive = (RPMNoice === true || RPMNoice === 1);
+  if (noiceActive) {
+    noiceBtnRPM.style.background = '#0f0';
+    if (rpmCrystal) rpmCrystal.style.background = 'rgba(0, 255, 0, 0.15)';
+  } else {
+    noiceBtnRPM.style.background = '#444';
+    if (rpmCrystal) rpmCrystal.style.background = '';
   }
   
-  if (rpmSlider && rpmSliderValue) {
-    rpmSlider.addEventListener("input", function(e) {
-      isUserSliding = true;
-      const value = parseInt(e.target.value);
-      animateNeedleRPM(value);
-      if(ws.readyState === 1) {
-        ws.send(JSON.stringify({ setRPMSpeed: value }));
-      }
-    });
-    // Detectar cuando el usuario deja de interactuar con el slider
-    const stopSliding = function() { isUserSliding = false; };
-    rpmSlider.addEventListener("change", stopSliding);
-    rpmSlider.addEventListener("mouseup", stopSliding);
-    rpmSlider.addEventListener("touchend", stopSliding);
-  }
-  const noiceBtn = document.getElementById("noice-btn");
-  if (noiceBtn) {
-    noiceBtn.addEventListener("click", function() {
-      // Siempre pedir al backend que alterne el estado
-      if(ws.readyState === 1) {
-        ws.send(JSON.stringify({ setNoice: "toggle" }));
-      }
-    });
-  }
 }
-
-// Fin de functions_rpm.js

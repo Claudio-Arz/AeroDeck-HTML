@@ -1,22 +1,66 @@
+<!-- 
+ RPM control slider and buttons
+  Este código HTML define el control para el instrumento RPM, 
+  que incluye un slider vertical para ajustar las revoluciones por minuto 
+  y tres botones para establecer valores predefinidos (máximo, medio y mínimo).
 
+  Definir una caja de contención como en gyro.
+
+  +----------------------------------+
+  |           RPM Control            |
+  +------------+----+----------------+
+  |            |    |                |   
+  |      s     | (+)|     Máximo     |   
+  |      l     +----+----------------+
+  |      i     |    |                |   
+  |      d     |    |     Medio      |   
+  |      e     +----+----------------+   
+  |      r     |    |                |   
+  |            | (-)|     Mínimo     |   
+  +------------+----+----+-----------+   
+  |    value   |  Start  | Noice     |   
+  +------------+---------+-----------+
+
+-->
 
 <!-- Control deslizante para motor y botones Start y Noice -->
 
-<div class="label-slider">RPM</div>
-<div style="display: flex; flex-direction: row; align-items: flex-start; gap: 30px;">
-  <div style="display: flex; flex-direction: column; align-items: center;">
-    <div class="slider">
-      <input type="range" min="0" max="3000" value="0" class="slider" id="rpm-slider" orient="vertical">
+<!-- Caja contenedora 120px x 240px -->
+<div style="width: 120px; height: 240px; display: flex; flex-direction: column; box-sizing: border-box; background-color: rgb(63, 155, 158);">
+  
+  <!-- Título RPM Control -->
+  <div style="text-align: center; font-weight: bold; padding: 4px 0; border-bottom: 1px solid #555;">RPM Control</div>
+  
+  <!-- Zona central: slider | +/- | Max/Med/Min -->
+  <div style="flex: 1; display: flex; flex-direction: row;">
+    
+    <!-- Columna slider -->
+    <div style="width: 30px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+      <input type="range" min="0" max="3000" value="0" id="rpm-slider" style="height: 120px; writing-mode: vertical-lr; direction: rtl">
     </div>
-    <div class="slider-value" id="rpm-slider-value">0</div>
+    
+    <!-- Columna +/- -->
+    <div style="width: 30px; display: flex; flex-direction: column; justify-content: space-around; align-items: center;">
+      <button id="rpm-btn-plus" class="slider-glow-btn slider-btn slider-btn-max" style="width: 24px; height: 24px; font-size: 14px; color: #f7e30a;">+</button>
+      <button id="rpm-btn-minus" class="slider-glow-btn slider-btn slider-btn-min" style="width: 24px; height: 24px; font-size: 14px; color: #f7e30a;">-</button>
+    </div>
+    
+    <!-- Columna Max/Med/Min -->
+    <div style="flex: 1; display: flex; flex-direction: column; justify-content: space-around; align-items: center; padding: 4px;">
+      <button id="rpm-slider-max" class="slider-glow-btn slider-btn slider-btn-max" style="width: 100%; height: 28px; font-size: 10px; color: #fff;">Máximo</button>
+      <button id="rpm-slider-mid" class="slider-glow-btn slider-btn slider-btn-mid" style="width: 100%; height: 28px; font-size: 10px; color: #fff;">Medio</button>
+      <button id="rpm-slider-min" class="slider-glow-btn slider-btn slider-btn-min" style="width: 100%; height: 28px; font-size: 10px; color: #fff;">Mínimo</button>
+    </div>
+    
   </div>
-  <div style="display: flex; flex-direction: column; justify-content: space-between; align-items: center; height: 60px; margin-right:10px;">
-    <button id="rpm-slider-max" class="slider-glow-btn slider-btn slider-btn-max"></button>
-    <button id="rpm-slider-mid" class="slider-glow-btn slider-btn slider-btn-mid"></button>
-    <button id="rpm-slider-min" class="slider-glow-btn slider-btn slider-btn-min"></button>
+  
+  <!-- Zona inferior: value | Start | Noice -->
+  <div style="display: flex; flex-direction: row; border-top: 1px solid #555; height: 50px;">
+    <div style="width: 30px; display: flex; align-items: center; justify-content: center; font-size: 10px;">
+      <span id="rpm-slider-value">0</span>
+    </div>
+    <button id="start-btn-rpm" style="flex: 1; font-size: 10px; border-radius: 4px; margin: 2px;">Start</button>
+    <button id="noice-btn-rpm" style="flex: 1; font-size: 10px; background: #444; color: #fff; border-radius: 4px; border: none; cursor: pointer; margin: 2px;">Noice</button>
   </div>
-  <div style="display: flex; flex-direction: column; gap: 10px; align-items: stretch;">
-    <button id="start-btn-rpm" style="height:48px;font-size:18px;padding:8px 12px;border-radius:8px;">Start</button>
-    <button id="noice-btn" style="height:40px;font-size:16px;padding:6px 10px;background:#444;color:#fff;border-radius:8px;border:none;cursor:pointer;">Noice: OFF</button>
-  </div>
+  
 </div>

@@ -7,20 +7,20 @@
 
   Definir una caja de contención como en gyro.
 
-  |----------------------------------|
-  |           Variometer Control     |
-  |----------------------------------|
-  |            |                     |   
-  |      s     |      Máximo         |   
-  |      l     |---------------------|
-  |      i     |                     |   
-  |      d     |      Medio          |   
-  |      e     |---------------------|   
-  |      r     |                     |   
-  |            |      Mínimo         |   
-  |------------|---------------------|   
-  |    value   |                     |   
-  |----------------------------------|
+  +------------------------+
+  |   Variometer Control   |
+  +-------+-----+----------+
+  |       |     |          |   
+  |   s   | (+) |  Máximo  |   
+  |   l   +-----+----------+
+  |   i   |     |          |   
+  |   d   |     |  Medio   |   
+  |   e   +-----+----------+   
+  |   r   |     |          |   
+  |       | (-) |  Mínimo  |   
+  +-------+-----+----------+   
+  | value |     |          |   
+  +-------+-----+----------+
 
 -->
 
@@ -32,6 +32,10 @@
     <div class="variometer-slider-section">
       <input type="range" min="-2000" max="2000" value="0" class="slider vertical-slider" id="variometer-slider" style="writing-mode: vertical-lr; direction: rtl;">
       <div class="slider-value" id="variometer-slider-value">0</div>
+    </div>
+    <div class="variometer-plusminus-section">
+      <button id="variometer-btn-plus" class="slider-glow-btn slider-btn slider-btn-max">+</button>
+      <button id="variometer-btn-minus" class="slider-glow-btn slider-btn slider-btn-min">-</button>
     </div>
     <div class="variometer-buttons-section">
       <button id="variometer-slider-max" class="slider-glow-btn slider-btn slider-btn-max">Máximo</button>
@@ -78,62 +82,84 @@
 .variometer-control-cell {
   border: 2px solid #888;
   border-radius: 10px;
-  width: 150px;
+  width: 120px;
+  height: 240px;
   background: #573c3c;
   box-shadow: 2px 2px 8px #bbb;
-  padding: 10px 0 16px 0;
+  padding: 0;
   margin: 0 auto;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
   .variometer-control-header {
     border-bottom: 2px solid #888;
     text-align: center;
     font-weight: bold;
-    font-size: 12px;
-    padding-bottom: 6px;
-    margin-bottom: 8px;
-    letter-spacing: 1px;
+    font-size: 10px;
+    padding: 4px 0;
+    letter-spacing: 0.5px;
     background: #2b0a46;
+    flex-shrink: 0;
   }
   .variometer-control-body {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: stretch;
     align-items: stretch;
     gap: 0;
     background: #573c3c;
+    flex: 1;
   }
   .variometer-slider-section {
     display: flex;
     flex-direction: column;
     align-items: center;
-    border-right: 2px solid #888;
-    padding: 0 8px 0 8px;
-    min-width: 60px;
-    max-width: 60px;
-    width: 60px;
+    border-right: 1px solid #888;
+    padding: 4px 2px;
+    width: 36px;
     justify-content: center;
     background: #2b0a46;
+    box-sizing: border-box;
   }
   .variometer-slider-section .slider,
   .variometer-slider-section .vertical-slider {
-    width: 30px;
-    height: 120px;
+    width: 20px;
+    height: 140px;
     writing-mode: vertical-lr;
     direction: rtl;
     background: #023248;
-    border-radius: 8px;
-    margin-bottom: 8px;
+    border-radius: 6px;
+    margin-bottom: 4px;
   }
   .variometer-slider-section .slider-value {
     width: 100%;
     text-align: center;
     background: #a81837;
-    border-radius: 6px;
-    margin-top: 8px;
-    font-size: 1em;
+    border-radius: 4px;
+    margin-top: 4px;
+    font-size: 0.7em;
     font-weight: bold;
     color: #eeb4b4;
     padding: 2px 0;
+  }
+  .variometer-plusminus-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    border-right: 1px solid #888;
+    padding: 4px 2px;
+    width: 28px;
+    background: #2b0a46;
+    box-sizing: border-box;
+  }
+  .variometer-plusminus-section button {
+    width: 22px;
+    height: 22px;
+    font-size: 1em;
+    font-weight: bold;
+    border-radius: 50%;
   }
 .slider-value {
   margin-top: 10px;
@@ -144,28 +170,26 @@
   .variometer-buttons-section {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: stretch;
-    min-width: 40px;
-    max-width: 40px;
-    width: 40px;
-    padding: 0 6px;
+    flex: 1;
+    padding: 4px 3px;
     background: #a81837;
+    box-sizing: border-box;
   }
   .variometer-buttons-section button {
     width: 100%;
     margin: 0;
     font-size: 0.5em;
-    padding: 6px 0;
-    border-radius: 6px;
+    padding: 4px 0;
+    border-radius: 4px;
     border: 1px solid #aaa;
     background: #266dc4;
     color: #eeb4b4;
-    margin-bottom: 0;
   }
   .variometer-buttons-section .divider {
-    border-bottom: 1.5px solid #bbb;
-    margin: 6px 0;
+    border-bottom: 1px solid #bbb;
+    margin: 2px 0;
   }
 </style>
 

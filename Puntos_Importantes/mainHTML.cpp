@@ -29,6 +29,7 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 <link rel="stylesheet" href="https://claudio-arz.github.io/AeroDeck-HTML/CSS/mainHTML.css">
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_variometer.js"></script>
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_altimeter.js"></script>
+<script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_rpm.js"></script>
 
 
 </head>
@@ -82,14 +83,50 @@ window.addEventListener('DOMContentLoaded', () => {
     // --- Actualizar instrumentos ---
     if (data.verticalSpeed !== undefined && typeof updateVariometerAndValue === 'function') {
       updateVariometerAndValue(data.verticalSpeed);
-      
-      }
-      if (data.altitudValue !== undefined && typeof updateAltimeterAndValue === 'function') {
-        updateAltimeterAndValue(data.altitudValue, data.bandera_off);
+    }
+    if (data.altitudValue !== undefined && typeof updateAltimeterAndValue === 'function') {
+      updateAltimeterAndValue(data.altitudValue, data.bandera_off);
+    }
+    if (data.RPMValue !== undefined && typeof updateRPMAndValue === 'function') {
+      console.log("Actualizando RPM: " + data.RPMValue + " Noice: " + data.RPMNoice);
+      updateRPMAndValue(data.RPMValue, data.RPMNoice);
     }
   };
+  
+});
 
-  // Cargar el HTML del instrumento Variometer de forma dinámica
+// Cargar el HTML del instrumento RPM de forma dinámica
+window.addEventListener('DOMContentLoaded', () => {
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/RPM_Instrumento.html")
+  .then(r => r.text())
+  .then(html => {
+    document.getElementById("inst04").innerHTML = html;
+    });
+});      
+
+// Cargar el HTML de la caja de control del RPM de forma dinámica
+window.addEventListener('DOMContentLoaded', () => {
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/RPM_Control.html")
+    .then(r => r.text())
+    .then(html => {
+      document.getElementById("inst06").innerHTML = html;
+      // Inicializar controles del RPM después de insertar el HTML
+      if (typeof initRPMControls === 'function') {
+        initRPMControls();
+      } else {
+        // Si el script aún no está cargado, esperar y reintentar
+        setTimeout(() => {
+          if (typeof initRPMControls === 'function') {
+            initRPMControls();
+          }
+        }, 200);
+      }
+    });
+});       
+    
+    
+// Cargar el HTML del instrumento Variometer de forma dinámica
+window.addEventListener('DOMContentLoaded', () => {  
   fetch("https://claudio-arz.github.io/AeroDeck-HTML/variometro_Instrumento.html")
     .then(r => r.text())
     .then(html => {
