@@ -116,7 +116,8 @@ function updateRPMAndValue(RPMValue, RPMNoice) {
 
   // Cambiar el color del boton Noice según el estado
   const noiceBtnRPM = document.getElementById('noice-btn-rpm');
-  if (RPMNoice == 1) {
+  const noiceActive = (RPMNoice === true || RPMNoice === 1);
+  if (noiceActive) {
     noiceBtnRPM.style.background = '#0f0';  
   } else {
     noiceBtnRPM.style.background = '#444';  
