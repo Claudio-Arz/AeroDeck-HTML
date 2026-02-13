@@ -103,7 +103,7 @@ function sendRPMToESP32(DataVar, DataValue) {
 function updateRPMAndValue(RPMValue, RPMNoice) {
   // Actualizar el valor numérico en el centro del instrumento
   document.getElementById("rpm-value").textContent = Math.round(RPMValue);
-  // Calcular los ángulos de las agujas en función de la altitud
+  // Calcular el ángulo de la aguja en función del valor de RPM
   // 0 rpm = 225°, 3000 rpm = 495° (225° + 270°), recorre 270° antihorario
   let angle = 225 + (Math.max(0, Math.min(RPMValue, 3000)) * 270) / 3000;
   document.getElementById("rpm-needle").style.transform =
@@ -123,7 +123,7 @@ function updateRPMAndValue(RPMValue, RPMNoice) {
   const noiceActive = (RPMNoice === true || RPMNoice === 1);
   if (noiceActive) {
     noiceBtnRPM.style.background = '#0f0';
-    if (rpmCrystal) rpmCrystal.style.background = 'rgba(0, 255, 0, 0.15)';
+    if (rpmCrystal) rpmCrystal.style.background = 'rgba(74, 252, 74, 0.08)';
   } else {
     noiceBtnRPM.style.background = '#444';
     if (rpmCrystal) rpmCrystal.style.background = '';
