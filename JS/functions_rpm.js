@@ -100,7 +100,8 @@ function sendRPMToESP32(DataVar, DataValue) {
   });
 }
 
-function updateRPMAndValue(RPMValue, RPMNoice) {
+function updateRPMAndValue(RPMValue, RPMNoice, RPMStarted) {
+  sendRPMToESP32("startBtnRPM", RPMStarted);
   // Actualizar el valor numérico en el centro del instrumento
   document.getElementById("rpm-value").textContent = Math.round(RPMValue);
   // Calcular el ángulo de la aguja en función del valor de RPM
