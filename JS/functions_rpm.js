@@ -46,7 +46,7 @@ function initRPMControls() {
     return;
   }
 
-  // Variables de estado para los toggles  (no usar .value que convierte a string)
+  // Variables de estado para los toggles (no usar .value que convierte a string)
   let noiceState = false;
   let startState = false;
 
