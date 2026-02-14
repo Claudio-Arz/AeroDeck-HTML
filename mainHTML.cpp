@@ -88,8 +88,8 @@ window.addEventListener('DOMContentLoaded', () => {
       updateAltimeterAndValue(data.altitudValue, data.bandera_off);
     }
     if (data.RPMValue !== undefined && typeof updateRPMAndValue === 'function') {
-      console.log("Actualizando RPM: " + data.RPMValue + " Noice: " + data.RPMNoice + " Started: " + data.RPMStarted);
-      updateRPMAndValue(data.RPMValue, data.RPMNoice, data.RPMStarted);
+      console.log("Actualizando RPM: " + data.RPMValue + " Noice: " + data.RPMNoice );
+      updateRPMAndValue(data.RPMValue, data.RPMNoice);
     }
   };
   
