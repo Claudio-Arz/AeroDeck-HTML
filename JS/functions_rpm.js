@@ -55,7 +55,7 @@ function initRPMControls() {
     sendRPMToESP32("noiceBtnRPM", noiceState);
   });
   startBtnRPM.addEventListener('click', () => {
-    startState = !startState;
+    startState = startState; // El botón de start no cambia el estado, solo envía el comando para iniciar la rutina
     sendRPMToESP32("startBtnRPM", startState);
   });
   rpmBtnPlus.addEventListener('click', () => {
