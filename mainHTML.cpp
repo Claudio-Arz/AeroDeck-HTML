@@ -104,7 +104,7 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 });      
 
-// Cargar el HTML de la caja de control del RPM de forma dinámica
+// Cargar el HTML de la caja de control del RPM de forma dinámica.
 window.addEventListener('DOMContentLoaded', () => {
   fetch("https://claudio-arz.github.io/AeroDeck-HTML/RPM_Control.html")
     .then(r => r.text())
