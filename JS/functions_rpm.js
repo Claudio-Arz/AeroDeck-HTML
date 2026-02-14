@@ -101,7 +101,7 @@ function sendRPMToESP32(DataVar, DataValue) {
   });
 }
 
-function updateRPMAndValue(RPMValue, RPMNoice, RPMStarted) {
+function updateRPMAndValue(RPMValue, RPMNoice, varRPM) {
 
   // Actualizar el valor numérico en el centro del instrumento
   document.getElementById("rpm-value").textContent = Math.round(RPMValue);
@@ -116,7 +116,7 @@ function updateRPMAndValue(RPMValue, RPMNoice, RPMStarted) {
   const   RPMSlider = document.getElementById("rpm-slider");
   if (RPMSlider && Math.abs(RPMSlider.value - RPMValue) > 1) {
     RPMSlider.value = RPMValue;
-    RPMSlider.textContent = Math.round(RPMValue);
+    RPMSlider.textContent = Math.round(varRPM);
   }
 
   // Cambiar el color del boton Noice y crystal según el estado
