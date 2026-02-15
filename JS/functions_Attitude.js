@@ -148,8 +148,8 @@ function updateAttitudeControl(pitchValue, rollValue) {
   if (ball) {
     // Pitch: mover verticalmente (±50px para ±20°)
     const pitchPx = (pitchValue / 20) * 50;
-    // Roll: rotar el dial
-    ball.style.transform = `translateY(${pitchPx}px)`;
+    // Roll: rotar junto con el dial (±30°)
+    ball.style.transform = `translateY(${pitchPx}px) rotate(${rollValue}deg)`;
   }
   
   if (dial) {
