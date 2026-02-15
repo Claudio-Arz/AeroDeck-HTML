@@ -104,9 +104,7 @@ function sendRPMToESP32(DataVar, DataValue) {
 function updateRPMAndValue(RPMValue, RPMNoice, varRPM) {
   // RPMValue = valor del slider/botones (valor base)
   // varRPM = RPMValue + ruido si RPMNoice está activo, RPMValue si está apagado
-  // La aguja muestra varRPM, el drum-counter muestra RPMValue
-  
-  setDrumValue(RPMValue);
+  // La aguja muestra varRPM, el drum-counter muestra horas de funcionamiento (se actualiza por separado)
   
   // Actualizar el valor numérico en el centro del instrumento con el valor del slider
   document.getElementById("rpm-value").textContent = Math.round(RPMValue);
@@ -178,4 +176,23 @@ function setDrumValue(varRPM) {
   });
 }
 
-
+// Función para mostrar horas de funcionamiento en el drum-counter
+// horas: 0-999, minutos: 0-59
+// Formato: HHH MM (3 dígitos horas, 2 dígitos minutos)
+function setDrumHours(horas, minutos) {
+  const counter = document.getElementById('drum-counter');
+  if (!counter) return;
+  
+  // Formatear: 3 dígitos para horas + 2 dígitos para minutos
+  let horasStr = String(Math.min(999, Math.max(0, horas))).padStart(3, '0');
+  let minutosStr = String(Math.min(59, Math.max(0, minutos))).padStart(2, '0');
+  let value = horasStr + minutosStr; // "HHHMM"
+  
+  [...counter.children].forEach((digit, i) => {
+    const strip = digit.querySelector('.drum-strip');
+    if (strip) {
+      const num = parseInt(value[i]);
+      strip.style.transform = `translateY(-${num * 10}px)`;
+    }
+  });
+}

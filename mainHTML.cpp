@@ -92,6 +92,10 @@ window.addEventListener('DOMContentLoaded', () => {
       console.log("Actualizando RPM: " + data.RPMValue + " Noice: " + data.RPMNoice + " varRPM: " + data.varRPM);
       updateRPMAndValue(data.RPMValue, data.RPMNoice, data.varRPM);
     }
+    // Actualizar horas de funcionamiento en el Drum-Roll
+    if (data.horasFuncionamiento !== undefined && typeof setDrumHours === 'function') {
+      setDrumHours(data.horasFuncionamiento, data.minutosFuncionamiento);
+    }
     if (data.pitchValue !== undefined && typeof updateAttitudeControl === 'function') {
       console.log("Actualizando Pitch: " + data.pitchValue + " Roll: " + data.rollValue);
       updateAttitudeControl(data.pitchValue, data.rollValue);

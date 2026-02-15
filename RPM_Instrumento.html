@@ -24,11 +24,11 @@
       <img id="rpm-needle" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/RPM/rpm_aguja.png" alt="RPM Needle">
     </div>
     <div class="drum-counter" id="drum-counter">
-      <div class="drum-digit"><div class="drum-strip"><div class="drum-number">0</div><div class="drum-number">1</div><div class="drum-number">2</div><div class="drum-number">3</div><div class="drum-number">4</div><div class="drum-number">5</div><div class="drum-number">6</div><div class="drum-number">7</div><div class="drum-number">8</div><div class="drum-number">9</div></div></div>
-      <div class="drum-digit"><div class="drum-strip"><div class="drum-number">0</div><div class="drum-number">1</div><div class="drum-number">2</div><div class="drum-number">3</div><div class="drum-number">4</div><div class="drum-number">5</div><div class="drum-number">6</div><div class="drum-number">7</div><div class="drum-number">8</div><div class="drum-number">9</div></div></div>
-      <div class="drum-digit"><div class="drum-strip"><div class="drum-number">0</div><div class="drum-number">1</div><div class="drum-number">2</div><div class="drum-number">3</div><div class="drum-number">4</div><div class="drum-number">5</div><div class="drum-number">6</div><div class="drum-number">7</div><div class="drum-number">8</div><div class="drum-number">9</div></div></div>
-      <div class="drum-digit"><div class="drum-strip"><div class="drum-number">0</div><div class="drum-number">1</div><div class="drum-number">2</div><div class="drum-number">3</div><div class="drum-number">4</div><div class="drum-number">5</div><div class="drum-number">6</div><div class="drum-number">7</div><div class="drum-number">8</div><div class="drum-number">9</div></div></div>
-      <div class="drum-digit"><div class="drum-strip"><div class="drum-number">0</div><div class="drum-number">1</div><div class="drum-number">2</div><div class="drum-number">3</div><div class="drum-number">4</div><div class="drum-number">5</div><div class="drum-number">6</div><div class="drum-number">7</div><div class="drum-number">8</div><div class="drum-number">9</div></div></div>
+      <div class="drum-digit drum-digit-hours"><div class="drum-strip"><div class="drum-number">0</div><div class="drum-number">1</div><div class="drum-number">2</div><div class="drum-number">3</div><div class="drum-number">4</div><div class="drum-number">5</div><div class="drum-number">6</div><div class="drum-number">7</div><div class="drum-number">8</div><div class="drum-number">9</div></div></div>
+      <div class="drum-digit drum-digit-hours"><div class="drum-strip"><div class="drum-number">0</div><div class="drum-number">1</div><div class="drum-number">2</div><div class="drum-number">3</div><div class="drum-number">4</div><div class="drum-number">5</div><div class="drum-number">6</div><div class="drum-number">7</div><div class="drum-number">8</div><div class="drum-number">9</div></div></div>
+      <div class="drum-digit drum-digit-hours"><div class="drum-strip"><div class="drum-number">0</div><div class="drum-number">1</div><div class="drum-number">2</div><div class="drum-number">3</div><div class="drum-number">4</div><div class="drum-number">5</div><div class="drum-number">6</div><div class="drum-number">7</div><div class="drum-number">8</div><div class="drum-number">9</div></div></div>
+      <div class="drum-digit drum-digit-minutes"><div class="drum-strip"><div class="drum-number">0</div><div class="drum-number">1</div><div class="drum-number">2</div><div class="drum-number">3</div><div class="drum-number">4</div><div class="drum-number">5</div><div class="drum-number">6</div><div class="drum-number">7</div><div class="drum-number">8</div><div class="drum-number">9</div></div></div>
+      <div class="drum-digit drum-digit-minutes"><div class="drum-strip"><div class="drum-number">0</div><div class="drum-number">1</div><div class="drum-number">2</div><div class="drum-number">3</div><div class="drum-number">4</div><div class="drum-number">5</div><div class="drum-number">6</div><div class="drum-number">7</div><div class="drum-number">8</div><div class="drum-number">9</div></div></div>
     </div>
 
     <div id="rpm-value" class="instrument-center-label">--</div>
@@ -82,6 +82,10 @@
     user-select: none;
     z-index: 1;
     position: relative;
+  }
+  /* Color diferente para los dígitos de minutos (naranja) */
+  .drum-digit-minutes .drum-number {
+    color: #ffa500;
   }
   /* Overlay para efecto de cilindro */
   .drum-digit::after {
