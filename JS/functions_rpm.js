@@ -150,8 +150,8 @@ for (let i = 0; i < drumDigits; i++) {
   digit.appendChild(strip);
   drumCounter.appendChild(digit);
 }
-function setDrumValue() {
-  let value = document.getElementById('alt-input').value.padStart(drumDigits, '0');
+function setDrumValue(varRPM) {
+  let value = String(Math.round(varRPM)).padStart(drumDigits, '0');
   [...drumCounter.children].forEach((digit, i) => {
     const strip = digit.querySelector('.drum-strip');
     const num = parseInt(value[i]);
@@ -159,6 +159,6 @@ function setDrumValue() {
   });
 }
 // Inicializar con el valor por defecto
-setDrumValue();
+setDrumValue(0);
 
 
