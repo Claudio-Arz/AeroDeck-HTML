@@ -162,12 +162,15 @@ function initDrumCounter() {
 }
 
 function setDrumValue(varRPM) {
-  if (!drumCounter) return;
-  let value = String(Math.round(varRPM)).padStart(drumDigits, '0');
-  [...drumCounter.children].forEach((digit, i) => {
+  const counter = document.getElementById('drum-counter');
+  if (!counter) return;
+  let value = String(Math.round(varRPM)).padStart(5, '0');
+  [...counter.children].forEach((digit, i) => {
     const strip = digit.querySelector('.drum-strip');
-    const num = parseInt(value[i]);
-    strip.style.transform = `translateY(-${num * 10}px)`;
+    if (strip) {
+      const num = parseInt(value[i]);
+      strip.style.transform = `translateY(-${num * 10}px)`;
+    }
   });
 }
 
