@@ -102,21 +102,25 @@ function sendRPMToESP32(DataVar, DataValue) {
 }
 
 function updateRPMAndValue(RPMValue, RPMNoice, varRPM) {
-  setDrumValue(varRPM);
-  // Actualizar el valor numérico en el centro del instrumento
-  document.getElementById("rpm-value").textContent = Math.round(RPMValue + varRPM);
-  // Calcular el ángulo de la aguja en función del valor de RPM
+  // RPMValue = valor del slider/botones (valor base)
+  // varRPM = valor con ruido si RPMNoice está activo, 0 si está apagado
+  // La aguja muestra varRPM, el drum-counter muestra RPMValue
+  
+  setDrumValue(RPMValue);
+  
+  // Actualizar el valor numérico en el centro del instrumento con el valor del slider
+  document.getElementById("rpm-value").textContent = Math.round(RPMValue);
+  
+  // Calcular el ángulo de la aguja en función de varRPM (solo el ruido)
   // 0 rpm = 225°, 3000 rpm = 495° (225° + 270°), recorre 270° antihorario
-  let angle = 225 + (Math.max(0, Math.min(RPMValue + varRPM, 3000)) * 270) / 3000;
+  let angle = 225 + (Math.max(0, Math.min(varRPM, 3000)) * 270) / 3000;
   document.getElementById("rpm-needle").style.transform =
     `translate(-50%, -50%) rotate(${angle}deg)`;
-  document.getElementById("rpm-value").textContent = Math.round(RPMValue + varRPM);
-  // Actualizar el valor del slider y su display si cambia por rutina automática
-  const RPMValor = document.getElementById("rpm-value");
-  const   RPMSlider = document.getElementById("rpm-slider");
-  if (RPMSlider && Math.abs(RPMSlider.value - (RPMValue + varRPM)) > 1) {
-    RPMSlider.value = RPMValue + varRPM;
-    RPMSlider.textContent = Math.round(RPMValue + varRPM);
+  
+  // Actualizar el valor del slider si cambia
+  const RPMSlider = document.getElementById("rpm-slider");
+  if (RPMSlider && Math.abs(RPMSlider.value - RPMValue) > 1) {
+    RPMSlider.value = RPMValue;
   }
 
   // Cambiar el color del boton Noice y crystal según el estado
