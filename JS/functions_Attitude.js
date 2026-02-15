@@ -36,20 +36,71 @@ function setupAttitudeControls() {
   // Centrar el knob inicialmente
   updateKnobPosition(joystickCenterX, joystickCenterY);
 
-  // Botón Zero
+  // Botón Zero - anima suavemente a cero en 3 segundos
   if (zeroBtn) {
     zeroBtn.addEventListener('click', () => {
-      zeroActive = !zeroActive;
-      zeroBtn.textContent = zeroActive ? 'Zero: ON' : 'Zero: OFF';
-      zeroBtn.style.background = zeroActive ? '#0f0' : '#444';
+      if (zeroActive) return; // Ya está animando
       
-      if (zeroActive) {
-        // Resetear a cero
-        updateKnobPosition(joystickCenterX, joystickCenterY);
-        sendAttitudeToESP32("pitchValue", 0);
-        sendAttitudeToESP32("rollValue", 0);
-        if (coordsDisplay) coordsDisplay.textContent = 'roll: 0°, pitch: 0°';
+      zeroActive = true;
+      zeroBtn.textContent = 'Zero: ON';
+      zeroBtn.style.background = 'rgb(255, 0, 0)';
+      
+      // Obtener posición actual del knob
+      const currentX = parseFloat(knob.style.left) + 15 || joystickCenterX;
+      const currentY = parseFloat(knob.style.top) + 15 || joystickCenterY;
+      
+      // Calcular valores iniciales de pitch/roll desde la posición del knob
+      const startX = currentX - joystickCenterX;
+      const startY = currentY - joystickCenterY;
+      
+      const duration = 3000; // 3 segundos
+      const startTime = Date.now();
+      
+      function animateToZero() {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min(1, elapsed / duration);
+        
+        // Easing suave (ease-out)
+        const easeProgress = 1 - Math.pow(1 - progress, 3);
+        
+        // Interpolar hacia el centro
+        const x = startX * (1 - easeProgress);
+        const y = startY * (1 - easeProgress);
+        
+        // Actualizar posición visual del knob
+        updateKnobPosition(joystickCenterX + x, joystickCenterY + y);
+        
+        // Calcular ángulos actuales
+        const rollDeg = (x / joystickRadius) * 30;
+        const pitchPx = Math.max(-50, Math.min(50, y));
+        const pitchDeg = (pitchPx / 50) * 20;
+        
+        // Enviar al ESP32
+        sendAttitudeToESP32("pitchValue", pitchDeg);
+        sendAttitudeToESP32("rollValue", rollDeg);
+        
+        // Mostrar coordenadas
+        if (coordsDisplay) {
+          coordsDisplay.textContent = `roll: ${rollDeg.toFixed(1)}°, pitch: ${pitchDeg.toFixed(1)}°`;
+        }
+        
+        if (progress < 1) {
+          requestAnimationFrame(animateToZero);
+        } else {
+          // Animación completada - volver a Zero: OFF
+          zeroActive = false;
+          zeroBtn.textContent = 'Zero: OFF';
+          zeroBtn.style.background = '#444';
+          
+          // Asegurar valores finales exactos
+          updateKnobPosition(joystickCenterX, joystickCenterY);
+          sendAttitudeToESP32("pitchValue", 0);
+          sendAttitudeToESP32("rollValue", 0);
+          if (coordsDisplay) coordsDisplay.textContent = 'roll: 0°, pitch: 0°';
+        }
       }
+      
+      animateToZero();
     });
   }
 
