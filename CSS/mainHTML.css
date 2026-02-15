@@ -115,7 +115,7 @@ body {
   box-sizing: border-box;
 }
 
-.slider {
+/* .slider {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -170,44 +170,8 @@ body {
   border: 2px solid #222;
 }
 
-/* ===== Container Instrumento redondo ===== */
-/* Aguja del variometro como imagen, sin deformaciones */
 
 
-
-
-/* ... Imagenes que forman el instrumento Altimeter ... 
-escala_kollsman.png       301 x 301
-altimeter_dial.png        360 x 360
-bandera_off.png           172 x 172
-tapa_frente.png           173 x 173
-aguja_dec_miles_pies.png   28 x 360
-aguja_miles_pies.png       28 x 360
-aguja_cientos_pies.png     22 x 360  
-
-Hay que ajustar las dimensiones y posiciones
-proporcionalmente para que encajen bien.
-*/
-
-
-
-
-
-/* === ALTÍMETRO: Estilos exclusivos === */
-
-
-.as-dial {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 3;
-  pointer-events: none;
-  border-radius: 50%;
-  object-fit: contain;
-  transform-origin: 50% 50%; /* pivote en el centro */
-}
 
 .gyr-dial {
   width: 100%;
@@ -220,7 +184,7 @@ proporcionalmente para que encajen bien.
   border-radius: 50%;
   object-fit: contain;
   transform: translate(-50%, -50%) rotate(0deg);
-  transform-origin: 50% 50%; /* pivote en el centro */
+  transform-origin: 50% 50%; // pivote en el centro 
 }
 .gyr-front {
   width: 75%;
@@ -233,53 +197,9 @@ proporcionalmente para que encajen bien.
   pointer-events: none;
   border-radius: 50%;
   object-fit: contain;
-}
-
-.as-needle {
-  width: 6%;
-  height: 100%;
-  position: absolute;
-  top: 0%;
-  left: 48%;
- 
-  z-index: 8;
-  pointer-events: none;
-  object-fit: contain;
-  transform-origin: 50% 50%; /* el 90% asume que el pivote está cerca de la base de la imagen */
-}
-.as-front {
-  width: 12.5%;
-  height: 12.5%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 10;
-  pointer-events: none;
-  border-radius: 50%;
-  object-fit: contain;
-}
-
-
-
-
-
-
-
-/* === RPM y VARIOMETER: Restaurar estilos === */
-/* .rpm-dial,
-.variometer-dial {
-  width: 240px;
-  height: 240px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1;
-  pointer-events: none;
-  border-radius: 120px;
-  object-fit: contain;
 } */
+
+/* 
 .needle {
   position: absolute;
   top: 50%;
@@ -308,7 +228,7 @@ proporcionalmente para que encajen bien.
   box-shadow: 0 0 4px #000;
   border: 2px solid #222;
   z-index: 3;
-}
+} */
 
 
 

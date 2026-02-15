@@ -1,0 +1,45 @@
+
+
+<div class="instrumento-grid">
+  <img class="as-dial" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/AirSpeed/as_dial.png" alt="AirSpeed Dial">
+  <img class="as-needle" id="as-needle" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/AirSpeed/as_aguja.png" alt="AirSpeed Aguja">
+  <img class="as-front" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/AirSpeed/as_front.png" alt="AirSpeed Front">
+
+  <div id="as-value" class="instrument-center-label">--</div>
+</div>
+
+
+<style>
+  .as-dial {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .as-needle {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    pointer-events: none;
+    transform-origin: 50% 50%; /* pivote en el centro */
+    /* transform-origin: center bottom; El pivote de rotación está en el centro inferior de la aguja */
+  }
+  .as-front {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  
+  
+</style>

@@ -109,7 +109,36 @@ window.addEventListener('DOMContentLoaded', () => {
   fetch("https://claudio-arz.github.io/AeroDeck-HTML/AttitudeControl_Instrumento.html")
   .then(r => r.text())
   .then(html => {
-    document.getElementById("inst02").innerHTML = html;
+    document.getElementById("inst01").innerHTML = html;
+    });
+});      
+
+// Cargar el HTML de la caja de control del Air Speed de forma dinámica.
+window.addEventListener('DOMContentLoaded', () => {
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/airSpeed_Control.html")
+    .then(r => r.text())
+    .then(html => {
+      document.getElementById("inst08").innerHTML = html;
+      // Inicializar controles del Air Speed después de insertar el HTML
+      if (typeof initAirSpeedControls === 'function') {
+        initAirSpeedControls();
+      } else {
+        // Si el script aún no está cargado, esperar y reintentar
+        setTimeout(() => {
+          if (typeof initAirSpeedControls === 'function') {
+            initAirSpeedControls();
+          }
+        }, 200);
+      }
+    });
+});       
+
+// Cargar el HTML del instrumento Air Speed de forma dinámica
+window.addEventListener('DOMContentLoaded', () => {
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/airSpeed_Instrumento.html")
+  .then(r => r.text())
+  .then(html => {
+    document.getElementById("inst08").innerHTML = html;
     });
 });      
 
