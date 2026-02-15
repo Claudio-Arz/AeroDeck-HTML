@@ -133,24 +133,36 @@ function updateRPMAndValue(RPMValue, RPMNoice, varRPM) {
   
 }
 
-const drumDigits = 5;
-const drumCounter = document.getElementById('drum-counter');
-// Create digit drums
-for (let i = 0; i < drumDigits; i++) {
-  const digit = document.createElement('div');
-  digit.className = 'drum-digit';
-  const strip = document.createElement('div');
-  strip.className = 'drum-strip';
-  for (let n = 0; n < 10; n++) {
-    const num = document.createElement('div');
-    num.className = 'drum-number';
-    num.textContent = n;
-    strip.appendChild(num);
+let drumDigits = 5;
+let drumCounter = null;
+
+function initDrumCounter() {
+  drumCounter = document.getElementById('drum-counter');
+  if (!drumCounter) {
+    console.warn('No se encontró el elemento drum-counter en el DOM.');
+    return;
   }
-  digit.appendChild(strip);
-  drumCounter.appendChild(digit);
+  // Create digit drums
+  for (let i = 0; i < drumDigits; i++) {
+    const digit = document.createElement('div');
+    digit.className = 'drum-digit';
+    const strip = document.createElement('div');
+    strip.className = 'drum-strip';
+    for (let n = 0; n < 10; n++) {
+      const num = document.createElement('div');
+      num.className = 'drum-number';
+      num.textContent = n;
+      strip.appendChild(num);
+    }
+    digit.appendChild(strip);
+    drumCounter.appendChild(digit);
+  }
+  // Inicializar con el valor por defecto
+  setDrumValue(0);
 }
+
 function setDrumValue(varRPM) {
+  if (!drumCounter) return;
   let value = String(Math.round(varRPM)).padStart(drumDigits, '0');
   [...drumCounter.children].forEach((digit, i) => {
     const strip = digit.querySelector('.drum-strip');
@@ -158,7 +170,5 @@ function setDrumValue(varRPM) {
     strip.style.transform = `translateY(-${num * 10}px)`;
   });
 }
-// Inicializar con el valor por defecto
-setDrumValue(0);
 
 
