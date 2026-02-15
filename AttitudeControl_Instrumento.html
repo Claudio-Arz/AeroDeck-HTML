@@ -33,16 +33,9 @@
   pointer-events:none;
   object-fit: contain;  
   border-radius: 392px;
-}
-
-.att-front {
-  width:81.25%;
-  height:89.58%;
-  position:absolute;
-  top:10.42%;
-  left:9.375;
-  z-index:5;
-  pointer-events:none;
+  /* El centro del instrumento está a 50% del contenedor padre.
+     Desde la ball (163%, offset -31.56%), eso es aproximadamente 50% de la ball */
+  transform-origin: 50% 50%;
 }
 
 .att-dial {
@@ -54,8 +47,18 @@
   z-index:3;
   pointer-events:none;
   border-radius: 50%;
+  transform-origin: center center;
 }
 
+.att-front {
+  width:81.25%;
+  height:89.58%;
+  position:absolute;
+  top:10.42%;
+  left:9.375%;
+  z-index:5;
+  pointer-events:none;
+}
 
 
 </style>
