@@ -113,7 +113,7 @@ function updateRPMAndValue(RPMValue, RPMNoice, varRPM) {
   
   // Calcular el ángulo de la aguja en función de varRPM (solo el ruido)
   // 0 rpm = 225°, 3000 rpm = 495° (225° + 270°), recorre 270° antihorario
-  let angle = 225 + (Math.max(0, Math.min(varRPM, 3000)) * 270) / 3000;
+  let angle = 225 + (Math.max(0, Math.min(RPMValue + varRPM, 3000)) * 270) / 3000;
   document.getElementById("rpm-needle").style.transform =
     `translate(-50%, -50%) rotate(${angle}deg)`;
   
