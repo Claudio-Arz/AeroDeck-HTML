@@ -24,6 +24,13 @@ Este sistema se basa en que .ino genera una página de internet y luego
  Esta volviendo variometro y altimetro poco a poco a la vida.
  2026-02-11 21:08:03
  Ajustando por qué el slider no se refleja en el variómetro.
+ 2026-02-11 23:01:36
+ Se agrega instrumento RPM, con su HTML y CSS. Se ajusta el código para cargarlo dinámicamente.
+2026-02-12 17:57:48
+  Se agrega lógica básica para manejar el instrumento RPM.
+
+
+
 */
 
 #include <WiFi.h>
@@ -40,13 +47,22 @@ WebSocketsServer ws(81);
 DNSServer dnsServer;
 
 // ===== VARIABLES GLOBALES =====
-
-
 float verSpeedValue = 0.0f; // Velocidad vertical en pies por minuto mostrada por el variómetro
 float altitudValue = 0.0f; // Altitud en pies mostrada por el altímetro
 bool bandera_off = false; // Indica si el altímetro NO debe mostrar bandera_off
+float RPMValue = 0.0f; // Valor de RPM mostrado por el instrumento RPM
+float RPMBase = 0.0f; // Valor de RPM sin ruido, para cálculos internos
+bool RPMNoice = false; // Indica si el instrumento RPM debe mostrar ruido (noice)
+bool RPMStarted = false; // Indica si el motor está encendido (RPM > 0)
+bool guardoRPMBase = false; // Indica si el valor base de RPM ha sido guardado
+bool startRoutine = false; // Indica si la rutina automática de arranque está activa
+unsigned long routineStart = 0; // Tiempo de inicio de la rutina
+int routineStep = 0; // Paso actual de la rutina
+float routineInitial = 0.0f; // Valor inicial de RPM para la rutina
+float varRPM = 0.0f; // Valor variable de RPM durante la rutina
 
 
+// ===== FUNCIONES WEBSOCKET =====
 void onWsEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
   
   if (type == WStype_TEXT) {
@@ -56,10 +72,36 @@ void onWsEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
       // Si no es JSON válido, ignorar
       return;
     }
+    varRPM = RPMValue;
     if (doc["verticalSpeed"].is<float>() || doc["verticalSpeed"].is<int>()) {
       verSpeedValue = doc["verticalSpeed"].as<float>();
     }
-   }
+
+    if (doc["rpmSlider"].is<float>() || doc["rpmSlider"].is<int>()) {
+       RPMValue = doc["rpmSlider"].as<float>();
+    }
+    if (doc["noiceBtnRPM"].is<bool>()) {
+      RPMNoice = doc["noiceBtnRPM"].as<bool>();
+    } else if (doc["noiceBtnRPM"].is<int>()) {
+      RPMNoice = (doc["noiceBtnRPM"].as<int>() != 0);
+    }
+    if (doc["startBtnRPM"].is<bool>()) {
+      RPMStarted = doc["startBtnRPM"].as<bool>();
+      if (RPMValue == 0.0f && RPMStarted) {
+        Serial.println("Iniciando rutina de arranque RPM...");
+        varRPM = RPMValue;
+        RPMStarted = true;
+        startRoutine = true;
+        routineStart = millis();
+        routineStep = 0;
+        routineInitial = varRPM;
+      } else if (!RPMStarted) {
+        Serial.println("Deteniendo rutina de arranque RPM...");
+        RPMStarted = false;
+        startRoutine = false;
+      }
+    }
+  }
 
 
 }
@@ -122,14 +164,11 @@ float cuentaTiempo = 0.0f;
 
 // ===== LOOP PRINCIPAL =====
 void loop() {
-  cuentaTiempo += 0.05f; // Aproximadamente cada 50 ms
-  if (cuentaTiempo >= 5.0f) {
-    // Cuenta 5 segundos y puede hacer algo.
-    // Serial.println("==============================");
-  }
-  
   // Manejo de variómetro y altímetro
   variometroAltimetro();
+  // Manejo de RPM
+  manejoRPM();
+  
   // Procesar DNS (muy importante para el portal cautivo)
   dnsServer.processNextRequest();
   // HTTP server
@@ -137,26 +176,44 @@ void loop() {
   // WebSocket
   ws.loop();
 
-  if (cuentaTiempo >= 5.0f) {
-    cuentaTiempo = 0.0f;
-    // Serial.println("altitudValue....: " + String(altitudValue) + " pies");
-    // Serial.println("verSpeedValue...: " + String(verSpeedValue) + " pies/Min");
-    // Serial.println("bandera_off.....: " + String(bandera_off ? "true" : "false") + " > 19000 pies");
-  }
   
   // Enviar valores de los dos instrumentos activos
   StaticJsonDocument<1000> doc;
   doc["verticalSpeed"] = verSpeedValue;
   doc["altitudValue"] = altitudValue;
   doc["bandera_off"] = bandera_off;
+  doc["RPMValue"] = RPMValue;
+  doc["varRPM"] = varRPM;
+  doc["RPMNoice"] = RPMNoice;
+  
   String output;
   serializeJson(doc, output);
   ws.broadcastTXT(output);
+  
+  
+  cuentaTiempo += 0.05f; // Aproximadamente cada 50 ms
+  if (cuentaTiempo >= 5.0f) {
+    cuentaTiempo = 0.0f; // Reiniciar contador
+    // Cuenta 5 segundos y puede hacer algo.
+    Serial.println("Enviando datos: " + output);
+    Serial.println("==============================");
+    Serial.println("Estado actual:");
+    Serial.print("Velocidad vertical: ");Serial.print(verSpeedValue);Serial.println(" ft/min");
+    Serial.print("Altitud: ");Serial.print(altitudValue );Serial.println(" ft");
+    Serial.print("Bandera off: ");Serial.println(bandera_off ? "Sí" : "No");
+    Serial.print("varRPM: ");Serial.print(varRPM);Serial.println(" rpm");  
+    Serial.print("RPMValue: ");Serial.print(RPMValue);Serial.println(" rpm");  
+    Serial.print("Ruido en RPM: ");Serial.println(RPMNoice ? "Sí" : "No");
+    Serial.print("Motor encendido: ");Serial.println(RPMStarted ? "Sí" : "No");
+    Serial.println("==============================");
+  }
+  
   delay(50);
   
 }
 
 // Función para manejar variómetro y altímetro
+
 void variometroAltimetro() {
   if (altitudValue < 19000.0f) {
     bandera_off = false; // Reiniciar bandera_off si altitud es menor a 19000 pies
@@ -176,5 +233,44 @@ void variometroAltimetro() {
   }
 }
 
+// Función para manejar lógica del instrumento RPM
+void manejoRPM() {
+  
+  // Rutina automática de arranque
+  if (startRoutine) {
+    unsigned long t = millis() - routineStart;
+    if (routineStep == 0) { // Subir a 1000 rpm en 1.5s
+      float frac = min(1.0f, t / 1500.0f);
+      varRPM = routineInitial + (1000 - routineInitial) * frac;
+      if (frac >= 1.0f) {
+        routineStep = 1;
+        routineStart = millis();
+      }
+    } else if (routineStep == 1) { // Mantener 3s
+      varRPM = 1000;
+      if (t >= 3000) {
+        routineStep = 2;
+        routineStart = millis();
+      }
+    } else if (routineStep == 2) { // Bajar a 700 rpm en 3s
+      float frac = min(1.0f, t / 3000.0f);
+      varRPM = 1000 + (700 - 1000) * frac;
+      if (frac >= 1.0f) {
+        varRPM = 700;
+        startRoutine = false;
+      }
+    }
+  }
+
+  float rpm_mostrar = varRPM;
+  if (RPMNoice && varRPM > 0.0f) {
+
+    int ruido = random(-5, 5); // de -5 a +5
+    rpm_mostrar = varRPM + ruido;
+    rpm_mostrar = max(0.0f, rpm_mostrar); // Asegurar que no sea menor a 0
+    rpm_mostrar = min(3000.0f, rpm_mostrar); // Asegurar que no sea mayor a 3000
+  }
+  varRPM = rpm_mostrar;
+}
 
 

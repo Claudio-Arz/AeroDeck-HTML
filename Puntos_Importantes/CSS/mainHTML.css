@@ -27,7 +27,7 @@ para indicar visualmente su estado.
 
 
 */
-#noice-btn.active {
+/* #noice-btn.active {
   background: rgb(26, 176, 166) !important;
   color: #222 !important;
   border: 2px solid #1ab0a6 !important;
@@ -40,7 +40,7 @@ para indicar visualmente su estado.
   color: #fff;
   border: 2px solid #071037;
   transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-}
+} */
 
 /* Combina grid-item y container para instrumentos individuales */
 .instrumento-grid {

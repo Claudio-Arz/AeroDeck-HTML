@@ -55,8 +55,9 @@ function initRPMControls() {
     sendRPMToESP32("noiceBtnRPM", noiceState);
   });
   startBtnRPM.addEventListener('click', () => {
-    startState = !startState;
-    sendRPMToESP32("startBtnRPM", startState);
+    if(ws.readyState === 1) {
+      sendRPMToESP32("startBtnRPM", true);
+    }
   });
   rpmBtnPlus.addEventListener('click', () => {
     let currentValue = parseFloat(rpmSlider.value);
@@ -100,15 +101,16 @@ function sendRPMToESP32(DataVar, DataValue) {
   });
 }
 
-function updateRPMAndValue(RPMValue, RPMNoice) {
+function updateRPMAndValue(RPMValue, RPMNoice, varRPM) {
+
   // Actualizar el valor numérico en el centro del instrumento
   document.getElementById("rpm-value").textContent = Math.round(RPMValue);
-  // Calcular los ángulos de las agujas en función de la altitud
+  // Calcular el ángulo de la aguja en función del valor de RPM
   // 0 rpm = 225°, 3000 rpm = 495° (225° + 270°), recorre 270° antihorario
-  let angle = 225 + (Math.max(0, Math.min(RPMValue, 3000)) * 270) / 3000;
+  let angle = 225 + (Math.max(0, Math.min(varRPM, 3000)) * 270) / 3000;
   document.getElementById("rpm-needle").style.transform =
     `translate(-50%, -50%) rotate(${angle}deg)`;
-  document.getElementById("rpm-value").textContent = Math.round(RPMValue);
+  document.getElementById("rpm-value").textContent = Math.round(varRPM);
   // Actualizar el valor del slider y su display si cambia por rutina automática
   const RPMValor = document.getElementById("rpm-value");
   const   RPMSlider = document.getElementById("rpm-slider");
@@ -123,7 +125,7 @@ function updateRPMAndValue(RPMValue, RPMNoice) {
   const noiceActive = (RPMNoice === true || RPMNoice === 1);
   if (noiceActive) {
     noiceBtnRPM.style.background = '#0f0';
-    if (rpmCrystal) rpmCrystal.style.background = 'rgba(0, 255, 0, 0.15)';
+    if (rpmCrystal) rpmCrystal.style.background = 'rgba(74, 252, 74, 0.08)';
   } else {
     noiceBtnRPM.style.background = '#444';
     if (rpmCrystal) rpmCrystal.style.background = '';

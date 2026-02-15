@@ -132,3 +132,33 @@ function updateRPMAndValue(RPMValue, RPMNoice, varRPM) {
   }
   
 }
+
+const drumDigits = 5;
+const drumCounter = document.getElementById('drum-counter');
+// Create digit drums
+for (let i = 0; i < drumDigits; i++) {
+  const digit = document.createElement('div');
+  digit.className = 'drum-digit';
+  const strip = document.createElement('div');
+  strip.className = 'drum-strip';
+  for (let n = 0; n < 10; n++) {
+    const num = document.createElement('div');
+    num.className = 'drum-number';
+    num.textContent = n;
+    strip.appendChild(num);
+  }
+  digit.appendChild(strip);
+  drumCounter.appendChild(digit);
+}
+function setDrumValue() {
+  let value = document.getElementById('alt-input').value.padStart(drumDigits, '0');
+  [...drumCounter.children].forEach((digit, i) => {
+    const strip = digit.querySelector('.drum-strip');
+    const num = parseInt(value[i]);
+    strip.style.transform = `translateY(-${num * 10}px)`;
+  });
+}
+// Inicializar con el valor por defecto
+setDrumValue();
+
+

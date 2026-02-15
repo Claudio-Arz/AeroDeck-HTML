@@ -88,8 +88,8 @@ window.addEventListener('DOMContentLoaded', () => {
       updateAltimeterAndValue(data.altitudValue, data.bandera_off);
     }
     if (data.RPMValue !== undefined && typeof updateRPMAndValue === 'function') {
-      console.log("Actualizando RPM: " + data.RPMValue + " Noice: " + data.RPMNoice);
-      updateRPMAndValue(data.RPMValue, data.RPMNoice);
+      console.log("Actualizando RPM: " + data.RPMValue + " Noice: " + data.RPMNoice + " varRPM: " + data.varRPM);
+      updateRPMAndValue(data.RPMValue, data.RPMNoice, data.varRPM);
     }
   };
   
@@ -104,7 +104,7 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 });      
 
-// Cargar el HTML de la caja de control del RPM de forma dinámica
+// Cargar el HTML de la caja de control del RPM de forma dinámica.
 window.addEventListener('DOMContentLoaded', () => {
   fetch("https://claudio-arz.github.io/AeroDeck-HTML/RPM_Control.html")
     .then(r => r.text())
