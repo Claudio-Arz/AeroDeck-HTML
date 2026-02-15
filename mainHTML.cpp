@@ -30,6 +30,7 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_variometer.js"></script>
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_altimeter.js"></script>
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_rpm.js"></script>
+<script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_Attitude.js"></script>
 
 
 </head>
@@ -91,10 +92,42 @@ window.addEventListener('DOMContentLoaded', () => {
       console.log("Actualizando RPM: " + data.RPMValue + " Noice: " + data.RPMNoice + " varRPM: " + data.varRPM);
       updateRPMAndValue(data.RPMValue, data.RPMNoice, data.varRPM);
     }
+    if (data.pitchValue !== undefined && typeof updateAttitudeControl === 'function') {
+      console.log("Actualizando Pitch: " + data.pitchValue + " Roll: " + data.rollValue);
+      updateAttitudeControl(data.pitchValue, data.rollValue);
+    }
   };
   
 });
 
+// Cargar el HTML del instrumento Attitude Control de forma dinámica
+window.addEventListener('DOMContentLoaded', () => {
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/AttitudeControl_Instrumento.html")
+  .then(r => r.text())
+  .then(html => {
+    document.getElementById("inst02").innerHTML = html;
+    });
+});      
+
+// Cargar el HTML de la caja de control del Attitude Control de forma dinámica.
+window.addEventListener('DOMContentLoaded', () => {
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/AttitudeControl_Control.html")
+    .then(r => r.text())
+    .then(html => {
+      document.getElementById("inst05").innerHTML = html;
+      // Inicializar controles del Attitude Control después de insertar el HTML
+      if (typeof initAttitudeControls === 'function') {
+        initAttitudeControls();
+      } else {
+        // Si el script aún no está cargado, esperar y reintentar
+        setTimeout(() => {
+          if (typeof initAttitudeControls === 'function') {
+            initAttitudeControls();
+          }
+        }, 200);
+      }
+    });
+});       
 // Cargar el HTML del instrumento RPM de forma dinámica
 window.addEventListener('DOMContentLoaded', () => {
   fetch("https://claudio-arz.github.io/AeroDeck-HTML/RPM_Instrumento.html")
