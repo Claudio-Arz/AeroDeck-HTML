@@ -34,8 +34,12 @@
 <style>
   .drum-counter {
     display: flex;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%)  ;
     gap: 1px;
-    justify-content: center;
+    justify-content: center+30;
     align-items: center;
     background: #222;
     padding: 3px;
@@ -56,9 +60,8 @@
   }
   .drum-strip {
     position: absolute;
-    top: calc(50% + 45px); /* Centrado vertical + desplazamiento para mostrar el número correcto */
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 0;
+    left: 0;
     width: 100%;
     transition: transform 0.4s cubic-bezier(.5,1.5,.5,1);
   }
