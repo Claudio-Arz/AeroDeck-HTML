@@ -109,7 +109,7 @@ window.addEventListener('DOMContentLoaded', () => {
   fetch("https://claudio-arz.github.io/AeroDeck-HTML/AttitudeControl_Instrumento.html")
   .then(r => r.text())
   .then(html => {
-    document.getElementById("inst01").innerHTML = html;
+    document.getElementById("inst02").innerHTML = html;
     });
 });      
 
@@ -138,7 +138,7 @@ window.addEventListener('DOMContentLoaded', () => {
   fetch("https://claudio-arz.github.io/AeroDeck-HTML/airSpeed_Instrumento.html")
   .then(r => r.text())
   .then(html => {
-    document.getElementById("inst08").innerHTML = html;
+    document.getElementById("inst01").innerHTML = html;
     });
 });      
 
