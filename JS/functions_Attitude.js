@@ -16,9 +16,9 @@ Rangos:
 
 // Variables globales para el joystick
 let joystickDragging = false;
-let joystickCenterX = 100;
-let joystickCenterY = 100;
-let joystickRadius = 70; // Radio máximo de movimiento del knob
+let joystickCenterX = 40;  // Centro del joystick de 80px
+let joystickCenterY = 40;
+let joystickRadius = 28;   // Radio máximo de movimiento del knob (80/2 - 10 para el knob)
 let zeroActive = false;
 
 function setupAttitudeControls() {
@@ -174,8 +174,9 @@ function setupAttitudeControls() {
 
   function updateKnobPosition(x, y) {
     if (knob) {
-      knob.style.left = (x - 15) + 'px'; // -15 para centrar el knob de 30px
-      knob.style.top = (y - 15) + 'px';
+      // El knob usa transform: translate(-50%, -50%), así que x,y son el centro
+      knob.style.left = x + 'px';
+      knob.style.top = y + 'px';
     }
     if (armLine) {
       armLine.setAttribute('x2', x);
