@@ -32,6 +32,7 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_rpm.js"></script>
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_Attitude.js"></script>
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_airSpeed.js"></script>
+<script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_Gyro.js"></script>
 
 
 </head>
@@ -105,9 +106,42 @@ window.addEventListener('DOMContentLoaded', () => {
       console.log("Actualizando Air Speed: " + data.airspeedValue);
       updateAirspeed(data.airspeedValue);
     }
+    if (data.gyroValue !== undefined && typeof updateGyro === 'function') {
+      console.log("Actualizando Gyro: " + data.gyroValue);
+      updateGyroDialAndValue(data.gyroValue);
+    }
   };
   
 });
+
+// Cargar el HTML del instrumento Gyro de forma dinámica
+window.addEventListener('DOMContentLoaded', () => {
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/gyro_Instrumento.html")
+  .then(r => r.text())
+  .then(html => {
+    document.getElementById("inst10").innerHTML = html;
+    });
+});      
+
+// Cargar el HTML de la caja de control del gyro de forma dinámica.
+window.addEventListener('DOMContentLoaded', () => {
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/gyro_Control.html")
+    .then(r => r.text())
+    .then(html => {
+      document.getElementById("inst07").innerHTML = html;
+      // Inicializar controles del Gyro después de insertar el HTML
+      if (typeof setupGyroControls === 'function') {
+        setupGyroControls();
+      } else {
+        // Si el script aún no está cargado, esperar y reintentar
+        setTimeout(() => {
+          if (typeof setupGyroControls === 'function') {
+            setupGyroControls();
+          }
+        }, 200);
+      }
+    });
+});       
 
 // Cargar el HTML del instrumento Attitude Control de forma dinámica
 window.addEventListener('DOMContentLoaded', () => {

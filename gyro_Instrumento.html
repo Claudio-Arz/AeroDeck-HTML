@@ -1,0 +1,38 @@
+
+
+<div class="instrumento-grid">
+  <img id="gyr-dial" class="gyr-dial" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/Gyro/gyro_dial.png" alt="Gyro Dial">
+  <img id="gyr-front" class="gyr-front" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/Gyro/gyro_front.png" alt="Gyro Front">
+
+  <div id="gyr-value" class="instrument-center-label">--</div>
+
+</div>
+
+
+<style>
+  .gyr-dial {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 3;
+  pointer-events: none;
+  border-radius: 50%;
+  object-fit: contain;
+  transform: translate(-50%, -50%) rotate(0deg);
+  transform-origin: 50% 50%; // pivote en el centro 
+}
+.gyr-front {
+  width: 75%;
+  height: 75%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  pointer-events: none;
+  border-radius: 50%;
+  object-fit: contain;
+}
+</style>
