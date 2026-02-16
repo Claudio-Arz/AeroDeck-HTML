@@ -13,7 +13,7 @@
 */
 
 function initAirSpeedControls() {
-  // Aquí podríamos agregar event listeners para controles interactivos
+  // Event listener para el slider
   const slider = document.getElementById('as-slider');
   if (slider) {
     slider.addEventListener('input', () => {
@@ -22,9 +22,50 @@ function initAirSpeedControls() {
   } else {
     console.warn('No se encontró el slider de Air Speed en el DOM.');
   }
+  
+  // Event listeners para los botones de valores predefinidos
+  const btnMax = document.getElementById('as-slider-max');
+  const btnMid = document.getElementById('as-slider-mid');
+  const btnMin = document.getElementById('as-slider-min');
+  const btnPlus = document.getElementById('as-btn-plus');
+  const btnMinus = document.getElementById('as-btn-minus');
+  
+  if (btnMax) {
+    btnMax.addEventListener('click', () => {
+      updateAirspeed(200, true); // Máximo: 200 kts
+    });
+  }
+  if (btnMid) {
+    btnMid.addEventListener('click', () => {
+      updateAirspeed(120, true); // Medio: 120 kts
+    });
+  }
+  if (btnMin) {
+    btnMin.addEventListener('click', () => {
+      updateAirspeed(40, true); // Mínimo: 40 kts
+    });
+  }
+  if (btnPlus) {
+    btnPlus.addEventListener('click', () => {
+      const slider = document.getElementById('as-slider');
+      if (slider) {
+        const newValue = Math.min(200, parseFloat(slider.value) + 1); // +1 nudo
+        updateAirspeed(newValue, true);
+      }
+    });
+  }
+  if (btnMinus) {
+    btnMinus.addEventListener('click', () => {
+      const slider = document.getElementById('as-slider');
+      if (slider) {
+        const newValue = Math.max(40, parseFloat(slider.value) - 1); // -1 nudo
+        updateAirspeed(newValue, true);
+      }
+    });
+  }
 }
 
-function updateAirspeed(airspeed, fromSlider = false) {
+function updateAirspeed(airspeed, sendToESP = false) {
   const slider = document.getElementById('as-slider');
   const valueLabel = document.getElementById('as-value');
   const sliderLabel = document.getElementById('as-slider-value-label');
@@ -36,11 +77,11 @@ function updateAirspeed(airspeed, fromSlider = false) {
   // Si se llama sin argumento, usar el valor del slider
   if (airspeed === undefined && slider) {
     airspeed = parseFloat(slider.value);
-    fromSlider = true;
+    sendToESP = true;
   }
-  valueLabel.textContent = airspeed.toFixed(0) + ' kts';
-  // Sincronizar el slider si la actualización viene del ESP32
-  if (!fromSlider && slider) {
+  valueLabel.textContent = airspeed.toFixed(0); // Mostrar solo enteros
+  // Sincronizar el slider siempre
+  if (slider) {
     slider.value = airspeed;
   }
   // Actualizar etiqueta del slider
@@ -50,8 +91,8 @@ function updateAirspeed(airspeed, fromSlider = false) {
   // Calcular el ángulo de la aguja utilizando la función airspeedToAngle
   const angle = airspeedToAngle(airspeed);
   needle.style.transform = `rotate(${angle}deg)`;
-  // Enviar el valor de velocidad aérea al ESP32 solo si viene del slider
-  if (fromSlider) {
+  // Enviar el valor de velocidad aérea al ESP32 solo si se indica
+  if (sendToESP) {
     sendAirspeedToESP32(airspeed);
   }
 }
@@ -71,7 +112,7 @@ function airspeedToAngle(airspeed) {
   const minValue = 40;
   const maxValue = 200;
   const minAngle = 30;
-  const maxAngle = 319;
+  const maxAngle = 320;
   if (airspeed < minValue) airspeed = minValue;
   if (airspeed > maxValue) airspeed = maxValue;
   return minAngle + ((airspeed - minValue) * (maxAngle - minAngle)) / (maxValue - minValue);
