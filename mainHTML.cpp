@@ -31,6 +31,7 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_altimeter.js"></script>
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_rpm.js"></script>
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_Attitude.js"></script>
+<script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_airSpeed.js"></script>
 
 
 </head>
@@ -99,6 +100,10 @@ window.addEventListener('DOMContentLoaded', () => {
     if (data.pitchValue !== undefined && typeof updateAttitudeControl === 'function') {
       console.log("Actualizando Pitch: " + data.pitchValue + " Roll: " + data.rollValue);
       updateAttitudeControl(data.pitchValue, data.rollValue);
+    }
+    if (data.airspeedValue !== undefined && typeof updateAirspeed === 'function') {
+      console.log("Actualizando Air Speed: " + data.airspeedValue);
+      updateAirspeed(data.airspeedValue);
     }
   };
   
