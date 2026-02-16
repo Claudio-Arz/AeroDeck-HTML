@@ -1,0 +1,63 @@
+<!-- 
+
+  HTML para el instrumento Turn Coordinator.
+  Autor: Claudio Arzamendia
+  Fecha: 2026-02-16 20:18:31
+    Este programa solo muestra el instrumento Turn Coordinator con su fondo, dial, bola y tapa.
+    No tiene funcionalidad de movimiento de la bola ni recepción de datos a través de WebSocket.
+
+
+
+-->
+
+<div class="instrumento-grid">
+    <!-- Ball -->
+    <img class="tc-ball" id="tc_ball" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/TurnCoordinator/TC_Pendulo.png"
+    alt="Ball Turn Coordinator">
+    <!-- Dial -->
+    <img class="tc-dial" id="tc_dial" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/TurnCoordinator/TC_Dial.png" 
+    alt="Dial Turn Coordinator">
+    <!-- Front -->
+    <img class="tc-front" id="tc_front" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/TurnCoordinator/TC_Avion.png" 
+    alt="Avión Turn Coordinator">
+</div>
+
+<style>
+.tc-ball {
+  width: 100%;
+  height: 100%;
+  position:absolute;
+  top:0;
+  left:0;
+  z-index:1;
+  pointer-events:none;
+  object-fit: contain;  
+  border-radius: 392px;
+  /* El centro del instrumento está a 50% del contenedor padre. */
+  transform-origin: 50% 50%;
+}
+
+.tc-dial {
+  width: 100%;
+  height: 100%;
+  position:absolute;
+  top:0;
+  left:0%;
+  z-index:3;
+  pointer-events:none;
+  border-radius: 50%;
+  transform-origin: center center;
+}
+
+.tc-front {
+  width:100%;
+  height:100%;
+  position:absolute;
+  top:0;
+  left:0;
+  z-index:5;
+  pointer-events:none;
+}
+
+
+</style>

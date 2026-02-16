@@ -1,0 +1,195 @@
+
+<!-- 
+ Turn Coordinator slider and buttons
+  Este código HTML define el control para el instrumento Turn Coordinator, 
+  que incluye un slider vertical para ajustar la velocidad de giro 
+  y tres botones para establecer valores predefinidos (máximo, medio y mínimo).
+
+  Definir una caja de contención como en gyro.
+
+  +------------------------+
+  |   Turn Coordinator Control   |
+  +-------+-----+----------+
+  |       |     |          |   
+  |   s   | (+) |  Máximo  |   
+  |   l   +-----+----------+
+  |   i   |     |          |   
+  |   d   |     |  Medio   |   
+  |   e   +-----+----------+   
+  |   r   |     |          |   
+  |       | (-) |  Mínimo  |   
+  +-------+-----+----------+   
+  | value |     |          |   
+  +-------+-----+----------+
+
+-->
+
+
+
+<div class="turncoordinator-control-cell">
+  <div class="turncoordinator-control-header">Turn Coordinator Control</div>
+  <div class="turncoordinator-control-body">
+    <div class="turncoordinator-slider-section">
+      <input type="range" min="-2000" max="2000" value="0" class="slider vertical-slider" id="turncoordinator-slider" style="writing-mode: vertical-lr; direction: rtl;">
+      <div class="slider-value" id="turncoordinator-slider-value">0</div>
+    </div>
+    <div class="turncoordinator-plusminus-section">
+      <button id="turncoordinator-btn-plus" class="slider-glow-btn slider-btn slider-btn-max">+</button>
+      <button id="turncoordinator-btn-minus" class="slider-glow-btn slider-btn slider-btn-min">-</button>
+    </div>
+    <div class="turncoordinator-buttons-section">
+      <button id="turncoordinator-slider-max" class="slider-glow-btn slider-btn slider-btn-max">Máximo</button>
+      <div class="divider"></div>
+      <button id="turncoordinator-slider-mid" class="slider-glow-btn slider-btn slider-btn-mid">Medio</button>
+      <div class="divider"></div>
+      <button id="turncoordinator-slider-min" class="slider-glow-btn slider-btn slider-btn-min">Mínimo</button>
+    </div>
+  </div>
+</div>
+
+<style>
+/* === Botones de control de slider (mín, med, máx) === */
+.slider-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  padding: 0;
+  display: block;
+}
+.slider-btn-max {
+  background: #2ecc71;
+  margin-bottom: 4px;
+}
+.slider-btn-mid {
+  background: #f1c40f;
+  margin: 2px 0;
+}
+.slider-btn-min {
+  background: #e31111;
+  margin-top: 4px;
+}
+
+ /* === Efecto luminoso para botones de slider (mín, med, máx) === */
+.slider-glow-btn:active {
+  box-shadow: 0 0 8px 4px #1ab0a6, 0 0 16px 8px #1ab0a6;
+  filter: brightness(1.7) drop-shadow(0 0 6px #1ab0a6);
+  outline: none;
+  transition: box-shadow 0.1s, filter 0.1s;
+} 
+.turncoordinator-control-cell {
+  border: 2px solid #888;
+  border-radius: 10px;
+  width: 120px;
+  height: 240px;
+  background: #573c3c;
+  box-shadow: 2px 2px 8px #bbb;
+  padding: 0;
+  margin: 0 auto;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+  .turncoordinator-control-header {
+    border-bottom: 2px solid #888;
+    text-align: center;
+    font-weight: bold;
+    font-size: 10px;
+    padding: 4px 0;
+    letter-spacing: 0.5px;
+    background: #3f1a5e;
+    flex-shrink: 0;
+  }
+  .turncoordinator-control-body {
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+    align-items: stretch;
+    gap: 0;
+    background: #573c3c;
+    flex: 1;
+  }
+  .turncoordinator-slider-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-right: 1px solid #888;
+    padding: 4px 2px;
+    width: 36px;
+    justify-content: center;
+    background: #2b0a46;
+    box-sizing: border-box;
+  }
+  .turncoordinator-slider-section .slider,
+  .turncoordinator-slider-section .vertical-slider {
+    width: 20px;
+    height: 140px;
+    writing-mode: vertical-lr;
+    direction: rtl;
+    background: #023248;
+    border-radius: 6px;
+    margin-bottom: 4px;
+  }
+  .turncoordinator-slider-section .slider-value {
+    width: 100%;
+    text-align: center;
+    background: #a81837;
+    border-radius: 4px;
+    margin-top: 4px;
+    font-size: 0.7em;
+    font-weight: bold;
+    color: #eeb4b4;
+    padding: 2px 0;
+  }
+  .turncoordinator-plusminus-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    border-right: 1px solid #888;
+    padding: 4px 2px;
+    width: 28px;
+    background: #2b0a46;
+    box-sizing: border-box;
+  }
+  .turncoordinator-plusminus-section button {
+    width: 22px;
+    height: 22px;
+    font-size: 1em;
+    font-weight: bold;
+    border-radius: 50%;
+  }
+.slider-value {
+  margin-top: 10px;
+  font-size: 0.8em;
+  font-weight: bold;
+  color: #eeb4b4;
+}
+.turncoordinator-buttons-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: stretch;
+  flex: 1;
+  padding: 4px 3px;
+  background: #a81837;
+  box-sizing: border-box;
+}
+.turncoordinator-buttons-section button {
+  width: 100%;
+  margin: 0;
+  font-size: 0.5em;
+  padding: 4px 0;
+  border-radius: 4px;
+  border: 1px solid #aaa;
+  background: #266dc4;
+  color: #eeb4b4;
+}
+.turncoordinator-buttons-section .divider {
+  border-bottom: 1px solid #bbb;
+  margin: 2px 0;
+}
+</style>
+

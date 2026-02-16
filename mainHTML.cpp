@@ -52,11 +52,11 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
   <div class="grid-item" id="inst06" style="grid-row: 1; grid-column: 6;">Controles RPM</div>  
   <div class="grid-item" id="inst07" style="grid-row: 1; grid-column: 7;">Controles Gyro</div>  
   <div class="grid-item" id="inst08" style="grid-row: 1; grid-column: 8;">Controles Air Speed</div>  
-  <div class="grid-item" id="inst09" style="grid-row: 2; grid-column: 1;"></div>  
+  <div class="grid-item" id="inst09" style="grid-row: 2; grid-column: 1;">Turn Coordinator</div>  
   <div class="grid-item" id="inst10" style="grid-row: 2; grid-column: 2;">Gyro</div>  
   <div class="grid-item" id="inst11" style="grid-row: 2; grid-column: 3;">Vertical Speed</div>  
   <div class="grid-item" id="inst12" style="grid-row: 2; grid-column: 4;"></div>  
-  <div class="grid-item" id="inst13" style="grid-row: 2; grid-column: 5;"></div>  
+  <div class="grid-item" id="inst13" style="grid-row: 2; grid-column: 5;">Turn Coordinator Control</div>  
   <div class="grid-item" id="inst14" style="grid-row: 2; grid-column: 6;">Controles Vertical Speed</div>  
   <div class="grid-item" id="inst15" style="grid-row: 2; grid-column: 7;"></div>  
   <div class="grid-item" id="inst16" style="grid-row: 2; grid-column: 8;"></div>
@@ -113,6 +113,35 @@ window.addEventListener('DOMContentLoaded', () => {
   };
   
 });
+
+// Cargar el HTML del instrumento Turn Coordinator de forma dinámica
+window.addEventListener('DOMContentLoaded', () => {
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/TurnCoordinator_Instrumento.html")
+  .then(r => r.text())
+  .then(html => {
+    document.getElementById("inst10").innerHTML = html;
+    });
+});      
+
+// Cargar el HTML de la caja de control del Turn Coordinator de forma dinámica.
+window.addEventListener('DOMContentLoaded', () => {
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/TurnCoordinator_Control.html")
+    .then(r => r.text())
+    .then(html => {
+      document.getElementById("inst07").innerHTML = html;
+      // Inicializar controles del Turn Coordinator después de insertar el HTML
+      if (typeof setupTurnCoordinatorControls === 'function') {
+        setupTurnCoordinatorControls();
+      } else {
+        // Si el script aún no está cargado, esperar y reintentar
+        setTimeout(() => {
+          if (typeof setupTurnCoordinatorControls === 'function') {
+            setupTurnCoordinatorControls();
+          }
+        }, 200);
+      }
+    });
+});       
 
 // Cargar el HTML del instrumento Gyro de forma dinámica
 window.addEventListener('DOMContentLoaded', () => {
