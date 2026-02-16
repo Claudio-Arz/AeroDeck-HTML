@@ -17,16 +17,17 @@ function initAirSpeedControls() {
   const slider = document.getElementById('as-slider');
   if (slider) {
     slider.addEventListener('input', () => {
-      updateAirspeed(parseFloat(slider.value));
+      updateAirspeed(parseFloat(slider.value), true); // true = desde el slider, enviar al ESP32
     });
   } else {
     console.warn('No se encontró el slider de Air Speed en el DOM.');
   }
 }
 
-function updateAirspeed(airspeed) {
+function updateAirspeed(airspeed, fromSlider = false) {
   const slider = document.getElementById('as-slider');
   const valueLabel = document.getElementById('as-value');
+  const sliderLabel = document.getElementById('as-slider-value-label');
   const needle = document.getElementById('as-needle');
   if (!valueLabel || !needle) {
     console.warn('No se encontraron los elementos de Air Speed en el DOM.');
@@ -35,21 +36,35 @@ function updateAirspeed(airspeed) {
   // Si se llama sin argumento, usar el valor del slider
   if (airspeed === undefined && slider) {
     airspeed = parseFloat(slider.value);
+    fromSlider = true;
   }
   valueLabel.textContent = airspeed.toFixed(0) + ' kts';
+  // Sincronizar el slider si la actualización viene del ESP32
+  if (!fromSlider && slider) {
+    slider.value = airspeed;
+  }
+  // Actualizar etiqueta del slider
+  if (sliderLabel) {
+    sliderLabel.textContent = airspeed.toFixed(0);
+  }
   // Calcular el ángulo de la aguja utilizando la función airspeedToAngle
   const angle = airspeedToAngle(airspeed);
   needle.style.transform = `rotate(${angle}deg)`;
-  // Enviar el valor de velocidad aérea al ESP32
-  sendAirspeedToESP32(airspeed);
+  // Enviar el valor de velocidad aérea al ESP32 solo si viene del slider
+  if (fromSlider) {
+    sendAirspeedToESP32(airspeed);
+  }
 }
 
 function sendAirspeedToESP32(airspeed) {
-  // Aquí se implementaría la lógica para enviar el valor de velocidad aérea al ESP32
-  // Esto podría ser a través de WebSocket, HTTP POST, o cualquier otro método de comunicación que estés utilizando.
-  console.log(`Enviando velocidad aérea al ESP32: ${airspeed} kts`);
-  // Ejemplo de envío (ajustar según tu método de comunicación):
-  // socket.emit('updateAirspeed', airspeed);
+  // Enviar el valor de velocidad aérea al ESP32 vía WebSocket
+  if (window.ws && window.ws.readyState === WebSocket.OPEN) {
+    const data = JSON.stringify({ airspeedValue: airspeed });
+    window.ws.send(data);
+    console.log(`Enviando velocidad aérea al ESP32: ${airspeed} kts`);
+  } else {
+    console.warn('WebSocket no está conectado.');
+  }
 }
 // Mapea el valor de AirSpeed (40-200) al ángulo de la aguja (30-319)
 function airspeedToAngle(airspeed) {
