@@ -26,24 +26,99 @@ Este código HTML representa un control deslizante para ajustar la velocidad aé
 
 -->
 
-<div class="label-slider">AirSpeed Control</div>
-
-<div style="display: flex; flex-direction: row; align-items: stretch; gap: 8px; width: 140px; height: 200px;">
-  <!-- Slider vertical -->
-  <div style="display: flex; flex-direction: column; align-items: center; justify-content: space-between;">
-    <input type="range" min="40" max="200" value="40" id="as-slider" orient="vertical" 
-           style="writing-mode: vertical-lr; direction: rtl; height: 160px; width: 24px;">
-    <div class="slider-value" id="as-slider-value-label" style="font-size: 12px; margin-top: 4px;">40</div>
+<div class="as-control-container">
+  <!-- Título -->
+  <div class="title-as-control">AirSpeed Control</div>
+  <!-- Fila principal: Slider + Botones -->
+  <div class="as-main-row">
+    <!-- Slider vertical -->
+    <div class="as-slider-column">
+      <input type="range" min="40" max="200" value="40" id="as-slider" orient="vertical" class="as-slider-input">
+    </div>
+    <!-- Botones +1/-1 nudo -->
+    <div class="as-plusminus-column">
+      <button id="as-btn-plus" class="slider-glow-btn slider-btn as-btn-plusminus">+</button>
+      <button id="as-btn-minus" class="slider-glow-btn slider-btn as-btn-plusminus">−</button>
+    </div>
+    <!-- Botones Máx/Med/Mín -->
+    <div class="as-presets-column">
+      <button id="as-slider-max" class="slider-glow-btn slider-btn slider-btn-max as-btn-preset">Máx</button>
+      <button id="as-slider-mid" class="slider-glow-btn slider-btn slider-btn-mid as-btn-preset">Med</button>
+      <button id="as-slider-min" class="slider-glow-btn slider-btn slider-btn-min as-btn-preset">Mín</button>
+    </div>
   </div>
-  <!-- Botones +1/-1 nudo -->
-  <div style="display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 10px 0;">
-    <button id="as-btn-plus" class="slider-glow-btn slider-btn" style="width: 24px; height: 24px;">+</button>
-    <button id="as-btn-minus" class="slider-glow-btn slider-btn" style="width: 24px; height: 24px;">−</button>
-  </div>
-  <!-- Botones Máx/Med/Mín -->
-  <div style="display: flex; flex-direction: column; justify-content: space-between; flex: 1;">
-    <button id="as-slider-max" class="slider-glow-btn slider-btn slider-btn-max" style="font-size: 10px; padding: 4px;">Máximo</button>
-    <button id="as-slider-mid" class="slider-glow-btn slider-btn slider-btn-mid" style="font-size: 10px; padding: 4px;">Medio</button>
-    <button id="as-slider-min" class="slider-glow-btn slider-btn slider-btn-min" style="font-size: 10px; padding: 4px;">Mínimo</button>
+  <!-- Fila inferior: Value solo debajo del slider -->
+  <div class="as-value-row">
+    <div class="slider-value" id="as-slider-value-label">40</div>
   </div>
 </div>
+
+<style>
+  .title-as-control {
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 4px;
+    background-color: burlywood;
+    color: black;
+    padding: 2px 0;
+  }
+  .as-control-container {
+    display: flex;
+    flex-direction: column;
+    width: 120px;
+    height: 240px;
+  }
+  .as-main-row {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    background-color: antiquewhite;
+    gap: 8px;
+    flex: 1;
+  }
+  .as-slider-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: stretch;
+    height: 100%;
+  }
+  .as-slider-input {
+    writing-mode: vertical-lr;
+    direction: rtl;
+    height: 100%;
+    width: 24px;
+  }
+  .as-plusminus-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+  }
+  .as-btn-plusminus {
+    width: 24px;
+    height: 24px;
+  }
+  .as-presets-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
+  }
+  .as-btn-preset {
+    font-size: 10px;
+    padding: 4px;
+  }
+  .as-value-row {
+    display: flex;
+    width: 24px; /* mismo ancho que el slider */
+    margin-top: 4px;
+  }
+  .as-value-row .slider-value {
+    font-size: 12px;
+    text-align: center;
+    width: 100%;
+  }
+</style>
