@@ -171,7 +171,7 @@ function setDrumValue(varRPM) {
     const strip = digit.querySelector('.drum-strip');
     if (strip) {
       const num = parseInt(value[i]);
-      strip.style.transform = `translateY(-${num * 10}px)`;
+      strip.style.transform = `translateY(-${num * 20}px)`;
     }
   });
 }
@@ -192,7 +192,7 @@ function setDrumHours(horas, minutos) {
     const strip = digit.querySelector('.drum-strip');
     if (strip) {
       const num = parseInt(value[i]);
-      strip.style.transform = `translateY(-${num * 10}px)`;
+      strip.style.transform = `translateY(-${num * 20}px)`;
     }
   });
 }
