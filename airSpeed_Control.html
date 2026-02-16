@@ -55,58 +55,64 @@ Este código HTML representa un control deslizante para ajustar la velocidad aé
 
 <style>
   .title-as-control {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: bold;
     text-align: center;
-    margin-bottom: 4px;
     background-color: burlywood;
     color: black;
     padding: 2px 0;
+    width: 100%;
+    box-sizing: border-box;
   }
   .as-control-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
     width: 120px;
     height: 240px;
     background: #bcc2a5;
     border: 2px solid #444;
     border-radius: 8px;
-    padding: 8px;
     box-sizing: border-box;    
     box-shadow: 0 0 8px rgba(249, 181, 181, 0.667);
+    overflow: hidden;
   }
   .as-main-row {
     display: flex;
     flex-direction: row;
     align-items: stretch;
-    background-color: antiquewhite;
-    gap: 8px;
+    gap: 4px;
     flex: 1;
+    padding: 4px;
+    box-sizing: border-box;
   }
   .as-slider-column {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: stretch;
-    height: 100%;
+    width: 28px;
   }
   .as-slider-input {
     writing-mode: vertical-lr;
     direction: rtl;
     height: 100%;
-    width: 24px;
+    width: 20px;
+    margin: 0;
+    padding: 0;
   }
   .as-plusminus-column {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 0;
+    width: 28px;
+    padding: 4px 0;
+    box-sizing: border-box;
   }
   .as-btn-plusminus {
-    width: 24px;
-    height: 24px;
+    width: 22px;
+    height: 22px;
+    font-size: 14px;
+    padding: 0;
   }
   .as-presets-column {
     display: flex;
@@ -115,17 +121,19 @@ Este código HTML representa un control deslizante para ajustar la velocidad aé
     flex: 1;
   }
   .as-btn-preset {
-    font-size: 10px;
-    padding: 4px;
+    font-size: 9px;
+    padding: 2px;
   }
   .as-value-row {
     display: flex;
-    width: 24px; /* mismo ancho que el slider */
-    margin-top: 4px;
+    width: 28px;
+    padding: 2px 4px;
+    box-sizing: border-box;
   }
   .as-value-row .slider-value {
-    font-size: 12px;
+    font-size: 11px;
     text-align: center;
     width: 100%;
   }
+</style>
 </style>
