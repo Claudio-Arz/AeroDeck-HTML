@@ -33,6 +33,7 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_Attitude.js"></script>
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_airSpeed.js"></script>
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_Gyro.js"></script>
+<script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_TurnCoordinator.js"></script>
 
 
 </head>
@@ -119,7 +120,7 @@ window.addEventListener('DOMContentLoaded', () => {
   fetch("https://claudio-arz.github.io/AeroDeck-HTML/TurnCoordinator_Instrumento.html")
   .then(r => r.text())
   .then(html => {
-    document.getElementById("inst10").innerHTML = html;
+    document.getElementById("inst09").innerHTML = html;
     });
 });      
 
@@ -128,7 +129,7 @@ window.addEventListener('DOMContentLoaded', () => {
   fetch("https://claudio-arz.github.io/AeroDeck-HTML/TurnCoordinator_Control.html")
     .then(r => r.text())
     .then(html => {
-      document.getElementById("inst07").innerHTML = html;
+      document.getElementById("inst13").innerHTML = html;
       // Inicializar controles del Turn Coordinator después de insertar el HTML
       if (typeof setupTurnCoordinatorControls === 'function') {
         setupTurnCoordinatorControls();
