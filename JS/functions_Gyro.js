@@ -75,6 +75,26 @@ function setupGyroControls(ws) {
     }
   });
   
+  // Botones +/- para sumar o restar 1 grado
+  const gyrBtnPlus = document.getElementById("gyr-btn-plus");
+  const gyrBtnMinus = document.getElementById("gyr-btn-minus");
+  
+  if (gyrBtnPlus) {
+    gyrBtnPlus.addEventListener("click", function() {
+      let newValue = (currentGyro + 1) % 360;
+      if (newValue < 0) newValue += 360;
+      animateDialGyro(newValue);
+    });
+  }
+  
+  if (gyrBtnMinus) {
+    gyrBtnMinus.addEventListener("click", function() {
+      let newValue = (currentGyro - 1) % 360;
+      if (newValue < 0) newValue += 360;
+      animateDialGyro(newValue);
+    });
+  }
+  
 }
 
 
