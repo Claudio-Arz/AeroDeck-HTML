@@ -107,11 +107,11 @@ function sendAirspeedToESP32(airspeed) {
     console.warn('WebSocket no está conectado.');
   }
 }
-// Mapea el valor de AirSpeed (40-200) al ángulo de la aguja (34-324)
+// Mapea el valor de AirSpeed (40-200) al ángulo de la aguja (35-324)
 function airspeedToAngle(airspeed) {
   const minValue = 40;
   const maxValue = 200;
-  const minAngle = 34;
+  const minAngle = 35; // Ángulo mínimo para 40 kts
   const maxAngle = 324;
   if (airspeed < minValue) airspeed = minValue;
   if (airspeed > maxValue) airspeed = maxValue;
