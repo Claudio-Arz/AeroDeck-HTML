@@ -75,8 +75,6 @@ Fuel Flow Control  (medidas 120px x 240px)
     flex-direction: column;
     width: 120px;
     height: 240px;
-    max-width: 120px;
-    max-height: 240px;
     background: linear-gradient(135deg, #4a5d23 0%, #3d4f1f 25%, #556b2f 50%, #4a5d23 75%, #3d4f1f 100%);
     border: 2px solid #2f3d13;
     border-radius: 8px;
@@ -85,18 +83,17 @@ Fuel Flow Control  (medidas 120px x 240px)
     overflow: hidden;
   }
   .title-ff-control {
-    font-size: 11px;
+    font-size: 10px;
     font-weight: bold;
     text-align: center;
-    background: linear-gradient(90deg, #6b4423
-    , #8b5a2b, #6b4423);
+    background: linear-gradient(90deg, #6b4423, #8b5a2b, #6b4423);
     color: #f5deb3;
     padding: 2px 0;
     height: 18px;
-    min-height: 18px;
     box-sizing: border-box;
     text-shadow: 1px 1px 2px #000;
-    border-bottom: 2px solid #4a3520;
+    border-bottom: 1px solid #4a3520;
+    flex-shrink: 0;
   }
   .ff-main-row {
     display: flex;
@@ -104,23 +101,25 @@ Fuel Flow Control  (medidas 120px x 240px)
     align-items: stretch;
     gap: 2px;
     flex: 1;
-    padding: 4px;
+    padding: 3px;
     box-sizing: border-box;
   }
   .ff-slider-column {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 30px;
+    justify-content: center;
+    width: 28px;
     background: #3d4f1f;
     border-radius: 4px;
-    padding: 4px 2px;
+    padding: 2px;
+    box-sizing: border-box;
   }
   .ff-slider-input {
     writing-mode: vertical-lr;
     direction: rtl;
     height: 100%;
-    width: 18px;
+    width: 16px;
     margin: 0;
     padding: 0;
     accent-color: #8fbc8f;
@@ -132,8 +131,8 @@ Fuel Flow Control  (medidas 120px x 240px)
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    width: 28px;
-    padding: 8px 2px;
+    width: 24px;
+    padding: 6px 0;
     box-sizing: border-box;
   }
   .ff-presets-column {
@@ -142,10 +141,11 @@ Fuel Flow Control  (medidas 120px x 240px)
     justify-content: space-between;
     align-items: stretch;
     flex: 1;
-    padding: 4px;
+    padding: 3px;
     background: linear-gradient(180deg, #5c4033, #8b4513, #5c4033);
     border-radius: 4px;
     border: 1px solid #3d2817;
+    box-sizing: border-box;
   }
   /* === BOTONES ESTILO CAMUFLAJE === */
   .ff-btn {
@@ -156,68 +156,68 @@ Fuel Flow Control  (medidas 120px x 240px)
     text-shadow: 1px 1px 1px #000;
   }
   .ff-btn:hover {
-    transform: scale(1.08);
     filter: brightness(1.2);
   }
   .ff-btn:active {
-    transform: scale(0.95);
-    box-shadow: 0 0 10px 4px #c9a227, 0 0 15px 6px #ffd700;
+    box-shadow: 0 0 8px 3px #c9a227;
     filter: brightness(1.4);
   }
   .ff-btn-plus, .ff-btn-minus {
-    width: 22px;
-    height: 22px;
-    font-size: 14px;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
     border-radius: 50%;
     color: #f5deb3;
   }
   .ff-btn-plus {
     background: linear-gradient(145deg, #556b2f, #6b8e23);
-    box-shadow: 2px 2px 4px #2f3d13, -1px -1px 2px #7cba3d;
+    box-shadow: 1px 1px 3px #2f3d13;
   }
   .ff-btn-minus {
     background: linear-gradient(145deg, #8b4513, #a0522d);
-    box-shadow: 2px 2px 4px #5c2d0e, -1px -1px 2px #cd853f;
+    box-shadow: 1px 1px 3px #5c2d0e;
   }
   .ff-btn-preset {
     font-size: 9px;
-    padding: 4px 2px;
+    padding: 2px 0;
     border-radius: 4px;
     color: #f5deb3;
     flex: 1;
-    margin: 2px 0;
+    margin: 1px 0;
   }
   .ff-btn-max {
     background: linear-gradient(145deg, #228b22, #2e8b57);
-    box-shadow: 1px 1px 3px #1a5c1a;
   }
   .ff-btn-mid {
     background: linear-gradient(145deg, #daa520, #b8860b);
-    box-shadow: 1px 1px 3px #8b6914;
     color: #2f1f0a;
     text-shadow: none;
   }
   .ff-btn-min {
     background: linear-gradient(145deg, #8b0000, #a52a2a);
-    box-shadow: 1px 1px 3px #5c0000;
   }
   .ff-value-row {
     display: flex;
-    height: 22px;
-    padding: 2px 4px;
+    height: 20px;
+    padding: 2px 3px;
     box-sizing: border-box;
     background: #2f3d13;
     border-top: 1px solid #4a5d23;
+    flex-shrink: 0;
   }
   .ff-value-label {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: bold;
     text-align: center;
-    width: 30px;
+    width: 28px;
     color: #7cfc00;
     background: #1a2510;
     border-radius: 3px;
     font-family: 'Courier New', monospace;
     text-shadow: 0 0 4px #7cfc00;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 </style>
+

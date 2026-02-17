@@ -23,7 +23,7 @@
 
 function initFuelFlowControls() {
   // Event listener para el slider
-  const slider = document.getElementById('as-slider');
+  const slider = document.getElementById('ff-slider');
   if (slider) {
     slider.addEventListener('input', () => {
       updateFuelFlow(parseFloat(slider.value), true); // true = desde el slider, enviar al ESP32

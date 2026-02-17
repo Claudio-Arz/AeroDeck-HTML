@@ -34,6 +34,7 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_airSpeed.js"></script>
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_Gyro.js"></script>
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_TurnCoordinator.js"></script>
+<script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_FuelFlow.js"></script>
 
 
 </head>
@@ -134,7 +135,7 @@ window.addEventListener('DOMContentLoaded', () => {
   fetch("https://claudio-arz.github.io/AeroDeck-HTML/FuelFlow_Instrumento.html")
   .then(r => r.text())
   .then(html => {
-    document.getElementById("inst13").innerHTML = html;
+    document.getElementById("inst12").innerHTML = html;
     });
 });     
 
