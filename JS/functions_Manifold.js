@@ -121,5 +121,5 @@ function manifoldToAngle(manifold) {
   const maxAngle = 160; // Ángulo para 50 IN Hg ALg
   if (manifold < minValue) manifold = minValue;
   if (manifold > maxValue) manifold = maxValue;
-  return minAngle - ((manifold - minValue) * (minAngle - maxAngle)) / (maxValue - minValue);
+  return minAngle + ((manifold - minValue) * (minAngle - maxAngle)) / (maxValue - minValue);
 }
