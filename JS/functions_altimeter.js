@@ -31,10 +31,10 @@ function updateAltimeter(altitudValue, bandera_off) {
   const flagElement = document.getElementById("altimeter-flag");
   if (!bandera_off) {
     // Mostrar la bandera OFF
-    flagElement.style.transform = "translate(-50%, -50%) scale(1) rotate(180deg)";
+    flagElement.style.transform = "translate(-50%, -50%) rotate(180deg)";
   } else {
     // Ocultar la bandera OFF
-    flagElement.style.transform = "translate(-50%, -50%) scale(0) rotate(0deg)";
+    flagElement.style.transform = "translate(-50%, -50%) rotate(0deg)";
   }
 }
 
