@@ -117,7 +117,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 // Cargar el HTML del instrumento Turn Coordinator de forma dinámica
 window.addEventListener('DOMContentLoaded', () => {
-  fetch("https://claudio-arz.github.io/AeroDeck-HTML/TurnCoordinator_Instrumento.html")
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/turnCoordinator_Instrumento.html")
   .then(r => r.text())
   .then(html => {
     document.getElementById("inst09").innerHTML = html;
@@ -126,7 +126,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 // Cargar el HTML de la caja de control del Turn Coordinator de forma dinámica.
 window.addEventListener('DOMContentLoaded', () => {
-  fetch("https://claudio-arz.github.io/AeroDeck-HTML/TurnCoordinator_Control.html")
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/turnCoordinator_Control.html")
     .then(r => r.text())
     .then(html => {
       document.getElementById("inst13").innerHTML = html;
