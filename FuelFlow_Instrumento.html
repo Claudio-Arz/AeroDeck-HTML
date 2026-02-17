@@ -20,6 +20,8 @@
     <!-- Front -->
     <img class="ff-front" id="ff_front" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/FuelFlow/FuelFlow_Frente.png" 
     alt="Front Fuel Flow">
+
+    <div id="ff-value" class="instrument-center-label">--</div>
 </div>
 
 <style>
@@ -43,7 +45,7 @@
   position:absolute;
   top:0;
   left:0%;
-  z-index:3;
+  z-index:1;
   pointer-events:none;
   border-radius: 50%;
   transform-origin: center center;
@@ -55,7 +57,7 @@
   position:absolute;
   top:0;
   left:0;
-  z-index:5;
+  z-index:3;
   pointer-events:none;
 }
 
