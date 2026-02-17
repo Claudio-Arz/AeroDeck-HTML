@@ -126,7 +126,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 // Cargar el HTML de la caja de control del Turn Coordinator de forma dinámica.
 window.addEventListener('DOMContentLoaded', () => {
-  fetch("https://claudio-arz.github.io/AeroDeck-HTML/turnCoordinator_Control.html")
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/TurnCoordinator_Control.html")
     .then(r => {
       if (!r.ok) throw new Error('Error ' + r.status + ': ' + r.statusText);
       return r.text();
