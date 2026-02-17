@@ -31,12 +31,6 @@
   <div class="turncoordinator-control-body">
     <div class="turncoordinator-slider-section">
       <input type="range" min="-2000" max="2000" value="0" class="tc-slider-input" id="turncoordinator-slider">
-      <div class="slider-value" id="turncoordinator-slider-value">0</div>
-      <div class="turncoordinator-rudder-row">
-        <button id="tc-rudder-left" class="tc-rudder-btn tc-rudder-left">L</button>
-        <span class="tc-rudder-label">Rudder</span>
-        <button id="tc-rudder-right" class="tc-rudder-btn tc-rudder-right">R</button>
-      </div>
     </div>
     <div class="turncoordinator-plusminus-section">
       <button id="turncoordinator-btn-plus" class="slider-glow-btn slider-btn slider-btn-max">+</button>
@@ -48,6 +42,14 @@
       <button id="turncoordinator-slider-mid" class="slider-glow-btn slider-btn slider-btn-mid">Medio</button>
       <div class="divider"></div>
       <button id="turncoordinator-slider-min" class="slider-glow-btn slider-btn slider-btn-min">Mínimo</button>
+    </div>
+  </div>
+  <div class="turncoordinator-footer-row">
+    <div class="tc-footer-value" id="turncoordinator-slider-value">0</div>
+    <div class="tc-footer-rudder">
+      <button id="tc-rudder-left" class="tc-rudder-btn tc-rudder-left">L</button>
+      <span class="tc-rudder-label">Rudder</span>
+      <button id="tc-rudder-right" class="tc-rudder-btn tc-rudder-right">R</button>
     </div>
   </div>
 </div>
@@ -137,16 +139,33 @@
   margin: 0;
   padding: 0;
 }
-.turncoordinator-slider-section .slider-value {
-  width: 100%;
+.turncoordinator-footer-row {
+  display: flex;
+  flex-direction: row;
+  border-top: 2px solid #888;
+  flex-shrink: 0;
+  height: 28px;
+}
+.tc-footer-value {
+  width: 36px;
   text-align: center;
   background: #a81837;
-  border-radius: 4px;
-  margin-top: 4px;
   font-size: 0.7em;
   font-weight: bold;
   color: #eeb4b4;
-  padding: 2px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid #888;
+}
+.tc-footer-rudder {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  background: #93e4fb;
 }
 .turncoordinator-plusminus-section {
   display: flex;
@@ -197,16 +216,7 @@
   margin: 2px 0;
 }
 
-/* Fila de botones Rudder */
-.turncoordinator-rudder-row {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  gap: 4px;
-  margin-top: 4px;
-  width: 100%;
-}
+/* Botones Rudder */
 .tc-rudder-btn {
   width: 16px;
   height: 16px;
