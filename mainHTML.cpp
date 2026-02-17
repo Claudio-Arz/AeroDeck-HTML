@@ -125,9 +125,43 @@ window.addEventListener('DOMContentLoaded', () => {
       console.log("Actualizando Fuel Flow: " + data['fuelFlow']);
       updateFuelFlow(data['fuelFlow']);
     }
+      if (data['manifold'] !== undefined && typeof updateManifold === 'function') {
+        console.log("Actualizando Manifold: " + data['manifold']);
+        updateManifold(data['manifold']);
+      }
   };
   
   });
+
+  
+// Cargar el HTML del instrumento Manifold de forma dinámica
+window.addEventListener('DOMContentLoaded', () => {
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/Manifold_Instrumento.html")
+  .then(r => r.text())
+  .then(html => {
+    document.getElementById("inst12").innerHTML = html;
+    });
+});     
+
+// Cargar el HTML de la caja de control del Manifold de forma dinámica.
+window.addEventListener('DOMContentLoaded', () => {
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/Manifold_Control.html")
+    .then(r => r.text())
+    .then(html => {
+      document.getElementById("inst15").innerHTML = html;
+      // Inicializar controles del Manifold después de insertar el HTML
+      if (typeof initManifoldControls === 'function') {
+        initManifoldControls();
+      } else {
+        // Si el script aún no está cargado, esperar y reintentar
+        setTimeout(() => {
+          if (typeof initManifoldControls === 'function') {
+            initManifoldControls();
+          }
+        }, 200);
+      }
+    });
+}); 
 
   
 // Cargar el HTML del instrumento Fuel Flow de forma dinámica

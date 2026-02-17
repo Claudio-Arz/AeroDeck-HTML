@@ -1,0 +1,200 @@
+<!-- 
+    HTML para el instrumento Manifold.
+ en un instrumento de simulación de vuelo. El control incluye un slider vertical que permite 
+ al usuario seleccionar un valor de consumo entre 10 y 50 IN Hg ALg, el rango de angulos va de
+ 200° a 160° y tres botones para establecer 
+ valores predefinidos (mínimo, medio y máximo). El valor seleccionado se muestra en una 
+ etiqueta debajo del slider, y se envía al ESP32 para actualizar el instrumento de Manifold en tiempo real. 
+
+ Manifold Control  (medidas 120px x 240px)
+
+                +------------------------+
+                |    Manifold Control    |
+                +-------+-----+----------+
+                |       |     |          |   
+                |   s   | (+) |  Máximo  |   
+                |   l   +-----+----------+
+                |   i   |     |          |   
+                |   d   |     |  Medio   |   
+                |   e   +-----+----------+   
+                |   r   |     |          |   
+                |       | (-) |  Mínimo  |   
+                +-------+----------------+   
+                | value |                |   
+                +-------+----------------+
+
+-->
+
+<div class="mf-control-container">
+  <!-- Título -->
+  <div class="title-mf-control">Manifold Control</div>
+  <!-- Fila principal: Slider + Botones -->
+  <div class="mf-main-row">
+    <!-- Slider vertical -->
+    <div class="mf-slider-column">
+      <input type="range" min="10" max="50" value="10" step="0.1" id="mf-slider" orient="vertical" class="mf-slider-input">
+    </div>
+    <!-- Botones +1/-1 -->
+    <div class="mf-plusminus-column">
+      <button id="mf-btn-plus" class="mf-btn mf-btn-plus">+</button>
+      <button id="mf-btn-minus" class="mf-btn mf-btn-minus">−</button>
+    </div>
+    <!-- Botones Máx/Med/Mín -->
+    <div class="mf-presets-column">
+      <button id="mf-slider-max" class="mf-btn mf-btn-preset mf-btn-max">Máx</button>
+      <button id="mf-slider-mid" class="mf-btn mf-btn-preset mf-btn-mid">Med</button>
+      <button id="mf-slider-min" class="mf-btn mf-btn-preset mf-btn-min">Mín</button>
+    </div>
+  </div>
+  <!-- Fila inferior: Value -->
+  <div class="mf-value-row">
+    <div class="mf-value-label" id="mf-slider-value-label">0</div>
+  </div>
+</div>
+
+<style>
+  /* === Manifold CONTROL - ESTILO MARRONES Y GRISES PERLADOS === */
+  /* Medidas copiadas de airSpeed_Control.html */
+  .mf-control-container {
+    display: flex;
+    flex-direction: column;
+    width: 120px;
+    height: 240px;
+    max-width: 120px;
+    max-height: 240px;
+    background: linear-gradient(135deg, #a09080 0%, #8b7355 25%, #c9b99a 50%, #a09080 75%, #8b7355 100%);
+    border: 2px solid #6b5344;
+    border-radius: 8px;
+    box-sizing: border-box;    
+    box-shadow: 0 0 8px rgba(139, 115, 85, 0.6);
+    overflow: hidden;
+  }
+  .title-mf-control {
+    font-size: 11px;
+    font-weight: bold;
+    text-align: center;
+    background: linear-gradient(90deg, #5c4033, #8b7355, #5c4033);
+    color: #e8e8e8;
+    padding: 2px 0;
+    height: 18px;
+    min-height: 18px;
+    box-sizing: border-box;
+    text-shadow: 1px 1px 2px #000;
+    border-bottom: 1px solid #4a3a2a;
+  }
+  .mf-main-row {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 2px;
+    height: 180px;
+    padding: 4px;
+    box-sizing: border-box;
+  }
+  .mf-slider-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 26px;
+    height: 100%;
+    background: #6b5344;
+    border-radius: 4px;
+  }
+  .mf-slider-input {
+    writing-mode: vertical-lr;
+    direction: rtl;
+    height: 100%;
+    width: 18px;
+    margin: 0;
+    padding: 0;
+    accent-color: #c0c0c0;
+  }
+  .mf-plusminus-column {
+    padding: 20px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 26px;
+    box-sizing: border-box;
+  }
+  .mf-presets-column {
+    padding: 20px 20px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 48px;
+    background: linear-gradient(180deg, #a9a9a9, #d3d3d3, #a9a9a9);
+    border-radius: 4px;
+  }
+  /* === BOTONES ESTILO MARRONES/GRISES === */
+  .mf-btn {
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.15s ease;
+    text-shadow: 1px 1px 1px #000;
+  }
+  .mf-btn:hover {
+    filter: brightness(1.2);
+  }
+  .mf-btn:active {
+    box-shadow: 0 0 8px 3px #d4af37;
+    filter: brightness(1.4);
+  }
+  .mf-btn-plus, .mf-btn-minus {
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    padding: 0;
+    line-height: 1;
+    border-radius: 50%;
+    color: #fff;
+  }
+  .mf-btn-plus {
+    background: linear-gradient(145deg, #8b7355, #a08060);
+    box-shadow: 1px 1px 3px #5c4033;
+  }
+  .mf-btn-minus {
+    background: linear-gradient(145deg, #6b5344, #5c4033);
+    box-shadow: 1px 1px 3px #3a2a1a;
+  }
+  .mf-btn-preset {
+    font-size: 9px;
+    padding: 2px;
+    height: 50px;
+    border-radius: 4px;
+    color: #3a2a1a;
+    text-shadow: none;
+  }
+  .mf-btn-max {
+    background: linear-gradient(145deg, #c0c0c0, #e8e8e8);
+  }
+  .mf-btn-mid {
+    background: linear-gradient(145deg, #bdb7ab, #d3d3d3);
+  }
+  .mf-btn-min {
+    background: linear-gradient(145deg, #a9a9a9, #c0c0c0);
+  }
+  .mf-value-row {
+    display: flex;
+    height: 20px;
+    padding: 2px 4px;
+    box-sizing: border-box;
+    background: #5c4033;
+    border-top: 1px solid #8b7355;
+  }
+  .mf-value-label {
+    font-size: 11px;
+    font-weight: bold;
+    text-align: center;
+    width: 26px;
+    color: #e8e8e8;
+    background: #3a2a1a;
+    border-radius: 3px;
+    font-family: 'Courier New', monospace;
+    text-shadow: 0 0 4px #c0c0c0;
+  }
+</style>
+
