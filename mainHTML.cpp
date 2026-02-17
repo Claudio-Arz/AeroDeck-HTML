@@ -128,10 +128,10 @@ window.addEventListener('DOMContentLoaded', () => {
       console.log("Actualizando Fuel Flow: " + data['fuelFlow']);
       updateFuelFlow(data['fuelFlow']);
     }
-      if (data['manifold'] !== undefined && typeof updateManifold === 'function') {
-        console.log("Actualizando Manifold: " + data['manifold']);
-        updateManifold(data['manifold']);
-      }
+    if (data['manifold'] !== undefined && typeof updateManifold === 'function') {
+      console.log("Actualizando Manifold: " + data['manifold']);
+      updateManifold(data['manifold']);
+    }
   };
   
   });
