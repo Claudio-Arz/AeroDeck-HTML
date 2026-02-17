@@ -56,10 +56,10 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
   <div class="grid-item" id="inst09" style="grid-row: 2; grid-column: 1;">Turn Coordinator</div>  
   <div class="grid-item" id="inst10" style="grid-row: 2; grid-column: 2;">Gyro</div>  
   <div class="grid-item" id="inst11" style="grid-row: 2; grid-column: 3;">Vertical Speed</div>  
-  <div class="grid-item" id="inst12" style="grid-row: 2; grid-column: 4;"></div>  
+  <div class="grid-item" id="inst12" style="grid-row: 2; grid-column: 4;">Fuel Flow Instrumento</div>  
   <div class="grid-item" id="inst13" style="grid-row: 2; grid-column: 5;">Turn Coordinator Control</div>  
   <div class="grid-item" id="inst14" style="grid-row: 2; grid-column: 6;">Controles Vertical Speed</div>  
-  <div class="grid-item" id="inst15" style="grid-row: 2; grid-column: 7;"></div>  
+  <div class="grid-item" id="inst15" style="grid-row: 2; grid-column: 7;">Fuel Flow Control</div>  
   <div class="grid-item" id="inst16" style="grid-row: 2; grid-column: 8;"></div>
 
 </div>
@@ -143,7 +143,7 @@ window.addEventListener('DOMContentLoaded', () => {
   fetch("https://claudio-arz.github.io/AeroDeck-HTML/FuelFlow_Control.html")
     .then(r => r.text())
     .then(html => {
-      document.getElementById("inst16").innerHTML = html;
+      document.getElementById("inst15").innerHTML = html;
       // Inicializar controles del Fuel Flow después de insertar el HTML
       if (typeof initFuelFlowControls === 'function') {
         initFuelFlowControls();
