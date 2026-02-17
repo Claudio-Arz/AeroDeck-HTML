@@ -45,8 +45,8 @@ function updateTurnCoordinator() {
     // Rotar el avión (tc_front)
     const plane = document.getElementById('tc_front');
     if (plane) {
-        // Convertir valor del slider (-2000 a 2000) a grados de rotación (-30° a 30°)
-        const rotation = (currentTurnCoordinator / 2000) * 30;
+        // Convertir valor del slider (-30 a 30) a grados de rotación (-30° a 30°)
+        const rotation = (currentTurnCoordinator / 30) * 30;
         plane.style.transform = `rotate(${rotation}deg)`;
     }
     turnCoordinatorAnimationFrame = requestAnimationFrame(updateTurnCoordinator);
@@ -68,9 +68,9 @@ function updateTurnCoordinatorPlane(value, sendToESP = false) {
 function updateTurnCoordinatorBall(value) {
     const ball = document.getElementById('tc_ball');
     if (ball) {
-        // Mover el péndulo horizontalmente: -30° a +30° se traduce en -15px a +15px
-        const offset = (value / 30) * 15;
-        ball.style.transform = `translateX(${offset}px)`;
+        // Mover el péndulo horizontalmente: -30° a +30° se traduce en -30° a +30° de movimiento horizontal
+        const angle = (value / 30) * 30; // Ajusta el factor de movimiento según el diseño del instrumento
+        ball.style.transform = `rotate(${angle}deg)`;
     }
     // Sincronizar variable local
     currentRudder = value;
@@ -101,10 +101,10 @@ function setupTurnCoordinatorControls() {
     
     if (btnMax) {
         btnMax.addEventListener('click', () => {
-            if (slider) slider.value = 2000;
-            if (sliderValue) sliderValue.textContent = 2000;
-            animateDialTurnCoordinator(2000);
-            sendTurnCoordinatorToESP32('tc-rollValue', 2000);
+            if (slider) slider.value = 30;
+            if (sliderValue) sliderValue.textContent = 30;
+            animateDialTurnCoordinator(30);
+            sendTurnCoordinatorToESP32('tc-rollValue', 30);
         });
     }
     if (btnMid) {
@@ -117,15 +117,15 @@ function setupTurnCoordinatorControls() {
     }
     if (btnMin) {
         btnMin.addEventListener('click', () => {
-            if (slider) slider.value = -2000;
-            if (sliderValue) sliderValue.textContent = -2000;
-            animateDialTurnCoordinator(-2000);
-            sendTurnCoordinatorToESP32('tc-rollValue', -2000);
+            if (slider) slider.value = -30;
+            if (sliderValue) sliderValue.textContent = -30;
+            animateDialTurnCoordinator(-30);
+            sendTurnCoordinatorToESP32('tc-rollValue', -30);
         });
     }
     if (btnPlus) {
         btnPlus.addEventListener('click', () => {
-            const newValue = Math.min(2000, parseFloat(slider.value) + 1);
+            const newValue = Math.min(30, parseFloat(slider.value) + 1);
             if (slider) slider.value = newValue;
             if (sliderValue) sliderValue.textContent = newValue;
             animateDialTurnCoordinator(newValue);
@@ -134,7 +134,7 @@ function setupTurnCoordinatorControls() {
     }
     if (btnMinus) {
         btnMinus.addEventListener('click', () => {
-            const newValue = Math.max(-2000, parseFloat(slider.value) - 1);
+            const newValue = Math.max(-30, parseFloat(slider.value) - 1);
             if (slider) slider.value = newValue;
             if (sliderValue) sliderValue.textContent = newValue;
             animateDialTurnCoordinator(newValue);
