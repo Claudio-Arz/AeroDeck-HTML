@@ -113,13 +113,13 @@ function sendManifoldToESP32(manifold) {
     console.warn('WebSocket no está conectado.');
   }
 }
-// Mapea el valor de Manifold (10-50) al ángulo de la aguja (200-160 grados)
+// Mapea el valor de Manifold (10-50) al ángulo de la aguja (200-160 grados). La aguja recorre 40° en sentido antihorario.
 function manifoldToAngle(manifold) {
   const minValue = 10;
   const maxValue = 50;
-  const minAngle = 200; // Ángulo mínimo para 10 IN Hg ALg
-  const maxAngle = 160; // Ángulo máximo para 50 IN Hg ALg
+  const minAngle = 200; // Ángulo para 10 IN Hg ALg
+  const maxAngle = 160; // Ángulo para 50 IN Hg ALg
   if (manifold < minValue) manifold = minValue;
   if (manifold > maxValue) manifold = maxValue;
-  return minAngle + ((((manifold - minValue) * ((minAngle - maxAngle)*10)) / (maxValue - minValue))/10);
+  return minAngle + ((manifold - minValue) * (maxAngle - minAngle)) / (maxValue - minValue);
 }
