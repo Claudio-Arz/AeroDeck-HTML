@@ -35,6 +35,7 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_Gyro.js"></script>
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_TurnCoordinator.js"></script>
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_FuelFlow.js"></script>
+<script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_Manifold.js"></script>
 
 
 </head>
@@ -63,7 +64,7 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
   <div class="grid-item" id="inst15" style="grid-row: 2; grid-column: 7;">Fuel Flow Control</div>  
   <div class="grid-item" id="inst16" style="grid-row: 2; grid-column: 8;"></div>
   <div class="grid-item" id="inst17" style="grid-row: 3; grid-column: 4;">Manifold Instrumento</div>
-  <div class="grid-item" id="inst18" style="grid-row: 3; grid-column: 1;">Manifold Control</div>
+  <div class="grid-item" id="inst18" style="grid-row: 3; grid-column: 5;">Manifold Control</div>
 
 </div>
 
