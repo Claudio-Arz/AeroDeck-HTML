@@ -127,5 +127,5 @@ function fuelFlowToAngle(fuelFlow) {
   const maxAngle = 90; // Ángulo máximo para 20 GPH
   if (fuelFlow < minValue) fuelFlow = minValue;
   if (fuelFlow > maxValue) fuelFlow = maxValue;
-  return minAngle + ((fuelFlow - minValue) * (maxAngle - minAngle)) / (maxValue - minValue);
+  return minAngle - ((fuelFlow - minValue) * (minAngle - maxAngle)) / (maxValue - minValue);
 }
