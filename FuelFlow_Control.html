@@ -70,11 +70,14 @@ Fuel Flow Control  (medidas 120px x 240px)
 
 <style>
   /* === FUEL FLOW CONTROL - ESTILO CAMUFLAJE MILITAR === */
+  /* Medidas copiadas de airSpeed_Control.html */
   .ff-control-container {
     display: flex;
     flex-direction: column;
     width: 120px;
     height: 240px;
+    max-width: 120px;
+    max-height: 240px;
     background: linear-gradient(135deg, #4a5d23 0%, #3d4f1f 25%, #556b2f 50%, #4a5d23 75%, #3d4f1f 100%);
     border: 2px solid #2f3d13;
     border-radius: 8px;
@@ -83,69 +86,63 @@ Fuel Flow Control  (medidas 120px x 240px)
     overflow: hidden;
   }
   .title-ff-control {
-    font-size: 10px;
+    font-size: 11px;
     font-weight: bold;
     text-align: center;
     background: linear-gradient(90deg, #6b4423, #8b5a2b, #6b4423);
     color: #f5deb3;
     padding: 2px 0;
     height: 18px;
+    min-height: 18px;
     box-sizing: border-box;
     text-shadow: 1px 1px 2px #000;
     border-bottom: 1px solid #4a3520;
-    flex-shrink: 0;
   }
   .ff-main-row {
     display: flex;
     flex-direction: row;
     align-items: stretch;
     gap: 2px;
-    flex: 1;
-    padding: 3px;
+    height: 180px;
+    padding: 4px;
     box-sizing: border-box;
   }
   .ff-slider-column {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    width: 28px;
+    width: 26px;
+    height: 100%;
     background: #3d4f1f;
     border-radius: 4px;
-    padding: 2px;
-    box-sizing: border-box;
   }
   .ff-slider-input {
     writing-mode: vertical-lr;
     direction: rtl;
     height: 100%;
-    width: 16px;
+    width: 18px;
     margin: 0;
     padding: 0;
     accent-color: #8fbc8f;
-    background: #2f3d13;
-    border-radius: 4px;
   }
   .ff-plusminus-column {
+    padding: 20px 20px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    width: 24px;
-    padding: 6px 0;
+    width: 26px;
     box-sizing: border-box;
   }
   .ff-presets-column {
+    padding: 20px 20px;
     display: flex;
+    align-items: center;
     flex-direction: column;
     justify-content: space-between;
-    align-items: stretch;
-    flex: 1;
-    padding: 3px;
+    width: 48px;
     background: linear-gradient(180deg, #5c4033, #8b4513, #5c4033);
     border-radius: 4px;
-    border: 1px solid #3d2817;
-    box-sizing: border-box;
   }
   /* === BOTONES ESTILO CAMUFLAJE === */
   .ff-btn {
@@ -166,6 +163,8 @@ Fuel Flow Control  (medidas 120px x 240px)
     width: 20px;
     height: 20px;
     font-size: 12px;
+    padding: 0;
+    line-height: 1;
     border-radius: 50%;
     color: #f5deb3;
   }
@@ -179,11 +178,10 @@ Fuel Flow Control  (medidas 120px x 240px)
   }
   .ff-btn-preset {
     font-size: 9px;
-    padding: 2px 0;
+    padding: 2px;
+    height: 50px;
     border-radius: 4px;
     color: #f5deb3;
-    flex: 1;
-    margin: 1px 0;
   }
   .ff-btn-max {
     background: linear-gradient(145deg, #228b22, #2e8b57);
@@ -199,25 +197,21 @@ Fuel Flow Control  (medidas 120px x 240px)
   .ff-value-row {
     display: flex;
     height: 20px;
-    padding: 2px 3px;
+    padding: 2px 4px;
     box-sizing: border-box;
     background: #2f3d13;
     border-top: 1px solid #4a5d23;
-    flex-shrink: 0;
   }
   .ff-value-label {
     font-size: 11px;
     font-weight: bold;
     text-align: center;
-    width: 28px;
+    width: 26px;
     color: #7cfc00;
     background: #1a2510;
     border-radius: 3px;
     font-family: 'Courier New', monospace;
     text-shadow: 0 0 4px #7cfc00;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 </style>
 
