@@ -19,8 +19,8 @@
   |   r   |     |          |   
   |       | (-) |  Mínimo  |   
   +-------+-----+----------+   
-  | value |     |          |   
-  +-------+-----+----------+
+  | value | {L} Rudder {R} |   
+  +-------+----------------+
 
 -->
 
@@ -32,6 +32,11 @@
     <div class="turncoordinator-slider-section">
       <input type="range" min="-2000" max="2000" value="0" class="tc-slider-input" id="turncoordinator-slider">
       <div class="slider-value" id="turncoordinator-slider-value">0</div>
+      <div class="turncoordinator-rudder-row">
+        <button id="tc-rudder-left" class="tc-rudder-btn tc-rudder-left">L</button>
+        <span class="tc-rudder-label">Rudder</span>
+        <button id="tc-rudder-right" class="tc-rudder-btn tc-rudder-right">R</button>
+      </div>
     </div>
     <div class="turncoordinator-plusminus-section">
       <button id="turncoordinator-btn-plus" class="slider-glow-btn slider-btn slider-btn-max">+</button>
@@ -190,6 +195,48 @@
 .turncoordinator-buttons-section .divider {
   border-bottom: 1px solid #bbb;
   margin: 2px 0;
+}
+
+/* Fila de botones Rudder */
+.turncoordinator-rudder-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+  width: 100%;
+}
+.tc-rudder-btn {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  font-size: 9px;
+  font-weight: bold;
+  color: #fff;
+  padding: 0;
+  box-shadow: 0 1px 3px #0008;
+  transition: box-shadow 0.2s, transform 0.1s;
+}
+.tc-rudder-btn:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 6px #fff8;
+}
+.tc-rudder-btn:active {
+  transform: scale(0.95);
+}
+.tc-rudder-left {
+  background: #2196f3;
+}
+.tc-rudder-right {
+  background: #f44336;
+}
+.tc-rudder-label {
+  font-size: 8px;
+  color: #eee;
+  font-weight: bold;
 }
 </style>
 

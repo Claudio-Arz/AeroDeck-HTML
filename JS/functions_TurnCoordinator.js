@@ -42,10 +42,132 @@ function updateTurnCoordinator() {
         return;
     }
     currentTurnCoordinator += delta * 0.1;
-    // Actualizar la visualización del Turn Coordinator aquí
-    // Por ejemplo: document.getElementById("turnCoordinatorDial").style.transform = `rotate(${currentTurnCoordinator}deg)`;
+    // Rotar el avión (tc_front)
+    const plane = document.getElementById('tc_front');
+    if (plane) {
+        // Convertir valor del slider (-2000 a 2000) a grados de rotación (-30° a 30°)
+        const rotation = (currentTurnCoordinator / 2000) * 30;
+        plane.style.transform = `rotate(${rotation}deg)`;
+    }
     turnCoordinatorAnimationFrame = requestAnimationFrame(updateTurnCoordinator);
 }
+
+// Función para actualizar el avión del Turn Coordinator desde WebSocket
+function updateTurnCoordinatorPlane(value, sendToESP = false) {
+    animateDialTurnCoordinator(value);
+    // Sincronizar slider si el dato viene del ESP32
+    if (!sendToESP) {
+        const slider = document.getElementById('turncoordinator-slider');
+        const sliderValue = document.getElementById('turncoordinator-slider-value');
+        if (slider) slider.value = value;
+        if (sliderValue) sliderValue.textContent = value;
+    }
+}
+
+// Función para actualizar el péndulo (bola) del Turn Coordinator
+function updateTurnCoordinatorBall(value) {
+    const ball = document.getElementById('tc_ball');
+    if (ball) {
+        // Mover el péndulo horizontalmente: -30° a +30° se traduce en -15px a +15px
+        const offset = (value / 30) * 15;
+        ball.style.transform = `translateX(${offset}px)`;
+    }
+    // Sincronizar variable local
+    currentRudder = value;
+}
+// Variable global para el valor del rudder
+let currentRudder = 0;
+
 function setupTurnCoordinatorControls() {
-    // Configurar los event listeners para los controles del Turn Coordinator aquí
+    // Configurar slider del Turn Coordinator
+    const slider = document.getElementById('turncoordinator-slider');
+    const sliderValue = document.getElementById('turncoordinator-slider-value');
+    
+    if (slider) {
+        slider.addEventListener('input', () => {
+            const value = parseFloat(slider.value);
+            if (sliderValue) sliderValue.textContent = value;
+            animateDialTurnCoordinator(value);
+            sendTurnCoordinatorToESP32('tc-rollValue', value);
+        });
+    }
+    
+    // Botones de valor predefinido
+    const btnMax = document.getElementById('turncoordinator-slider-max');
+    const btnMid = document.getElementById('turncoordinator-slider-mid');
+    const btnMin = document.getElementById('turncoordinator-slider-min');
+    const btnPlus = document.getElementById('turncoordinator-btn-plus');
+    const btnMinus = document.getElementById('turncoordinator-btn-minus');
+    
+    if (btnMax) {
+        btnMax.addEventListener('click', () => {
+            if (slider) slider.value = 2000;
+            if (sliderValue) sliderValue.textContent = 2000;
+            animateDialTurnCoordinator(2000);
+            sendTurnCoordinatorToESP32('tc-rollValue', 2000);
+        });
+    }
+    if (btnMid) {
+        btnMid.addEventListener('click', () => {
+            if (slider) slider.value = 0;
+            if (sliderValue) sliderValue.textContent = 0;
+            animateDialTurnCoordinator(0);
+            sendTurnCoordinatorToESP32('tc-rollValue', 0);
+        });
+    }
+    if (btnMin) {
+        btnMin.addEventListener('click', () => {
+            if (slider) slider.value = -2000;
+            if (sliderValue) sliderValue.textContent = -2000;
+            animateDialTurnCoordinator(-2000);
+            sendTurnCoordinatorToESP32('tc-rollValue', -2000);
+        });
+    }
+    if (btnPlus) {
+        btnPlus.addEventListener('click', () => {
+            const newValue = Math.min(2000, parseFloat(slider.value) + 1);
+            if (slider) slider.value = newValue;
+            if (sliderValue) sliderValue.textContent = newValue;
+            animateDialTurnCoordinator(newValue);
+            sendTurnCoordinatorToESP32('tc-rollValue', newValue);
+        });
+    }
+    if (btnMinus) {
+        btnMinus.addEventListener('click', () => {
+            const newValue = Math.max(-2000, parseFloat(slider.value) - 1);
+            if (slider) slider.value = newValue;
+            if (sliderValue) sliderValue.textContent = newValue;
+            animateDialTurnCoordinator(newValue);
+            sendTurnCoordinatorToESP32('tc-rollValue', newValue);
+        });
+    }
+    
+    // Botones de Rudder (+/- 1°)
+    const rudderLeft = document.getElementById('tc-rudder-left');
+    const rudderRight = document.getElementById('tc-rudder-right');
+    
+    if (rudderLeft) {
+        rudderLeft.addEventListener('click', () => {
+            currentRudder = Math.max(-30, currentRudder - 1); // -1° (izquierda)
+            sendTurnCoordinatorToESP32('tc-pitchValue', currentRudder);
+            console.log('Rudder Left:', currentRudder);
+        });
+    }
+    if (rudderRight) {
+        rudderRight.addEventListener('click', () => {
+            currentRudder = Math.min(30, currentRudder + 1); // +1° (derecha)
+            sendTurnCoordinatorToESP32('tc-pitchValue', currentRudder);
+            console.log('Rudder Right:', currentRudder);
+        });
+    }
+}
+
+function sendTurnCoordinatorToESP32(dataVar, dataValue) {
+    if (window.ws && window.ws.readyState === WebSocket.OPEN) {
+        const data = JSON.stringify({ [dataVar]: dataValue });
+        window.ws.send(data);
+        console.log(`Enviando Turn Coordinator al ESP32: ${dataVar} = ${dataValue}`);
+    } else {
+        console.warn('WebSocket no está conectado.');
+    }
 }

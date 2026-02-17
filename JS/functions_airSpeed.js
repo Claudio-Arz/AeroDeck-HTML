@@ -80,8 +80,8 @@ function updateAirspeed(airspeed, sendToESP = false) {
     sendToESP = true;
   }
   valueLabel.textContent = airspeed.toFixed(0); // Mostrar solo enteros
-  // Sincronizar el slider siempre
-  if (slider) {
+  // Sincronizar el slider SOLO si la actualización NO viene del usuario (sendToESP = false)
+  if (!sendToESP && slider) {
     slider.value = airspeed;
   }
   // Actualizar etiqueta del slider

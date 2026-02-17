@@ -111,6 +111,15 @@ window.addEventListener('DOMContentLoaded', () => {
       console.log("Actualizando Gyro: " + data.gyroValue);
       updateGyroDialAndValue(data.gyroValue);
     }
+    // --- Turn Coordinator ---
+    if (data['tc-rollValue'] !== undefined && typeof updateTurnCoordinatorPlane === 'function') {
+      console.log("Actualizando TC Avión: " + data['tc-rollValue']);
+      updateTurnCoordinatorPlane(data['tc-rollValue']);
+    }
+    if (data['tc-pitchValue'] !== undefined && typeof updateTurnCoordinatorBall === 'function') {
+      console.log("Actualizando TC Péndulo: " + data['tc-pitchValue']);
+      updateTurnCoordinatorBall(data['tc-pitchValue']);
+    }
   };
   
 });
