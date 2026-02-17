@@ -58,7 +58,7 @@ function initFuelFlowControls() {
     btnPlus.addEventListener('click', () => {
       const slider = document.getElementById('ff-slider');
       if (slider) {
-        const newValue = Math.min(20, parseFloat(slider.value) + 1); // +1 GPH
+        const newValue = Math.min(20, parseFloat(slider.value) + 0.1); // +0.1 GPH
         updateFuelFlow(newValue, true);
       }
     });
@@ -67,7 +67,7 @@ function initFuelFlowControls() {
     btnMinus.addEventListener('click', () => {
       const slider = document.getElementById('ff-slider');
       if (slider) {
-        const newValue = Math.max(0, parseFloat(slider.value) - 1); // -1 GPH
+        const newValue = Math.max(0, parseFloat(slider.value) - 0.1); // -0.1 GPH
         updateFuelFlow(newValue, true);
       }
     });
@@ -90,7 +90,7 @@ function updateFuelFlow(fuelFlow, sendToESP = false) {
   }
   // Actualizar valor en el centro del instrumento
   if (valueLabel) {
-    valueLabel.textContent = fuelFlow.toFixed(0);
+    valueLabel.textContent = fuelFlow.toFixed(1);
   }
   // Sincronizar el slider SOLO si la actualización NO viene del usuario (sendToESP = false)
   if (!sendToESP && slider) {
@@ -98,7 +98,7 @@ function updateFuelFlow(fuelFlow, sendToESP = false) {
   }
   // Actualizar etiqueta del slider
   if (sliderLabel) {
-    sliderLabel.textContent = fuelFlow.toFixed(0);
+    sliderLabel.textContent = fuelFlow.toFixed(1);
   }
   // Calcular el ángulo de la aguja utilizando la función fuelFlowToAngle
   const angle = fuelFlowToAngle(fuelFlow);

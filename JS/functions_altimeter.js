@@ -29,9 +29,11 @@ function updateAltimeter(altitudValue, bandera_off) {
   document.getElementById("aguja_pies").style.transform = `translate(-50%, -50%) rotate(${anguloCientos}deg)`;
   // Mostrar u ocultar la bandera OFF según el valor de bandera_off
   const flagElement = document.getElementById("altimeter-flag");
-  if (bandera_off) {
+  if (!bandera_off) {
+    // Mostrar la bandera OFF
     flagElement.style.transform = "translate(-50%, -50%) scale(1) rotate(180deg)";
   } else {
+    // Ocultar la bandera OFF
     flagElement.style.transform = "translate(-50%, -50%) scale(0) rotate(0deg)";
   }
 }
