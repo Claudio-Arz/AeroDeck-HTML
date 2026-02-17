@@ -8,7 +8,7 @@
   Definir una caja de contención como en gyro.
 
   +------------------------+
-  |   Turn Coordinator Control   |
+  |Turn Coordinator Control|
   +-------+-----+----------+
   |       |     |          |   
   |   s   | (+) |  Máximo  |   
@@ -30,7 +30,7 @@
   <div class="turncoordinator-control-header">Turn Coordinator Control</div>
   <div class="turncoordinator-control-body">
     <div class="turncoordinator-slider-section">
-      <input type="range" min="-2000" max="2000" value="0" class="slider vertical-slider" id="turncoordinator-slider" style="writing-mode: vertical-lr; direction: rtl;">
+      <input type="range" min="-2000" max="2000" value="0" class="tc-slider-input" id="turncoordinator-slider">
       <div class="slider-value" id="turncoordinator-slider-value">0</div>
     </div>
     <div class="turncoordinator-plusminus-section">
@@ -122,15 +122,15 @@
     background: #2b0a46;
     box-sizing: border-box;
   }
-  .turncoordinator-slider-section .slider,
-  .turncoordinator-slider-section .vertical-slider {
-    width: 20px;
-    height: 140px;
+  .turncoordinator-slider-section .tc-slider-input {
     writing-mode: vertical-lr;
     direction: rtl;
+    width: 20px;
+    height: 140px;
     background: #023248;
     border-radius: 6px;
-    margin-bottom: 4px;
+    margin: 0;
+    padding: 0;
   }
   .turncoordinator-slider-section .slider-value {
     width: 100%;

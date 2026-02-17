@@ -127,7 +127,10 @@ window.addEventListener('DOMContentLoaded', () => {
 // Cargar el HTML de la caja de control del Turn Coordinator de forma dinámica.
 window.addEventListener('DOMContentLoaded', () => {
   fetch("https://claudio-arz.github.io/AeroDeck-HTML/turnCoordinator_Control.html")
-    .then(r => r.text())
+    .then(r => {
+      if (!r.ok) throw new Error('Error ' + r.status + ': ' + r.statusText);
+      return r.text();
+    })
     .then(html => {
       document.getElementById("inst13").innerHTML = html;
       // Inicializar controles del Turn Coordinator después de insertar el HTML
@@ -141,6 +144,10 @@ window.addEventListener('DOMContentLoaded', () => {
           }
         }, 200);
       }
+    })
+    .catch(err => {
+      console.error('Error cargando turnCoordinator_Control.html:', err);
+      document.getElementById("inst13").innerHTML = '<div style="color:red;font-size:10px;">Error: ' + err.message + '</div>';
     });
 });       
 
