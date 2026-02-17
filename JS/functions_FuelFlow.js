@@ -78,9 +78,9 @@ function updateFuelFlow(fuelFlow, sendToESP = false) {
   const slider = document.getElementById('ff-slider');
   const valueLabel = document.getElementById('ff-value');
   const sliderLabel = document.getElementById('ff-slider-value-label');
-  const needle = document.getElementById('ff-needle');
-  if (!valueLabel || !needle) {
-    console.warn('No se encontraron los elementos de Fuel Flow en el DOM.');
+  const needle = document.getElementById('ff_needle');
+  if (!needle) {
+    console.warn('No se encontró la aguja de Fuel Flow en el DOM.');
     return;
   }
   // Si se llama sin argumento, usar el valor del slider
@@ -88,7 +88,10 @@ function updateFuelFlow(fuelFlow, sendToESP = false) {
     fuelFlow = parseFloat(slider.value);
     sendToESP = true;
   }
-  valueLabel.textContent = fuelFlow.toFixed(0); // Mostrar solo enteros
+  // Actualizar valor en el centro del instrumento
+  if (valueLabel) {
+    valueLabel.textContent = fuelFlow.toFixed(0);
+  }
   // Sincronizar el slider SOLO si la actualización NO viene del usuario (sendToESP = false)
   if (!sendToESP && slider) {
     slider.value = fuelFlow;
@@ -109,7 +112,7 @@ function updateFuelFlow(fuelFlow, sendToESP = false) {
 function sendFuelFlowToESP32(fuelFlow) {
   // Enviar el valor de Fuel Flow al ESP32 vía WebSocket
   if (window.ws && window.ws.readyState === WebSocket.OPEN) {
-    const data = JSON.stringify({ fuelFlowValue: fuelFlow });
+    const data = JSON.stringify({ fuelFlow: fuelFlow });
     window.ws.send(data);
     console.log(`Enviando Fuel Flow al ESP32: ${fuelFlow} GPH`);
   } else {
