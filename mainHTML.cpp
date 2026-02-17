@@ -62,6 +62,8 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
   <div class="grid-item" id="inst14" style="grid-row: 2; grid-column: 6;">Controles Vertical Speed</div>  
   <div class="grid-item" id="inst15" style="grid-row: 2; grid-column: 7;">Fuel Flow Control</div>  
   <div class="grid-item" id="inst16" style="grid-row: 2; grid-column: 8;"></div>
+  <div class="grid-item" id="inst17" style="grid-row: 3; grid-column: 4;">Manifold Instrumento</div>
+  <div class="grid-item" id="inst18" style="grid-row: 3; grid-column: 1;">Manifold Control</div>
 
 </div>
 
@@ -139,7 +141,7 @@ window.addEventListener('DOMContentLoaded', () => {
   fetch("https://claudio-arz.github.io/AeroDeck-HTML/Manifold_Instrumento.html")
   .then(r => r.text())
   .then(html => {
-    document.getElementById("inst12").innerHTML = html;
+    document.getElementById("inst17").innerHTML = html;
     });
 });     
 
@@ -148,7 +150,7 @@ window.addEventListener('DOMContentLoaded', () => {
   fetch("https://claudio-arz.github.io/AeroDeck-HTML/Manifold_Control.html")
     .then(r => r.text())
     .then(html => {
-      document.getElementById("inst15").innerHTML = html;
+      document.getElementById("inst18").innerHTML = html;
       // Inicializar controles del Manifold después de insertar el HTML
       if (typeof initManifoldControls === 'function') {
         initManifoldControls();
