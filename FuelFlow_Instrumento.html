@@ -1,0 +1,63 @@
+<!-- 
+
+  HTML para el instrumento Fuel Flow.
+  Autor: Claudio Arzamendia
+  Fecha: 2026-02-16 20:18:31
+    Este programa solo muestra el instrumento Fuel Flow con su dial, aguja y frente.
+    No tiene funcionalidad de movimiento de la aguja ni recepción de datos a través de WebSocket.
+
+
+
+-->
+
+<div class="instrumento-grid">
+    <!-- Dial -->
+    <img class="ff-dial" id="ff_dial" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/FuelFlow/FuelFlow_Dial.png" 
+    alt="Dial Fuel Flow">
+    <!-- Needle -->
+    <img class="ff-needle" id="ff_needle" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/FuelFlow/FuelFlow_aguja.png"
+    alt="Needle Fuel Flow">
+    <!-- Front -->
+    <img class="ff-front" id="ff_front" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/FuelFlow/FuelFlow_Frente.png" 
+    alt="Front Fuel Flow">
+</div>
+
+<style>
+.ff-needle {
+  width: 100%;
+  height: 100%;
+  position:absolute;
+  top:0;
+  left:0;
+  z-index:2;
+  pointer-events:none;
+  object-fit: contain;  
+  border-radius: 392px;
+  /* El centro del instrumento está a 50% del contenedor padre. */
+  transform-origin: 50% 50%;
+}
+
+.ff-dial {
+  width: 100%;
+  height: 100%;
+  position:absolute;
+  top:0;
+  left:0%;
+  z-index:3;
+  pointer-events:none;
+  border-radius: 50%;
+  transform-origin: center center;
+}
+
+.ff-front {
+  width:100%;
+  height:100%;
+  position:absolute;
+  top:0;
+  left:0;
+  z-index:5;
+  pointer-events:none;
+}
+
+
+</style>

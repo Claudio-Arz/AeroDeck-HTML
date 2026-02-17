@@ -1,0 +1,163 @@
+<!-- 
+
+Este código HTML representa un control deslizante para ajustar el Fuel Flow (consumo de combustible) en un instrumento de simulación de vuelo. El control incluye un slider vertical que permite al usuario seleccionar un valor de consumo entre 0 y 1000 libras por hora, y tres botones para establecer valores predefinidos (mínimo, medio y máximo). El valor seleccionado se muestra en una etiqueta debajo del slider, y se envía al ESP32 para actualizar el instrumento de Fuel Flow en tiempo real.
+Fuel Flow Control  (medidas 120px x 240px)
+
+                +------------------------+
+                |   Fuel Flow Control    |
+                +-------+-----+----------+
+                |       |     |          |   
+                |   s   | (+) |  Máximo  |   
+                |   l   +-----+----------+
+                |   i   |     |          |   
+                |   d   |     |  Medio   |   
+                |   e   +-----+----------+   
+                |   r   |     |          |   
+                |       | (-) |  Mínimo  |   
+                +-------+----------------+   
+                | value |                |   
+                +-------+----------------+
+ en un instrumento de simulación de vuelo. El control incluye un slider vertical que permite 
+ al usuario seleccionar un valor de consumo entre 0 y 20 galones por hora, y tres botones para establecer 
+ valores predefinidos (mínimo, medio y máximo). El valor seleccionado se muestra en una 
+ etiqueta debajo del slider, y se envía al ESP32 para actualizar el instrumento de Fuel Flow en tiempo real. 
+
+ Fuel Flow Control  (medidas 120px x 240px)
+
+                +------------------------+
+                |   Fuel Flow Control    |
+                +-------+-----+----------+
+                |       |     |          |   
+                |   s   | (+) |  Máximo  |   
+                |   l   +-----+----------+
+                |   i   |     |          |   
+                |   d   |     |  Medio   |   
+                |   e   +-----+----------+   
+                |   r   |     |          |   
+                |       | (-) |  Mínimo  |   
+                +-------+----------------+   
+                | value |                |   
+                +-------+----------------+
+
+-->
+
+<div class="as-control-container">
+  <!-- Título -->
+  <div class="title-as-control">Fuel Flow Control</div>
+  <!-- Fila principal: Slider + Botones -->
+  <div class="ff-main-row">
+    <!-- Slider vertical -->
+    <div class="ff-slider-column">
+      <input type="range" min="0" max="20" value="0" id="ff-slider" orient="vertical" class="ff-slider-input">
+    </div>
+    <!-- Botones +1/-1 nudo -->
+    <div class="ff-plusminus-column">
+      <button id="ff-btn-plus" class="slider-glow-btn slider-btn ff-btn-plusminus">+</button>
+      <button id="ff-btn-minus" class="slider-glow-btn slider-btn ff-btn-plusminus">−</button>
+    </div>
+    <!-- Botones Máx/Med/Mín -->
+    <div class="ff-presets-column">
+      <button id="ff-slider-max" class="slider-glow-btn slider-btn slider-btn-max ff-btn-preset">Máx</button>
+      <button id="ff-slider-mid" class="slider-glow-btn slider-btn slider-btn-mid ff-btn-preset">Med</button>
+      <button id="ff-slider-min" class="slider-glow-btn slider-btn slider-btn-min ff-btn-preset">Mín</button>
+    </div>
+  </div>
+  <!-- Fila inferior: Value solo debajo del slider -->
+  <div class="ff-value-row">
+    <div class="slider-value" id="ff-slider-value-label">40</div>
+  </div>
+</div>
+
+<style>
+  .ff-control-container {
+    display: flex;
+    flex-direction: column;
+    width: 120px;
+    height: 240px;
+    max-width: 120px;
+    max-height: 240px;
+    background: #bcc2a5;
+    border: 2px solid #444;
+    border-radius: 8px;
+    box-sizing: border-box;    
+    box-shadow: 0 0 8px rgba(249, 181, 181, 0.667);
+    overflow: hidden;
+  }
+  .title-ff-control {
+    font-size: 11px;
+    font-weight: bold;
+    text-align: center;
+    background-color: burlywood;
+    color: black;
+    padding: 2px 0;
+    height: 18px;
+    min-height: 18px;
+    box-sizing: border-box;
+  }
+  .ff-main-row {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 2px;
+    height: 180px;
+    padding: 4px;
+    box-sizing: border-box;
+  }
+  .ff-slider-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 26px;
+    height: 100%;
+  }
+  .ff-slider-input {
+    writing-mode: vertical-lr;
+    direction: rtl;
+    height: 100%;
+    width: 18px;
+    margin: 0;
+    padding: 0;
+  }
+  .ff-plusminus-column {
+    padding: 20px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 26px;
+    box-sizing: border-box;
+  }
+  .ff-btn-plusminus {
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    padding: 0;
+    line-height: 1;
+  }
+  .ff-presets-column {
+    padding: 20px 20px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 48px;
+    background-color: #444;
+  }
+  .ff-btn-preset {
+    font-size: 9px;
+    padding: 2px;
+    height: 50px;
+  }
+  .ff-value-row {
+    display: flex;
+    height: 20px;
+    padding: 2px 4px;
+    box-sizing: border-box;
+  }
+  .ff-value-row .slider-value {
+    font-size: 11px;
+    text-align: center;
+    width: 26px;
+    color: black;
+  }
+</style>

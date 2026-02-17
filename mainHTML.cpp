@@ -106,9 +106,9 @@ window.addEventListener('DOMContentLoaded', () => {
     if (data.airspeedValue !== undefined && typeof updateAirspeed === 'function') {
       console.log("Actualizando Air Speed: " + data.airspeedValue);
       updateAirspeed(data.airspeedValue);
-    }
-    if (data.gyroValue !== undefined && typeof updateGyro === 'function') {
-      console.log("Actualizando Gyro: " + data.gyroValue);
+      }
+      if (data.gyroValue !== undefined && typeof updateGyro === 'function') {
+        console.log("Actualizando Gyro: " + data.gyroValue);
       updateGyroDialAndValue(data.gyroValue);
     }
     // --- Turn Coordinator ---
@@ -120,9 +120,43 @@ window.addEventListener('DOMContentLoaded', () => {
       console.log("Actualizando TC Péndulo: " + data['tc-pitchValue']);
       updateTurnCoordinatorBall(data['tc-pitchValue']);
     }
+    if (data['fuelFlow'] !== undefined && typeof updateFuelFlow === 'function') {
+      console.log("Actualizando Fuel Flow: " + data['fuelFlow']);
+      updateFuelFlow(data['fuelFlow']);
+    }
   };
   
-});
+  });
+
+  
+// Cargar el HTML del instrumento Fuel Flow de forma dinámica
+window.addEventListener('DOMContentLoaded', () => {
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/FuelFlow_Instrumento.html")
+  .then(r => r.text())
+  .then(html => {
+    document.getElementById("inst13").innerHTML = html;
+    });
+});     
+
+// Cargar el HTML de la caja de control del Fuel Flow de forma dinámica.
+window.addEventListener('DOMContentLoaded', () => {
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/FuelFlow_Control.html")
+    .then(r => r.text())
+    .then(html => {
+      document.getElementById("inst16").innerHTML = html;
+      // Inicializar controles del Fuel Flow después de insertar el HTML
+      if (typeof initFuelFlowControls === 'function') {
+        initFuelFlowControls();
+      } else {
+        // Si el script aún no está cargado, esperar y reintentar
+        setTimeout(() => {
+          if (typeof initFuelFlowControls === 'function') {
+            initFuelFlowControls();
+          }
+        }, 200);
+      }
+    });
+}); 
 
 // Cargar el HTML del instrumento Turn Coordinator de forma dinámica
 window.addEventListener('DOMContentLoaded', () => {
