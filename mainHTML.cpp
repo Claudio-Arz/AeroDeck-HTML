@@ -36,6 +36,7 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_TurnCoordinator.js"></script>
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_FuelFlow.js"></script>
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_Manifold.js"></script>
+<script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_OilPress.js"></script>
 
 
 </head>
@@ -65,6 +66,8 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
   <div class="grid-item" id="inst16" style="grid-row: 2; grid-column: 8;"></div>
   <div class="grid-item" id="inst17" style="grid-row: 3; grid-column: 4;">Manifold Instrumento</div>
   <div class="grid-item" id="inst18" style="grid-row: 3; grid-column: 5;">Manifold Control</div>
+  <div class="grid-item" id="inst19" style="grid-row: 3; grid-column: 3;">Oil Press Instrumento</div>
+  <div class="grid-item" id="inst20" style="grid-row: 3; grid-column: 6;">Oil Press Control</div>
 
 </div>
 
@@ -132,10 +135,43 @@ window.addEventListener('DOMContentLoaded', () => {
       console.log("Actualizando Manifold: " + data['manifold']);
       updateManifold(data['manifold']);
     }
+    if (data['oilPress'] !== undefined && typeof updateOilPress === 'function') {
+      console.log("Actualizando Oil Press: " + data['oilPress']);
+      updateOilPress(data['oilPress']);
+    }
   };
   
   });
 
+  
+// Cargar el HTML del instrumento Oil Press de forma dinámica
+window.addEventListener('DOMContentLoaded', () => {
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/OilPress_Instrumento.html")
+  .then(r => r.text())
+  .then(html => {
+    document.getElementById("inst19").innerHTML = html;
+    });
+});     
+
+// Cargar el HTML de la caja de control del Oil Press de forma dinámica.
+window.addEventListener('DOMContentLoaded', () => {
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/OilPress_Control.html")
+    .then(r => r.text())
+    .then(html => {
+      document.getElementById("inst20").innerHTML = html;
+      // Inicializar controles del Oil Press después de insertar el HTML
+      if (typeof initOilPressControls === 'function') {
+        initOilPressControls();
+      } else {
+        // Si el script aún no está cargado, esperar y reintentar
+        setTimeout(() => {
+          if (typeof initOilPressControls === 'function') {
+            initOilPressControls();
+          }
+        }, 200);
+      }
+    });
+}); 
   
 // Cargar el HTML del instrumento Manifold de forma dinámica
 window.addEventListener('DOMContentLoaded', () => {

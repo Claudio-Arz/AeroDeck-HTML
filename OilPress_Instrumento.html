@@ -1,0 +1,65 @@
+<!-- 
+
+  HTML para el instrumento Oil Pressure.
+  Autor: Claudio Arzamendia
+  Fecha: 2026-02-16 20:18:31
+    Este programa solo muestra el instrumento Oil Pressure con su dial, aguja y frente.
+    No tiene funcionalidad de movimiento de la aguja ni recepción de datos a través de WebSocket.
+
+
+
+-->
+
+<div class="instrumento-grid">
+    <!-- Dial -->
+    <img class="op-dial" id="op_dial" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/OilPress/OP_Dial.png" 
+    alt="Dial Oil Pressure">
+    <!-- Needle -->
+    <img class="op-needle" id="op_needle" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/OilPress/OP_Needle.png"
+    alt="Needle Oil Pressure">
+    <!-- Front -->
+    <img class="op-front" id="op_front" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/OilPress/OP_Front.png" 
+    alt="Front Oil Pressure">
+
+    <div id="op-value" class="instrument-center-label">--</div>
+</div>
+
+<style>
+.op-needle {
+  width: 100%;
+  height: 100%;
+  position:absolute;
+  top:0;
+  left:0;
+  z-index:2;
+  pointer-events:none;
+  object-fit: contain;  
+  border-radius: 392px;
+  /* El centro del instrumento está a 50% del contenedor padre. */
+  transform-origin: 50% 50%;
+}
+
+.op-dial {
+  width: 100%;
+  height: 100%;
+  position:absolute;
+  top:0;
+  left:0%;
+  z-index:1;
+  pointer-events:none;
+  border-radius: 50%;
+  transform-origin: center center;
+}
+
+.op-front {
+  width:100%;
+  height:100%;
+  position:absolute;
+  top:0;
+  left:0;
+  z-index:3;
+  pointer-events:none;
+}
+
+
+</style>
