@@ -1,31 +1,17 @@
 <!-- 
 
-Este código HTML representa un control deslizante para ajustar el Fuel Flow (consumo de combustible) en un instrumento de simulación de vuelo. El control incluye un slider vertical que permite al usuario seleccionar un valor de consumo entre 0 y 1000 libras por hora, y tres botones para establecer valores predefinidos (mínimo, medio y máximo). El valor seleccionado se muestra en una etiqueta debajo del slider, y se envía al ESP32 para actualizar el instrumento de Fuel Flow en tiempo real.
-Fuel Flow Control  (medidas 120px x 240px)
+Este código HTML representa un control deslizante para ajustar el Oil Press en un instrumento de simulación de vuelo. El control incluye un slider vertical que permite al usuario seleccionar un valor de presión entre 0 y 1000 libras por pulgada cuadrada, y tres botones para establecer valores predefinidos (mínimo, medio y máximo). El valor seleccionado se muestra en una etiqueta debajo del slider, y se envía al ESP32 para actualizar el instrumento de Oil Press en tiempo real.
+Oil Press Control  (medidas 120px x 240px)
 
-                +------------------------+
-                |   Fuel Flow Control    |
-                +-------+-----+----------+
-                |       |     |          |   
-                |   s   | (+) |  Máximo  |   
-                |   l   +-----+----------+
-                |   i   |     |          |   
-                |   d   |     |  Medio   |   
-                |   e   +-----+----------+   
-                |   r   |     |          |   
-                |       | (-) |  Mínimo  |   
-                +-------+----------------+   
-                | value |                |   
-                +-------+----------------+
  en un instrumento de simulación de vuelo. El control incluye un slider vertical que permite 
- al usuario seleccionar un valor de consumo entre 0 y 20 galones por hora, y tres botones para establecer 
+ al usuario seleccionar un valor de presión entre 0 y 1000 libras por pulgada cuadrada, y tres botones para establecer 
  valores predefinidos (mínimo, medio y máximo). El valor seleccionado se muestra en una 
- etiqueta debajo del slider, y se envía al ESP32 para actualizar el instrumento de Fuel Flow en tiempo real. 
+ etiqueta debajo del slider, y se envía al ESP32 para actualizar el instrumento de Oil Press en tiempo real. 
 
- Fuel Flow Control  (medidas 120px x 240px)
+ Oil Press Control  (medidas 120px x 240px)
 
                 +------------------------+
-                |   Fuel Flow Control    |
+                |   Oil Press Control    |
                 +-------+-----+----------+
                 |       |     |          |   
                 |   s   | (+) |  Máximo  |   
@@ -41,64 +27,64 @@ Fuel Flow Control  (medidas 120px x 240px)
 
 -->
 
-<div class="ff-control-container">
+<div class="op-control-container">
   <!-- Título -->
-  <div class="title-ff-control">Fuel Flow Control</div>
+  <div class="title-op-control">Oil Press Control</div>
   <!-- Fila principal: Slider + Botones -->
-  <div class="ff-main-row">
+  <div class="op-main-row">
     <!-- Slider vertical -->
-    <div class="ff-slider-column">
-      <input type="range" min="0" max="20" value="0" step="0.1" id="ff-slider" orient="vertical" class="ff-slider-input">
+    <div class="op-slider-column">
+      <input type="range" min="0" max="120" value="0" id="op-slider" orient="vertical" class="op-slider-input">
     </div>
     <!-- Botones +1/-1 -->
-    <div class="ff-plusminus-column">
-      <button id="ff-btn-plus" class="ff-btn ff-btn-plus">+</button>
-      <button id="ff-btn-minus" class="ff-btn ff-btn-minus">−</button>
+    <div class="op-plusminus-column">
+      <button id="op-btn-plus" class="op-btn op-btn-plus">+</button>
+      <button id="op-btn-minus" class="op-btn op-btn-minus">−</button>
     </div>
     <!-- Botones Máx/Med/Mín -->
-    <div class="ff-presets-column">
-      <button id="ff-slider-max" class="ff-btn ff-btn-preset ff-btn-max">Máx</button>
-      <button id="ff-slider-mid" class="ff-btn ff-btn-preset ff-btn-mid">Med</button>
-      <button id="ff-slider-min" class="ff-btn ff-btn-preset ff-btn-min">Mín</button>
+    <div class="op-presets-column">
+      <button id="op-slider-max" class="op-btn op-btn-preset op-btn-max">Máx</button>
+      <button id="op-slider-mid" class="op-btn op-btn-preset op-btn-mid">Med</button>
+      <button id="op-slider-min" class="op-btn op-btn-preset op-btn-min">Mín</button>
     </div>
   </div>
   <!-- Fila inferior: Value -->
-  <div class="ff-value-row">
-    <div class="ff-value-label" id="ff-slider-value-label">0</div>
+  <div class="op-value-row">
+    <div class="op-value-label" id="op-slider-value-label">0</div>
   </div>
 </div>
 
 <style>
-  /* === FUEL FLOW CONTROL - ESTILO CAMUFLAJE MILITAR === */
+  /* === Oil Pressure CONTROL - ESTILO CAMUFLAJE MILITAR === */
   /* Medidas copiadas de airSpeed_Control.html */
-  .ff-control-container {
+  .op-control-container {
     display: flex;
     flex-direction: column;
     width: 120px;
     height: 240px;
     max-width: 120px;
     max-height: 240px;
-    background: linear-gradient(135deg, #4a5d23 0%, #3d4f1f 25%, #556b2f 50%, #4a5d23 75%, #3d4f1f 100%);
-    border: 2px solid #2f3d13;
+    background: linear-gradient(135deg, #2e2e2e 0%, #9f9f9f 25%, #cfcfcf 50%, #424241 75%, #c2c7b9 100%);
+    border: 2px solid #424241;
     border-radius: 8px;
     box-sizing: border-box;    
-    box-shadow: 0 0 8px rgba(85, 107, 47, 0.6);
+    box-shadow: 0 0 8px rgba(232, 250, 202, 0.6);
     overflow: hidden;
   }
-  .title-ff-control {
+  .title-op-control {
     font-size: 11px;
     font-weight: bold;
     text-align: center;
-    background: linear-gradient(90deg, #6b4423, #8b5a2b, #6b4423);
+    background: linear-gradient(90deg, #29236b, #2b308b, #232a6b);
     color: #f5deb3;
     padding: 2px 0;
     height: 18px;
     min-height: 18px;
     box-sizing: border-box;
     text-shadow: 1px 1px 2px #000;
-    border-bottom: 1px solid #4a3520;
+    border-bottom: 1px solid #3caff7;
   }
-  .ff-main-row {
+  .op-main-row {
     display: flex;
     flex-direction: row;
     align-items: stretch;
@@ -107,25 +93,25 @@ Fuel Flow Control  (medidas 120px x 240px)
     padding: 4px;
     box-sizing: border-box;
   }
-  .ff-slider-column {
+  .op-slider-column {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 26px;
     height: 100%;
-    background: #3d4f1f;
+    background: #1f244f;
     border-radius: 4px;
   }
-  .ff-slider-input {
+  .op-slider-input {
     writing-mode: vertical-lr;
     direction: rtl;
     height: 100%;
     width: 18px;
     margin: 0;
     padding: 0;
-    accent-color: #8fbc8f;
+    accent-color: #8f92bc;
   }
-  .ff-plusminus-column {
+  .op-plusminus-column {
     padding: 20px 20px;
     display: flex;
     flex-direction: column;
@@ -134,32 +120,32 @@ Fuel Flow Control  (medidas 120px x 240px)
     width: 26px;
     box-sizing: border-box;
   }
-  .ff-presets-column {
+  .op-presets-column {
     padding: 20px 20px;
     display: flex;
     align-items: center;
     flex-direction: column;
     justify-content: space-between;
     width: 48px;
-    background: linear-gradient(180deg, #5c4033, #8b4513, #5c4033);
+    background: linear-gradient(180deg, #595756, #8f8c8a, #585857);
     border-radius: 4px;
   }
   /* === BOTONES ESTILO CAMUFLAJE === */
-  .ff-btn {
+  .op-btn {
     border: none;
     cursor: pointer;
     font-weight: bold;
     transition: all 0.15s ease;
     text-shadow: 1px 1px 1px #000;
   }
-  .ff-btn:hover {
+  .op-btn:hover {
     filter: brightness(1.2);
   }
-  .ff-btn:active {
+  .op-btn:active {
     box-shadow: 0 0 8px 3px #c9a227;
     filter: brightness(1.4);
   }
-  .ff-btn-plus, .ff-btn-minus {
+  .op-btn-plus, .op-btn-minus {
     width: 20px;
     height: 20px;
     font-size: 12px;
@@ -168,33 +154,33 @@ Fuel Flow Control  (medidas 120px x 240px)
     border-radius: 50%;
     color: #f5deb3;
   }
-  .ff-btn-plus {
-    background: linear-gradient(145deg, #556b2f, #6b8e23);
+  .op-btn-plus {
+    background: linear-gradient(145deg, #342f6b, #232e8e);
     box-shadow: 1px 1px 3px #2f3d13;
   }
-  .ff-btn-minus {
-    background: linear-gradient(145deg, #8b4513, #a0522d);
-    box-shadow: 1px 1px 3px #5c2d0e;
+  .op-btn-minus {
+    background: linear-gradient(145deg, #8a817c, #a09b99);
+    box-shadow: 1px 1px 3px #575655;
   }
-  .ff-btn-preset {
+  .op-btn-preset {
     font-size: 9px;
     padding: 2px;
     height: 50px;
     border-radius: 4px;
     color: #f5deb3;
   }
-  .ff-btn-max {
-    background: linear-gradient(145deg, #228b22, #2e8b57);
+  .op-btn-max {
+    background: linear-gradient(145deg, #8b224e, #8b2e56);
   }
-  .ff-btn-mid {
-    background: linear-gradient(145deg, #daa520, #b8860b);
+  .op-btn-mid {
+    background: linear-gradient(145deg, #da2067, #b80b90);
     color: #2f1f0a;
     text-shadow: none;
   }
-  .ff-btn-min {
-    background: linear-gradient(145deg, #8b0000, #a52a2a);
+  .op-btn-min {
+    background: linear-gradient(145deg, #8b0043, #a52a45);
   }
-  .ff-value-row {
+  .op-value-row {
     display: flex;
     height: 20px;
     padding: 2px 4px;
@@ -202,7 +188,7 @@ Fuel Flow Control  (medidas 120px x 240px)
     background: #2f3d13;
     border-top: 1px solid #4a5d23;
   }
-  .ff-value-label {
+  .op-value-label {
     font-size: 11px;
     font-weight: bold;
     text-align: center;
