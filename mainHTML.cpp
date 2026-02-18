@@ -164,7 +164,7 @@ window.addEventListener('DOMContentLoaded', () => {
   fetch("https://claudio-arz.github.io/AeroDeck-HTML/CHT_Instrumento.html")
   .then(r => r.text())
   .then(html => {
-    document.getElementById("inst21").innerHTML = html;
+    document.getElementById("inst23").innerHTML = html;
     });
 });     
 
@@ -173,7 +173,7 @@ window.addEventListener('DOMContentLoaded', () => {
   fetch("https://claudio-arz.github.io/AeroDeck-HTML/CHT_Control.html")
     .then(r => r.text())
     .then(html => {
-      document.getElementById("inst22").innerHTML = html;
+      document.getElementById("inst24").innerHTML = html;
       // Inicializar controles del CHT después de insertar el HTML
       if (typeof initCHTControls === 'function') {
         initCHTControls();
