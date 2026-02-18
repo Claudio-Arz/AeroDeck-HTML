@@ -147,8 +147,8 @@ window.addEventListener('DOMContentLoaded', () => {
       console.log("Actualizando Oil Temp: " + data['oilTemp']);
       updateOilTemp(data['oilTemp']);
     }
-  });
-  
+  }
+});
 
 
 // Cargar el HTML del instrumento Oil Temp de forma dinámica
