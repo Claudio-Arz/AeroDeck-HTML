@@ -1,0 +1,65 @@
+<!-- 
+
+  HTML para el instrumento CHT.
+  Autor: Claudio Arzamendia
+  Fecha: 2026-02-16 20:18:31
+    Este programa solo muestra el instrumento CHT con su dial, aguja y frente.
+    No tiene funcionalidad de movimiento de la aguja ni recepción de datos a través de WebSocket.
+
+
+
+-->
+
+<div class="instrumento-grid">
+    <!-- Dial -->
+    <img class="cht-dial" id="cht_dial" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/CHT/CHT_Dial.png" 
+    alt="Dial CHT">
+    <!-- Needle -->
+    <img class="cht-needle" id="cht_needle" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/CHT/CHT_Needle.png"
+    alt="Needle CHT">
+    <!-- Front -->
+    <img class="cht-front" id="cht_front" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/CHT/CHT_Front.png" 
+    alt="Front CHT">
+
+    <div id="cht-value" class="instrument-center-label">--</div>
+</div>
+
+<style>
+.cht-needle {
+  width: 100%;
+  height: 100%;
+  position:absolute;
+  top:0;
+  left:0;
+  z-index:2;
+  pointer-events:none;
+  object-fit: contain;  
+  border-radius: 392px;
+  /* El centro del instrumento está a 50% del contenedor padre. */
+  transform-origin: 50% 50%;
+}
+
+.cht-dial {
+  width: 100%;
+  height: 100%;
+  position:absolute;
+  top:0;
+  left:0%;
+  z-index:1;
+  pointer-events:none;
+  border-radius: 50%;
+  transform-origin: center center;
+}
+
+.cht-front {
+  width:100%;
+  height:100%;
+  position:absolute;
+  top:0;
+  left:0;
+  z-index:3;
+  pointer-events:none;
+}
+
+
+</style>
