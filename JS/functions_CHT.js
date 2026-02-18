@@ -123,12 +123,12 @@ function sendCHTToESP32(cht) {
     console.warn('WebSocket no está conectado.');
   }
 }
-// Mapea el valor de CHT (50-250) al ángulo de la aguja (270-90)
+// Mapea el valor de CHT (100-500) al ángulo de la aguja (270-90)
 function chtToAngle(cht) {
-  const minValue = 50;
-  const maxValue = 250;
-  const minAngle = 270; // Ángulo mínimo para 50 °F
-  const maxAngle = 90; // Ángulo máximo para 250 °F
+  const minValue = 100;
+  const maxValue = 500;
+  const minAngle = 270; // Ángulo mínimo para 100 °F
+  const maxAngle = 90; // Ángulo máximo para 500 °F
   if (cht < minValue) cht = minValue;
   if (cht > maxValue) cht = maxValue;
   return minAngle + ((cht - minValue) * (minAngle - maxAngle)) / (maxValue - minValue);
