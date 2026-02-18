@@ -123,11 +123,11 @@ function sendOilTempToESP32(oilTemp) {
     console.warn('WebSocket no está conectado.');
   }
 }
-// Mapea el valor de Oil Temp (0-250) al ángulo de la aguja (270-90)
+// Mapea el valor de Oil Temp (50-250) al ángulo de la aguja (270-90)
 function oilTempToAngle(oilTemp) {
-  const minValue = 0;
+  const minValue = 50;
   const maxValue = 250;
-  const minAngle = 270; // Ángulo mínimo para 0 °C
+  const minAngle = 270; // Ángulo mínimo para 50 °C
   const maxAngle = 90; // Ángulo máximo para 250 °C
   if (oilTemp < minValue) oilTemp = minValue;
   if (oilTemp > maxValue) oilTemp = maxValue;
