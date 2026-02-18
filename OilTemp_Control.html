@@ -1,0 +1,203 @@
+<!-- 
+
+Este código HTML representa un control deslizante para ajustar el Oil Temperature 
+en un instrumento de simulación de vuelo. El control incluye un slider vertical que 
+permite al usuario seleccionar un valor de temperatura entre 50 y 250 grados, y 
+tres botones para establecer valores predefinidos (mínimo, medio y máximo). 
+El valor seleccionado se muestra en una etiqueta debajo del slider, y se envía al 
+ESP32 para actualizar el instrumento de Oil Temperature en tiempo real.
+
+Oil Temperature Control  (medidas 120px x 240px)
+
+
+                +------------------------+
+                |Oil Temperature Control |
+                +-------+-----+----------+
+                |       |     |          |   
+                |   s   | (+) |  Máximo  |   
+                |   l   +-----+----------+
+                |   i   |     |          |   
+                |   d   |     |  Medio   |   
+                |   e   +-----+----------+   
+                |   r   |     |          |   
+                |       | (-) |  Mínimo  |   
+                +-------+----------------+   
+                | value |                |   
+                +-------+----------------+
+
+-->
+
+<div class="ot-control-container">
+  <!-- Título -->
+  <div class="title-ot-control">Oil Temp Control</div>
+  <!-- Fila principal: Slider + Botones -->
+  <div class="ot-main-row">
+    <!-- Slider vertical -->
+    <div class="ot-slider-column">
+      <input type="range" min="0" max="120" value="0" id="ot-slider" orient="vertical" class="ot-slider-input">
+    </div>
+    <!-- Botones +1/-1 -->
+    <div class="ot-plusminus-column">
+      <button id="ot-btn-plus" class="ot-btn ot-btn-plus">+</button>
+      <button id="ot-btn-minus" class="ot-btn ot-btn-minus">−</button>
+    </div>
+    <!-- Botones Máx/Med/Mín -->
+    <div class="ot-presets-column">
+      <button id="ot-slider-max" class="ot-btn ot-btn-preset ot-btn-max">Máx</button>
+      <button id="ot-slider-mid" class="ot-btn ot-btn-preset ot-btn-mid">Med</button>
+      <button id="ot-slider-min" class="ot-btn ot-btn-preset ot-btn-min">Mín</button>
+    </div>
+  </div>
+  <!-- Fila inferior: Value -->
+  <div class="ot-value-row">
+    <div class="ot-value-label" id="ot-slider-value-label">0</div>
+  </div>
+</div>
+
+<style>
+  /* === Oil Temperature CONTROL - ESTILO MADERA Y ACERO === */
+  /* Medidas copiadas de airSpeed_Control.html */
+  .ot-control-container {
+    display: flex;
+    flex-direction: column;
+    width: 120px;
+    height: 240px;
+    max-width: 120px;
+    max-height: 240px;
+    background: linear-gradient(135deg, #5D4E37 0%, #8B7355 25%, #A0896C 50%, #6B5344 75%, #4A3C2A 100%);
+    border: 2px solid #708090;
+    border-radius: 8px;
+    box-sizing: border-box;    
+    box-shadow: 0 0 8px rgba(176, 196, 222, 0.5);
+    overflow: hidden;
+  }
+  .title-ot-control {
+    font-size: 11px;
+    font-weight: bold;
+    text-align: center;
+    background: linear-gradient(90deg, #4A5568, #5A6578, #4A5568);
+    color: #DEB887;
+    padding: 2px 0;
+    height: 18px;
+    min-height: 18px;
+    box-sizing: border-box;
+    text-shadow: 1px 1px 2px #000;
+    border-bottom: 1px solid #A0AEC0;
+  }
+  .ot-main-row {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 2px;
+    height: 180px;
+    padding: 4px;
+    box-sizing: border-box;
+  }
+  .ot-slider-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 26px;
+    height: 100%;
+    background: #3D3426;
+    border-radius: 4px;
+  }
+  .ot-slider-input {
+    writing-mode: vertical-lr;
+    direction: rtl;
+    height: 100%;
+    width: 18px;
+    margin: 0;
+    padding: 0;
+    accent-color: #A0AEC0;
+  }
+  .ot-plusminus-column {
+    padding: 20px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 26px;
+    box-sizing: border-box;
+  }
+  .ot-presets-column {
+    padding: 20px 20px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 48px;
+    background: linear-gradient(180deg, #708090, #94A3B8, #708090);
+    border-radius: 4px;
+  }
+  /* === BOTONES ESTILO MADERA Y ACERO === */
+  .ot-btn {
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.15s ease;
+    text-shadow: 1px 1px 1px #000;
+  }
+  .ot-btn:hover {
+    filter: brightness(1.2);
+  }
+  .ot-btn:active {
+    box-shadow: 0 0 8px 3px #DEB887;
+    filter: brightness(1.4);
+  }
+  .ot-btn-plus, .ot-btn-minus {
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    padding: 0;
+    line-height: 1;
+    border-radius: 50%;
+    color: #F5F5DC;
+  }
+  .ot-btn-plus {
+    background: linear-gradient(145deg, #5A6578, #708090);
+    box-shadow: 1px 1px 3px #2D3748;
+  }
+  .ot-btn-minus {
+    background: linear-gradient(145deg, #8B7355, #6B5344);
+    box-shadow: 1px 1px 3px #3D3426;
+  }
+  .ot-btn-preset {
+    font-size: 9px;
+    padding: 2px;
+    height: 50px;
+    border-radius: 4px;
+    color: #F5F5DC;
+  }
+  .ot-btn-max {
+    background: linear-gradient(145deg, #8B4513, #A0522D);
+  }
+  .ot-btn-mid {
+    background: linear-gradient(145deg, #CD853F, #DEB887);
+    color: #3D2B1F;
+    text-shadow: none;
+  }
+  .ot-btn-min {
+    background: linear-gradient(145deg, #6B4423, #5D3A1A);
+  }
+  .ot-value-row {
+    display: flex;
+    height: 20px;
+    padding: 2px 4px;
+    box-sizing: border-box;
+    background: #4A5568;
+    border-top: 1px solid #708090;
+  }
+  .ot-value-label {
+    font-size: 11px;
+    font-weight: bold;
+    text-align: center;
+    width: 26px;
+    color: #B0C4DE;
+    background: #2D3748;
+    border-radius: 3px;
+    font-family: 'Courier New', monospace;
+    text-shadow: 0 0 4px #B0C4DE;
+  }
+</style>
+

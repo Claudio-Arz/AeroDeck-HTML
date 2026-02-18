@@ -37,6 +37,7 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_FuelFlow.js"></script>
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_Manifold.js"></script>
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_OilPress.js"></script>
+<script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_OilTemp.js"></script>
 
 
 </head>
@@ -68,6 +69,8 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
   <div class="grid-item" id="inst18" style="grid-row: 3; grid-column: 5;">Manifold Control</div>
   <div class="grid-item" id="inst19" style="grid-row: 3; grid-column: 3;">Oil Press Instrumento</div>
   <div class="grid-item" id="inst20" style="grid-row: 3; grid-column: 6;">Oil Press Control</div>
+  <div class="grid-item" id="inst21" style="grid-row: 3; grid-column: 2;">Oil Temp Instrumento</div>
+  <div class="grid-item" id="inst22" style="grid-row: 3; grid-column: 7;">Oil Temp Control</div>
 
 </div>
 
@@ -139,10 +142,43 @@ window.addEventListener('DOMContentLoaded', () => {
       console.log("Actualizando Oil Press: " + data['oilPress']);
       updateOilPress(data['oilPress']);
     }
-  };
-  
-  });
 
+    if (data['oilTemp'] !== undefined && typeof updateOilTemp === 'function') {
+      console.log("Actualizando Oil Temp: " + data['oilTemp']);
+      updateOilTemp(data['oilTemp']);
+    }
+  });
+  
+
+
+// Cargar el HTML del instrumento Oil Temp de forma dinámica
+window.addEventListener('DOMContentLoaded', () => {
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/OilTemp_Instrumento.html")
+  .then(r => r.text())
+  .then(html => {
+    document.getElementById("inst21").innerHTML = html;
+    });
+});     
+
+// Cargar el HTML de la caja de control del Oil Temp de forma dinámica.
+window.addEventListener('DOMContentLoaded', () => {
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/OilTemp_Control.html")
+    .then(r => r.text())
+    .then(html => {
+      document.getElementById("inst22").innerHTML = html;
+      // Inicializar controles del Oil Temp después de insertar el HTML
+      if (typeof initOilTempControls === 'function') {
+        initOilTempControls();
+      } else {
+        // Si el script aún no está cargado, esperar y reintentar
+        setTimeout(() => {
+          if (typeof initOilTempControls === 'function') {
+            initOilTempControls();
+          }
+        }, 200);
+      }
+    });
+}); 
   
 // Cargar el HTML del instrumento Oil Press de forma dinámica
 window.addEventListener('DOMContentLoaded', () => {
