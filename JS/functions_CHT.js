@@ -24,7 +24,7 @@
 
 function initCHTControls() {
   // Event listener para el slider
-  const slider = document.getElementById('cht-slider-left');
+  const slider = document.getElementById('cht-slider');
   if (slider) {
     slider.addEventListener('input', () => {
       updateCHT(parseFloat(slider.value), true); // true = desde el slider, enviar al ESP32
@@ -109,7 +109,7 @@ function updateCHT(cht, sendToESP = false) {
   needle.style.transform = `rotate(${angle}deg)`;
   // Enviar el valor de CHT al ESP32 solo si se indica
   if (sendToESP) {
-    sendCHTToESP32("chtValue", cht);
+    sendCHTToESP32(cht);
   }
 }
 

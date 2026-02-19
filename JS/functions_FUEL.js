@@ -24,19 +24,20 @@
 */
 
 function initFUELControls() {
-  // Event listener para el slider
+  // Event listener para el slider izquierdo
   const sliderL = document.getElementById('fuel-slider-left');
   if (sliderL) {
     sliderL.addEventListener('input', () => {
-      updateFUEL(parseFloat(sliderL.value), true); // true = desde el slider, enviar al ESP32
+      updateFUELLeft(parseFloat(sliderL.value), true);
     });
   } else {
     console.warn('No se encontró el slider de FUEL IZQ en el DOM.');
   }
+  // Event listener para el slider derecho
   const sliderR = document.getElementById('fuel-slider-right');
   if (sliderR) {
     sliderR.addEventListener('input', () => {
-      updateFUEL(parseFloat(sliderR.value), true); // true = desde el slider, enviar al ESP32
+      updateFUELRight(parseFloat(sliderR.value), true);
     });
   } else {
     console.warn('No se encontró el slider de FUEL DER en el DOM.');
@@ -55,69 +56,71 @@ function initFUELControls() {
   const btnPlusR = document.getElementById('fuel-btn-plus-right');
   const btnMinusR = document.getElementById('fuel-btn-minus-right');
   
+  // Botones Left
   if (btnMaxL) {
     btnMaxL.addEventListener('click', () => {
-      updateCHT(25, true); // Máximo: 25 °C
+      updateFUELLeft(25, true); // Full: 25 gal
     });
   }
   if (btnMidL) {
     btnMidL.addEventListener('click', () => {
-      updateCHT(15, true); // Medio: 15 °C
+      updateFUELLeft(12.5, true); // Half: 12.5 gal
     });
   }
   if (btnMinL) {
     btnMinL.addEventListener('click', () => {
-      updateCHT(0, true); // Mínimo: 0 °C
+      updateFUELLeft(0, true); // Empty: 0
     });
   }
   if (btnPlusL) {
     btnPlusL.addEventListener('click', () => {
-      const slider = document.getElementById('cht-slider');
+      const slider = document.getElementById('fuel-slider-left');
       if (slider) {
-        const newValue = Math.min(25, parseFloat(slider.value) + 1); // +1 °C
-        updateCHT(newValue, true);
+        const newValue = Math.min(25, parseFloat(slider.value) + 1);
+        updateFUELLeft(newValue, true);
       }
     });
   }
   if (btnMinusL) {
     btnMinusL.addEventListener('click', () => {
-      const slider = document.getElementById('cht-slider');
+      const slider = document.getElementById('fuel-slider-left');
       if (slider) {
-        const newValue = Math.max(0, parseFloat(slider.value) - 1); // -1 °C
-        updateCHT(newValue, true);
+        const newValue = Math.max(0, parseFloat(slider.value) - 1);
+        updateFUELLeft(newValue, true);
       }
     });
   }
+  // Botones Right
   if (btnMaxR) {
     btnMaxR.addEventListener('click', () => {
-      updateCHT(25, true); // Máximo: 25 °C
+      updateFUELRight(25, true); // Full: 25 gal
     });
   }
   if (btnMidR) {
     btnMidR.addEventListener('click', () => {
-      updateCHT(15, true); // Medio: 15 °C
+      updateFUELRight(12.5, true); // Half: 12.5 gal
     });
   }
   if (btnMinR) {
     btnMinR.addEventListener('click', () => {
-      updateCHT(0, true); // Mínimo: 0 °C
+      updateFUELRight(0, true); // Empty: 0
     });
   }
   if (btnPlusR) {
     btnPlusR.addEventListener('click', () => {
-      const slider = document.getElementById('cht-slider');
+      const slider = document.getElementById('fuel-slider-right');
       if (slider) {
-        const newValue = Math.min(25, parseFloat(slider.value) + 1); // +1 °C
-        updateCHT(newValue, true);
+        const newValue = Math.min(25, parseFloat(slider.value) + 1);
+        updateFUELRight(newValue, true);
       }
     });
   }
   if (btnMinusR) {
     btnMinusR.addEventListener('click', () => {
-      const slider = document.getElementById('cht-slider');
+      const slider = document.getElementById('fuel-slider-right');
       if (slider) {
-        const newValue = Math.max(0, parseFloat(slider.value) - 1); // -1 °C
-        updateCHT(newValue, true);
+        const newValue = Math.max(0, parseFloat(slider.value) - 1);
+        updateFUELRight(newValue, true);
       }
     });
   }
@@ -154,7 +157,7 @@ function updateFUELLeft(fuel, sendToESP = false) {
   needle.style.transform = `rotate(${angle}deg)`;
   // Enviar el valor de FUEL al ESP32 solo si se indica
   if (sendToESP) {
-sendFUELToESP32("leftFuel", fuel);
+sendFUELToESP32("fuelValueLeft", fuel);
   }
 }
 
@@ -189,7 +192,7 @@ function updateFUELRight(fuel, sendToESP = false) {
   needle.style.transform = `rotate(${angle}deg)`;
   // Enviar el valor de FUEL al ESP32 solo si se indica
   if (sendToESP) {
-sendFUELToESP32("rightFuel", fuel);
+sendFUELToESP32("fuelValueRight", fuel);
   }
 }
 

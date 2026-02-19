@@ -159,13 +159,13 @@ window.addEventListener('DOMContentLoaded', () => {
       updateCHT(data['chtValue']);
     }
 
-    if (data['fuelValueLeft'] !== undefined && typeof updateFuelLeft === 'function') {
+    if (data['fuelValueLeft'] !== undefined && typeof updateFUELLeft === 'function') {
       // console.log("Actualizando Fuel Left: " + data['fuelValueLeft']);
-      updateFuelLeft(data['fuelValueLeft']);
+      updateFUELLeft(data['fuelValueLeft']);
     }
-    if (data['fuelValueRight'] !== undefined && typeof updateFuelRight === 'function') {
+    if (data['fuelValueRight'] !== undefined && typeof updateFUELRight === 'function') {
       // console.log("Actualizando Fuel Right: " + data['fuelValueRight']);
-      updateFuelRight(data['fuelValueRight']);
+      updateFUELRight(data['fuelValueRight']);
     }
 
 
