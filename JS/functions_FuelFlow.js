@@ -21,9 +21,20 @@
 
 */
 
+// Event listeners para los botones de valores predefinidos
+const btnMax = document.getElementById('ff-slider-max');
+const btnMid = document.getElementById('ff-slider-mid');
+const btnMin = document.getElementById('ff-slider-min');
+const btnPlus = document.getElementById('ff-btn-plus');
+const btnMinus = document.getElementById('ff-btn-minus');
+const valueLabel = document.getElementById('ff-value');
+const sliderLabel = document.getElementById('ff-slider-value-label');
+const needle = document.getElementById('ff_needle');
+
+// Event listener para el slider
+const slider = document.getElementById('ff-slider');
+
 function initFuelFlowControls() {
-  // Event listener para el slider
-  const slider = document.getElementById('ff-slider');
   if (slider) {
     slider.addEventListener('input', () => {
       updateFuelFlow(parseFloat(slider.value)); // true = desde el slider, enviar al ESP32
@@ -31,13 +42,6 @@ function initFuelFlowControls() {
   } else {
     console.warn('No se encontró el slider de Fuel Flow en el DOM.');
   }
-  
-  // Event listeners para los botones de valores predefinidos
-  const btnMax = document.getElementById('ff-slider-max');
-  const btnMid = document.getElementById('ff-slider-mid');
-  const btnMin = document.getElementById('ff-slider-min');
-  const btnPlus = document.getElementById('ff-btn-plus');
-  const btnMinus = document.getElementById('ff-btn-minus');
   
   if (btnMax) {
     btnMax.addEventListener('click', () => {
@@ -75,10 +79,6 @@ function initFuelFlowControls() {
 }
 
 function updateFuelFlow(fuelFlow) {
-  const slider = document.getElementById('ff-slider');
-  const valueLabel = document.getElementById('ff-value');
-  const sliderLabel = document.getElementById('ff-slider-value-label');
-  const needle = document.getElementById('ff_needle');
 
   // Actualizar valor en el centro del instrumento
   if (valueLabel) {
