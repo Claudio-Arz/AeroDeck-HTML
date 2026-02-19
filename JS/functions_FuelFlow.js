@@ -41,17 +41,17 @@ function initFuelFlowControls() {
   
   if (btnMax) {
     btnMax.addEventListener('click', () => {
-      updateFuelFlow(20, true); // Máximo: 20 GPH
+      updateFuelFlow(20); // Máximo: 20 GPH
     });
   }
   if (btnMid) {
     btnMid.addEventListener('click', () => {
-      updateFuelFlow(10, true); // Medio: 10 GPH
+      updateFuelFlow(10); // Medio: 10 GPH
     });
   }
   if (btnMin) {
     btnMin.addEventListener('click', () => {
-      updateFuelFlow(0, true); // Mínimo: 0 GPH
+      updateFuelFlow(0); // Mínimo: 0 GPH
     });
   }
   if (btnPlus) {
@@ -59,7 +59,7 @@ function initFuelFlowControls() {
       const slider = document.getElementById('ff-slider');
       if (slider) {
         const newValue = Math.min(20, parseFloat(slider.value) + 0.1); // +0.1 GPH
-        updateFuelFlow(newValue, true);
+        updateFuelFlow(newValue);
       }
     });
   }
@@ -68,7 +68,7 @@ function initFuelFlowControls() {
       const slider = document.getElementById('ff-slider');
       if (slider) {
         const newValue = Math.max(0, parseFloat(slider.value) - 0.1); // -0.1 GPH
-        updateFuelFlow(newValue, true);
+        updateFuelFlow(newValue);
       }
     });
   }
