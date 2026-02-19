@@ -35,6 +35,8 @@ const needle = document.getElementById('ff_needle');
 const slider = document.getElementById('ff-slider');
 
 function initFuelFlowControls() {
+    // Event listener para el slider
+    const slider = document.getElementById('ff-slider');
     if (slider) {
         slider.addEventListener('input', () => {
             updateFuelFlow(parseFloat(slider.value)); // true = desde el slider, enviar al ESP32
