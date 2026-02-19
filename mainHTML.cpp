@@ -39,6 +39,7 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_OilPress.js"></script>
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_OilTemp.js"></script>
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_CHT.js"></script>
+<script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_FUEL.js"></script>
 
 
 </head>
@@ -74,6 +75,8 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
   <div class="grid-item" id="inst22" style="grid-row: 3; grid-column: 7;">Oil Temp Control</div>
   <div class="grid-item" id="inst23" style="grid-row: 3; grid-column: 1;">CHT Instrumento</div>
   <div class="grid-item" id="inst24" style="grid-row: 3; grid-column: 8;">CHT Control</div>
+  <div class="grid-item" id="inst25" style="grid-row: 4; grid-column: 1;">CHT Instrumento</div>
+  <div class="grid-item" id="inst26" style="grid-row: 4; grid-column: 8;">FUEL Control</div>
 
 </div>
 
@@ -158,6 +161,36 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+
+// Cargar el HTML del instrumento FUEL de forma dinámica
+window.addEventListener('DOMContentLoaded', () => {
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/FUEL_Instrumento.html")
+  .then(r => r.text())
+  .then(html => {
+    document.getElementById("inst25").innerHTML = html;
+    });
+});     
+
+// Cargar el HTML de la caja de control del FUEL de forma dinámica.
+window.addEventListener('DOMContentLoaded', () => {
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/FUEL_Control.html")
+    .then(r => r.text())
+    .then(html => {
+      document.getElementById("inst26").innerHTML = html;
+      // Inicializar controles del FUEL después de insertar el HTML
+      if (typeof initFUELControls === 'function') {
+        initFUELControls();
+      } else {
+        // Si el script aún no está cargado, esperar y reintentar
+        setTimeout(() => {
+          if (typeof initFUELControls === 'function') {
+            initFUELControls();
+          }
+        }, 200);
+      }
+    });
+}); 
+  
 
 // Cargar el HTML del instrumento CHT de forma dinámica
 window.addEventListener('DOMContentLoaded', () => {

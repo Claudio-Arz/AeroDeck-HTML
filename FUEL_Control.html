@@ -1,0 +1,204 @@
+<!-- 
+
+Fuel Control - Control de dos tanques de combustible (Left y Right)
+Medidas: 120px x 240px
+
+                +---------------------+
+                |    Fuel Control     |
+                +-----+-------+-------+
+                |  L  | Máx L | Máx R |   
+                |  s  +-------+-------+  R
+                |  l  | Med L | Med R |  s
+                |  i  +-------+-------+  l
+                |  d  | Mín L | Mín R |  i
+                |  e  +-------+-------+  d
+                |  r  |       |       |  e
+                +-----+-------+-------+  r
+                |val L|  ▲ ▼  |  ▲ ▼  |val R|
+                +-----+-------+-------+-----+
+
+-->
+
+<div class="fuel-control-container">
+  <!-- Título -->
+  <div class="title-fuel-control">⛽ Fuel Control</div>
+  <!-- Fila principal -->
+  <div class="fuel-main-row">
+    <!-- Slider Left -->
+    <div class="fuel-slider-column">
+      <span class="fuel-tank-label">L</span>
+      <input type="range" min="0" max="100" value="50" id="fuel-slider-left" orient="vertical" class="fuel-slider-input">
+      <div class="fuel-value-label" id="fuel-value-left">50</div>
+    </div>
+    <!-- Botones +/- Left -->
+    <div class="fuel-plusminus-column">
+      <button id="fuel-btn-plus-left" class="fuel-btn fuel-btn-plus">▲</button>
+      <button id="fuel-btn-minus-left" class="fuel-btn fuel-btn-minus">▼</button>
+    </div>
+    <!-- Botones Preset Centro -->
+    <div class="fuel-presets-column">
+      <button id="fuel-max-left" class="fuel-btn fuel-btn-preset fuel-btn-max">F L</button>
+      <button id="fuel-max-right" class="fuel-btn fuel-btn-preset fuel-btn-max">F R</button>
+      <button id="fuel-mid-left" class="fuel-btn fuel-btn-preset fuel-btn-mid">½ L</button>
+      <button id="fuel-mid-right" class="fuel-btn fuel-btn-preset fuel-btn-mid">½ R</button>
+      <button id="fuel-min-left" class="fuel-btn fuel-btn-preset fuel-btn-min">E L</button>
+      <button id="fuel-min-right" class="fuel-btn fuel-btn-preset fuel-btn-min">E R</button>
+    </div>
+    <!-- Botones +/- Right -->
+    <div class="fuel-plusminus-column">
+      <button id="fuel-btn-plus-right" class="fuel-btn fuel-btn-plus">▲</button>
+      <button id="fuel-btn-minus-right" class="fuel-btn fuel-btn-minus">▼</button>
+    </div>
+    <!-- Slider Right -->
+    <div class="fuel-slider-column">
+      <span class="fuel-tank-label">R</span>
+      <input type="range" min="0" max="100" value="50" id="fuel-slider-right" orient="vertical" class="fuel-slider-input">
+      <div class="fuel-value-label" id="fuel-value-right">50</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* === FUEL CONTROL - ESTILO COMBUSTIBLE (Verde/Amarillo) === */
+  .fuel-control-container {
+    display: flex;
+    flex-direction: column;
+    width: 120px;
+    height: 240px;
+    max-width: 120px;
+    max-height: 240px;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    border: 2px solid #4a5568;
+    border-radius: 8px;
+    box-sizing: border-box;    
+    box-shadow: 0 0 8px rgba(74, 222, 128, 0.4);
+    overflow: hidden;
+  }
+  .title-fuel-control {
+    font-size: 10px;
+    font-weight: bold;
+    text-align: center;
+    background: linear-gradient(90deg, #1e3a5f, #2d5a87, #1e3a5f);
+    color: #4ade80;
+    padding: 2px 0;
+    height: 18px;
+    min-height: 18px;
+    box-sizing: border-box;
+    text-shadow: 0 0 4px #4ade80;
+    border-bottom: 1px solid #4ade80;
+  }
+  .fuel-main-row {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: 1px;
+    flex: 1;
+    padding: 2px;
+    box-sizing: border-box;
+  }
+  .fuel-slider-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 22px;
+    background: #0d1b2a;
+    border-radius: 4px;
+    padding: 2px 0;
+  }
+  .fuel-tank-label {
+    font-size: 9px;
+    font-weight: bold;
+    color: #fbbf24;
+    text-shadow: 0 0 3px #fbbf24;
+  }
+  .fuel-slider-input {
+    writing-mode: vertical-lr;
+    direction: rtl;
+    flex: 1;
+    width: 14px;
+    margin: 2px 0;
+    padding: 0;
+    accent-color: #4ade80;
+  }
+  .fuel-value-label {
+    font-size: 9px;
+    font-weight: bold;
+    text-align: center;
+    color: #4ade80;
+    background: #0a1628;
+    border-radius: 2px;
+    padding: 1px 2px;
+    font-family: 'Courier New', monospace;
+    text-shadow: 0 0 3px #4ade80;
+  }
+  .fuel-plusminus-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 18px;
+    padding: 8px 0;
+    box-sizing: border-box;
+  }
+  .fuel-presets-column {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 2px;
+    padding: 4px 2px;
+    background: linear-gradient(180deg, #1e3a5f, #2d5a87, #1e3a5f);
+    border-radius: 4px;
+    flex: 1;
+  }
+  /* === BOTONES === */
+  .fuel-btn {
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.15s ease;
+    text-shadow: 1px 1px 1px #000;
+  }
+  .fuel-btn:hover {
+    filter: brightness(1.3);
+  }
+  .fuel-btn:active {
+    box-shadow: 0 0 8px 3px #4ade80;
+    filter: brightness(1.5);
+  }
+  .fuel-btn-plus, .fuel-btn-minus {
+    width: 16px;
+    height: 16px;
+    font-size: 10px;
+    padding: 0;
+    line-height: 1;
+    border-radius: 50%;
+    color: #fff;
+  }
+  .fuel-btn-plus {
+    background: linear-gradient(145deg, #22c55e, #16a34a);
+    box-shadow: 1px 1px 3px #0a3622;
+  }
+  .fuel-btn-minus {
+    background: linear-gradient(145deg, #ef4444, #dc2626);
+    box-shadow: 1px 1px 3px #450a0a;
+  }
+  .fuel-btn-preset {
+    font-size: 8px;
+    padding: 1px;
+    border-radius: 3px;
+    color: #fff;
+  }
+  .fuel-btn-max {
+    background: linear-gradient(145deg, #22c55e, #15803d);
+  }
+  .fuel-btn-mid {
+    background: linear-gradient(145deg, #fbbf24, #d97706);
+    color: #1a1a2e;
+    text-shadow: none;
+  }
+  .fuel-btn-min {
+    background: linear-gradient(145deg, #ef4444, #b91c1c);
+  }
+</style>
+

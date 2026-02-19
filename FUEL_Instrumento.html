@@ -1,0 +1,53 @@
+<!-- 
+
+  HTML para el instrumento FUEL.
+  Autor: Claudio Arzamendia
+  Fecha: 2026-02-18 19:42:58
+    Este programa solo muestra el instrumento FUEL con su dial, y dos agujas.
+    FUEL_RNeedle.png es la aguja de la derecha.
+    FUEL_LNeedle.png es la aguja de la izquierda.
+
+
+
+-->
+
+<div class="instrumento-grid">
+    <!-- Dial -->
+    <img class="fuel-dial" id="fuel_dial" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/FUEL/FUEL_Dial.png" 
+    alt="Dial FUEL">
+    <!-- Needle -->
+    <img class="fuel-needle" id="fuel_Rneedle" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/FUEL/FUEL_RNeedle.png"
+    alt="Needle FUEL">
+    <img class="fuel-needle" id="fuel_Lneedle" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/FUEL/FUEL_LNeedle.png"
+    alt="Needle FUEL">
+
+</div>
+
+<style>
+.fuel-needle {
+  width: 100%;
+  height: 100%;
+  position:absolute;
+  top:0;
+  left:0;
+  z-index:2;
+  pointer-events:none;
+  object-fit: contain;  
+  border-radius: 392px;
+  /* El centro del instrumento está a 50% del contenedor padre. */
+  transform-origin: 50% 50%;
+}
+
+.fuel-dial {
+  width: 100%;
+  height: 100%;
+  position:absolute;
+  top:0;
+  left:0%;
+  z-index:1;
+  pointer-events:none;
+  border-radius: 50%;
+  transform-origin: center center;
+}
+
+</style>
