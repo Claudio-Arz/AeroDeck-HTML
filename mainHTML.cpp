@@ -51,14 +51,14 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 
 <div id="main-grid" class="grid-container">
   
-  <div class="grid-item" id="inst01" style="grid-row: 1; grid-column: 1;">Air Speed</div>  
-  <div class="grid-item" id="inst02" style="grid-row: 1; grid-column: 2;">Attitude Control</div>  
-  <div class="grid-item" id="inst03" style="grid-row: 1; grid-column: 3;">Altimeter</div>  
-  <div class="grid-item" id="inst04" style="grid-row: 1; grid-column: 4;">RPM</div>  
-  <div class="grid-item" id="inst05" style="grid-row: 1; grid-column: 6;">Controles Pitch & Roll</div>  
-  <div class="grid-item" id="inst06" style="grid-row: 1; grid-column: 7;">Controles RPM</div>  
-  <div class="grid-item" id="inst07" style="grid-row: 1; grid-column: 8;">Controles Gyro</div>  
-  <div class="grid-item" id="inst08" style="grid-row: 1; grid-column: 9;">Controles Air Speed</div>  
+  <div class="grid-item" id="inst01" style="grid-row: 1; grid-column: 3;">Air Speed</div>  
+  <div class="grid-item" id="inst02" style="grid-row: 1; grid-column: 4;">Attitude Control</div>  
+  <div class="grid-item" id="inst03" style="grid-row: 1; grid-column: 5;">Altimeter</div>  
+  <div class="grid-item" id="inst04" style="grid-row: 1; grid-column: 2;">RPM</div>  
+  <div class="grid-item" id="inst05" style="grid-row: 1; grid-column: 7;">Controles Pitch & Roll</div>  
+  <div class="grid-item" id="inst06" style="grid-row: 1; grid-column: 8;">Controles RPM</div>  
+  <div class="grid-item" id="inst07" style="grid-row: 1; grid-column: 9;">Controles Gyro</div>  
+  <div class="grid-item" id="inst08" style="grid-row: 1; grid-column: 10;">Controles Air Speed</div>  
   <div class="grid-item" id="inst09" style="grid-row: 2; grid-column: 1;">Turn Coordinator</div>  
   <div class="grid-item" id="inst10" style="grid-row: 2; grid-column: 2;">Gyro</div>  
   <div class="grid-item" id="inst11" style="grid-row: 2; grid-column: 3;">Vertical Speed</div>  
@@ -154,10 +154,25 @@ window.addEventListener('DOMContentLoaded', () => {
       updateOilTemp(data['oilTemp']);
     }
 
-    if (data['cht'] !== undefined && typeof updateCHT === 'function') {
-      console.log("Actualizando CHT: " + data['cht']);
-      updateCHT(data['cht']);
+    if (data['chtValue'] !== undefined && typeof updateCHT === 'function') {
+      console.log("Actualizando CHT: " + data['chtValue']);
+      updateCHT(data['chtValue']);
     }
+
+    if (data['fuelValueLeft'] !== undefined && typeof updateFuelLeft === 'function') {
+      console.log("Actualizando Fuel Left: " + data['fuelValueLeft']);
+      updateFuelLeft(data['fuelValueLeft']);
+    }
+    if (data['fuelValueRight'] !== undefined && typeof updateFuelRight === 'function') {
+      console.log("Actualizando Fuel Right: " + data['fuelValueRight']);
+      updateFuelRight(data['fuelValueRight']);
+    }
+
+
+
+
+
+
   }
 });
 
