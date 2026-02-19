@@ -21,25 +21,23 @@ en el instrumento físico y en todas las terminales conectadas.
 
 */
 
-// Event listeners para los botones de valores predefinidos
-const btnMax = document.getElementById('ff-slider-max');
-const btnMid = document.getElementById('ff-slider-mid');
-const btnMin = document.getElementById('ff-slider-min');
-const btnPlus = document.getElementById('ff-btn-plus');
-const btnMinus = document.getElementById('ff-btn-minus');
-const valueLabel = document.getElementById('ff-value');
-const sliderLabel = document.getElementById('ff-slider-value-label');
-const needle = document.getElementById('ff_needle');
 
-// Event listener para el slider
-const slider = document.getElementById('ff-slider');
 
 function initFuelFlowControls() {
+    // Event listeners para los botones de valores predefinidos
+    const btnMax = document.getElementById('ff-slider-max');
+    const btnMid = document.getElementById('ff-slider-mid');
+    const btnMin = document.getElementById('ff-slider-min');
+    const btnPlus = document.getElementById('ff-btn-plus');
+    const btnMinus = document.getElementById('ff-btn-minus');
+    let sentToESP32 = false; // Indica que el valor se envía al ESP32 al hacer clic en los botones
     // Event listener para el slider
     const slider = document.getElementById('ff-slider');
+
     if (slider) {
         slider.addEventListener('input', () => {
-            updateFuelFlow(parseFloat(slider.value)); // true = desde el slider, enviar al ESP32
+            sentToESP32 = true; // Indica que el valor se envía al ESP32 al usar el slider
+            updateFuelFlow(parseFloat(slider.value), sentToESP32); // true = desde el slider, enviar al ESP32
         });
     } else {
         console.warn('No se encontró el slider de Fuel Flow en el DOM.');
@@ -47,17 +45,20 @@ function initFuelFlowControls() {
     
     if (btnMax) {
         btnMax.addEventListener('click', () => {
-            updateFuelFlow(20); // Máximo: 20 GPH
+            sentToESP32 = true; // Indica que el valor se envía al ESP32 al hacer clic en los botones
+            updateFuelFlow(20, sentToESP32); // Máximo: 20 GPH
         });
     }
     if (btnMid) {
         btnMid.addEventListener('click', () => {
-            updateFuelFlow(10); // Medio: 10 GPH
+            sentToESP32 = true; // Indica que el valor se envía al ESP32 al hacer clic en los botones
+            updateFuelFlow(10, sentToESP32); // Medio: 10 GPH
         });
     }
     if (btnMin) {
         btnMin.addEventListener('click', () => {
-            updateFuelFlow(0); // Mínimo: 0 GPH
+            sentToESP32 = true; // Indica que el valor se envía al ESP32 al hacer clic en los botones
+            updateFuelFlow(0, sentToESP32); // Mínimo: 0 GPH
         });
     }
     if (btnPlus) {
@@ -65,7 +66,8 @@ function initFuelFlowControls() {
             const slider = document.getElementById('ff-slider');
             if (slider) {
                 const newValue = Math.min(20, parseFloat(slider.value) + 0.1); // +0.1 GPH
-                updateFuelFlow(newValue);
+                sentToESP32 = true; // Indica que el valor se envía al ESP32 al hacer clic en los botones
+                updateFuelFlow(newValue, sentToESP32);
             }
         });
     }
@@ -74,13 +76,15 @@ function initFuelFlowControls() {
             const slider = document.getElementById('ff-slider');
             if (slider) {
                 const newValue = Math.max(0, parseFloat(slider.value) - 0.1); // -0.1 GPH
-                updateFuelFlow(newValue);
+                sentToESP32 = true; // Indica que el valor se envía al ESP32 al hacer clic en los botones
+                updateFuelFlow(newValue, sentToESP32);
             }
         });
     }
 }
 
-function updateFuelFlow(fuelFlow) {
+function updateFuelFlow(fuelFlow, sendToESP32) {
+    
     // Event listener para el slider
     const slider = document.getElementById('ff-slider');
     const valueLabel = document.getElementById('ff-value');
@@ -103,8 +107,9 @@ function updateFuelFlow(fuelFlow) {
         needle.style.transform = `rotate(${angle}deg)`;
     }
     // Enviar el valor de Fuel Flow al ESP32 solo si se indica
-    
-    sendFuelFlowToESP32(fuelFlow);
+    if (sendToESP32) {
+        sendFuelFlowToESP32(fuelFlow);
+    }
     
 }
 
