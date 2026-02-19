@@ -74,25 +74,19 @@ function initFuelFlowControls() {
   }
 }
 
-function updateFuelFlow(fuelFlow, sendToESP = false) {
+function updateFuelFlow(fuelFlow) {
   const slider = document.getElementById('ff-slider');
   const valueLabel = document.getElementById('ff-value');
   const sliderLabel = document.getElementById('ff-slider-value-label');
   const needle = document.getElementById('ff_needle');
-  
-  // Si se llama sin argumento, usar el valor del slider
-  if (fuelFlow === undefined && slider) {
-    fuelFlow = parseFloat(slider.value);
-    sendToESP = true;
-  }
+
   // Actualizar valor en el centro del instrumento
   if (valueLabel) {
     valueLabel.textContent = fuelFlow.toFixed(1);
   }
-  // Sincronizar el slider SOLO si la actualización NO viene del usuario (sendToESP = false)
-  if (!sendToESP && slider) {
-    slider.value = fuelFlow;
-  }
+  // Actualizar valor del slider
+  slider.value = fuelFlow;
+ 
   // Actualizar etiqueta del slider
   if (sliderLabel) {
     sliderLabel.textContent = fuelFlow.toFixed(1);
@@ -103,9 +97,9 @@ function updateFuelFlow(fuelFlow, sendToESP = false) {
     needle.style.transform = `rotate(${angle}deg)`;
   }
   // Enviar el valor de Fuel Flow al ESP32 solo si se indica
-  if (sendToESP) {
-    sendFuelFlowToESP32(fuelFlow);
-  }
+
+  sendFuelFlowToESP32(fuelFlow);
+
 }
 
 function sendFuelFlowToESP32(fuelFlow) {
