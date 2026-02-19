@@ -130,7 +130,7 @@ function updateFUELLeft(fuel, sendToESP = false) {
   const slider = document.getElementById('fuel-slider-left');
   const valueLabel = document.getElementById('fuel-value-left');
   const sliderLabel = document.getElementById('fuel-slider-value-label-left');
-  const needle = document.getElementById('fuel_needle_left');
+  const needle = document.getElementById('fuel_Lneedle');
   if (!needle) {
     console.warn('No se encontró la aguja de FUEL en el DOM.');
     return;
@@ -165,7 +165,7 @@ function updateFUELRight(fuel, sendToESP = false) {
   const slider = document.getElementById('fuel-slider-right');
   const valueLabel = document.getElementById('fuel-value-right');
   const sliderLabel = document.getElementById('fuel-slider-value-label-right');
-  const needle = document.getElementById('fuel_needle_right');
+  const needle = document.getElementById('fuel_Rneedle');
   if (!needle) {
     console.warn('No se encontró la aguja de FUEL en el DOM.');
     return;
