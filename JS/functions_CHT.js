@@ -119,9 +119,9 @@ function sendCHTToESP32(cht) {
   if (window.ws && window.ws.readyState === WebSocket.OPEN) {
     const data = JSON.stringify({ chtValue: cht });
     window.ws.send(data);
-    console.log(`Enviando CHT al ESP32: ${cht} °F`);
+    // console.log(`Enviando CHT al ESP32: ${cht} °F`);
   } else {
-    console.warn('WebSocket no está conectado.');
+    // console.warn('WebSocket no está conectado.');
   }
 }
 
@@ -133,5 +133,5 @@ function chtToAngle(cht) {
   const maxAngle = 90; // Ángulo máximo para 500 °F
   if (cht < minValue) cht = minValue;
   if (cht > maxValue) cht = maxValue;
-  return minAngle + ((cht - minValue) * (maxAngle - minAngle)) / (maxValue - minValue);
+  return minAngle - ((cht - minValue) * (maxAngle - minAngle)) / (maxValue - minValue);
 }

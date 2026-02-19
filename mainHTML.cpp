@@ -59,9 +59,9 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
   <div class="grid-item" id="inst06" style="grid-row: 1; grid-column: 8;">Controles RPM</div>  
   <div class="grid-item" id="inst07" style="grid-row: 1; grid-column: 9;">Controles Gyro</div>  
   <div class="grid-item" id="inst08" style="grid-row: 1; grid-column: 10;">Controles Air Speed</div>  
-  <div class="grid-item" id="inst09" style="grid-row: 2; grid-column: 4;">Turn Coordinator</div>  
-  <div class="grid-item" id="inst10" style="grid-row: 2; grid-column: 5;">Gyro</div>  
-  <div class="grid-item" id="inst11" style="grid-row: 2; grid-column: 6;">Vertical Speed</div>  
+  <div class="grid-item" id="inst09" style="grid-row: 2; grid-column: 3;">Turn Coordinator</div>  
+  <div class="grid-item" id="inst10" style="grid-row: 2; grid-column: 4;">Gyro</div>  
+  <div class="grid-item" id="inst11" style="grid-row: 2; grid-column: 5;">Vertical Speed</div>  
   <div class="grid-item" id="inst12" style="grid-row: 2; grid-column: 1;">Fuel Flow Instrumento</div>  
   <div class="grid-item" id="inst13" style="grid-row: 2; grid-column: 6;">Turn Coordinator Control</div>  
   <div class="grid-item" id="inst14" style="grid-row: 2; grid-column: 7;">Controles Vertical Speed</div>  
@@ -108,7 +108,7 @@ window.addEventListener('DOMContentLoaded', () => {
       updateAltimeterAndValue(data.altitudValue, data.bandera_off);
     }
     if (data.RPMValue !== undefined && typeof updateRPMAndValue === 'function') {
-      console.log("Actualizando RPM: " + data.RPMValue + " Noice: " + data.RPMNoice + " varRPM: " + data.varRPM);
+      // console.log("Actualizando RPM: " + data.RPMValue + " Noice: " + data.RPMNoice + " varRPM: " + data.varRPM);
       updateRPMAndValue(data.RPMValue, data.RPMNoice, data.varRPM);
     }
     // Actualizar horas de funcionamiento en el Drum-Roll
@@ -116,55 +116,55 @@ window.addEventListener('DOMContentLoaded', () => {
       setDrumHours(data.horasFuncionamiento, data.minutosFuncionamiento);
     }
     if (data.pitchValue !== undefined && typeof updateAttitudeControl === 'function') {
-      console.log("Actualizando Pitch: " + data.pitchValue + " Roll: " + data.rollValue);
+      // console.log("Actualizando Pitch: " + data.pitchValue + " Roll: " + data.rollValue);
       updateAttitudeControl(data.pitchValue, data.rollValue);
     }
     if (data.airspeedValue !== undefined && typeof updateAirspeed === 'function') {
-      console.log("Actualizando Air Speed: " + data.airspeedValue);
+      // console.log("Actualizando Air Speed: " + data.airspeedValue);
       updateAirspeed(data.airspeedValue);
       }
       if (data.gyroValue !== undefined && typeof updateGyro === 'function') {
-        console.log("Actualizando Gyro: " + data.gyroValue);
+        // console.log("Actualizando Gyro: " + data.gyroValue);
       updateGyroDialAndValue(data.gyroValue);
     }
     // --- Turn Coordinator ---
     if (data['tc-rollValue'] !== undefined && typeof updateTurnCoordinatorPlane === 'function') {
-      console.log("Actualizando TC Avión: " + data['tc-rollValue']);
+      // console.log("Actualizando TC Avión: " + data['tc-rollValue']);
       updateTurnCoordinatorPlane(data['tc-rollValue']);
     }
     if (data['tc-pitchValue'] !== undefined && typeof updateTurnCoordinatorBall === 'function') {
-      console.log("Actualizando TC Péndulo: " + data['tc-pitchValue']);
+      // console.log("Actualizando TC Péndulo: " + data['tc-pitchValue']);
       updateTurnCoordinatorBall(data['tc-pitchValue']);
     }
     if (data['fuelFlow'] !== undefined && typeof updateFuelFlow === 'function') {
-      console.log("Actualizando Fuel Flow: " + data['fuelFlow']);
+      // console.log("Actualizando Fuel Flow: " + data['fuelFlow']);
       updateFuelFlow(data['fuelFlow']);
     }
     if (data['manifold'] !== undefined && typeof updateManifold === 'function') {
-      console.log("Actualizando Manifold: " + data['manifold']);
+      // console.log("Actualizando Manifold: " + data['manifold']);
       updateManifold(data['manifold']);
     }
     if (data['oilPress'] !== undefined && typeof updateOilPress === 'function') {
-      console.log("Actualizando Oil Press: " + data['oilPress']);
+      // console.log("Actualizando Oil Press: " + data['oilPress']);
       updateOilPress(data['oilPress']);
     }
 
     if (data['oilTemp'] !== undefined && typeof updateOilTemp === 'function') {
-      console.log("Actualizando Oil Temp: " + data['oilTemp']);
+      // console.log("Actualizando Oil Temp: " + data['oilTemp']);
       updateOilTemp(data['oilTemp']);
     }
 
     if (data['chtValue'] !== undefined && typeof updateCHT === 'function') {
-      console.log("Actualizando CHT: " + data['chtValue']);
+      // console.log("Actualizando CHT: " + data['chtValue']);
       updateCHT(data['chtValue']);
     }
 
     if (data['fuelValueLeft'] !== undefined && typeof updateFuelLeft === 'function') {
-      console.log("Actualizando Fuel Left: " + data['fuelValueLeft']);
+      // console.log("Actualizando Fuel Left: " + data['fuelValueLeft']);
       updateFuelLeft(data['fuelValueLeft']);
     }
     if (data['fuelValueRight'] !== undefined && typeof updateFuelRight === 'function') {
-      console.log("Actualizando Fuel Right: " + data['fuelValueRight']);
+      // console.log("Actualizando Fuel Right: " + data['fuelValueRight']);
       updateFuelRight(data['fuelValueRight']);
     }
 
