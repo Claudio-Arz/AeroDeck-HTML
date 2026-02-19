@@ -208,22 +208,22 @@ function sendFUELToESP32(side, fuel) {
 }
 
 // Mapea el valor de FUEL (0-25) al ángulo de la aguja (225-315 grados)
-function fuelToAngleLeft(fuel) {
+function fuelToAngleRight(fuel) {
   const minValue = 0;
   const maxValue = 25;
   const minAngle = 225; // Ángulo mínimo para 0 Gls
   const maxAngle = 315; // Ángulo máximo para 25 Gls
   if (fuel < minValue) fuel = minValue;
   if (fuel > maxValue) fuel = maxValue;
-  return minAngle - ((fuel - minValue) * (maxAngle - minAngle)) / (maxValue - minValue);
+  return minAngle - ((fuel - minValue) * (maxAngle - minAngle)) / (maxValue - minValue) + 45;
 }
 // Mapea el valor de FUEL (0-25) al ángulo de la aguja (135-90 grados)
-function fuelToAngleRight(fuel) {
+function fuelToAngleLeft(fuel) {
   const minValue = 0;
   const maxValue = 25;
   const minAngle = 135; // Ángulo mínimo para 0 Gls
-  const maxAngle = 90; // Ángulo máximo para 25 Gls
+  const maxAngle = 45; // Ángulo máximo para 25 Gls
   if (fuel < minValue) fuel = minValue;
   if (fuel > maxValue) fuel = maxValue;
-  return minAngle - ((fuel - minValue) * (maxAngle - minAngle)) / (maxValue - minValue);
+  return minAngle - ((fuel - minValue) * (maxAngle - minAngle)) / (maxValue - minValue) -45;
 }
