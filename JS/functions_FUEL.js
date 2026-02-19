@@ -215,7 +215,7 @@ function fuelToAngleLeft(fuel) {
   const maxAngle = 315; // Ángulo máximo para 25 Gls
   if (fuel < minValue) fuel = minValue;
   if (fuel > maxValue) fuel = maxValue;
-  return minAngle + ((fuel - minValue) * (maxAngle - minAngle)) / (maxValue - minValue);
+  return minAngle - ((fuel - minValue) * (maxAngle - minAngle)) / (maxValue - minValue);
 }
 // Mapea el valor de FUEL (0-25) al ángulo de la aguja (135-90 grados)
 function fuelToAngleRight(fuel) {
@@ -225,5 +225,5 @@ function fuelToAngleRight(fuel) {
   const maxAngle = 90; // Ángulo máximo para 25 Gls
   if (fuel < minValue) fuel = minValue;
   if (fuel > maxValue) fuel = maxValue;
-  return minAngle + ((fuel - minValue) * (maxAngle - minAngle)) / (maxValue - minValue);
+  return minAngle - ((fuel - minValue) * (maxAngle - minAngle)) / (maxValue - minValue);
 }
