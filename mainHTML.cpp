@@ -55,28 +55,28 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
   <div class="grid-item" id="inst02" style="grid-row: 1; grid-column: 2;">Attitude Control</div>  
   <div class="grid-item" id="inst03" style="grid-row: 1; grid-column: 3;">Altimeter</div>  
   <div class="grid-item" id="inst04" style="grid-row: 1; grid-column: 4;">RPM</div>  
-  <div class="grid-item" id="inst05" style="grid-row: 1; grid-column: 5;">Controles Pitch & Roll</div>  
-  <div class="grid-item" id="inst06" style="grid-row: 1; grid-column: 6;">Controles RPM</div>  
-  <div class="grid-item" id="inst07" style="grid-row: 1; grid-column: 7;">Controles Gyro</div>  
-  <div class="grid-item" id="inst08" style="grid-row: 1; grid-column: 8;">Controles Air Speed</div>  
+  <div class="grid-item" id="inst05" style="grid-row: 1; grid-column: 6;">Controles Pitch & Roll</div>  
+  <div class="grid-item" id="inst06" style="grid-row: 1; grid-column: 7;">Controles RPM</div>  
+  <div class="grid-item" id="inst07" style="grid-row: 1; grid-column: 8;">Controles Gyro</div>  
+  <div class="grid-item" id="inst08" style="grid-row: 1; grid-column: 9;">Controles Air Speed</div>  
   <div class="grid-item" id="inst09" style="grid-row: 2; grid-column: 1;">Turn Coordinator</div>  
   <div class="grid-item" id="inst10" style="grid-row: 2; grid-column: 2;">Gyro</div>  
   <div class="grid-item" id="inst11" style="grid-row: 2; grid-column: 3;">Vertical Speed</div>  
   <div class="grid-item" id="inst12" style="grid-row: 2; grid-column: 4;">Fuel Flow Instrumento</div>  
-  <div class="grid-item" id="inst13" style="grid-row: 2; grid-column: 5;">Turn Coordinator Control</div>  
-  <div class="grid-item" id="inst14" style="grid-row: 2; grid-column: 6;">Controles Vertical Speed</div>  
-  <div class="grid-item" id="inst15" style="grid-row: 2; grid-column: 7;">Fuel Flow Control</div>  
+  <div class="grid-item" id="inst13" style="grid-row: 2; grid-column: 6;">Turn Coordinator Control</div>  
+  <div class="grid-item" id="inst14" style="grid-row: 2; grid-column: 7;">Controles Vertical Speed</div>  
+  <div class="grid-item" id="inst15" style="grid-row: 2; grid-column: 8;">Fuel Flow Control</div>  
   <div class="grid-item" id="inst16" style="grid-row: 2; grid-column: 8;"></div>
   <div class="grid-item" id="inst17" style="grid-row: 3; grid-column: 4;">Manifold Instrumento</div>
-  <div class="grid-item" id="inst18" style="grid-row: 3; grid-column: 5;">Manifold Control</div>
+  <div class="grid-item" id="inst18" style="grid-row: 3; grid-column: 6;">Manifold Control</div>
   <div class="grid-item" id="inst19" style="grid-row: 3; grid-column: 3;">Oil Press Instrumento</div>
-  <div class="grid-item" id="inst20" style="grid-row: 3; grid-column: 6;">Oil Press Control</div>
+  <div class="grid-item" id="inst20" style="grid-row: 3; grid-column: 7;">Oil Press Control</div>
   <div class="grid-item" id="inst21" style="grid-row: 3; grid-column: 2;">Oil Temp Instrumento</div>
-  <div class="grid-item" id="inst22" style="grid-row: 3; grid-column: 7;">Oil Temp Control</div>
+  <div class="grid-item" id="inst22" style="grid-row: 3; grid-column: 8;">Oil Temp Control</div>
   <div class="grid-item" id="inst23" style="grid-row: 3; grid-column: 1;">CHT Instrumento</div>
-  <div class="grid-item" id="inst24" style="grid-row: 3; grid-column: 8;">CHT Control</div>
-  <div class="grid-item" id="inst25" style="grid-row: 4; grid-column: 1;">CHT Instrumento</div>
-  <div class="grid-item" id="inst26" style="grid-row: 4; grid-column: 8;">FUEL Control</div>
+  <div class="grid-item" id="inst24" style="grid-row: 3; grid-column: 9;">CHT Control</div>
+  <div class="grid-item" id="inst25" style="grid-row: 3; grid-column: 5;">CHT Instrumento</div>
+  <div class="grid-item" id="inst26" style="grid-row: 3; grid-column: 10;">FUEL Control</div>
 
 </div>
 
