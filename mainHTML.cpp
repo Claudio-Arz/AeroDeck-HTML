@@ -125,7 +125,7 @@ window.addEventListener('DOMContentLoaded', () => {
       }
       if (data.gyroValue !== undefined && typeof updateGyro === 'function') {
         // console.log("Actualizando Gyro: " + data.gyroValue);
-      updateGyroDialAndValue(data.gyroValue);
+      updateGyro(data.gyroValue);
     }
     // --- Turn Coordinator ---
     if (data['tc-rollValue'] !== undefined && typeof updateTurnCoordinatorPlane === 'function') {
