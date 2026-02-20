@@ -32,7 +32,7 @@ function initFuelFlowControls() {
   } else {
     console.warn('No se encontró el slider de Fuel Flow en el DOM.');
   }
-  
+
 
   const btnMax = document.getElementById('ff-slider-max');
   const btnMid = document.getElementById('ff-slider-mid');
@@ -81,10 +81,7 @@ function updateFuelFlow(fuelFlow, sendToESP = false) {
   const valueLabel = document.getElementById('ff-value');
   const sliderLabel = document.getElementById('ff-slider-value-label');
   const needle = document.getElementById('ff_needle');
-  if (!needle) {
-    console.warn('No se encontró la aguja de Fuel Flow en el DOM.');
-    return;
-  }
+  
   // Si se llama sin argumento, usar el valor del slider
   if (fuelFlow === undefined && slider) {
     fuelFlow = parseFloat(slider.value);
@@ -104,7 +101,9 @@ function updateFuelFlow(fuelFlow, sendToESP = false) {
   }
   // Calcular el ángulo de la aguja utilizando la función fuelFlowToAngle
   const angle = fuelFlowToAngle(fuelFlow);
-  needle.style.transform = `rotate(${angle}deg)`;
+  if (needle) {
+    needle.style.transform = `rotate(${angle}deg)`;
+  }
   // Enviar el valor de Fuel Flow al ESP32 solo si se indica
   if (sendToESP) {
     sendFuelFlowToESP32(fuelFlow);
