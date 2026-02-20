@@ -58,10 +58,10 @@ para indicar visualmente su estado.
 /* === Estilo de Broken Crystal Fire para instrumentos === */
 .brokenCrystalFire {
   position: absolute;
-  top: -50px;
-  left: -50px;
-  width: 120%;
-  height: 120%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   pointer-events: none; /* Permite hacer clic a través de la imagen */
   z-index: 30; /* Asegura que esté por encima del instrumento */
@@ -71,6 +71,11 @@ para indicar visualmente su estado.
 
 /* Clase para mostrar el cristal roto al hacer click */
 .brokenCrystalFire.visible {
+  opacity: 1;
+}
+
+/* Clase para mostrar el cristal roto al hacer click */
+.brokenCrystal01.visible, .brokenCrystal02.visible, .brokenCrystal03.visible {
   opacity: 1;
 }
 
