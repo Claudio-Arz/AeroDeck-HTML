@@ -43,7 +43,7 @@ para indicar visualmente su estado.
 } */
 
 /* === Estilos de Broken Crystal para instrumentos === */
-.brokenCrystal01, .brokenCrystal02, .brokenCrystal03{
+.brokenCrystal01, .brokenCrystal02, .brokenCrystal03 {
   position: absolute;
   top: 0;
   left: 0;
@@ -52,6 +52,13 @@ para indicar visualmente su estado.
   object-fit: cover;
   pointer-events: none; /* Permite hacer clic a través de la imagen */
   z-index: 10; /* Asegura que esté por encima del instrumento */
+  opacity: 0; /* Oculto por defecto */
+  transition: opacity 0.3s ease;
+}
+
+/* Clase para mostrar el cristal roto al hacer click */
+.brokenCrystal01.visible, .brokenCrystal02.visible, .brokenCrystal03.visible {
+  opacity: 1;
 }
 
 /* Combina grid-item y container para instrumentos individuales */
