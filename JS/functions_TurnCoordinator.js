@@ -173,7 +173,7 @@ function sendTurnCoordinatorToESP32(dataVar, dataValue) {
 }
 // Alterna la visibilidad del cristal roto en el instrumento Turn Coordinator
 function toggleTurnBrokenCrystal() {
-  const crystal = document.getElementById('turn_broken_crystal03');
+  const crystal = document.getElementById('turn_broken_crystal02');
   if (crystal) {
     crystal.classList.toggle('visible');
   }
