@@ -31,7 +31,7 @@
 <div class="gyro-main-grid">
   <div class="gyro-title">GYRO</div>
   <div class="gyro-controls-grid">
-    <input type="range" min="0" max="20" value="0" class="gyro-slider" id="ff-slider" orient="vertical" style="grid-column:1;grid-row:1/4;">
+    <input type="range" min="0" max="360" value="0" class="gyro-slider" id="gyr-slider" orient="vertical" style="grid-column:1;grid-row:1/4;">
     <div class="gyro-slider-value" id="gyr-slider-value-label" style="grid-column:1;grid-row:4;">0</div>
     <div class="gyro-plusminus-row" style="grid-column:1;grid-row:5;">
       <button class="gyro-tri-btn gyro-tri-up" id="gyr-btn-plus"></button>
@@ -46,7 +46,7 @@
     <div class="gyro-btn-row" style="background:#427a3f;grid-column:2;grid-row:3;">
       <button class="gyro-btn slider-glow-btn" id="gyr-btn-180">180°</button><div class="gyro-btn-label">South</div>
     </div>
-    <div class="gyro-btn-row" style="background:#2b8933;grid-column:2;grid-row:4/6;">
+    <div class="gyro-btn-row" style="background:#2b8933;grid-column:2;grid-row:4;"> <!-- grid-row:4/6;" -->
       <button class="gyro-btn slider-glow-btn" id="gyr-btn-270">270°</button><div class="gyro-btn-label">West</div>
     </div>
   </div>
@@ -124,8 +124,10 @@
   background: #23234a;
   border-radius: 8px;
   box-shadow: 0 0 8px #fffb00 inset;
-  transform: rotate(-90deg);
-  direction: ltr;
+  writing-mode: vertical-lr;
+  direction: rtl;
+  height: 100%;
+  width: 18px;
 }
  
 .gyro-slider-value {
