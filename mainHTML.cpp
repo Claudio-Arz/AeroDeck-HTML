@@ -66,7 +66,7 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
   <div class="grid-item" id="inst13" style="grid-row: 2; grid-column: 6;">Turn Coordinator Control</div>  
   <div class="grid-item" id="inst14" style="grid-row: 2; grid-column: 7;">Controles Vertical Speed</div>  
   <div class="grid-item" id="inst15" style="grid-row: 2; grid-column: 8;">Fuel Flow Control</div>  
-  
+
   <div class="grid-item" id="inst17" style="grid-row: 3; grid-column: 4;">Manifold Instrumento</div>
   <div class="grid-item" id="inst18" style="grid-row: 3; grid-column: 6;">Manifold Control</div>
   <div class="grid-item" id="inst19" style="grid-row: 3; grid-column: 3;">Oil Press Instrumento</div>
@@ -169,6 +169,13 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
 
+    // Alterna la visibilidad del cristal roto en el instrumento CHT
+    function toggleBrokenCrystal() {
+      const crystal = document.getElementById('cht_broken_crystal03');
+      if (crystal) {
+        crystal.classList.toggle('visible');
+      }
+    }
 
 
 

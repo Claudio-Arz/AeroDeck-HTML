@@ -51,9 +51,9 @@ para indicar visualmente su estado.
   height: 100%;
   object-fit: cover;
   pointer-events: none; /* Permite hacer clic a través de la imagen */
-  z-index: 10; /* Asegura que esté por encima del instrumento */
+  z-index: 30; /* Asegura que esté por encima del instrumento */
   opacity: 0; /* Oculto por defecto */
-  transition: opacity 0.3s ease;
+  transition: opacity ;
 }
 
 /* Clase para mostrar el cristal roto al hacer click */
