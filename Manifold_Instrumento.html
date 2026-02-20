@@ -10,13 +10,18 @@
 
 -->
 
-<div class="instrumento-grid">
+<div class="instrumento-grid" onclick="toggleManifoldBrokenCrystal()">
     <!-- Dial -->
     <img class="mf-dial" id="mf_dial" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/Manifold/Manifold_Dial.png" 
     alt="Dial Manifold">
     <!-- Needle -->
     <img class="mf-needle" id="mf_needle" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/Manifold/Manifold_Needle.png"
     alt="Needle Manifold">
+    <!-- Front -->
+    <img class="mf-front" id="mf_front" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/Manifold/Manifold_Front.png" 
+    alt="Front Manifold">
+    <img class="brokenCrystal01" id="mf_broken_crystal01" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/Crystals/BrokenCrystal01.png" 
+    alt="Broken Crystal Manifold">
 
     <div id="mf-value" class="instrument-center-label">--</div>
 </div>
@@ -48,6 +53,16 @@
   transform-origin: center center;
 }
 
-
+.mf-front {
+  width: 100%;
+  height: 100%;
+  position:absolute;
+  top:0;
+  left:0%;
+  z-index:3;
+  pointer-events:none;
+  border-radius: 50%;
+  transform-origin: center center;
+}
 
 </style>

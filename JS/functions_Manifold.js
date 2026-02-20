@@ -123,3 +123,12 @@ function manifoldToAngle(manifold) {
   if (manifold > maxValue) manifold = maxValue;
   return startAngle + ((manifold - minValue) * totalRotation) / (maxValue - minValue);
 }
+
+
+// Alterna la visibilidad del cristal roto en el instrumento Manifold
+function toggleManifoldBrokenCrystal() {
+  const crystal = document.getElementById('mf_broken_crystal01');
+  if (crystal) {
+    crystal.classList.toggle('visible');
+  }
+}
