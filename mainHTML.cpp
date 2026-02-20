@@ -63,20 +63,20 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
   <div class="grid-item" id="inst10" style="grid-row: 2; grid-column: 4;">Gyro</div>  
   <div class="grid-item" id="inst11" style="grid-row: 2; grid-column: 5;">Vertical Speed</div>  
   <div class="grid-item" id="inst12" style="grid-row: 2; grid-column: 1;">Fuel Flow Instrumento</div>  
-  <div class="grid-item" id="inst13" style="grid-row: 2; grid-column: 6;">Turn Coordinator Control</div>  
-  <div class="grid-item" id="inst14" style="grid-row: 2; grid-column: 7;">Controles Vertical Speed</div>  
-  <div class="grid-item" id="inst15" style="grid-row: 2; grid-column: 8;">Fuel Flow Control</div>  
+  <div class="grid-item" id="inst13" style="grid-row: 2; grid-column: 8;">Turn Coordinator Control</div>  
+  <div class="grid-item" id="inst14" style="grid-row: 2; grid-column: 9;">Controles Vertical Speed</div>  
+  <div class="grid-item" id="inst15" style="grid-row: 2; grid-column: 10;">Fuel Flow Control</div>  
 
   <div class="grid-item" id="inst17" style="grid-row: 3; grid-column: 4;">Manifold Instrumento</div>
-  <div class="grid-item" id="inst18" style="grid-row: 3; grid-column: 6;">Manifold Control</div>
+  <div class="grid-item" id="inst18" style="grid-row: 3; grid-column: 7;">Manifold Control</div>
   <div class="grid-item" id="inst19" style="grid-row: 3; grid-column: 3;">Oil Press Instrumento</div>
-  <div class="grid-item" id="inst20" style="grid-row: 3; grid-column: 7;">Oil Press Control</div>
+  <div class="grid-item" id="inst20" style="grid-row: 3; grid-column: 8;">Oil Press Control</div>
   <div class="grid-item" id="inst21" style="grid-row: 3; grid-column: 2;">Oil Temp Instrumento</div>
-  <div class="grid-item" id="inst22" style="grid-row: 3; grid-column: 8;">Oil Temp Control</div>
+  <div class="grid-item" id="inst22" style="grid-row: 3; grid-column: 9;">Oil Temp Control</div>
   <div class="grid-item" id="inst23" style="grid-row: 3; grid-column: 1;">CHT Instrumento</div>
-  <div class="grid-item" id="inst24" style="grid-row: 3; grid-column: 9;">CHT Control</div>
+  <div class="grid-item" id="inst24" style="grid-row: 3; grid-column: 10;">CHT Control</div>
   <div class="grid-item" id="inst25" style="grid-row: 3; grid-column: 5;">CHT Instrumento</div>
-  <div class="grid-item" id="inst26" style="grid-row: 3; grid-column: 10;">FUEL Control</div>
+  <div class="grid-item" id="inst26" style="grid-row: 3; grid-column: 6;">FUEL Control</div>
 
 </div>
 
@@ -168,7 +168,7 @@ window.addEventListener('DOMContentLoaded', () => {
       updateFUELRight(data['fuelValueRight']);
     }
 
-    
+
 
 
 
