@@ -43,7 +43,10 @@ para indicar visualmente su estado.
 } */
 
 /* === Estilos de Broken Crystal para instrumentos === */
-.brokenCrystal01, .brokenCrystal02, .brokenCrystal03 {
+.brokenCrystal01, .brokenCrystal02, .brokenCrystal03, 
+.brokenCrystal04, .brokenCrystal05, .brokenCrystal06, .brokenCrystal07, .brokenCrystal08, .brokenCrystal09, 
+ .brokenCrystal10, .brokenCrystal11, .brokenCrystal12, .brokenCrystal13, .brokenCrystal14, .brokenCrystal15,
+ .brokenCrystal16, .brokenCrystal17, .brokenCrystal18, .brokenCrystal19, .brokenCrystal20 {
   position: absolute;
   top: 0;
   left: 0;
@@ -75,7 +78,10 @@ para indicar visualmente su estado.
 }
 
 /* Clase para mostrar el cristal roto al hacer click */
-.brokenCrystal01.visible, .brokenCrystal02.visible, .brokenCrystal03.visible {
+.brokenCrystal01.visible, .brokenCrystal02.visible, .brokenCrystal03.visible,
+.brokenCrystal04.visible, .brokenCrystal05.visible, .brokenCrystal06.visible, .brokenCrystal07.visible, .brokenCrystal08.visible, .brokenCrystal09.visible,
+.brokenCrystal10.visible, .brokenCrystal11.visible, .brokenCrystal12.visible, .brokenCrystal13.visible, .brokenCrystal14.visible, .brokenCrystal15.visible,
+.brokenCrystal16.visible, .brokenCrystal17.visible, .brokenCrystal18.visible, .brokenCrystal19.visible, .brokenCrystal20.visible {
   opacity: 1;
 }
 

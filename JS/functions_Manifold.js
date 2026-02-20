@@ -127,7 +127,7 @@ function manifoldToAngle(manifold) {
 
 // Alterna la visibilidad del cristal roto en el instrumento Manifold
 function toggleManifoldBrokenCrystal() {
-  const crystal = document.getElementById('mf_broken_crystal01');
+  const crystal = document.getElementById('mf_broken_crystal05');
   if (crystal) {
     crystal.classList.toggle('visible');
   }
