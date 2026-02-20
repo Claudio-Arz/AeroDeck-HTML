@@ -137,3 +137,11 @@ function chtToAngle(cht) {
 }
 
 
+// Alterna la visibilidad del cristal roto en el instrumento CHT
+function toggleBrokenCrystal() {
+  const crystal = document.getElementById('cht_broken_crystal03');
+  if (crystal) {
+    crystal.classList.toggle('visible');
+  }
+}
+
