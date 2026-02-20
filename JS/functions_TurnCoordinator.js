@@ -171,3 +171,10 @@ function sendTurnCoordinatorToESP32(dataVar, dataValue) {
         console.warn('WebSocket no está conectado.');
     }
 }
+// Alterna la visibilidad del cristal roto en el instrumento CHT
+function toggleCHTBrokenCrystal() {
+  const crystal = document.getElementById('cht_broken_crystal03');
+  if (crystal) {
+    crystal.classList.toggle('visible');
+  }
+}
