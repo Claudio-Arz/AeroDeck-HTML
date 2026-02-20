@@ -136,9 +136,9 @@ window.addEventListener('DOMContentLoaded', () => {
       // console.log("Actualizando TC Péndulo: " + data['tc-pitchValue']);
       updateTurnCoordinatorBall(data['tc-pitchValue']);
     }
-    if (data['fuelFlow'] !== undefined && typeof updateFuelFlow === 'function') {
-      // console.log("Actualizando Fuel Flow: " + data['fuelFlow']);
-      updateFuelFlow(data['fuelFlow']);
+    if (data['fuelFlowValue'] !== undefined && typeof updateFuelFlow === 'function') {
+      // console.log("Actualizando Fuel Flow: " + data['fuelFlowValue']);
+      updateFuelFlow(data['fuelFlowValue']);
     }
     if (data['manifold'] !== undefined && typeof updateManifold === 'function') {
       // console.log("Actualizando Manifold: " + data['manifold']);
