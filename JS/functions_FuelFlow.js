@@ -32,9 +32,7 @@ function initFuelFlowControls() {
   } else {
     console.warn('No se encontró el slider de Fuel Flow en el DOM.');
   }
-
   
-  // Event listeners para los botones de valores predefinidos
 
   const btnMax = document.getElementById('ff-slider-max');
   const btnMid = document.getElementById('ff-slider-mid');

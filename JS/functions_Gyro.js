@@ -51,7 +51,7 @@ function updateGyroDialAndValue(gyro) {
 }
 
 // Configura los controles del Gyro
-function setupGyroControls(ws) {
+function setupGyroControls() {
   
   const gyroSlider = document.getElementById("gyr-slider");
   if (gyroSlider) {
