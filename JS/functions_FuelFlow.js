@@ -114,7 +114,7 @@ function updateFuelFlow(fuelFlow, sendToESP = false) {
 function sendFuelFlowToESP32(fuelFlow) {
   // Enviar el valor de Fuel Flow al ESP32 vía WebSocket
   if (window.ws && window.ws.readyState === WebSocket.OPEN) {
-    const data = JSON.stringify({ fuelFlow: fuelFlow });
+    const data = JSON.stringify({ fuelFlowValue: fuelFlow });
     window.ws.send(data);
     // console.log(`Enviando Fuel Flow al ESP32: ${fuelFlow} Gls/h`);
   } else {
