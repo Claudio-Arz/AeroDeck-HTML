@@ -42,6 +42,18 @@ para indicar visualmente su estado.
   transition: background 0.2s, color 0.2s, box-shadow 0.2s;
 } */
 
+/* === Estilos de Broken Crystal para instrumentos === */
+.brokenCrystal01, .brokenCrystal02, .brokenCrystal03{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none; /* Permite hacer clic a través de la imagen */
+  z-index: 10; /* Asegura que esté por encima del instrumento */
+}
+
 /* Combina grid-item y container para instrumentos individuales */
 .instrumento-grid {
   display: flex;
