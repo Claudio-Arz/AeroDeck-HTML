@@ -24,7 +24,7 @@
 
 function initFuelFlowControls() {
   // Event listener para el slider
-  const slider = document.getElementById('fuel-flow-slider');
+  const slider = document.getElementById('ff-slider');
   if (slider) {
     slider.addEventListener('input', () => {
       updateFuelFlow(parseFloat(slider.value), true); // true = desde el slider, enviar al ESP32
@@ -36,11 +36,11 @@ function initFuelFlowControls() {
   
   // Event listeners para los botones de valores predefinidos
 
-  const btnMax = document.getElementById('fuel-flow-slider-max');
-  const btnMid = document.getElementById('fuel-flow-slider-mid');
-  const btnMin = document.getElementById('fuel-flow-slider-min');
-  const btnPlus = document.getElementById('fuel-flow-btn-plus');
-  const btnMinus = document.getElementById('fuel-flow-btn-minus');
+  const btnMax = document.getElementById('ff-slider-max');
+  const btnMid = document.getElementById('ff-slider-mid');
+  const btnMin = document.getElementById('ff-slider-min');
+  const btnPlus = document.getElementById('ff-btn-plus');
+  const btnMinus = document.getElementById('ff-btn-minus');
   
   if (btnMax) {
     btnMax.addEventListener('click', () => {
@@ -59,7 +59,7 @@ function initFuelFlowControls() {
   }
   if (btnPlus) {
     btnPlus.addEventListener('click', () => {
-      const slider = document.getElementById('fuel-flow-slider');
+      const slider = document.getElementById('ff-slider');
       if (slider) {
         const newValue = Math.min(20, parseFloat(slider.value) + 1); // +1 Gls/h
         updateFuelFlow(newValue, true);
@@ -68,7 +68,7 @@ function initFuelFlowControls() {
   }
   if (btnMinus) {
     btnMinus.addEventListener('click', () => {
-      const slider = document.getElementById('fuel-flow-slider');
+      const slider = document.getElementById('ff-slider');
       if (slider) {
         const newValue = Math.max(0, parseFloat(slider.value) - 1); // -1 Gls/h
         updateFuelFlow(newValue, true);
@@ -79,10 +79,10 @@ function initFuelFlowControls() {
 }
 
 function updateFuelFlow(fuelFlow, sendToESP = false) {
-  const slider = document.getElementById('fuel-flow-slider');
-  const valueLabel = document.getElementById('fuel-flow-value');
-  const sliderLabel = document.getElementById('fuel-flow-slider-value-label');
-  const needle = document.getElementById('fuel-flow_needle');
+  const slider = document.getElementById('ff-slider');
+  const valueLabel = document.getElementById('ff-value');
+  const sliderLabel = document.getElementById('ff-slider-value-label');
+  const needle = document.getElementById('ff_needle');
   if (!needle) {
     console.warn('No se encontró la aguja de Fuel Flow en el DOM.');
     return;
