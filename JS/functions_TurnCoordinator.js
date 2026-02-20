@@ -98,7 +98,7 @@ function setupTurnCoordinatorControls() {
     const btnMin = document.getElementById('turncoordinator-slider-min');
     const btnPlus = document.getElementById('turncoordinator-btn-plus');
     const btnMinus = document.getElementById('turncoordinator-btn-minus');
-    
+ 
     if (btnMax) {
         btnMax.addEventListener('click', () => {
             if (slider) slider.value = 30;
@@ -171,9 +171,9 @@ function sendTurnCoordinatorToESP32(dataVar, dataValue) {
         console.warn('WebSocket no está conectado.');
     }
 }
-// Alterna la visibilidad del cristal roto en el instrumento CHT
-function toggleCHTBrokenCrystal() {
-  const crystal = document.getElementById('cht_broken_crystal03');
+// Alterna la visibilidad del cristal roto en el instrumento Turn Coordinator
+function toggleTurnBrokenCrystal() {
+  const crystal = document.getElementById('turn_broken_crystal03');
   if (crystal) {
     crystal.classList.toggle('visible');
   }
