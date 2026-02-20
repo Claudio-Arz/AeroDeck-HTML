@@ -135,7 +135,7 @@ function fuelFlowToAngle(fuelFlow) {
 
 // Alterna la visibilidad del cristal roto en el instrumento Fuel Flow
 function toggleFuelFlowBrokenCrystal() {
-  const crystal = document.getElementById('ff_broken_crystal01');
+  const crystal = document.getElementById('ff_broken_crystal_fire');
   if (crystal) {
     crystal.classList.toggle('visible');
   }
