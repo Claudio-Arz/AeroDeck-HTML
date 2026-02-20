@@ -51,10 +51,11 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 
 <div id="main-grid" class="grid-container">
   
+  <div class="grid-item" id="inst04" style="grid-row: 1; grid-column: 2;">RPM</div>  
   <div class="grid-item" id="inst01" style="grid-row: 1; grid-column: 3;">Air Speed</div>  
   <div class="grid-item" id="inst02" style="grid-row: 1; grid-column: 4;">Attitude Control</div>  
   <div class="grid-item" id="inst03" style="grid-row: 1; grid-column: 5;">Altimeter</div>  
-  <div class="grid-item" id="inst04" style="grid-row: 1; grid-column: 2;">RPM</div>  
+
   <div class="grid-item" id="inst05" style="grid-row: 1; grid-column: 7;">Controles Pitch & Roll</div>  
   <div class="grid-item" id="inst06" style="grid-row: 1; grid-column: 8;">Controles RPM</div>  
   <div class="grid-item" id="inst07" style="grid-row: 1; grid-column: 9;">Controles Gyro</div>  
@@ -64,7 +65,7 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
   <div class="grid-item" id="inst11" style="grid-row: 2; grid-column: 5;">Vertical Speed</div>  
   <div class="grid-item" id="inst12" style="grid-row: 2; grid-column: 1;">Fuel Flow Instrumento</div>  
   <div class="grid-item" id="inst13" style="grid-row: 2; grid-column: 8;">Turn Coordinator Control</div>  
-  <div class="grid-item" id="inst14" style="grid-row: 2; grid-column: 9;">Controles Vertical Speed</div>  
+  <div class="grid-item" id="inst14" style="grid-row: 2; grid-column: 6;">Controles Vertical Speed</div>  
   <div class="grid-item" id="inst15" style="grid-row: 2; grid-column: 10;">Fuel Flow Control</div>  
 
   <div class="grid-item" id="inst17" style="grid-row: 3; grid-column: 4;">Manifold Instrumento</div>
