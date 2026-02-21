@@ -22,13 +22,13 @@
                      |     |              |      |
                      |      --          --       |
                      |         ---------         |
-                     +---------------------------+
-                     |                           |
-                     |                           |
-                     |  Pitch: 0.0°, Roll: 0.0°  |
-                     |                           |
-                     |                           |
-                     +---------------------------+
+                     +------------+--------------+
+                     |  Pitch:    |      Roll:   |
+                     |   0.0°     |      0.0°    |
+                     |    ▲       |       ▲      |
+                     |            |              |
+                     |    ▼       |       ▼      |
+                     +------------+--------------+
 
 -->
 
@@ -53,7 +53,22 @@
     </svg>
     <div class="joystick-knob" id="knob"></div>
   </div>
-  <div class="coords" id="coords">P: 0° R: 0°</div>
+  
+  <!-- Sección de botones Pitch y Roll según diagrama -->
+  <div class="atti-buttons-grid">
+    <div class="atti-col">
+      <span class="atti-label">Pitch:</span>
+      <span class="atti-value" id="pitch-value">0.0°</span>
+      <button class="atti-arrow-btn" id="pitch-up-btn">▲</button>
+      <button class="atti-arrow-btn" id="pitch-down-btn">▼</button>
+    </div>
+    <div class="atti-col">
+      <span class="atti-label">Roll:</span>
+      <span class="atti-value" id="roll-value">0.0°</span>
+      <button class="atti-arrow-btn" id="roll-up-btn">▲</button>
+      <button class="atti-arrow-btn" id="roll-down-btn">▼</button>
+    </div>
+  </div>
 </div>
 
 <style>
@@ -135,13 +150,51 @@
     cursor: grabbing;
   }
 
-  .coords {
-    font-size: 7px;
-    margin-top: 20px;
-    letter-spacing: 0.5px;
-    text-align: center;
-    color: #ccc;
+  .atti-buttons-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
     width: 100%;
+    margin-top: 8px;
+  }
+
+  .atti-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .atti-label {
+    font-size: 9px;
+    color: #aaa;
+  }
+
+  .atti-value {
+    font-size: 10px;
+    color: #fff;
+    font-weight: bold;
+  }
+
+  .atti-arrow-btn {
+    width: 36px;
+    height: 20px;
+    font-size: 12px;
+    background: #333;
+    color: #fff;
+    border: 1px solid #555;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+  }
+
+  .atti-arrow-btn:hover {
+    background: #555;
+  }
+
+  .atti-arrow-btn:active {
+    background: #2196f3;
   }
 </style>
 

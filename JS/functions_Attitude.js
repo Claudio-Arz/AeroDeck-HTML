@@ -20,6 +20,8 @@ let joystickCenterX = 40;  // Centro del joystick de 80px
 let joystickCenterY = 40;
 let joystickRadius = 28;   // Radio máximo de movimiento del knob (80/2 - 10 para el knob)
 let zeroActive = false;
+let currentPitch = 0;  // Valor actual de pitch en grados
+let currentRoll = 0;   // Valor actual de roll en grados
 
 function setupAttitudeControls() {
   const knob = document.getElementById('knob');
@@ -27,6 +29,14 @@ function setupAttitudeControls() {
   const coordsDisplay = document.getElementById('coords');
   const zeroBtn = document.getElementById('atti-zero-btn');
   const armLine = document.getElementById('joystick-arm-line');
+  
+  // Elementos nuevos: valores y botones de pitch/roll
+  const pitchValueEl = document.getElementById('pitch-value');
+  const rollValueEl = document.getElementById('roll-value');
+  const pitchUpBtn = document.getElementById('pitch-up-btn');
+  const pitchDownBtn = document.getElementById('pitch-down-btn');
+  const rollUpBtn = document.getElementById('roll-up-btn');
+  const rollDownBtn = document.getElementById('roll-down-btn');
 
   if (!knob || !joystick) {
     console.warn('No se encontró el joystick en el DOM');
@@ -46,8 +56,8 @@ function setupAttitudeControls() {
       zeroBtn.style.background = 'rgb(255, 0, 0)';
       
       // Obtener posición actual del knob
-      const currentX = parseFloat(knob.style.left) + 15 || joystickCenterX;
-      const currentY = parseFloat(knob.style.top) + 15 || joystickCenterY;
+      const currentX = parseFloat(knob.style.left)  || joystickCenterX;
+      const currentY = parseFloat(knob.style.top) || joystickCenterY;
       
       // Calcular valores iniciales de pitch/roll desde la posición del knob
       const startX = currentX - joystickCenterX;
@@ -112,6 +122,53 @@ function setupAttitudeControls() {
   document.addEventListener('mouseup', endDrag);
   document.addEventListener('touchend', endDrag);
 
+  // Eventos de los botones de flechas Pitch/Roll
+  if (pitchUpBtn) {
+    pitchUpBtn.addEventListener('click', () => {
+      if (zeroActive) return;
+      currentPitch = Math.max(-20, currentPitch - 1);  // Arriba = pitch negativo (nariz arriba)
+      updatePitchRollFromButtons();
+    });
+  }
+  if (pitchDownBtn) {
+    pitchDownBtn.addEventListener('click', () => {
+      if (zeroActive) return;
+      currentPitch = Math.min(20, currentPitch + 1);   // Abajo = pitch positivo (nariz abajo)
+      updatePitchRollFromButtons();
+    });
+  }
+  if (rollUpBtn) {
+    rollUpBtn.addEventListener('click', () => {
+      if (zeroActive) return;
+      currentRoll = Math.min(30, currentRoll + 1);     // Roll derecha
+      updatePitchRollFromButtons();
+    });
+  }
+  if (rollDownBtn) {
+    rollDownBtn.addEventListener('click', () => {
+      if (zeroActive) return;
+      currentRoll = Math.max(-30, currentRoll - 1);    // Roll izquierda
+      updatePitchRollFromButtons();
+    });
+  }
+
+  // Función auxiliar para actualizar desde botones
+  function updatePitchRollFromButtons() {
+    // Actualizar displays
+    if (pitchValueEl) pitchValueEl.textContent = currentPitch.toFixed(1) + '°';
+    if (rollValueEl) rollValueEl.textContent = currentRoll.toFixed(1) + '°';
+    
+    // Actualizar posición del knob según los valores actuales
+    const knobX = (currentRoll / 30) * joystickRadius + joystickCenterX;
+    const knobY = (currentPitch / 20) * 50;  // 50px = 20°
+    const limitedY = Math.max(-joystickRadius, Math.min(joystickRadius, knobY));
+    updateKnobPosition(knobX, joystickCenterY + limitedY);
+    
+    // Enviar al ESP32
+    sendAttitudeToESP32("pitchValue", currentPitch);
+    sendAttitudeToESP32("rollValue", currentRoll);
+  }
+
   function startDrag(e) {
     if (zeroActive) return; // No mover si Zero está activo
     joystickDragging = true;
@@ -155,14 +212,17 @@ function setupAttitudeControls() {
     const pitchPx = Math.max(-50, Math.min(50, y));
     const pitchDeg = (pitchPx / 50) * 20;
 
+    // Actualizar variables globales
+    currentPitch = pitchDeg;
+    currentRoll = rollDeg;
+
+    // Actualizar displays de Pitch/Roll en los botones
+    if (pitchValueEl) pitchValueEl.textContent = pitchDeg.toFixed(1) + '°';
+    if (rollValueEl) rollValueEl.textContent = rollDeg.toFixed(1) + '°';
+
     // Enviar al ESP32
     sendAttitudeToESP32("pitchValue", pitchDeg);
     sendAttitudeToESP32("rollValue", rollDeg);
-
-    // Mostrar coordenadas
-    if (coordsDisplay) {
-      coordsDisplay.textContent = `roll: ${rollDeg.toFixed(1)}°, pitch: ${pitchDeg.toFixed(1)}°`;
-    }
   }
 
   function endDrag() {

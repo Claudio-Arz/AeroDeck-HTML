@@ -109,8 +109,8 @@ para indicar visualmente su estado.
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  font-size: 32px;
-  width: 100px;
+  font-size: 16px;
+  width: 50px;
   text-align: center;
   z-index: 20;
   background: rgba(8,32,50,0.85);
