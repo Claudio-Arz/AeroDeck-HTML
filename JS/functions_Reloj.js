@@ -32,7 +32,7 @@ function updateReloj(horaValue) {
 
 }
 
-// Alterna la visibilidad del cristal roto en el instrumento Reloj
+// Alterna la visibilidad del cristal roto en el instrumento  Reloj
 function toggleRelojBrokenCrystal() {
   const crystal = document.getElementById('reloj_broken_crystal14');
   if (crystal) {
