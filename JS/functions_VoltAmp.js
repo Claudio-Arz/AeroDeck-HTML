@@ -130,7 +130,7 @@ function updateVoltAmpLeft(voltAmp, sendToESP = false) {
   const slider = document.getElementById('voltamp-slider-left');
   const valueLabel = document.getElementById('voltamp-value-left');
   const sliderLabel = document.getElementById('voltamp-slider-value-label-left');
-  const needle = document.getElementById('voltamp_Lneedle');
+  const needle = document.getElementById('voltAmp_Lneedle');
   if (!needle) {
     console.warn('No se encontró la aguja de Volt/Amp en el DOM.');
     return;
@@ -165,7 +165,7 @@ function updateVoltAmpRight(voltAmp, sendToESP = false) {
   const slider = document.getElementById('voltamp-slider-right');
   const valueLabel = document.getElementById('voltamp-value-right');
   const sliderLabel = document.getElementById('voltamp-slider-value-label-right');
-  const needle = document.getElementById('voltamp_Rneedle');
+  const needle = document.getElementById('voltAmp_Rneedle');
   if (!needle) {
     console.warn('No se encontró la aguja de Volt/Amp en el DOM.');
     return;
