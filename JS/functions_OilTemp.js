@@ -133,3 +133,12 @@ function oilTempToAngle(oilTemp) {
   if (oilTemp > maxValue) oilTemp = maxValue;
   return minAngle + ((oilTemp - minValue) * (minAngle - maxAngle)) / (maxValue - minValue);
 }
+
+
+        // Alterna la visibilidad del cristal roto en el instrumento Oil Temp
+        function toggleOilTempBrokenCrystal() {
+  const crystal = document.getElementById('ot_broken_crystal02');
+  if (crystal) {
+    crystal.classList.toggle('visible');
+  }
+}
