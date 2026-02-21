@@ -196,3 +196,12 @@ function setDrumHours(horas, minutos) {
     }
   });
 }
+
+
+// Alterna la visibilidad del cristal roto en el instrumento RPM
+function toggleRPMBrokenCrystal() {
+  const crystal = document.getElementById('rpm_broken_crystal09');
+  if (crystal) {
+    crystal.classList.toggle('visible');
+  }
+}

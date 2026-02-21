@@ -116,6 +116,13 @@ function updateVariometerAndValue(vertSpeed) {
 } 
 
 
+// Alterna la visibilidad del cristal roto en el instrumento Variometer
+function toggleVariometerBrokenCrystal() {
+  const crystal = document.getElementById('variometer_broken_crystal08');
+  if (crystal) {
+    crystal.classList.toggle('visible');
+  }
+}
 
 
 
