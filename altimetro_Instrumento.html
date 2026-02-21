@@ -12,7 +12,7 @@
   Tiene que incluir el CSS y el JS Especifico para el instrumento Altimetro.
 
 -->
-<div class="instrumento-grid">
+<div class="instrumento-grid" onclick="toggleAltimeterBrokenCrystal()">
     <!-- Fondo escala Kollsman -->
     <img class="altimeter-bg" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/altimeter/escala_kollsman.png" alt="Escala Kollsman">
     <!-- Dial principal -->
@@ -31,7 +31,8 @@
     <div class="aguja-altimeter-cientos" id="aguja-altimeter-cientos">
       <img id="aguja_pies" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/altimeter/aguja_pies.png" alt="Aguja Pies">
     </div>
-
+    <img class="brokenCrystal12" id="altimeter_broken_crystal12" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/Crystals/BrokenCrystal12.png" 
+    alt="Broken Crystal Altimeter">
     <div id="altimeter-value" class="instrument-center-label">--</div>
 </div>
 

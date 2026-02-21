@@ -117,3 +117,12 @@ function airspeedToAngle(airspeed) {
   if (airspeed > maxValue) airspeed = maxValue;
   return minAngle + ((airspeed - minValue) * (maxAngle - minAngle)) / (maxValue - minValue);
 }
+
+
+// Alterna la visibilidad del cristal roto en el instrumento AirSpeed
+function toggleAirSpeedBrokenCrystal() {
+  const crystal = document.getElementById('airspeed_broken_crystal11');
+  if (crystal) {
+    crystal.classList.toggle('visible');
+  }
+}

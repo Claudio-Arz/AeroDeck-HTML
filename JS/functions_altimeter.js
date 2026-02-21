@@ -38,3 +38,10 @@ function updateAltimeter(altitudValue, bandera_off) {
   }
 }
 
+// Alterna la visibilidad del cristal roto en el instrumento Altímetro
+function toggleAltimeterBrokenCrystal() {
+  const crystal = document.getElementById('altimeter_broken_crystal12');
+  if (crystal) {
+    crystal.classList.toggle('visible');
+  }
+}

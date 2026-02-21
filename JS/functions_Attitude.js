@@ -223,3 +223,13 @@ function initializeAttitudeControls() {
 function initAttitudeControls() {
   setupAttitudeControls();
 }
+
+
+
+// Alterna la visibilidad del cristal roto en el instrumento Attitude
+function toggleAttitudeBrokenCrystal() {
+  const crystal = document.getElementById('attitude_broken_crystal12');
+  if (crystal) {
+    crystal.classList.toggle('visible');
+  }
+}
