@@ -55,6 +55,7 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
   <div class="grid-item" id="inst01" style="grid-row: 1; grid-column: 3;">Air Speed</div>  
   <div class="grid-item" id="inst02" style="grid-row: 1; grid-column: 4;">Attitude Control</div>  
   <div class="grid-item" id="inst03" style="grid-row: 1; grid-column: 5;">Altimeter</div>  
+  <div class="grid-item" id="inst27" style="grid-row: 1; grid-column: 6;">Reloj</div>  
 
   <div class="grid-item" id="inst05" style="grid-row: 1; grid-column: 7;">Controles Pitch & Roll</div>  
   <div class="grid-item" id="inst06" style="grid-row: 1; grid-column: 9;">Controles RPM</div>  
@@ -102,6 +103,9 @@ window.addEventListener('DOMContentLoaded', () => {
       return;
     }
     // --- Actualizar instrumentos ---
+    if (data.relojValue !== undefined && typeof updateReloj === 'function') {
+      updateReloj(data.relojValue);
+    }
     if (data.verticalSpeed !== undefined && typeof updateVariometerAndValue === 'function') {
       updateVariometerAndValue(data.verticalSpeed);
     }
@@ -176,6 +180,15 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+
+// Cargar el HTML del instrumento Reloj de forma dinámica
+window.addEventListener('DOMContentLoaded', () => {
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/Reloj_Instrumento.html")
+  .then(r => r.text())
+  .then(html => {
+    document.getElementById("inst27").innerHTML = html;
+    });
+});     
 
 // Cargar el HTML del instrumento FUEL de forma dinámica
 window.addEventListener('DOMContentLoaded', () => {

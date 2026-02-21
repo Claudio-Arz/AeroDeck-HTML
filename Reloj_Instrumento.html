@@ -1,0 +1,73 @@
+<!--
+  HTML para el instrumento Reloj.
+  Autor: Claudio Arzamendia
+  Fecha: 2026-02-07 18:51:04
+
+  Este programa tiene que recibir la hora a través de WebSocket
+  con el nombre "horaValue" y calcular los ángulos de las agujas
+  del reloj en función de ese valor. 
+  También recibe el valor de bandera_off para mostrar u ocultar 
+  la bandera de OFF cuando la altitud supera los 19000 pies.
+
+  Tiene que incluir el CSS y el JS Especifico para el instrumento Reloj.
+
+-->
+<div class="instrumento-grid" onclick="toggleRelojBrokenCrystal()">
+    <!-- Dial principal -->
+    <img class="reloj-dial" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/Reloj/reloj_dial.png" alt="Reloj Dial">
+    <!-- Agujas principales -->
+    <div class="aguja-reloj" id="aguja-reloj">
+      <img id="aguja_horas" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/Reloj/reloj_horas.png" alt="Aguja Horas">
+      <img id="aguja_minutos" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/Reloj/reloj_minutos.png" alt="Aguja Minutos">
+    </div>
+    <!-- Aguja de segundos -->
+    <div class="aguja-reloj-segundos" id="aguja-reloj-segundos">
+      <img id="aguja_segundos" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/Reloj/reloj_segundos.png" alt="Aguja Segundos">
+    </div>
+    <img class="brokenCrystal14" id="reloj_broken_crystal14" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/Crystals/BrokenCrystal14.png" 
+    alt="Broken Crystal Reloj">
+
+</div>
+
+<style>
+
+
+  /* Estilos específicos para el instrumento Reloj */
+
+  .reloj-dial {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    pointer-events: none;
+    border-radius: 50%;
+    object-fit: contain;
+  }
+
+
+  .aguja-reloj img {
+    width: 7.8%;
+    height: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 18;
+    pointer-events: none;
+    object-fit: contain;
+  }
+  .aguja-reloj-segundos img {
+    width: 6.1%;
+    height: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 18;
+    pointer-events: none;
+    object-fit: contain;
+  }
+</style>
+
