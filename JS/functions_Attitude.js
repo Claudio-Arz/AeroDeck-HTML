@@ -89,10 +89,16 @@ function setupAttitudeControls() {
         sendAttitudeToESP32("pitchValue", pitchDeg);
         sendAttitudeToESP32("rollValue", rollDeg);
         
+        // Actualizar variables globales durante animación
+        currentPitch = pitchDeg;
+        currentRoll = rollDeg;
+        
         // Mostrar coordenadas
         if (coordsDisplay) {
           coordsDisplay.textContent = `roll: ${rollDeg.toFixed(1)}°, pitch: ${pitchDeg.toFixed(1)}°`;
         }
+        if (pitchValueEl) pitchValueEl.textContent = pitchDeg.toFixed(1) + '°';
+        if (rollValueEl) rollValueEl.textContent = rollDeg.toFixed(1) + '°';
         
         if (progress < 1) {
           requestAnimationFrame(animateToZero);
@@ -103,10 +109,14 @@ function setupAttitudeControls() {
           zeroBtn.style.background = '#444';
           
           // Asegurar valores finales exactos
+          currentPitch = 0;
+          currentRoll = 0;
           updateKnobPosition(joystickCenterX, joystickCenterY);
           sendAttitudeToESP32("pitchValue", 0);
           sendAttitudeToESP32("rollValue", 0);
           if (coordsDisplay) coordsDisplay.textContent = 'roll: 0°, pitch: 0°';
+          if (pitchValueEl) pitchValueEl.textContent = '0.0°';
+          if (rollValueEl) rollValueEl.textContent = '0.0°';
         }
       }
       
