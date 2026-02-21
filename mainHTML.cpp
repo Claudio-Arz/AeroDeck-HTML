@@ -40,6 +40,7 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_OilTemp.js"></script>
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_CHT.js"></script>
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_FUEL.js"></script>
+<script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_Reloj.js"></script>
 
 
 </head>
