@@ -215,7 +215,7 @@ function voltAmpToAngleRight(voltAmp) {
   const maxAngle = +45; // Ángulo máximo para 60 V/A
   if (voltAmp < minValue) voltAmp = minValue;
   if (voltAmp > maxValue) voltAmp = maxValue;
-  return minAngle - ((voltAmp - minValue) * (maxAngle - minAngle)) / (maxValue - minValue);
+  return minAngle - ((voltAmp - minValue) * (maxAngle - minAngle)) / (maxValue - minValue)-180;
 }
 // Mapea el valor de Volt/Amp (3-7) al ángulo de la aguja (0 / -90 grados)
 function voltAmpToAngleLeft(voltAmp) {
