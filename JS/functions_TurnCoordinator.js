@@ -171,9 +171,10 @@ function sendTurnCoordinatorToESP32(dataVar, dataValue) {
         console.warn('WebSocket no está conectado.');
     }
 }
+
 // Alterna la visibilidad del cristal roto en el instrumento Turn Coordinator
-function toggleTurnBrokenCrystal() {
-  const crystal = document.getElementById('turn_broken_crystal02');
+function toggleTurnCoorBrokenCrystal() {
+  const crystal = document.getElementById('turn_coor_broken_crystal06');
   if (crystal) {
     crystal.classList.toggle('visible');
   }

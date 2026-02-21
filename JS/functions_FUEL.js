@@ -227,3 +227,12 @@ function fuelToAngleLeft(fuel) {
   if (fuel > maxValue) fuel = maxValue;
   return minAngle - ((fuel - minValue) * (maxAngle - minAngle)) / (maxValue - minValue) + 180;
 }
+
+
+// Alterna la visibilidad del cristal roto en el instrumento FUEL
+function toggleFuelBrokenCrystal() {
+  const crystal = document.getElementById('fuel_broken_crystal04');
+  if (crystal) {
+    crystal.classList.toggle('visible');
+  }
+}

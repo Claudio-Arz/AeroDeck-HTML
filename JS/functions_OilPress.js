@@ -129,3 +129,11 @@ function oilPressToAngle(oilPress) {
   if (oilPress > maxValue) oilPress = maxValue;
   return minAngle + ((oilPress - minValue) * (minAngle - maxAngle)) / (maxValue - minValue);
 }
+
+// Alterna la visibilidad del cristal roto en el instrumento Oil Press
+function toggleOilPressBrokenCrystal() {
+  const crystal = document.getElementById('op_broken_crystal03');
+  if (crystal) {
+    crystal.classList.toggle('visible');
+  }
+}   

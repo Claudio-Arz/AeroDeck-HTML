@@ -135,8 +135,8 @@ function oilTempToAngle(oilTemp) {
 }
 
 
-        // Alterna la visibilidad del cristal roto en el instrumento Oil Temp
-        function toggleOilTempBrokenCrystal() {
+// Alterna la visibilidad del cristal roto en el instrumento Oil Temp
+function toggleOilTempBrokenCrystal() {
   const crystal = document.getElementById('ot_broken_crystal02');
   if (crystal) {
     crystal.classList.toggle('visible');
