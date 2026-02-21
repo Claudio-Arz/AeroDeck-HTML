@@ -13,19 +13,19 @@
 <div class="instrumento-grid" onclick="toggleAttitudeBrokenCrystal()">
     <!-- Dial -->
     <img class="voltAmp-dial" id="voltAmp_dial" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/VoltAmp/VoltAmp_dial.png"
-    alt="Ball Attitude">
+    alt="Volt/Amp Dial">
     <!-- LNeedle -->
     <img class="voltAmp-Lneedle" id="voltAmp_Lneedle" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/VoltAmp/VoltAmp_Lneedle.png" 
-    alt="Dial Attitude">
+    alt="Volt/Amp Left Needle">
     <!-- RNeedle -->
     <img class="voltAmp-Rneedle" id="voltAmp_Rneedle" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/VoltAmp/VoltAmp_Rneedle.png" 
-    alt="Front">
+    alt="Volt/Amp Right Needle">
     <!-- Front -->
-    <img class="voltAmp-front" id="voltAmp_front" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/VoltAmp/VoltAmp_front.png" 
-    alt="Front">
+    <img class="voltAmp-front" id="voltAmp_front" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/VoltAmp/VoltAmp_Front.png" 
+    alt="Volt/Amp Front">
 
     <img class="brokenCrystal12" id="voltAmp_broken_crystal15" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/Crystals/BrokenCrystal15.png" 
-    alt="Broken Crystal Attitude">    
+    alt="Broken Crystal Volt/Amp">    
 </div>
 
 <style>
@@ -42,10 +42,10 @@
 }
 
 .voltAmp-front {
-  width:81.25%;
-  height:89.58%;
+  width:100%;
+  height:77.91%;
   position:absolute;
-  top:10.42%;
+  top:22.09%;
   left:9.375%;
   z-index:5;
   pointer-events:none;
@@ -60,9 +60,8 @@
   z-index:3;
   pointer-events:none;
   object-fit: contain;  
-  border-radius: 392px;
   /* El centro del instrumento está a 50% del contenedor padre. */
-  transform-origin: 50% 50%;
+  transform-origin: left center;
 }
 .voltAmp-Rneedle {
   width: 100%;
@@ -73,9 +72,8 @@
   z-index:4;
   pointer-events:none;
   object-fit: contain;  
-  border-radius: 392px;
   /* El centro del instrumento está a 50% del contenedor padre. */
-  transform-origin: 50% 50%;
+  transform-origin: right center;
 }
 
 
