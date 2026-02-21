@@ -124,6 +124,15 @@ function setupGyroControls() {
     });
   }
 }
+
+
+// Alterna la visibilidad del cristal roto en el instrumento Gyro
+function toggleGyroBrokenCrystal() {
+  const crystal = document.getElementById('gyro_broken_crystal01');
+  if (crystal) {
+    crystal.classList.toggle('visible');
+  }
+}
 // Fin de functions_Gyro.js
 
 
