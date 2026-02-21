@@ -229,9 +229,9 @@ function voltAmpToAngleLeft(voltAmp) {
 }
 
 
-// Alterna la visibilidad del cristal roto en el instrumento FUEL
-function toggleFuelBrokenCrystal() {
-  const crystal = document.getElementById('fuel_broken_crystal16');
+// Alterna la visibilidad del cristal roto en el instrumento VOLT/Amp
+function toggleVoltAmpBrokenCrystal() {
+  const crystal = document.getElementById('voltAmp_broken_crystal16');
   if (crystal) {
     crystal.classList.toggle('visible');
   }
