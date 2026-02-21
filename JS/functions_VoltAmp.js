@@ -211,8 +211,8 @@ function sendVoltAmpToESP32(side, voltAmp) {
 function voltAmpToAngleRight(voltAmp) {
   const minValue = -60;
   const maxValue = +60;
-  const minAngle = -25; // Ángulo mínimo para -60 V/A
-  const maxAngle = 70; // Ángulo máximo para 60 V/A
+  const minAngle = -45; // Ángulo mínimo para -60 V/A
+  const maxAngle = +45; // Ángulo máximo para 60 V/A
   if (voltAmp < minValue) voltAmp = minValue;
   if (voltAmp > maxValue) voltAmp = maxValue;
   return minAngle - ((voltAmp - minValue) * (maxAngle - minAngle)) / (maxValue - minValue);
@@ -221,11 +221,11 @@ function voltAmpToAngleRight(voltAmp) {
 function voltAmpToAngleLeft(voltAmp) {
   const minValue = 3;
   const maxValue = 7;
-  const minAngle = 25; // Ángulo mínimo para 3 V/A
-  const maxAngle = 70; // Ángulo máximo para 7 V/A
+  const minAngle = 0; // Ángulo mínimo para 3 V/A
+  const maxAngle = -90; // Ángulo máximo para 7 V/A
   if (voltAmp < minValue) voltAmp = minValue;
   if (voltAmp > maxValue) voltAmp = maxValue;
-  return minAngle + ((voltAmp - minValue) * (maxAngle - minAngle)) / (maxValue - minValue) ;
+  return minAngle - ((voltAmp - minValue) * (maxAngle - minAngle)) / (maxValue - minValue) + 45;
 }
 
 
