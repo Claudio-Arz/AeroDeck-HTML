@@ -12,13 +12,13 @@
     los event listeners para los controles interactivos del Volt/Amp, como el slider y los 
     botones de valores predefinidos.
 
-  El instrumento de Volt/Amp muestra la cantidad de voltaje y amperaje disponible en tiempo real. El valor se representa en voltios (V) y amperios (A) y se 
-  muestra en una escala que va de 0 a 25 V y 0 a 25 A. El instrumento tiene una aguja que se mueve 
-  para indicar la cantidad de voltaje y amperaje actual, y un valor numérico que muestra la cantidad exacta de 
-  voltaje y amperaje disponible. El control de Volt/Amp se puede ajustar mediante 
-  un slider o botones predefinidos para valores comunes de Volt/Amp. Al cambiar el valor, 
-  se anima la aguja del instrumento y se envía el nuevo valor al ESP32 para que lo refleje 
-  en el instrumento físico y en todas las terminales conectadas.
+  El instrumento de Volt/Amp tiene dos agujas:
+  - Aguja izquierda (Voltímetro): escala de 3V a 7V
+  - Aguja derecha (Amperímetro): escala de -60A a +60A
+  
+  El control permite ajustar ambas agujas mediante sliders y botones predefinidos. 
+  Al cambiar el valor, se anima la aguja del instrumento y se envía el nuevo valor 
+  al ESP32 para que lo refleje en el instrumento físico y en todas las terminales conectadas.
 
 
 */
@@ -56,27 +56,27 @@ function initVoltAmpControls() {
   const btnPlusR = document.getElementById('voltamp-btn-plus-right');
   const btnMinusR = document.getElementById('voltamp-btn-minus-right');
   
-  // Botones Left
+  // Botones Left (Voltímetro: 3-7V)
   if (btnMaxL) {
     btnMaxL.addEventListener('click', () => {
-      updateVoltAmpLeft(25, true); // Full: 25 V/A
+      updateVoltAmpLeft(7, true); // Max: 7V
     });
   }
   if (btnMidL) {
     btnMidL.addEventListener('click', () => {
-      updateVoltAmpLeft(12.5, true); // Half: 12.5 V/A
+      updateVoltAmpLeft(5, true); // Mid: 5V
     });
   }
   if (btnMinL) {
     btnMinL.addEventListener('click', () => {
-      updateVoltAmpLeft(0, true); // Empty: 0 V/A
+      updateVoltAmpLeft(3, true); // Min: 3V
     });
   }
   if (btnPlusL) {
     btnPlusL.addEventListener('click', () => {
       const slider = document.getElementById('voltamp-slider-left');
       if (slider) {
-        const newValue = Math.min(25, parseFloat(slider.value) + 1);
+        const newValue = Math.min(7, parseFloat(slider.value) + 0.5);
         updateVoltAmpLeft(newValue, true);
       }
     });
@@ -85,32 +85,32 @@ function initVoltAmpControls() {
     btnMinusL.addEventListener('click', () => {
       const slider = document.getElementById('voltamp-slider-left');
       if (slider) {
-        const newValue = Math.max(0, parseFloat(slider.value) - 1);
+        const newValue = Math.max(3, parseFloat(slider.value) - 0.5);
         updateVoltAmpLeft(newValue, true);
       }
     });
   }
-  // Botones Right
+  // Botones Right (Amperímetro: -60 a 60A)
   if (btnMaxR) {
     btnMaxR.addEventListener('click', () => {
-      updateVoltAmpRight(25, true); // Full: 25 V/A
+      updateVoltAmpRight(60, true); // Max: 60A
     });
   }
   if (btnMidR) {
     btnMidR.addEventListener('click', () => {
-      updateVoltAmpRight(12.5, true); // Half: 12.5 V/A
+      updateVoltAmpRight(0, true); // Mid: 0A (centro)
     });
   }
   if (btnMinR) {
     btnMinR.addEventListener('click', () => {
-      updateVoltAmpRight(0, true); // Empty: 0 V/A
+      updateVoltAmpRight(-60, true); // Min: -60A
     });
   }
   if (btnPlusR) {
     btnPlusR.addEventListener('click', () => {
       const slider = document.getElementById('voltamp-slider-right');
       if (slider) {
-        const newValue = Math.min(25, parseFloat(slider.value) + 1);
+        const newValue = Math.min(60, parseFloat(slider.value) + 5);
         updateVoltAmpRight(newValue, true);
       }
     });
@@ -119,7 +119,7 @@ function initVoltAmpControls() {
     btnMinusR.addEventListener('click', () => {
       const slider = document.getElementById('voltamp-slider-right');
       if (slider) {
-        const newValue = Math.max(0, parseFloat(slider.value) - 1);
+        const newValue = Math.max(-60, parseFloat(slider.value) - 5);
         updateVoltAmpRight(newValue, true);
       }
     });
@@ -231,7 +231,7 @@ function voltAmpToAngleLeft(voltAmp) {
 
 // Alterna la visibilidad del cristal roto en el instrumento FUEL
 function toggleFuelBrokenCrystal() {
-  const crystal = document.getElementById('fuel_broken_crystal15');
+  const crystal = document.getElementById('fuel_broken_crystal16');
   if (crystal) {
     crystal.classList.toggle('visible');
   }
