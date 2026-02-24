@@ -119,9 +119,13 @@ let chronoSeconds = 0;          // Segundos del cronómetro
 let chronoMinutes = 0;          // Minutos del cronómetro
 let chronoHours = 0;            // Horas del cronómetro
 let transitionAnimating = false; // Si está animando la transición
+let relojControlsInitialized = false; // Evitar inicialización múltiple
 
 // Inicializar controles del reloj
 function initRelojControls() {
+  // Evitar inicialización múltiple
+  if (relojControlsInitialized) return;
+  
   const modeBtn = document.getElementById('watch-mode-btn');
   const modeText = document.getElementById('watch-mode-text');
   const startStopBtn = document.getElementById('watch-startstop-btn');
@@ -133,6 +137,8 @@ function initRelojControls() {
     console.warn('No se encontraron los controles del reloj en el DOM');
     return;
   }
+  
+  relojControlsInitialized = true;
   
   // Botón Mode: Clock/Chronograph
   modeBtn.addEventListener('click', () => {
