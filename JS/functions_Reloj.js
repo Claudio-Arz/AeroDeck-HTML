@@ -316,10 +316,13 @@ function tickChrono() {
   // Actualizar display
   updateChronoDisplay();
   
-  // Actualizar agujas
-  const anguloSegundos = chronoSeconds * 6;
-  const anguloMinutos = chronoMinutes * 6;
-  const anguloHoras = chronoHours * 30 + (chronoMinutes / 2);
+  // Actualizar agujas del cronómetro:
+  // - Segundero: vuelta completa cada 60 segundos
+  // - Minutero: vuelta completa cada 60 minutos (acumula 1 hora)
+  // - Horario: marca solo horas completas (salta cuando minutero completa vuelta)
+  const anguloSegundos = chronoSeconds * 6;           // 360° en 60 segundos
+  const anguloMinutos = chronoMinutes * 6;            // 360° en 60 minutos
+  const anguloHoras = chronoHours * 30;               // 30° por cada hora completa
   
   const hoursNeedle = document.getElementById('aguja_horas');
   const minutesNeedle = document.getElementById('aguja_minutos');
