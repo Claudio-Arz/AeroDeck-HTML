@@ -77,7 +77,15 @@ function updateReloj(horaValue) {
   if (watchMode === 'chronograph' || transitionAnimating) {
     return;
   }
-  const hora = horas % 12; // Convertir a formato de 12 horas
+  
+  // Aplicar offset de zona horaria si hay una seleccionada
+  let adjustedHours = horas + timezoneOffset;
+  
+  // Manejar valores negativos y mayores a 24
+  while (adjustedHours < 0) adjustedHours += 24;
+  adjustedHours = adjustedHours % 24;
+  
+  const hora = adjustedHours % 12; // Convertir a formato de 12 horas
   const minutosNorm = minutos / 60;
   const segundosNorm = segundos / 60;
   const anguloHoras = (hora + minutosNorm) * 30; // 360 / 12 = 30 grados por hora
@@ -96,7 +104,7 @@ function updateReloj(horaValue) {
   // Actualizar display si existe
   const display = document.getElementById('watch-display');
   if (display) {
-    const h = String(horas).padStart(2, '0');
+    const h = String(Math.floor(adjustedHours)).padStart(2, '0');
     const m = String(minutos).padStart(2, '0');
     const s = String(segundos).padStart(2, '0');
     display.textContent = `${h}:${m}:${s}`;
@@ -129,6 +137,47 @@ let chronoAccumulatedMs = 0;    // Milisegundos acumulados (al pausar)
 // Última hora recibida del ESP32 (para animación de transición)
 let lastReceivedHour = { horas: 0, minutos: 0, segundos: 0 };
 
+// Variables de zona horaria
+let selectedTimezone = null;    // Zona horaria seleccionada (null = hora local del ESP32)
+let timezoneOffset = 0;         // Offset en horas respecto a la hora del ESP32 (que es UTC-3)
+const ESP32_UTC_OFFSET = -3;    // El ESP32 está en UTC-3 (Paraguay)
+
+// Lista de ciudades con sus offsets UTC
+const WORLD_CITIES = [
+  { name: 'Local', offset: -3 },
+  { name: 'New York', offset: -5 },
+  { name: 'Los Angeles', offset: -8 },
+  { name: 'Chicago', offset: -6 },
+  { name: 'Miami', offset: -5 },
+  { name: 'Toronto', offset: -5 },
+  { name: 'Vancouver', offset: -8 },
+  { name: 'Mexico City', offset: -6 },
+  { name: 'São Paulo', offset: -3 },
+  { name: 'Buenos Aires', offset: -3 },
+  { name: 'Lima', offset: -5 },
+  { name: 'Bogotá', offset: -5 },
+  { name: 'Santiago', offset: -3 },
+  { name: 'London', offset: 0 },
+  { name: 'Paris', offset: 1 },
+  { name: 'Berlin', offset: 1 },
+  { name: 'Madrid', offset: 1 },
+  { name: 'Rome', offset: 1 },
+  { name: 'Amsterdam', offset: 1 },
+  { name: 'Moscow', offset: 3 },
+  { name: 'Dubai', offset: 4 },
+  { name: 'Mumbai', offset: 5.5 },
+  { name: 'New Delhi', offset: 5.5 },
+  { name: 'Bangkok', offset: 7 },
+  { name: 'Singapore', offset: 8 },
+  { name: 'Hong Kong', offset: 8 },
+  { name: 'Beijing', offset: 8 },
+  { name: 'Shanghai', offset: 8 },
+  { name: 'Tokyo', offset: 9 },
+  { name: 'Seoul', offset: 9 },
+  { name: 'Sydney', offset: 11 },
+  { name: 'Auckland', offset: 13 }
+];
+
 // Inicializar controles del reloj
 function initRelojControls() {
   // Evitar inicialización múltiple
@@ -139,6 +188,10 @@ function initRelojControls() {
   const startStopBtn = document.getElementById('watch-startstop-btn');
   const startStopText = document.getElementById('watch-startstop-text');
   const resetBtn = document.getElementById('watch-reset-btn');
+  const zoneBtn = document.getElementById('watch-zone-btn');
+  const zoneOverlay = document.getElementById('zone-list-overlay');
+  const zoneListScroll = document.getElementById('zone-list-scroll');
+  const zoneCloseBtn = document.getElementById('zone-close-btn');
   const display = document.getElementById('watch-display');
   
   if (!modeBtn || !startStopBtn || !resetBtn) {
@@ -151,6 +204,48 @@ function initRelojControls() {
   // Ocultar botones Start/Stop y Reset inicialmente (modo clock)
   startStopBtn.style.display = 'none';
   resetBtn.style.display = 'none';
+  
+  // Poblar la lista de ciudades
+  if (zoneListScroll) {
+    zoneListScroll.innerHTML = '';
+    WORLD_CITIES.forEach((city, index) => {
+      const item = document.createElement('div');
+      item.className = 'zone-item' + (index === 0 ? ' selected' : '');
+      item.dataset.offset = city.offset;
+      item.dataset.name = city.name;
+      const sign = city.offset >= 0 ? '+' : '';
+      item.textContent = `${city.name} (UTC${sign}${city.offset})`;
+      item.addEventListener('click', () => selectTimezone(city, item));
+      zoneListScroll.appendChild(item);
+    });
+  }
+  
+  // Botón Zone: mostrar lista de ciudades
+  if (zoneBtn) {
+    zoneBtn.addEventListener('click', () => {
+      if (zoneOverlay) {
+        zoneOverlay.classList.add('visible');
+      }
+    });
+  }
+  
+  // Cerrar lista de zonas
+  if (zoneCloseBtn) {
+    zoneCloseBtn.addEventListener('click', () => {
+      if (zoneOverlay) {
+        zoneOverlay.classList.remove('visible');
+      }
+    });
+  }
+  
+  // Cerrar al hacer click fuera del contenedor
+  if (zoneOverlay) {
+    zoneOverlay.addEventListener('click', (e) => {
+      if (e.target === zoneOverlay) {
+        zoneOverlay.classList.remove('visible');
+      }
+    });
+  }
   
   // Botón Mode: Clock/Chronograph
   modeBtn.addEventListener('click', () => {
@@ -175,9 +270,10 @@ function initRelojControls() {
         updateChronoDisplay();
       });
       
-      // Mostrar botones Start/Stop y Reset
+      // Mostrar botones Start/Stop y Reset, ocultar Zone
       startStopBtn.style.display = 'flex';
       resetBtn.style.display = 'flex';
+      if (zoneBtn) zoneBtn.style.display = 'none';
       
       // Enviar cambio de modo al ESP32
       sendWatchModeToESP32('chronograph');
@@ -186,9 +282,10 @@ function initRelojControls() {
       // Cambiar a reloj
       watchMode = 'clock';
       
-      // Ocultar botones Start/Stop y Reset
+      // Ocultar botones Start/Stop y Reset, mostrar Zone
       startStopBtn.style.display = 'none';
       resetBtn.style.display = 'none';
+      if (zoneBtn) zoneBtn.style.display = 'flex';
       modeText.textContent = 'Chronograph';
       modeBtn.classList.remove('active');
       
@@ -308,8 +405,12 @@ function animateNeedlesToCurrentTime() {
   
   transitionAnimating = true;
   
-  // Calcular ángulos objetivo basados en la última hora recibida
-  const hora = lastReceivedHour.horas % 12;
+  // Calcular ángulos objetivo basados en la última hora recibida con offset de zona
+  let adjustedHours = lastReceivedHour.horas + timezoneOffset;
+  while (adjustedHours < 0) adjustedHours += 24;
+  adjustedHours = adjustedHours % 24;
+  
+  const hora = adjustedHours % 12;
   const minutosNorm = lastReceivedHour.minutos / 60;
   const segundosNorm = lastReceivedHour.segundos / 60;
   
@@ -434,5 +535,70 @@ function stopChronoTicker() {
   if (chronoInterval) {
     clearInterval(chronoInterval);
     chronoInterval = null;
+  }
+}
+
+// Seleccionar zona horaria
+function selectTimezone(city, element) {
+  // Actualizar selección visual
+  const items = document.querySelectorAll('.zone-item');
+  items.forEach(item => item.classList.remove('selected'));
+  element.classList.add('selected');
+  
+  // Guardar zona horaria seleccionada
+  selectedTimezone = city;
+  timezoneOffset = city.offset - ESP32_UTC_OFFSET; // Diferencia respecto al ESP32
+  
+  // Actualizar nombre de ciudad en el instrumento
+  const cityNameEl = document.getElementById('reloj-city-name');
+  if (cityNameEl) {
+    cityNameEl.textContent = city.name === 'Local' ? '' : city.name;
+  }
+  
+  // Cerrar el overlay
+  const zoneOverlay = document.getElementById('zone-list-overlay');
+  if (zoneOverlay) {
+    zoneOverlay.classList.remove('visible');
+  }
+  
+  // Forzar actualización visual inmediata si estamos en modo reloj
+  if (watchMode === 'clock' && !transitionAnimating) {
+    applyTimezoneToDisplay();
+  }
+}
+
+// Aplicar zona horaria a la visualización actual
+function applyTimezoneToDisplay() {
+  const { horas, minutos, segundos } = lastReceivedHour;
+  
+  // Calcular hora ajustada
+  let adjustedHours = horas + timezoneOffset;
+  
+  // Manejar valores negativos y mayores a 24
+  while (adjustedHours < 0) adjustedHours += 24;
+  adjustedHours = adjustedHours % 24;
+  
+  const hora = adjustedHours % 12;
+  const minutosNorm = minutos / 60;
+  const segundosNorm = segundos / 60;
+  const anguloHoras = (hora + minutosNorm) * 30;
+  const anguloMinutos = (minutos + segundosNorm) * 6;
+  const anguloSegundos = segundos * 6;
+
+  const hoursNeedle = document.getElementById("aguja_horas");
+  const minutesNeedle = document.getElementById("aguja_minutos");
+  const secondsNeedle = document.getElementById("aguja_segundos");
+  
+  if (hoursNeedle) hoursNeedle.style.transform = `translate(-50%, -50%) rotate(${anguloHoras}deg)`;
+  if (minutesNeedle) minutesNeedle.style.transform = `translate(-50%, -50%) rotate(${anguloMinutos}deg)`;
+  if (secondsNeedle) secondsNeedle.style.transform = `translate(-50%, -50%) rotate(${anguloSegundos}deg)`;
+  
+  // Actualizar display
+  const display = document.getElementById('watch-display');
+  if (display) {
+    const h = String(Math.floor(adjustedHours)).padStart(2, '0');
+    const m = String(minutos).padStart(2, '0');
+    const s = String(segundos).padStart(2, '0');
+    display.textContent = `${h}:${m}:${s}`;
   }
 }

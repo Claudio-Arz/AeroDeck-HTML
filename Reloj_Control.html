@@ -56,6 +56,12 @@ Medidas: 120px x 240px
       <span class="watch-btn-text" id="watch-mode-text">Chronograph</span>
     </button>
     
+    <!-- Botón Zone (solo visible en modo Clock) -->
+    <button class="watch-btn watch-zone-btn" id="watch-zone-btn">
+      <span class="watch-btn-icon">🌍</span>
+      <span class="watch-btn-text">Zone</span>
+    </button>
+    
     <!-- Botón Start/Stop -->
     <button class="watch-btn watch-startstop-btn" id="watch-startstop-btn">
       <span class="watch-btn-icon">▶</span>
@@ -72,6 +78,15 @@ Medidas: 120px x 240px
   
   <!-- Display de tiempo -->
   <div class="watch-display" id="watch-display">00:00:00</div>
+  
+  <!-- Lista de zonas horarias (oculta por defecto) -->
+  <div class="zone-list-overlay" id="zone-list-overlay">
+    <div class="zone-list-container" id="zone-list-container">
+      <div class="zone-list-title">Select Time Zone</div>
+      <div class="zone-list-scroll" id="zone-list-scroll"></div>
+      <button class="zone-close-btn" id="zone-close-btn">✕ Close</button>
+    </div>
+  </div>
 </div>
 
 <style>
@@ -167,6 +182,97 @@ Medidas: 120px x 240px
   /* Botón Reset */
   .watch-reset-btn {
     background: linear-gradient(145deg, #f59e0b, #d97706);
+  }
+  
+  /* Botón Zone */
+  .watch-zone-btn {
+    background: linear-gradient(145deg, #0ea5e9, #0284c7);
+  }
+  .watch-zone-btn.active {
+    background: linear-gradient(145deg, #06b6d4, #0891b2);
+  }
+  
+  /* Overlay de lista de zonas */
+  .zone-list-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+  }
+  .zone-list-overlay.visible {
+    display: flex;
+  }
+  
+  .zone-list-container {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    border: 2px solid #4a90a4;
+    border-radius: 10px;
+    padding: 15px;
+    max-width: 400px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 20px rgba(100, 149, 237, 0.5);
+  }
+  
+  .zone-list-title {
+    font-size: 14px;
+    font-weight: bold;
+    color: #87ceeb;
+    text-align: center;
+    margin-bottom: 10px;
+    text-shadow: 0 0 4px #87ceeb;
+  }
+  
+  .zone-list-scroll {
+    overflow-y: auto;
+    max-height: 60vh;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+  }
+  
+  .zone-item {
+    padding: 8px 10px;
+    background: linear-gradient(145deg, #2d3748, #1a202c);
+    border: 1px solid #4a5568;
+    border-radius: 5px;
+    color: #e2e8f0;
+    font-size: 10px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-align: center;
+  }
+  .zone-item:hover {
+    background: linear-gradient(145deg, #4a5568, #2d3748);
+    border-color: #87ceeb;
+    color: #87ceeb;
+  }
+  .zone-item.selected {
+    background: linear-gradient(145deg, #0ea5e9, #0284c7);
+    border-color: #38bdf8;
+    color: #fff;
+  }
+  
+  .zone-close-btn {
+    margin-top: 10px;
+    padding: 8px 16px;
+    background: linear-gradient(145deg, #ef4444, #dc2626);
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 11px;
+  }
+  .zone-close-btn:hover {
+    filter: brightness(1.1);
   }
   
   /* Display de tiempo */

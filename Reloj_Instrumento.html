@@ -26,6 +26,9 @@
     </div>
     <img class="brokenCrystal14" id="reloj_broken_crystal14" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/Crystals/BrokenCrystal14.png" 
     alt="Broken Crystal Reloj">
+    
+    <!-- Nombre de la ciudad/zona horaria -->
+    <div class="reloj-city-name" id="reloj-city-name"></div>
 
 </div>
 
@@ -68,6 +71,20 @@
     z-index: 18;
     pointer-events: none;
     object-fit: contain;
+  }
+  
+  .reloj-city-name {
+    position: absolute;
+    bottom: 22%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 9px;
+    font-weight: bold;
+    color: #ffd700;
+    text-shadow: 0 0 4px #000, 0 0 2px #000;
+    z-index: 20;
+    pointer-events: none;
+    white-space: nowrap;
   }
 </style>
 
