@@ -69,13 +69,14 @@
 
 // Función para actualizar el reloj con el valor recibido
 function updateReloj(horaValue) {
-  // Si está en modo cronómetro, ignorar la hora del ESP32
-  if (watchMode === 'chronograph') {
+  // Guardar la última hora recibida para la animación de transición
+  const [horas, minutos, segundos] = horaValue.split(':').map(Number);
+  lastReceivedHour = { horas, minutos, segundos };
+  
+  // Si está en modo cronómetro o animando transición, ignorar la actualización visual
+  if (watchMode === 'chronograph' || transitionAnimating) {
     return;
   }
-  
-  // Actualizar la hora en el instrumento
-  const [horas, minutos, segundos] = horaValue.split(':').map(Number);
   const hora = horas % 12; // Convertir a formato de 12 horas
   const minutosNorm = minutos / 60;
   const segundosNorm = segundos / 60;
@@ -124,6 +125,9 @@ let relojControlsInitialized = false; // Evitar inicialización múltiple
 // Variables para tiempo real del cronómetro
 let chronoStartTime = 0;        // Timestamp de inicio (Date.now())
 let chronoAccumulatedMs = 0;    // Milisegundos acumulados (al pausar)
+
+// Última hora recibida del ESP32 (para animación de transición)
+let lastReceivedHour = { horas: 0, minutos: 0, segundos: 0 };
 
 // Inicializar controles del reloj
 function initRelojControls() {
@@ -197,7 +201,8 @@ function initRelojControls() {
         startStopBtn.classList.remove('running');
       }
       
-      // El ESP32 envía datos cada 50ms, las agujas se actualizarán automáticamente
+      // Animar agujas desde las 12 hasta la hora actual
+      animateNeedlesToCurrentTime();
       
       // Enviar cambio de modo al ESP32
       sendWatchModeToESP32('clock');
@@ -291,6 +296,45 @@ function animateNeedlesToTwelve(callback) {
     transitionAnimating = false;
     if (callback) callback();
   }, 1000);
+}
+
+// Animar agujas desde las 12 hasta la hora actual (rotación horaria)
+function animateNeedlesToCurrentTime() {
+  const hoursNeedle = document.getElementById('aguja_horas');
+  const minutesNeedle = document.getElementById('aguja_minutos');
+  const secondsNeedle = document.getElementById('aguja_segundos');
+  
+  if (!hoursNeedle || !minutesNeedle || !secondsNeedle) return;
+  
+  transitionAnimating = true;
+  
+  // Calcular ángulos objetivo basados en la última hora recibida
+  const hora = lastReceivedHour.horas % 12;
+  const minutosNorm = lastReceivedHour.minutos / 60;
+  const segundosNorm = lastReceivedHour.segundos / 60;
+  
+  const anguloHoras = (hora + minutosNorm) * 30;      // 360 / 12 = 30 grados por hora
+  const anguloMinutos = (lastReceivedHour.minutos + segundosNorm) * 6;  // 360 / 60 = 6 grados por minuto
+  const anguloSegundos = lastReceivedHour.segundos * 6;  // 360 / 60 = 6 grados por segundo
+  
+  // Las agujas están en 0 (las 12), rotar en sentido horario hasta la hora actual
+  // Usar transición CSS para la animación suave
+  hoursNeedle.style.transition = 'transform 1.2s cubic-bezier(0.4, 0, 0.2, 1)';
+  minutesNeedle.style.transition = 'transform 1s cubic-bezier(0.4, 0, 0.2, 1)';
+  secondsNeedle.style.transition = 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+  
+  // Rotar a la posición de la hora actual
+  hoursNeedle.style.transform = `translate(-50%, -50%) rotate(${anguloHoras}deg)`;
+  minutesNeedle.style.transform = `translate(-50%, -50%) rotate(${anguloMinutos}deg)`;
+  secondsNeedle.style.transform = `translate(-50%, -50%) rotate(${anguloSegundos}deg)`;
+  
+  // Después de la animación, quitar transición y permitir actualizaciones normales
+  setTimeout(() => {
+    hoursNeedle.style.transition = 'none';
+    minutesNeedle.style.transition = 'none';
+    secondsNeedle.style.transition = 'none';
+    transitionAnimating = false;
+  }, 1200);
 }
 
 // Poner agujas en las 12 inmediatamente
