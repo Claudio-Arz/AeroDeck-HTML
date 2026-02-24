@@ -86,6 +86,8 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 
   <div class="grid-item" id="inst29" style="grid-row: 4; grid-column: 10;">Volt/Amp Controls</div>
 
+  <div class="grid-item" id="inst30" style="grid-row: 2; grid-column: 9;">Clock Controls</div>
+
 </div>
 
 <!-- El contenido HTML principal se cargará aquí dinámicamente -->
@@ -228,6 +230,31 @@ window.addEventListener('DOMContentLoaded', () => {
   .then(r => r.text())
   .then(html => {
     document.getElementById("inst27").innerHTML = html;
+    });
+});
+
+// Cargar el HTML de la caja de control del Reloj de forma dinámica
+window.addEventListener('DOMContentLoaded', () => {
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/Reloj_Control.html")
+    .then(r => r.text())
+    .then(html => {
+      document.getElementById("inst30").innerHTML = html;
+      // Inicializar controles del Reloj después de insertar el HTML
+      if (typeof initRelojControls === 'function') {
+        initRelojControls();
+        startChronoTicker(); // Iniciar el ticker del cronómetro
+      }
+      // Escuchar cambios en el DOM para reinicializar controles si es necesario
+      const observer = new MutationObserver(() => {
+        if (document.getElementById('watch-mode-btn')) {
+          if (typeof initRelojControls === 'function') {
+            initRelojControls();
+            startChronoTicker();
+          }
+          observer.disconnect();
+        }
+      });
+      observer.observe(document.getElementById('inst30'), { childList: true, subtree: true });
     });
 });     
 

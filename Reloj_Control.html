@@ -1,0 +1,187 @@
+<!-- 
+
+Watch Control 
+Medidas: 120px x 240px
+
+                +---------------------+
+                |  Watch Control      |
+                +---------------------+
+                |                     |
+                |  Clock/Chronograph  |   
+                |                     |
+                +---------------------+
+                |                     |
+                |     Start/Stop      |
+                |                     |
+                +---------------------+
+                |                     |
+                |          Reset      |
+                |                     |
+                +---------------------+
+
+                Quisiera un control para el reloj. 
+                    Tres botones. 
+                        Boton superior va a 
+                        mostrar "Cronograph" cuando esté funcionando como Reloj, y va a decir 
+                        "Clock" cuando esté funcionando el Chronograph. Cuando se conecta el 
+                        chronograph las agujas de hora, minutos, y segundero hace un giro en 
+                        sentido horario, hasta llegar a las 12.
+
+                        El botón del medio es el Start/Stop. Cuando se presiona, el reloj
+                        comienza a funcionar como un cronómetro, y el botón del medio cambia 
+                        a "Stop". Al presionar "Stop", el cronómetro se detiene, y el botón 
+                        vuelve a decir "Start". Las agujas de minutos y horas se convierten 
+                        en contadores de minutos y horas del cronómetro, mientras que el
+                        segundero sigue funcionando en modo cronómetro.
+
+                        El botón inferior es el Reset. Cuando se presiona, el cronómetro se
+                        reinicia a cero, y las agujas vuelven a la posición de las 12
+                        independientemente de si el cronómetro está en marcha o detenido.
+
+
+                
+
+-->
+
+<div class="watch-control-container">
+  <!-- Título -->
+  <div class="title-watch-control">⌚ Watch Control</div>
+  
+  <!-- Área de botones -->
+  <div class="watch-buttons-area">
+    
+    <!-- Botón Mode: Clock/Chronograph -->
+    <button class="watch-btn watch-mode-btn" id="watch-mode-btn">
+      <span class="watch-btn-icon">🔄</span>
+      <span class="watch-btn-text" id="watch-mode-text">Chronograph</span>
+    </button>
+    
+    <!-- Botón Start/Stop -->
+    <button class="watch-btn watch-startstop-btn" id="watch-startstop-btn">
+      <span class="watch-btn-icon">▶</span>
+      <span class="watch-btn-text" id="watch-startstop-text">Start</span>
+    </button>
+    
+    <!-- Botón Reset -->
+    <button class="watch-btn watch-reset-btn" id="watch-reset-btn">
+      <span class="watch-btn-icon">⟲</span>
+      <span class="watch-btn-text">Reset</span>
+    </button>
+    
+  </div>
+  
+  <!-- Display de tiempo -->
+  <div class="watch-display" id="watch-display">00:00:00</div>
+</div>
+
+<style>
+  .watch-control-container {
+    display: flex;
+    flex-direction: column;
+    width: 120px;
+    height: 240px;
+    max-width: 120px;
+    max-height: 240px;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    border: 2px solid #4a5568;
+    border-radius: 8px;
+    box-sizing: border-box;    
+    box-shadow: 0 0 8px rgba(100, 149, 237, 0.4);
+    overflow: hidden;
+  }
+  
+  .title-watch-control {
+    font-size: 10px;
+    font-weight: bold;
+    text-align: center;
+    background: linear-gradient(90deg, #1e3a5f, #2d5a87, #1e3a5f);
+    color: #87ceeb;
+    padding: 2px 0;
+    height: 18px;
+    min-height: 18px;
+    box-sizing: border-box;
+    text-shadow: 0 0 4px #87ceeb;
+    border-bottom: 1px solid #4a90a4;
+  }
+  
+  .watch-buttons-area {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px 10px;
+    flex: 1;
+    justify-content: center;
+  }
+  
+  .watch-btn {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 6px;
+    padding: 10px 8px;
+    transition: all 0.15s ease;
+    text-shadow: 1px 1px 2px #000;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  }
+  
+  .watch-btn:hover {
+    filter: brightness(1.2);
+    transform: translateY(-1px);
+  }
+  
+  .watch-btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  }
+  
+  .watch-btn-icon {
+    font-size: 14px;
+  }
+  
+  .watch-btn-text {
+    font-size: 11px;
+    color: #fff;
+  }
+  
+  /* Botón Mode: Clock/Chronograph */
+  .watch-mode-btn {
+    background: linear-gradient(145deg, #6366f1, #4f46e5);
+  }
+  .watch-mode-btn.active {
+    background: linear-gradient(145deg, #8b5cf6, #7c3aed);
+  }
+  
+  /* Botón Start/Stop */
+  .watch-startstop-btn {
+    background: linear-gradient(145deg, #22c55e, #16a34a);
+  }
+  .watch-startstop-btn.running {
+    background: linear-gradient(145deg, #ef4444, #dc2626);
+  }
+  
+  /* Botón Reset */
+  .watch-reset-btn {
+    background: linear-gradient(145deg, #f59e0b, #d97706);
+  }
+  
+  /* Display de tiempo */
+  .watch-display {
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    color: #4ade80;
+    background: #0a1628;
+    padding: 6px;
+    margin: 0 10px 10px 10px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    text-shadow: 0 0 6px #4ade80;
+    letter-spacing: 1px;
+  }
+</style>
+
