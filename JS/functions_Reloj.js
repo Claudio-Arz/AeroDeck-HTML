@@ -144,6 +144,10 @@ function initRelojControls() {
   
   relojControlsInitialized = true;
   
+  // Ocultar botones Start/Stop y Reset inicialmente (modo clock)
+  startStopBtn.style.display = 'none';
+  resetBtn.style.display = 'none';
+  
   // Botón Mode: Clock/Chronograph
   modeBtn.addEventListener('click', () => {
     if (transitionAnimating) return;
@@ -167,12 +171,20 @@ function initRelojControls() {
         updateChronoDisplay();
       });
       
+      // Mostrar botones Start/Stop y Reset
+      startStopBtn.style.display = 'flex';
+      resetBtn.style.display = 'flex';
+      
       // Enviar cambio de modo al ESP32
       sendWatchModeToESP32('chronograph');
       
     } else {
       // Cambiar a reloj
       watchMode = 'clock';
+      
+      // Ocultar botones Start/Stop y Reset
+      startStopBtn.style.display = 'none';
+      resetBtn.style.display = 'none';
       modeText.textContent = 'Chronograph';
       modeBtn.classList.remove('active');
       
