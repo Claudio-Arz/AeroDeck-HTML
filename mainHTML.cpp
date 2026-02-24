@@ -5,12 +5,21 @@ Tablero completo con intrumental aeronáutico
 para ajustar instrumentos analógicos.
 
 2026-02-07 18:26:08
-Versión 003
-Los instrumentos solo muestran datos recibidos vía WebSocket
-del ESP32. No hay lógica de simulación en el cliente.
+Versión 3.00
 
-Los controles (sliders, botones, joysticks) envían datos vía WebSocket
-al ESP32 para actualizar los valores de los instrumentos.
+Logo:
+
+En mainHTML.cpp declaramos un div con la clase logo-container, que contiene 
+la imagen del logo y el slider para ajustar el color del drop-shadow. El
+slider me gustaría que sea 600px de ancho, y la misma altura que el logo,
+y que esté ubicado a la derecha del logo, con un espacio de 20px entre ambos.
+
+El logo tiene que ocupar el ángulo superior izquierdo, con un tamaño de aproximadamente 350px de ancho,
+y 27px de altura. 20px a la derecha tiene que mostar un slider para ajustar el color
+del drop-shadow de los instrumentos, que se encuentra declarado en mainHTML.css
+como .instrumento-grid - box-shadow: 0 0 20px 10px rgb(121, 171, 242); En lugar de ser un valor
+fijo quiero que cambie dinámicamente según el valor del slider.
+
 
 */
 
@@ -47,9 +56,18 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 </head>
 
 <body>
+ 
 
 <h1 style="text-align:center; margin-top: 24px;">Benchmark & Calibration</h1>
+<div class="logo-container">
+    <img class="logo" id="logo" 
+      src="https://claudio-arz.github.io/AeroDeck-HTML/Images/ClaudioArzamendiaSystems.png" 
+      alt="Logo de Claudio Arzamendia Systems">
 
+    <input type="range" min="0" max="360" value="220" step="1" 
+      id="shadow-color" class="color-slider-input">
+    
+</div>
 
 <div id="main-grid" class="grid-container">
   
@@ -624,6 +642,28 @@ window.addEventListener('DOMContentLoaded', () => {
     .then(html => {
       document.getElementById("inst03").innerHTML = html;
     });
+});
+
+// Control del slider para cambiar el color del box-shadow
+window.addEventListener('DOMContentLoaded', () => {
+  const slider = document.getElementById('shadow-color');
+  if (slider) {
+    // Función para aplicar el color del box-shadow
+    const applyShadowColor = (hue) => {
+      const color = `hsl(${hue}, 60%, 70%)`;
+      document.querySelectorAll('.instrumento-grid').forEach(el => {
+        el.style.boxShadow = `0 0 20px 10px ${color}`;
+      });
+    };
+
+    // Aplicar el color inicial
+    applyShadowColor(slider.value);
+
+    // Escuchar cambios en el slider
+    slider.addEventListener('input', (e) => {
+      applyShadowColor(e.target.value);
+    });
+  }
 });      
 
 </script>

@@ -41,6 +41,55 @@ para indicar visualmente su estado.
   border: 2px solid #071037;
   transition: background 0.2s, color 0.2s, box-shadow 0.2s;
 } */
+/* === Estilo para logo de Claudio Arzamendia Systems === */
+.logo-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+  padding: 10px 20px;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.logo {
+  display: block;
+  width: 350px;
+  height: 27px;
+  filter: drop-shadow(0 0 4px #fecfcf);
+}
+
+.color-slider-input {
+  width: 600px;
+  height: 27px;
+  cursor: pointer;
+  accent-color: #79abf2;
+  background: linear-gradient(to right, 
+    hsl(0, 60%, 70%),
+    hsl(60, 60%, 70%),
+    hsl(120, 60%, 70%),
+    hsl(180, 60%, 70%),
+    hsl(240, 60%, 70%),
+    hsl(300, 60%, 70%),
+    hsl(360, 60%, 70%)
+  );
+  border-radius: 4px;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.color-slider-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 27px;
+  background: #fff;
+  border-radius: 4px;
+  border: 2px solid #333;
+  cursor: pointer;
+}
+
 
 /* === Estilos de Broken Crystal para instrumentos === */
 .brokenCrystal01, .brokenCrystal02, .brokenCrystal03, 
