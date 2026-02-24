@@ -561,9 +561,11 @@ function selectTimezone(city, element) {
     zoneOverlay.classList.remove('visible');
   }
   
-  // Forzar actualización visual inmediata si estamos en modo reloj
+  // Animar las agujas: primero a las 12, luego a la nueva hora
   if (watchMode === 'clock' && !transitionAnimating) {
-    applyTimezoneToDisplay();
+    animateNeedlesToTwelve(() => {
+      animateNeedlesToCurrentTime();
+    });
   }
 }
 
