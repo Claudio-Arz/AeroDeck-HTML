@@ -647,15 +647,41 @@ window.addEventListener('DOMContentLoaded', () => {
 // Control del slider para cambiar el color del box-shadow
 window.addEventListener('DOMContentLoaded', () => {
   const slider = document.getElementById('shadow-color');
-  if (slider) {
-    // Función para aplicar el color del box-shadow
-    const applyShadowColor = (hue) => {
-      const color = `hsl(${hue}, 60%, 70%)`;
-      document.querySelectorAll('.instrumento-grid').forEach(el => {
-        el.style.boxShadow = `0 0 20px 10px ${color}`;
-      });
-    };
+  const logo = document.getElementById('logo');
+  let shadowEnabled = true; // Estado del shadow (encendido por defecto)
 
+  // Función para aplicar el color del box-shadow
+  const applyShadowColor = (hue) => {
+    if (!shadowEnabled) return; // No aplicar si está apagado
+    const color = `hsl(${hue}, 60%, 70%)`;
+    document.querySelectorAll('.instrumento-grid').forEach(el => {
+      el.style.boxShadow = `0 0 20px 10px ${color}`;
+    });
+  };
+
+  // Función para quitar el box-shadow
+  const removeShadow = () => {
+    document.querySelectorAll('.instrumento-grid').forEach(el => {
+      el.style.boxShadow = 'none';
+    });
+  };
+
+  // Toggle shadow al hacer click en el logo
+  if (logo) {
+    logo.style.cursor = 'pointer';
+    logo.addEventListener('click', () => {
+      shadowEnabled = !shadowEnabled;
+      if (shadowEnabled) {
+        applyShadowColor(slider ? slider.value : 220);
+        logo.style.filter = 'drop-shadow(0 0 4px #fecfcf)';
+      } else {
+        removeShadow();
+        logo.style.filter = 'grayscale(100%) brightness(0.5)';
+      }
+    });
+  }
+
+  if (slider) {
     // Aplicar el color inicial
     applyShadowColor(slider.value);
 
