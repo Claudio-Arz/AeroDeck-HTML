@@ -674,9 +674,11 @@ window.addEventListener('DOMContentLoaded', () => {
       if (shadowEnabled) {
         applyShadowColor(slider ? slider.value : 220);
         logo.style.filter = 'drop-shadow(0 0 4px #fecfcf)';
+        if (slider) slider.style.display = 'block';
       } else {
         removeShadow();
         logo.style.filter = 'grayscale(100%) brightness(0.5)';
+        if (slider) slider.style.display = 'none';
       }
     });
   }
