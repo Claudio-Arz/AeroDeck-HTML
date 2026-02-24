@@ -69,12 +69,20 @@
 
 // Función para actualizar el reloj con el valor recibido
 function updateReloj(horaValue) {
+  // Guardar siempre la última hora recibida
+  lastClockTime = horaValue;
+  
   // Si está en modo cronómetro, ignorar la hora del ESP32
   if (watchMode === 'chronograph') {
     return;
   }
   
   // Actualizar la hora en el instrumento
+  applyClockTime(horaValue);
+}
+
+// Aplicar una hora específica a las agujas del reloj
+function applyClockTime(horaValue) {
   const [horas, minutos, segundos] = horaValue.split(':').map(Number);
   const hora = horas % 12; // Convertir a formato de 12 horas
   const minutosNorm = minutos / 60;
@@ -166,6 +174,11 @@ function initRelojControls() {
         startStopText.textContent = 'Start';
         startStopBtn.querySelector('.watch-btn-icon').textContent = '▶';
         startStopBtn.classList.remove('running');
+      }
+      
+      // Restaurar la hora del reloj si tenemos la última hora guardada
+      if (lastClockTime) {
+        applyClockTime(lastClockTime);
       }
       
       // Enviar cambio de modo al ESP32

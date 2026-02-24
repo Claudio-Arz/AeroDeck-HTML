@@ -57,8 +57,7 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
   <div class="grid-item" id="inst01" style="grid-row: 1; grid-column: 3;">Air Speed</div>  
   <div class="grid-item" id="inst02" style="grid-row: 1; grid-column: 4;">Attitude Control</div>  
   <div class="grid-item" id="inst03" style="grid-row: 1; grid-column: 5;">Altimeter</div>  
-  <div class="grid-item" id="inst27" style="grid-row: 1; grid-column: 6;">Clock</div>  
-
+  
   <div class="grid-item" id="inst05" style="grid-row: 1; grid-column: 7;">Pitch & Roll Controls</div>  
   <div class="grid-item" id="inst06" style="grid-row: 1; grid-column: 9;">RPM Controls</div>  
   <div class="grid-item" id="inst08" style="grid-row: 1; grid-column: 8;">Air Speed Controls</div>  
@@ -70,23 +69,24 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
   <div class="grid-item" id="inst07" style="grid-row: 2; grid-column: 7;">Gyro Controls</div>  
   <div class="grid-item" id="inst13" style="grid-row: 2; grid-column: 8;">Turn Coordinator Controls</div>  
   <div class="grid-item" id="inst15" style="grid-row: 2; grid-column: 10;">Fuel Flow Controls</div>  
-
-  <div class="grid-item" id="inst17" style="grid-row: 3; grid-column: 4;">Manifold Instrument</div>
-  <div class="grid-item" id="inst18" style="grid-row: 3; grid-column: 7;">Manifold Controls</div>
-  <div class="grid-item" id="inst19" style="grid-row: 3; grid-column: 3;">Oil Press Instrument</div>
-  <div class="grid-item" id="inst20" style="grid-row: 3; grid-column: 8;">Oil Press Controls</div>
-  <div class="grid-item" id="inst21" style="grid-row: 3; grid-column: 2;">Oil Temp Instrument</div>
-  <div class="grid-item" id="inst22" style="grid-row: 3; grid-column: 9;">Oil Temp Controls</div>
+  
   <div class="grid-item" id="inst23" style="grid-row: 3; grid-column: 1;">CHT Instrument</div>
-  <div class="grid-item" id="inst24" style="grid-row: 3; grid-column: 10;">CHT Controls</div>
+  <div class="grid-item" id="inst21" style="grid-row: 3; grid-column: 2;">Oil Temp Instrument</div>
+  <div class="grid-item" id="inst19" style="grid-row: 3; grid-column: 3;">Oil Press Instrument</div>
+  <div class="grid-item" id="inst17" style="grid-row: 3; grid-column: 4;">Manifold Instrument</div>
   <div class="grid-item" id="inst25" style="grid-row: 3; grid-column: 5;">CHT Instrument</div>
   <div class="grid-item" id="inst26" style="grid-row: 3; grid-column: 6;">FUEL Controls</div>
+  <div class="grid-item" id="inst18" style="grid-row: 3; grid-column: 7;">Manifold Controls</div>
+  <div class="grid-item" id="inst20" style="grid-row: 3; grid-column: 8;">Oil Press Controls</div>
+  <div class="grid-item" id="inst22" style="grid-row: 3; grid-column: 9;">Oil Temp Controls</div>
+  <div class="grid-item" id="inst24" style="grid-row: 3; grid-column: 10;">CHT Controls</div>
 
   <div class="grid-item" id="inst28" style="grid-row: 4; grid-column: 1;">Volt/Amp Instrument</div>
-
+  <div class="grid-item" id="inst27" style="grid-row: 4; grid-column: 5;">Clock</div>  
+  <div class="grid-item" id="inst30" style="grid-row: 4; grid-column: 6;">Clock Controls</div>
+  
   <div class="grid-item" id="inst29" style="grid-row: 4; grid-column: 10;">Volt/Amp Controls</div>
-
-  <div class="grid-item" id="inst30" style="grid-row: 2; grid-column: 9;">Clock Controls</div>
+  
 
 </div>
 
@@ -193,6 +193,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   }
 });
+
 
 
 // Cargar el HTML del instrumento Volt/Amp de forma dinámica
