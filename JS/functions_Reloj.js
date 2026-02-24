@@ -115,11 +115,15 @@ function toggleRelojBrokenCrystal() {
 // Variables de estado del cronómetro
 let watchMode = 'clock';        // 'clock' o 'chronograph'
 let chronoRunning = false;      // Si el cronómetro está corriendo
-let chronoSeconds = 0;          // Segundos del cronómetro
-let chronoMinutes = 0;          // Minutos del cronómetro
-let chronoHours = 0;            // Horas del cronómetro
+let chronoSeconds = 0;          // Segundos del cronómetro (calculado)
+let chronoMinutes = 0;          // Minutos del cronómetro (calculado)
+let chronoHours = 0;            // Horas del cronómetro (calculado)
 let transitionAnimating = false; // Si está animando la transición
 let relojControlsInitialized = false; // Evitar inicialización múltiple
+
+// Variables para tiempo real del cronómetro
+let chronoStartTime = 0;        // Timestamp de inicio (Date.now())
+let chronoAccumulatedMs = 0;    // Milisegundos acumulados (al pausar)
 
 // Inicializar controles del reloj
 function initRelojControls() {
@@ -150,6 +154,13 @@ function initRelojControls() {
       modeText.textContent = 'Clock';
       modeBtn.classList.add('active');
       
+      // Resetear tiempo del cronómetro al entrar en modo cronógrafo
+      chronoSeconds = 0;
+      chronoMinutes = 0;
+      chronoHours = 0;
+      chronoAccumulatedMs = 0;
+      chronoStartTime = Date.now();
+      
       // Animar agujas a las 12 (posición 0)
       animateNeedlesToTwelve(() => {
         // Una vez en posición, mostrar cronómetro
@@ -165,8 +176,9 @@ function initRelojControls() {
       modeText.textContent = 'Chronograph';
       modeBtn.classList.remove('active');
       
-      // Detener cronómetro si está corriendo
+      // Detener cronómetro si está corriendo - acumular tiempo
       if (chronoRunning) {
+        chronoAccumulatedMs += Date.now() - chronoStartTime;
         chronoRunning = false;
         startStopText.textContent = 'Start';
         startStopBtn.querySelector('.watch-btn-icon').textContent = '▶';
@@ -191,13 +203,15 @@ function initRelojControls() {
     if (transitionAnimating) return;
     
     if (chronoRunning) {
-      // Detener cronómetro
+      // Detener cronómetro - acumular el tiempo transcurrido
+      chronoAccumulatedMs += Date.now() - chronoStartTime;
       chronoRunning = false;
       startStopText.textContent = 'Start';
       startStopBtn.querySelector('.watch-btn-icon').textContent = '▶';
       startStopBtn.classList.remove('running');
     } else {
-      // Iniciar cronómetro
+      // Iniciar cronómetro - guardar timestamp de inicio
+      chronoStartTime = Date.now();
       chronoRunning = true;
       startStopText.textContent = 'Stop';
       startStopBtn.querySelector('.watch-btn-icon').textContent = '⏸';
@@ -212,10 +226,12 @@ function initRelojControls() {
   resetBtn.addEventListener('click', () => {
     if (watchMode !== 'chronograph') return;
     
-    // Reiniciar cronómetro
+    // Reiniciar cronómetro - resetear tiempo real
     chronoSeconds = 0;
     chronoMinutes = 0;
     chronoHours = 0;
+    chronoAccumulatedMs = 0;
+    chronoStartTime = Date.now();  // Reiniciar timestamp si está corriendo
     
     // Poner agujas en las 12 inmediatamente (sin animación)
     setNeedlesToTwelve();
@@ -300,18 +316,14 @@ function updateChronoDisplay() {
 function tickChrono() {
   if (!chronoRunning || watchMode !== 'chronograph') return;
   
-  chronoSeconds++;
-  if (chronoSeconds >= 60) {
-    chronoSeconds = 0;
-    chronoMinutes++;
-    if (chronoMinutes >= 60) {
-      chronoMinutes = 0;
-      chronoHours++;
-      if (chronoHours >= 12) {
-        chronoHours = 0;
-      }
-    }
-  }
+  // Calcular tiempo transcurrido basado en tiempo real
+  const now = Date.now();
+  const totalMs = chronoAccumulatedMs + (now - chronoStartTime);
+  const totalSeconds = Math.floor(totalMs / 1000);
+  
+  chronoSeconds = totalSeconds % 60;
+  chronoMinutes = Math.floor(totalSeconds / 60) % 60;
+  chronoHours = Math.floor(totalSeconds / 3600) % 12;
   
   // Actualizar display
   updateChronoDisplay();
