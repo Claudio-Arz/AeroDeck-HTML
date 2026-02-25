@@ -179,6 +179,9 @@ window.addEventListener('DOMContentLoaded', () => {
       // console.log("Actualizando Oil Press: " + data['oilPress']);
       updateOilPress(data['oilPress']);
     }
+    if (data['useSimulatedOilPress'] !== undefined && typeof updateOilPressSimModeState === 'function') {
+      updateOilPressSimModeState(data['useSimulatedOilPress']);
+    }
 
     if (data['oilTemp'] !== undefined && typeof updateOilTemp === 'function') {
       // console.log("Actualizando Oil Temp: " + data['oilTemp']);

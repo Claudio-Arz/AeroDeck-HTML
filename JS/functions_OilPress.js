@@ -38,6 +38,7 @@ function initOilPressControls() {
   const btnMin = document.getElementById('op-slider-min');
   const btnPlus = document.getElementById('op-btn-plus');
   const btnMinus = document.getElementById('op-btn-minus');
+  const simToggle = document.getElementById('op-sim-toggle');
   
   if (btnMax) {
     btnMax.addEventListener('click', () => {
@@ -70,6 +71,13 @@ function initOilPressControls() {
         const newValue = Math.max(0, parseFloat(slider.value) - 1); // -1 PSI
         updateOilPress(newValue, true);
       }
+    });
+  }
+
+  if (simToggle) {
+    simToggle.addEventListener('click', () => {
+      const isSimulated = simToggle.classList.contains('active');
+      updateOilPressSimModeState(!isSimulated, true);
     });
   }
 }
@@ -117,6 +125,29 @@ function sendOilPressToESP32(oilPress) {
     console.log(`Enviando Oil Press al ESP32: ${oilPress} PSI`);
   } else {
     console.warn('WebSocket no está conectado.');
+  }
+}
+
+function sendOilPressSimModeToESP32(simulated) {
+  if (window.ws && window.ws.readyState === WebSocket.OPEN) {
+    const data = JSON.stringify({ useSimulatedOilPress: simulated });
+    window.ws.send(data);
+  }
+}
+
+function updateOilPressSimModeState(simulated, sendToESP = false) {
+  const simToggle = document.getElementById('op-sim-toggle');
+  if (!simToggle) {
+    return;
+  }
+
+  const isSimulated = !!simulated;
+  simToggle.classList.toggle('active', isSimulated);
+  simToggle.textContent = isSimulated ? 'SIM' : 'MAN';
+  simToggle.title = isSimulated ? 'Oil Press Simulado activo' : 'Oil Press Manual activo';
+
+  if (sendToESP) {
+    sendOilPressSimModeToESP32(isSimulated);
   }
 }
 // Mapea el valor de Oil Press (0-120) al ángulo de la aguja (270-90)

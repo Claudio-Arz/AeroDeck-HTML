@@ -51,6 +51,7 @@ Oil Press Control  (medidas 120px x 240px)
   <!-- Fila inferior: Value -->
   <div class="op-value-row">
     <div class="op-value-label" id="op-slider-value-label">0</div>
+    <button id="op-sim-toggle" class="op-sim-toggle" title="Alternar Oil Press Simulado">SIM</button>
   </div>
 </div>
 
@@ -182,10 +183,12 @@ Oil Press Control  (medidas 120px x 240px)
   }
   .op-value-row {
     display: flex;
+    align-items: center;
+    justify-content: space-between;
     height: 20px;
     padding: 2px 4px;
     box-sizing: border-box;
-    background: #2f3d13;
+    background: #4a6937;
     border-top: 1px solid #4a5d23;
   }
   .op-value-label {
@@ -198,6 +201,24 @@ Oil Press Control  (medidas 120px x 240px)
     border-radius: 3px;
     font-family: 'Courier New', monospace;
     text-shadow: 0 0 4px #fc0000;
+  }
+  .op-sim-toggle {
+    width: 34px;
+    height: 16px;
+    border: 1px solid #4a5d23;
+    border-radius: 3px;
+    font-size: 9px;
+    font-weight: bold;
+    padding: 0;
+    cursor: pointer;
+    color: #b0d040;
+    background: linear-gradient(145deg, #3d5a2c, #2d3f1e);
+    text-shadow: 1px 1px 1px #000;
+  }
+  .op-sim-toggle.active {
+    color: #1a2510;
+    background: linear-gradient(145deg, #b0d040, #d4e08f);
+    text-shadow: none;
   }
 </style>
 
