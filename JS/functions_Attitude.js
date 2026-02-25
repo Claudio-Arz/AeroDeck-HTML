@@ -23,6 +23,32 @@ let zeroActive = false;
 let currentPitch = 0;  // Valor actual de pitch en grados
 let currentRoll = 0;   // Valor actual de roll en grados
 
+// Función para actualizar la posición del knob basándose en valores de pitch/roll
+function updateAttitudeKnobPosition(pitchValue, rollValue) {
+  const knob = document.getElementById('knob');
+  const armLine = document.getElementById('joystick-arm-line');
+  
+  if (!knob) return;
+  
+  // Calcular posición X desde roll: roll (-30° a +30°) → x (-28 a +28 px)
+  const knobX = (rollValue / 30) * joystickRadius + joystickCenterX;
+  
+  // Calcular posición Y desde pitch: pitch (-20° a +20°) → y limitado a ±28px (50px = 20°)
+  const pitchPx = (pitchValue / 20) * 50;
+  const limitedY = Math.max(-joystickRadius, Math.min(joystickRadius, pitchPx));
+  const knobY = joystickCenterY + limitedY;
+  
+  // Actualizar posición visual del knob
+  knob.style.left = knobX + 'px';
+  knob.style.top = knobY + 'px';
+  
+  // Actualizar línea del brazo
+  if (armLine) {
+    armLine.setAttribute('x2', knobX);
+    armLine.setAttribute('y2', knobY);
+  }
+}
+
 function setupAttitudeControls() {
   const knob = document.getElementById('knob');
   const joystick = document.getElementById('joystick');
@@ -290,6 +316,9 @@ function updateAttitudeControl(pitchValue, rollValue) {
   if (coordsDisplay) {
     coordsDisplay.textContent = `roll: ${rollValue.toFixed(1)}°, pitch: ${pitchValue.toFixed(1)}°`;
   }
+  
+  // Actualizar posición visual del knob del joystick
+  updateAttitudeKnobPosition(pitchValue, rollValue);
 }
 
 function initializeAttitudeControls() {
