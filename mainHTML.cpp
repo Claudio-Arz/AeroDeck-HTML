@@ -669,7 +669,7 @@ window.addEventListener('DOMContentLoaded', () => {
 window.addEventListener('DOMContentLoaded', () => {
   const slider = document.getElementById('shadow-color');
   const logo = document.getElementById('logo');
-  let shadowEnabled = true; // Estado del shadow (encendido por defecto)
+  let shadowEnabled = false; // Estado del shadow (APAGADO por defecto al arrancar)
 
   // Función para aplicar el color del box-shadow
   const applyShadowColor = (hue) => {
@@ -686,6 +686,15 @@ window.addEventListener('DOMContentLoaded', () => {
       el.style.boxShadow = 'none';
     });
   };
+
+  // Inicializar el estado apagado al cargar la página
+  if (logo) {
+    logo.style.filter = 'grayscale(100%) brightness(0.5)';
+  }
+  if (slider) {
+    slider.style.display = 'none'; // Ocultar slider inicialmente
+  }
+  removeShadow(); // Asegurar que las sombras estén apagadas
 
   // Toggle shadow al hacer click en el logo
   if (logo) {
@@ -705,9 +714,6 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   if (slider) {
-    // Aplicar el color inicial
-    applyShadowColor(slider.value);
-
     // Escuchar cambios en el slider
     slider.addEventListener('input', (e) => {
       applyShadowColor(e.target.value);
