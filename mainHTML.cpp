@@ -210,6 +210,12 @@ window.addEventListener('DOMContentLoaded', () => {
       // console.log("Actualizando Fuel Right: " + data['fuelValueRight']);
       updateFUELRight(data['fuelValueRight']);
     }
+    if (data['useSimulatedFuel'] !== undefined && typeof updateFuelSimModeState === 'function') {
+      updateFuelSimModeState(data['useSimulatedFuel']);
+    }
+    if (data['activeTank'] !== undefined && typeof updateActiveTankIndicator === 'function') {
+      updateActiveTankIndicator(data['activeTank']);
+    }
 
     if (data['voltAmpValueLeft'] !== undefined && typeof updateVoltAmpLeft === 'function') {
       // console.log("Actualizando Volt/Amp Left: " + data['voltAmpValueLeft']);

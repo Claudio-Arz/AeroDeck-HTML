@@ -124,6 +124,15 @@ function initFUELControls() {
       }
     });
   }
+
+  // Event listener para el botón de Simulación/Manual de Fuel
+  const simToggle = document.getElementById('fuel-sim-toggle');
+  if (simToggle) {
+    simToggle.addEventListener('click', () => {
+      const isCurrentlySimulated = simToggle.classList.contains('active');
+      updateFuelSimModeState(!isCurrentlySimulated, true);
+    });
+  }
 }
 
 function updateFUELLeft(fuel, sendToESP = false) {
@@ -234,5 +243,51 @@ function toggleFuelBrokenCrystal() {
   const crystal = document.getElementById('fuel_broken_crystal04');
   if (crystal) {
     crystal.classList.toggle('visible');
+  }
+}
+
+// Envía el estado de Simulación/Manual del Fuel al ESP32 vía WebSocket
+function sendFuelSimModeToESP32(simulated) {
+  if (window.ws && window.ws.readyState === WebSocket.OPEN) {
+    const data = JSON.stringify({ useSimulatedFuel: simulated });
+    window.ws.send(data);
+    // console.log(`Enviando modo Fuel al ESP32: ${simulated ? 'SIM' : 'MAN'}`);
+  }
+}
+
+// Actualiza el estado visual del botón SIM/MAN de Fuel en la UI
+function updateFuelSimModeState(simulated, sendToESP = false) {
+  const simToggle = document.getElementById('fuel-sim-toggle');
+  if (!simToggle) return;
+  
+  const isSimulated = !!simulated;
+  simToggle.classList.toggle('active', isSimulated);
+  simToggle.textContent = isSimulated ? 'SIM' : 'MAN';
+  simToggle.title = isSimulated ? 'Fuel Simulado activo' : 'Fuel Manual activo';
+  
+  if (sendToESP) {
+    sendFuelSimModeToESP32(isSimulated);
+  }
+}
+
+// Actualiza el indicador de tanque activo en la UI
+function updateActiveTankIndicator(activeTank) {
+  const tankValueSpan = document.getElementById('fuel-active-tank-value');
+  const leftColumn = document.getElementById('fuel-column-left');
+  const rightColumn = document.getElementById('fuel-column-right');
+  
+  if (tankValueSpan) {
+    tankValueSpan.textContent = activeTank === 1 ? 'L' : 'R';
+  }
+  
+  // Resaltar la columna del tanque activo
+  if (leftColumn && rightColumn) {
+    if (activeTank === 1) {
+      leftColumn.classList.add('active');
+      rightColumn.classList.remove('active');
+    } else {
+      leftColumn.classList.remove('active');
+      rightColumn.classList.add('active');
+    }
   }
 }
