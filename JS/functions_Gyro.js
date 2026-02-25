@@ -16,13 +16,29 @@ let currentGyro = 0;
 let targetGyro = 0;
 let gyroAnimationFrame = null;
 
+// Normaliza un angulo a 0-360
+function normalizeGyroAngle(angle) {
+  let normalized = angle % 360;
+  if (normalized < 0) normalized += 360;
+  return normalized;
+}
+
+// Delta mas corto entre dos angulos (en grados)
+function shortestGyroDelta(fromAngle, toAngle) {
+  let delta = normalizeGyroAngle(toAngle) - normalizeGyroAngle(fromAngle);
+  if (delta > 180) delta -= 360;
+  if (delta < -180) delta += 360;
+  return delta;
+}
+
 /**
 * Actualiza la vista del instrumento Gyro (dial, valor numérico, slider)
 * Llamada desde mainHTML.cpp cuando se recibe datos del ESP32
 * @param {number} gyro - Valor del gyro en grados (0-360)
 */
 function updateGyro(gyro) {
-  targetGyro = gyro;
+  const delta = shortestGyroDelta(currentGyro, gyro);
+  targetGyro = currentGyro + delta;
   
   // Animación suave del dial
   if (!gyroAnimationFrame) {
@@ -48,20 +64,21 @@ function updateGyroView(gyro) {
   // Actualizar dial
   const gyroDial = document.getElementById("gyr-dial");
   if (gyroDial) {
-    const angle = -(Math.max(0, Math.min(gyro, 360)));
+    const angle = -gyro;
     gyroDial.style.transform = `translate(-50%, -50%) rotate(${angle}deg)`;
   }
   
   // Actualizar valor numérico en el instrumento
   const gyroValueDiv = document.getElementById("gyr-value");
-  if (gyroValueDiv) gyroValueDiv.textContent = Math.round(gyro);
+  if (gyroValueDiv) gyroValueDiv.textContent = Math.round(normalizeGyroAngle(gyro));
   
   // Actualizar slider y su etiqueta
   const gyroSlider = document.getElementById("gyr-slider");
   const gyroSliderValue = document.getElementById("gyr-slider-value-label");
   
-  if (gyroSlider) gyroSlider.value = gyro;
-  if (gyroSliderValue) gyroSliderValue.textContent = Math.round(gyro);
+  const displayValue = Math.round(normalizeGyroAngle(gyro));
+  if (gyroSlider) gyroSlider.value = displayValue;
+  if (gyroSliderValue) gyroSliderValue.textContent = displayValue;
 }
 
 /**
@@ -110,16 +127,14 @@ function setupGyroControls() {
   
   if (gyrBtnPlus) {
     gyrBtnPlus.addEventListener("click", function() {
-      let newValue = (currentGyro + 1) % 360;
-      if (newValue < 0) newValue += 360;
+      let newValue = normalizeGyroAngle(currentGyro + 1);
       sendGyroToESP32(newValue);
     });
   }
   
   if (gyrBtnMinus) {
     gyrBtnMinus.addEventListener("click", function() {
-      let newValue = (currentGyro - 1) % 360;
-      if (newValue < 0) newValue += 360;
+      let newValue = normalizeGyroAngle(currentGyro - 1);
       sendGyroToESP32(newValue);
     });
   }
