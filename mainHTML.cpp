@@ -184,6 +184,9 @@ window.addEventListener('DOMContentLoaded', () => {
       // console.log("Actualizando Oil Temp: " + data['oilTemp']);
       updateOilTemp(data['oilTemp']);
     }
+    if (data['useSimulatedOilTemp'] !== undefined && typeof updateOilTempSimModeState === 'function') {
+      updateOilTempSimModeState(data['useSimulatedOilTemp']);
+    }
 
     if (data['chtValue'] !== undefined && typeof updateCHT === 'function') {
       // console.log("Actualizando CHT: " + data['chtValue']);

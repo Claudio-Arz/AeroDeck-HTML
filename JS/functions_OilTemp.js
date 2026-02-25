@@ -42,6 +42,7 @@ function initOilTempControls() {
   const btnMin = document.getElementById('ot-slider-min');
   const btnPlus = document.getElementById('ot-btn-plus');
   const btnMinus = document.getElementById('ot-btn-minus');
+  const simToggle = document.getElementById('ot-sim-toggle');
   
   if (btnMax) {
     btnMax.addEventListener('click', () => {
@@ -74,6 +75,13 @@ function initOilTempControls() {
         const newValue = Math.max(50, parseFloat(slider.value) - 1); // -1 °C
         updateOilTemp(newValue, true);
       }
+    });
+  }
+
+  if (simToggle) {
+    simToggle.addEventListener('click', () => {
+      const isSimulated = simToggle.classList.contains('active');
+      updateOilTempSimModeState(!isSimulated, true);
     });
   }
 }
@@ -121,6 +129,29 @@ function sendOilTempToESP32(oilTemp) {
     console.log(`Enviando Oil Temp al ESP32: ${oilTemp} °C`);
   } else {
     console.warn('WebSocket no está conectado.');
+  }
+}
+
+function sendOilTempSimModeToESP32(simulated) {
+  if (window.ws && window.ws.readyState === WebSocket.OPEN) {
+    const data = JSON.stringify({ useSimulatedOilTemp: simulated });
+    window.ws.send(data);
+  }
+}
+
+function updateOilTempSimModeState(simulated, sendToESP = false) {
+  const simToggle = document.getElementById('ot-sim-toggle');
+  if (!simToggle) {
+    return;
+  }
+
+  const isSimulated = !!simulated;
+  simToggle.classList.toggle('active', isSimulated);
+  simToggle.textContent = isSimulated ? 'SIM' : 'MAN';
+  simToggle.title = isSimulated ? 'Oil Temp Simulado activo' : 'Oil Temp Manual activo';
+
+  if (sendToESP) {
+    sendOilTempSimModeToESP32(isSimulated);
   }
 }
 // Mapea el valor de Oil Temp (50-250) al ángulo de la aguja (270-90)
