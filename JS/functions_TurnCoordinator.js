@@ -130,11 +130,14 @@ function setupTurnCoordinatorControls() {
                 // Interpolar hacia cero
                 const newValue = startValue * (1 - easeProgress);
                 
+                // Redondear a 1 decimal consistentemente
+                const roundedValue = Math.round(newValue * 10) / 10;
+                
                 // Actualizar UI
-                if (slider) slider.value = newValue;
-                if (sliderValue) sliderValue.textContent = newValue.toFixed(1);
-                animateDialTurnCoordinator(newValue);
-                sendTurnCoordinatorToESP32('tc-rollValue', newValue);
+                if (slider) slider.value = roundedValue;
+                if (sliderValue) sliderValue.textContent = roundedValue;
+                animateDialTurnCoordinator(roundedValue);
+                sendTurnCoordinatorToESP32('tc-rollValue', roundedValue);
                 
                 if (progress < 1) {
                     requestAnimationFrame(animateToZero);
