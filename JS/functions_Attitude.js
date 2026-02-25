@@ -49,6 +49,35 @@ function updateAttitudeKnobPosition(pitchValue, rollValue) {
   }
 }
 
+function isBrakeOn() {
+  return window.brakeOnState === true;
+}
+
+function updateAttitudeBrakeUI(isOn) {
+  const box = document.querySelector('.attitude-control-box');
+  const joystick = document.getElementById('joystick');
+  const zeroBtn = document.getElementById('atti-zero-btn');
+  const pitchUpBtn = document.getElementById('pitch-up-btn');
+  const pitchDownBtn = document.getElementById('pitch-down-btn');
+  const rollUpBtn = document.getElementById('roll-up-btn');
+  const rollDownBtn = document.getElementById('roll-down-btn');
+
+  if (box) {
+    box.classList.toggle('is-brake-on', isOn === true);
+  }
+  if (joystick) {
+    joystick.style.pointerEvents = isOn ? 'none' : 'auto';
+  }
+  if (zeroBtn) {
+    zeroBtn.disabled = isOn;
+    zeroBtn.textContent = isOn ? 'Zero: LOCK' : 'Zero: OFF';
+  }
+  if (pitchUpBtn) pitchUpBtn.disabled = isOn;
+  if (pitchDownBtn) pitchDownBtn.disabled = isOn;
+  if (rollUpBtn) rollUpBtn.disabled = isOn;
+  if (rollDownBtn) rollDownBtn.disabled = isOn;
+}
+
 function setupAttitudeControls() {
   const knob = document.getElementById('knob');
   const joystick = document.getElementById('joystick');
@@ -69,12 +98,16 @@ function setupAttitudeControls() {
     return;
   }
 
+  // Aplicar estado inicial de frenos
+  updateAttitudeBrakeUI(isBrakeOn());
+
   // Centrar el knob inicialmente
   updateKnobPosition(joystickCenterX, joystickCenterY);
 
   // Botón Zero - anima suavemente a cero en 3 segundos
   if (zeroBtn) {
     zeroBtn.addEventListener('click', () => {
+      if (isBrakeOn()) return;
       if (zeroActive) return; // Ya está animando
       
       zeroActive = true;
@@ -161,6 +194,7 @@ function setupAttitudeControls() {
   // Eventos de los botones de flechas Pitch/Roll
   if (pitchUpBtn) {
     pitchUpBtn.addEventListener('click', () => {
+      if (isBrakeOn()) return;
       if (zeroActive) return;
       currentPitch = Math.max(-20, currentPitch - 1);  // Arriba = pitch negativo (nariz arriba)
       updatePitchRollFromButtons();
@@ -168,6 +202,7 @@ function setupAttitudeControls() {
   }
   if (pitchDownBtn) {
     pitchDownBtn.addEventListener('click', () => {
+      if (isBrakeOn()) return;
       if (zeroActive) return;
       currentPitch = Math.min(20, currentPitch + 1);   // Abajo = pitch positivo (nariz abajo)
       updatePitchRollFromButtons();
@@ -175,6 +210,7 @@ function setupAttitudeControls() {
   }
   if (rollUpBtn) {
     rollUpBtn.addEventListener('click', () => {
+      if (isBrakeOn()) return;
       if (zeroActive) return;
       currentRoll = Math.min(30, currentRoll + 1);     // Roll derecha
       updatePitchRollFromButtons();
@@ -182,6 +218,7 @@ function setupAttitudeControls() {
   }
   if (rollDownBtn) {
     rollDownBtn.addEventListener('click', () => {
+      if (isBrakeOn()) return;
       if (zeroActive) return;
       currentRoll = Math.max(-30, currentRoll - 1);    // Roll izquierda
       updatePitchRollFromButtons();
@@ -206,6 +243,7 @@ function setupAttitudeControls() {
   }
 
   function startDrag(e) {
+    if (isBrakeOn()) return;
     if (zeroActive) return; // No mover si Zero está activo
     joystickDragging = true;
     knob.style.cursor = 'grabbing';
@@ -213,6 +251,7 @@ function setupAttitudeControls() {
   }
 
   function onDrag(e) {
+    if (isBrakeOn()) return;
     if (!joystickDragging || zeroActive) return;
     e.preventDefault();
 

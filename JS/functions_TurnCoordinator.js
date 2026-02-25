@@ -23,10 +23,35 @@
 let currentTurnCoordinator = 0;
 let targetTurnCoordinator = 0;
 let turnCoordinatorAnimationFrame = null;
+let lastTurnCoordinatorValue = 0;
 
 // Función helper para redondear a 1 decimal consistentemente
 function formatTCValue(value) {
   return Math.round(value * 10) / 10;
+}
+
+function isBrakeOn() {
+    return window.brakeOnState === true;
+}
+
+function updateTurnCoordinatorBrakeUI(isOn) {
+    const slider = document.getElementById('turncoordinator-slider');
+    const btnMax = document.getElementById('turncoordinator-slider-max');
+    const btnMid = document.getElementById('turncoordinator-slider-mid');
+    const btnMin = document.getElementById('turncoordinator-slider-min');
+    const btnPlus = document.getElementById('turncoordinator-btn-plus');
+    const btnMinus = document.getElementById('turncoordinator-btn-minus');
+    const rudderLeft = document.getElementById('tc-rudder-left');
+    const rudderRight = document.getElementById('tc-rudder-right');
+
+    if (slider) slider.disabled = isOn;
+    if (btnMax) btnMax.disabled = isOn;
+    if (btnMid) btnMid.disabled = isOn;
+    if (btnMin) btnMin.disabled = isOn;
+    if (btnPlus) btnPlus.disabled = isOn;
+    if (btnMinus) btnMinus.disabled = isOn;
+    if (rudderLeft) rudderLeft.disabled = isOn;
+    if (rudderRight) rudderRight.disabled = isOn;
 }
 
 
@@ -60,6 +85,7 @@ function updateTurnCoordinator() {
 // Función para actualizar el avión del Turn Coordinator desde WebSocket
 function updateTurnCoordinatorPlane(value, sendToESP = false) {
     animateDialTurnCoordinator(value);
+    lastTurnCoordinatorValue = value;
     // Sincronizar slider si el dato viene del ESP32
     if (!sendToESP) {
         const slider = document.getElementById('turncoordinator-slider');
@@ -90,6 +116,11 @@ function setupTurnCoordinatorControls() {
     
     if (slider) {
         slider.addEventListener('input', () => {
+            if (isBrakeOn()) {
+                if (slider) slider.value = lastTurnCoordinatorValue;
+                if (sliderValue) sliderValue.textContent = formatTCValue(lastTurnCoordinatorValue);
+                return;
+            }
             const value = parseFloat(slider.value);
             if (sliderValue) sliderValue.textContent = formatTCValue(value);
             animateDialTurnCoordinator(value);
@@ -106,6 +137,7 @@ function setupTurnCoordinatorControls() {
  
     if (btnMax) {
         btnMax.addEventListener('click', () => {
+            if (isBrakeOn()) return;
             if (slider) slider.value = 30;
             if (sliderValue) sliderValue.textContent = 30;
             animateDialTurnCoordinator(30);
@@ -114,6 +146,7 @@ function setupTurnCoordinatorControls() {
     }
     if (btnMid) {
         btnMid.addEventListener('click', () => {
+            if (isBrakeOn()) return;
             // Animación gradual a cero en 8 segundos
             const currentValue = parseFloat(slider.value) || 0;
             if (Math.abs(currentValue) < 0.1) {
@@ -126,6 +159,11 @@ function setupTurnCoordinatorControls() {
             const startValue = currentValue;
             
             function animateToZero() {
+                if (isBrakeOn()) {
+                    if (slider) slider.value = lastTurnCoordinatorValue;
+                    if (sliderValue) sliderValue.textContent = formatTCValue(lastTurnCoordinatorValue);
+                    return;
+                }
                 const elapsed = Date.now() - startTime;
                 const progress = Math.min(1, elapsed / duration);
                 
@@ -160,6 +198,7 @@ function setupTurnCoordinatorControls() {
     }
     if (btnMin) {
         btnMin.addEventListener('click', () => {
+            if (isBrakeOn()) return;
             if (slider) slider.value = -30;
             if (sliderValue) sliderValue.textContent = -30;
             animateDialTurnCoordinator(-30);
@@ -168,6 +207,7 @@ function setupTurnCoordinatorControls() {
     }
     if (btnPlus) {
         btnPlus.addEventListener('click', () => {
+            if (isBrakeOn()) return;
             const newValue = Math.min(30, parseFloat(slider.value) + 1);
             if (slider) slider.value = newValue;
             if (sliderValue) sliderValue.textContent = formatTCValue(newValue);
@@ -177,6 +217,7 @@ function setupTurnCoordinatorControls() {
     }
     if (btnMinus) {
         btnMinus.addEventListener('click', () => {
+            if (isBrakeOn()) return;
             const newValue = Math.max(-30, parseFloat(slider.value) - 1);
             if (slider) slider.value = newValue;
             if (sliderValue) sliderValue.textContent = formatTCValue(newValue);

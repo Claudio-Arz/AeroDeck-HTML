@@ -142,6 +142,9 @@ window.addEventListener('DOMContentLoaded', () => {
       // console.log("Actualizando RPM: " + data.RPMValue + " Noice: " + data.RPMNoice + " varRPM: " + data.varRPM);
       updateRPMAndValue(data.RPMValue, data.RPMNoice, data.varRPM);
     }
+    if (data.brakeOn !== undefined && typeof updateBrakeState === 'function') {
+      updateBrakeState(data.brakeOn);
+    }
     // Actualizar horas de funcionamiento en el Drum-Roll
     if (data.horasFuncionamiento !== undefined && typeof setDrumHours === 'function') {
       setDrumHours(data.horasFuncionamiento, data.minutosFuncionamiento);

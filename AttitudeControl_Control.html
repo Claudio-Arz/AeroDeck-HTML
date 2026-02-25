@@ -196,6 +196,25 @@
   .atti-arrow-btn:active {
     background: #2196f3;
   }
+
+  /* Estados deshabilitados (frenos ON) */
+  .attitude-control-box.is-brake-on {
+    opacity: 0.6;
+  }
+  .attitude-control-box.is-brake-on .joystick-knob {
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+  .attitude-control-box.is-brake-on .atti-zero-btn,
+  .attitude-control-box.is-brake-on .atti-arrow-btn {
+    cursor: not-allowed;
+    filter: grayscale(0.6);
+    box-shadow: none;
+  }
+  .attitude-control-box.is-brake-on .atti-zero-btn:hover,
+  .attitude-control-box.is-brake-on .atti-arrow-btn:hover {
+    background: #333;
+  }
 </style>
 
 <!-- Script eliminado: toda la lógica del joystick está en functions_Attitude.js -->

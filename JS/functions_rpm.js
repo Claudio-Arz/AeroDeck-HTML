@@ -39,9 +39,10 @@ function initRPMControls() {
   const rpmBtnMinus = document.getElementById('rpm-btn-minus');
   const startBtnRPM = document.getElementById('start-btn-rpm');
   const noiceBtnRPM = document.getElementById('noice-btn-rpm');
+  const brakeBtn = document.getElementById('rpm-brake-btn');
 
   if (!rpmSlider || !rpmSliderValue || !maxButton || !midButton || 
-    !minButton || !rpmBtnPlus || !rpmBtnMinus || !startBtnRPM || !noiceBtnRPM  ) {
+    !minButton || !rpmBtnPlus || !rpmBtnMinus || !startBtnRPM || !noiceBtnRPM || !brakeBtn) {
     console.warn('No se encontraron los controles del RPM en el DOM.');
     return;
   }
@@ -49,6 +50,31 @@ function initRPMControls() {
   // Variables de estado para los toggles (no usar .value que convierte a string)
   let noiceState = false;
   let startState = false;
+  let brakeState = false;
+
+  function updateBrakeUI(isOn) {
+    const brakeLabel = document.getElementById('rpm-brake-label');
+    window.brakeOnState = isOn === true;
+    if (typeof updateTurnCoordinatorBrakeUI === 'function') {
+      updateTurnCoordinatorBrakeUI(window.brakeOnState);
+    }
+    if (typeof updateAttitudeBrakeUI === 'function') {
+      updateAttitudeBrakeUI(window.brakeOnState);
+    }
+    if (isOn) {
+      brakeBtn.classList.add('is-on');
+      if (brakeLabel) brakeLabel.textContent = 'BRAKE ON';
+    } else {
+      brakeBtn.classList.remove('is-on');
+      if (brakeLabel) brakeLabel.textContent = 'BRAKE OFF';
+    }
+  }
+
+  brakeBtn.addEventListener('click', () => {
+    brakeState = !brakeState;
+    updateBrakeUI(brakeState);
+    sendRPMToESP32('brakeOn', brakeState);
+  });
 
   noiceBtnRPM.addEventListener('click', () => {
     noiceState = !noiceState;
@@ -92,6 +118,26 @@ function initRPMControls() {
     sendRPMToESP32("rpmSlider", value);
   });
 
+}
+
+function updateBrakeState(brakeOn) {
+  const brakeBtn = document.getElementById('rpm-brake-btn');
+  const brakeLabel = document.getElementById('rpm-brake-label');
+  if (!brakeBtn) return;
+  window.brakeOnState = brakeOn === true;
+  if (typeof updateTurnCoordinatorBrakeUI === 'function') {
+    updateTurnCoordinatorBrakeUI(window.brakeOnState);
+  }
+  if (typeof updateAttitudeBrakeUI === 'function') {
+    updateAttitudeBrakeUI(window.brakeOnState);
+  }
+  if (brakeOn) {
+    brakeBtn.classList.add('is-on');
+    if (brakeLabel) brakeLabel.textContent = 'BRAKE ON';
+  } else {
+    brakeBtn.classList.remove('is-on');
+    if (brakeLabel) brakeLabel.textContent = 'BRAKE OFF';
+  }
 }
 
 function sendRPMToESP32(DataVar, DataValue) {
