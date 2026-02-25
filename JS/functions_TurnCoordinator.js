@@ -24,6 +24,11 @@ let currentTurnCoordinator = 0;
 let targetTurnCoordinator = 0;
 let turnCoordinatorAnimationFrame = null;
 
+// Función helper para redondear a 1 decimal consistentemente
+function formatTCValue(value) {
+  return Math.round(value * 10) / 10;
+}
+
 
 // Función para animar la aguja del Turn Coordinator hacia el valor objetivo
 function animateDialTurnCoordinator(value) {
@@ -60,7 +65,7 @@ function updateTurnCoordinatorPlane(value, sendToESP = false) {
         const slider = document.getElementById('turncoordinator-slider');
         const sliderValue = document.getElementById('turncoordinator-slider-value');
         if (slider) slider.value = value;
-        if (sliderValue) sliderValue.textContent = value;
+        if (sliderValue) sliderValue.textContent = formatTCValue(value);
     }
 }
 
@@ -86,7 +91,7 @@ function setupTurnCoordinatorControls() {
     if (slider) {
         slider.addEventListener('input', () => {
             const value = parseFloat(slider.value);
-            if (sliderValue) sliderValue.textContent = value;
+            if (sliderValue) sliderValue.textContent = formatTCValue(value);
             animateDialTurnCoordinator(value);
             sendTurnCoordinatorToESP32('rollValue', value);
         });
@@ -165,7 +170,7 @@ function setupTurnCoordinatorControls() {
         btnPlus.addEventListener('click', () => {
             const newValue = Math.min(30, parseFloat(slider.value) + 1);
             if (slider) slider.value = newValue;
-            if (sliderValue) sliderValue.textContent = newValue;
+            if (sliderValue) sliderValue.textContent = formatTCValue(newValue);
             animateDialTurnCoordinator(newValue);
             sendTurnCoordinatorToESP32('rollValue', newValue);
         });
@@ -174,7 +179,7 @@ function setupTurnCoordinatorControls() {
         btnMinus.addEventListener('click', () => {
             const newValue = Math.max(-30, parseFloat(slider.value) - 1);
             if (slider) slider.value = newValue;
-            if (sliderValue) sliderValue.textContent = newValue;
+            if (sliderValue) sliderValue.textContent = formatTCValue(newValue);
             animateDialTurnCoordinator(newValue);
             sendTurnCoordinatorToESP32('rollValue', newValue);
         });
