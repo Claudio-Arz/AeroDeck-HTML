@@ -171,6 +171,9 @@ window.addEventListener('DOMContentLoaded', () => {
       // console.log("Actualizando Fuel Flow: " + data['fuelFlowValue']);
       updateFuelFlow(data['fuelFlowValue']);
     }
+    if (data['useSimulatedFuelFlow'] !== undefined && typeof updateFuelFlowSimModeState === 'function') {
+      updateFuelFlowSimModeState(data['useSimulatedFuelFlow']);
+    }
     if (data['manifold'] !== undefined && typeof updateManifold === 'function') {
       // console.log("Actualizando Manifold: " + data['manifold']);
       updateManifold(data['manifold']);
