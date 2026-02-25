@@ -215,6 +215,9 @@ window.addEventListener('DOMContentLoaded', () => {
       // console.log("Actualizando Volt/Amp Left: " + data['voltAmpValueLeft']);
       updateVoltAmpLeft(data['voltAmpValueLeft']);
     }
+    if (data['useSimulatedVoltage'] !== undefined && typeof updateVoltageSimModeState === 'function') {
+      updateVoltageSimModeState(data['useSimulatedVoltage']);
+    }
     if (data['voltAmpValueRight'] !== undefined && typeof updateVoltAmpRight === 'function') {
       // console.log("Actualizando Volt/Amp Right: " + data['voltAmpValueRight']);
       updateVoltAmpRight(data['voltAmpValueRight']);

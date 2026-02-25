@@ -56,27 +56,27 @@ function initVoltAmpControls() {
   const btnPlusR = document.getElementById('voltamp-btn-plus-right');
   const btnMinusR = document.getElementById('voltamp-btn-minus-right');
   
-  // Botones Left (Voltímetro: 3-7V)
+  // Botones Left (Voltímetro: 10-16V)
   if (btnMaxL) {
     btnMaxL.addEventListener('click', () => {
-      updateVoltAmpLeft(7, true); // Max: 7V
+      updateVoltAmpLeft(16, true); // Max: 16V
     });
   }
   if (btnMidL) {
     btnMidL.addEventListener('click', () => {
-      updateVoltAmpLeft(5, true); // Mid: 5V
+      updateVoltAmpLeft(13, true); // Mid: 13V
     });
   }
   if (btnMinL) {
     btnMinL.addEventListener('click', () => {
-      updateVoltAmpLeft(3, true); // Min: 3V
+      updateVoltAmpLeft(10, true); // Min: 10V
     });
   }
   if (btnPlusL) {
     btnPlusL.addEventListener('click', () => {
       const slider = document.getElementById('voltamp-slider-left');
       if (slider) {
-        const newValue = Math.min(7, parseFloat(slider.value) + 0.5);
+        const newValue = Math.min(16, parseFloat(slider.value) + 0.5);
         updateVoltAmpLeft(newValue, true);
       }
     });
@@ -85,11 +85,21 @@ function initVoltAmpControls() {
     btnMinusL.addEventListener('click', () => {
       const slider = document.getElementById('voltamp-slider-left');
       if (slider) {
-        const newValue = Math.max(3, parseFloat(slider.value) - 0.5);
+        const newValue = Math.max(10, parseFloat(slider.value) - 0.5);
         updateVoltAmpLeft(newValue, true);
       }
     });
   }
+
+  // Event listener para el botón de Simulación/Manual de Voltaje
+  const simToggle = document.getElementById('voltage-sim-toggle');
+  if (simToggle) {
+    simToggle.addEventListener('click', () => {
+      const isCurrentlySimulated = simToggle.classList.contains('active');
+      updateVoltageSimModeState(!isCurrentlySimulated, true);
+    });
+  }
+  
   // Botones Right (Amperímetro: -60 a 60A)
   if (btnMaxR) {
     btnMaxR.addEventListener('click', () => {
@@ -217,15 +227,39 @@ function voltAmpToAngleRight(voltAmp) {
   if (voltAmp > maxValue) voltAmp = maxValue;
   return minAngle + ((voltAmp - minValue) * (maxAngle - minAngle)) / (maxValue - minValue);
 }
-// Mapea el valor de Volt/Amp (3-7) al ángulo de la aguja (0 / -90 grados)
+// Mapea el valor de Volt/Amp (10-16) al ángulo de la aguja (0 / -90 grados)
 function voltAmpToAngleLeft(voltAmp) {
-  const minValue = 3;
-  const maxValue = 7;
-  const minAngle = 0; // Ángulo mínimo para 3 V/A
-  const maxAngle = -90; // Ángulo máximo para 7 V/A
+  const minValue = 10;
+  const maxValue = 16;
+  const minAngle = 0; // Ángulo mínimo para 10V
+  const maxAngle = -90; // Ángulo máximo para 16V
   if (voltAmp < minValue) voltAmp = minValue;
   if (voltAmp > maxValue) voltAmp = maxValue;
   return minAngle + ((voltAmp - minValue) * (maxAngle - minAngle)) / (maxValue - minValue) + 45;
+}
+
+// Envía el estado de Simulación/Manual del Voltaje al ESP32 vía WebSocket
+function sendVoltageSimModeToESP32(simulated) {
+  if (window.ws && window.ws.readyState === WebSocket.OPEN) {
+    const data = JSON.stringify({ useSimulatedVoltage: simulated });
+    window.ws.send(data);
+    // console.log(`Enviando modo Voltaje al ESP32: ${simulated ? 'SIM' : 'MAN'}`);
+  }
+}
+
+// Actualiza el estado visual del botón SIM/MAN de Voltaje en la UI
+function updateVoltageSimModeState(simulated, sendToESP = false) {
+  const simToggle = document.getElementById('voltage-sim-toggle');
+  if (!simToggle) return;
+  
+  const isSimulated = !!simulated;
+  simToggle.classList.toggle('active', isSimulated);
+  simToggle.textContent = isSimulated ? 'SIM' : 'MAN';
+  simToggle.title = isSimulated ? 'Voltaje Simulado activo' : 'Voltaje Manual activo';
+  
+  if (sendToESP) {
+    sendVoltageSimModeToESP32(isSimulated);
+  }
 }
 
 

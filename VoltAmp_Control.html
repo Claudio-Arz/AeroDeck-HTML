@@ -27,8 +27,9 @@ Medidas: 120px x 240px
     <!-- Slider Left -->
     <div class="voltamp-slider-column">
       <span class="voltamp-tank-label">L</span>
-      <input type="range" min="3" max="7" value="3" step="0.1" id="voltamp-slider-left" orient="vertical" class="voltamp-slider-input">
-      <div class="voltamp-value-label" id="voltamp-value-left">3.0</div>
+      <input type="range" min="10" max="16" value="12" step="0.1" id="voltamp-slider-left" orient="vertical" class="voltamp-slider-input">
+      <div class="voltamp-value-label" id="voltamp-value-left">12.0</div>
+      <button id="voltage-sim-toggle" class="voltage-sim-toggle">SIM</button>
     </div>
     <!-- Botones +/- Left -->
     <div class="voltamp-plusminus-column">
@@ -131,6 +132,25 @@ Medidas: 120px x 240px
     padding: 1px 2px;
     font-family: 'Courier New', monospace;
     text-shadow: 0 0 3px #4ade80;
+  }
+  .voltage-sim-toggle {
+    width: 34px;
+    height: 16px;
+    margin-top: 2px;
+    border: 1px solid #4a5d23;
+    border-radius: 3px;
+    font-size: 9px;
+    font-weight: bold;
+    padding: 0;
+    cursor: pointer;
+    color: #4ade80;
+    background: linear-gradient(145deg, #1e3a5f, #0d1b2a);
+    text-shadow: 1px 1px 1px #000;
+  }
+  .voltage-sim-toggle.active {
+    color: #0d1b2a;
+    background: linear-gradient(145deg, #4ade80, #22c55e);
+    text-shadow: none;
   }
   .voltamp-plusminus-column {
     display: flex;
