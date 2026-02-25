@@ -41,6 +41,7 @@ function initCHTControls() {
   const btnMin = document.getElementById('cht-slider-min');
   const btnPlus = document.getElementById('cht-btn-plus');
   const btnMinus = document.getElementById('cht-btn-minus');
+  const simToggle = document.getElementById('cht-sim-toggle');
   
   if (btnMax) {
     btnMax.addEventListener('click', () => {
@@ -73,6 +74,13 @@ function initCHTControls() {
         const newValue = Math.max(0, parseFloat(slider.value) - 10); // -10 °F
         updateCHT(newValue, true);
       }
+    });
+  }
+
+  if (simToggle) {
+    simToggle.addEventListener('click', () => {
+      const isSimulated = simToggle.classList.contains('active');
+      updateCHTSimModeState(!isSimulated, true);
     });
   }
   
@@ -122,6 +130,29 @@ function sendCHTToESP32(cht) {
     // console.log(`Enviando CHT al ESP32: ${cht} °F`);
   } else {
     // console.warn('WebSocket no está conectado.');
+  }
+}
+
+function sendCHTSimModeToESP32(simulated) {
+  if (window.ws && window.ws.readyState === WebSocket.OPEN) {
+    const data = JSON.stringify({ useSimulatedCHT: simulated });
+    window.ws.send(data);
+  }
+}
+
+function updateCHTSimModeState(simulated, sendToESP = false) {
+  const simToggle = document.getElementById('cht-sim-toggle');
+  if (!simToggle) {
+    return;
+  }
+
+  const isSimulated = !!simulated;
+  simToggle.classList.toggle('active', isSimulated);
+  simToggle.textContent = isSimulated ? 'SIM' : 'MAN';
+  simToggle.title = isSimulated ? 'CHT Simulado activo' : 'CHT Manual activo';
+
+  if (sendToESP) {
+    sendCHTSimModeToESP32(isSimulated);
   }
 }
 

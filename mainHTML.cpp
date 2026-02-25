@@ -189,6 +189,9 @@ window.addEventListener('DOMContentLoaded', () => {
       // console.log("Actualizando CHT: " + data['chtValue']);
       updateCHT(data['chtValue']);
     }
+    if (data['useSimulatedCHT'] !== undefined && typeof updateCHTSimModeState === 'function') {
+      updateCHTSimModeState(data['useSimulatedCHT']);
+    }
 
     if (data['fuelValueLeft'] !== undefined && typeof updateFUELLeft === 'function') {
       // console.log("Actualizando Fuel Left: " + data['fuelValueLeft']);
