@@ -63,7 +63,7 @@ function setupAttitudeControls() {
       const startX = currentX - joystickCenterX;
       const startY = currentY - joystickCenterY;
       
-      const duration = 3000; // 3 segundos
+      const duration = 8000; // 8 segundos (más gradual)
       const startTime = Date.now();
       
       function animateToZero() {

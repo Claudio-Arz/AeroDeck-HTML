@@ -109,10 +109,45 @@ function setupTurnCoordinatorControls() {
     }
     if (btnMid) {
         btnMid.addEventListener('click', () => {
-            if (slider) slider.value = 0;
-            if (sliderValue) sliderValue.textContent = 0;
-            animateDialTurnCoordinator(0);
-            sendTurnCoordinatorToESP32('tc-rollValue', 0);
+            // Animación gradual a cero en 8 segundos
+            const currentValue = parseFloat(slider.value) || 0;
+            if (Math.abs(currentValue) < 0.1) {
+                // Ya está en cero, no hacer nada
+                return;
+            }
+            
+            const duration = 8000; // 8 segundos
+            const startTime = Date.now();
+            const startValue = currentValue;
+            
+            function animateToZero() {
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min(1, elapsed / duration);
+                
+                // Easing suave (ease-out cúbico)
+                const easeProgress = 1 - Math.pow(1 - progress, 3);
+                
+                // Interpolar hacia cero
+                const newValue = startValue * (1 - easeProgress);
+                
+                // Actualizar UI
+                if (slider) slider.value = newValue;
+                if (sliderValue) sliderValue.textContent = newValue.toFixed(1);
+                animateDialTurnCoordinator(newValue);
+                sendTurnCoordinatorToESP32('tc-rollValue', newValue);
+                
+                if (progress < 1) {
+                    requestAnimationFrame(animateToZero);
+                } else {
+                    // Asegurar valor final exacto
+                    if (slider) slider.value = 0;
+                    if (sliderValue) sliderValue.textContent = 0;
+                    animateDialTurnCoordinator(0);
+                    sendTurnCoordinatorToESP32('tc-rollValue', 0);
+                }
+            }
+            
+            animateToZero();
         });
     }
     if (btnMin) {
