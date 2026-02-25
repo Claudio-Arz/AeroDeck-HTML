@@ -150,6 +150,18 @@ window.addEventListener('DOMContentLoaded', () => {
       // console.log("Actualizando Pitch: " + data.pitchValue + " Roll: " + data.rollValue);
       updateAttitudeControl(data.pitchValue, data.rollValue);
     }
+    // Sincronizar Roll value en ambos instrumentos (Attitude y Turn Coordinator)
+    if (data.rollValue !== undefined) {
+      // Actualizar Turn Coordinator slider y display cuando recibe rollValue desde Attitude
+      const slider = document.getElementById('turncoordinator-slider');
+      const sliderValue = document.getElementById('turncoordinator-slider-value');
+      if (slider) slider.value = data.rollValue;
+      if (sliderValue) sliderValue.textContent = data.rollValue;
+      // Actualizar también el plano visual del Turn Coordinator
+      if (typeof updateTurnCoordinatorPlane === 'function') {
+        updateTurnCoordinatorPlane(data.rollValue, false); // false = no enviar de vuelta al ESP32
+      }
+    }
     if (data.airspeedValue !== undefined && typeof updateAirspeed === 'function') {
       // console.log("Actualizando Air Speed: " + data.airspeedValue);
       updateAirspeed(data.airspeedValue);

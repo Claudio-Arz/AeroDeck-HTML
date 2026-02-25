@@ -88,7 +88,7 @@ function setupTurnCoordinatorControls() {
             const value = parseFloat(slider.value);
             if (sliderValue) sliderValue.textContent = value;
             animateDialTurnCoordinator(value);
-            sendTurnCoordinatorToESP32('tc-rollValue', value);
+            sendTurnCoordinatorToESP32('rollValue', value);
         });
     }
     
@@ -104,7 +104,7 @@ function setupTurnCoordinatorControls() {
             if (slider) slider.value = 30;
             if (sliderValue) sliderValue.textContent = 30;
             animateDialTurnCoordinator(30);
-            sendTurnCoordinatorToESP32('tc-rollValue', 30);
+            sendTurnCoordinatorToESP32('rollValue', 30);
         });
     }
     if (btnMid) {
@@ -137,7 +137,7 @@ function setupTurnCoordinatorControls() {
                 if (slider) slider.value = roundedValue;
                 if (sliderValue) sliderValue.textContent = roundedValue;
                 animateDialTurnCoordinator(roundedValue);
-                sendTurnCoordinatorToESP32('tc-rollValue', roundedValue);
+                sendTurnCoordinatorToESP32('rollValue', roundedValue);
                 
                 if (progress < 1) {
                     requestAnimationFrame(animateToZero);
@@ -146,7 +146,7 @@ function setupTurnCoordinatorControls() {
                     if (slider) slider.value = 0;
                     if (sliderValue) sliderValue.textContent = 0;
                     animateDialTurnCoordinator(0);
-                    sendTurnCoordinatorToESP32('tc-rollValue', 0);
+                    sendTurnCoordinatorToESP32('rollValue', 0);
                 }
             }
             
@@ -158,7 +158,7 @@ function setupTurnCoordinatorControls() {
             if (slider) slider.value = -30;
             if (sliderValue) sliderValue.textContent = -30;
             animateDialTurnCoordinator(-30);
-            sendTurnCoordinatorToESP32('tc-rollValue', -30);
+            sendTurnCoordinatorToESP32('rollValue', -30);
         });
     }
     if (btnPlus) {
@@ -167,7 +167,7 @@ function setupTurnCoordinatorControls() {
             if (slider) slider.value = newValue;
             if (sliderValue) sliderValue.textContent = newValue;
             animateDialTurnCoordinator(newValue);
-            sendTurnCoordinatorToESP32('tc-rollValue', newValue);
+            sendTurnCoordinatorToESP32('rollValue', newValue);
         });
     }
     if (btnMinus) {
@@ -176,7 +176,7 @@ function setupTurnCoordinatorControls() {
             if (slider) slider.value = newValue;
             if (sliderValue) sliderValue.textContent = newValue;
             animateDialTurnCoordinator(newValue);
-            sendTurnCoordinatorToESP32('tc-rollValue', newValue);
+            sendTurnCoordinatorToESP32('rollValue', newValue);
         });
     }
     

@@ -266,6 +266,8 @@ function updateAttitudeControl(pitchValue, rollValue) {
   // Actualizar el instrumento visualmente
   const ball = document.getElementById('AttCon_ball');
   const dial = document.getElementById('AttCon_dial');
+  const pitchValueEl = document.getElementById('pitch-value');
+  const rollValueEl = document.getElementById('roll-value');
   
   if (ball) {
     // Pitch: mover verticalmente (±50px para ±20°)
@@ -278,6 +280,10 @@ function updateAttitudeControl(pitchValue, rollValue) {
     // Roll: rotar (±30°)
     dial.style.transform = `rotate(${rollValue}deg)`;
   }
+
+  // Actualizar displays de valores numéricos
+  if (pitchValueEl) pitchValueEl.textContent = pitchValue.toFixed(1) + '°';
+  if (rollValueEl) rollValueEl.textContent = rollValue.toFixed(1) + '°';
 
   // Actualizar display de coordenadas si existe
   const coordsDisplay = document.getElementById('coords');
