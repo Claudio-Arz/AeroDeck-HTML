@@ -182,6 +182,10 @@ window.addEventListener('DOMContentLoaded', () => {
       // console.log("Actualizando TC Péndulo: " + data['tc-pitchValue']);
       updateTurnCoordinatorBall(data['tc-pitchValue']);
     }
+    if (data['tcBallValue'] !== undefined && typeof updateTurnCoordinatorBall === 'function') {
+      // console.log("Actualizando TC Ball (Vuelo): " + data['tcBallValue']);
+      updateTurnCoordinatorBall(data['tcBallValue']);
+    }
     if (data['fuelFlowValue'] !== undefined && typeof updateFuelFlow === 'function') {
       // console.log("Actualizando Fuel Flow: " + data['fuelFlowValue']);
       updateFuelFlow(data['fuelFlowValue']);
