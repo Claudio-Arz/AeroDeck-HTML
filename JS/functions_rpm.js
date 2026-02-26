@@ -66,7 +66,7 @@ function initRPMControls() {
     } else {
       simBtnRPM.style.background = '#444';
       simBtnRPM.style.color = '#fff';
-      simBtnRPM.textContent = 'SIM';
+      simBtnRPM.textContent = 'MAN';
     }
 
     const lock = window.rpmSimModeState;
@@ -182,7 +182,7 @@ function updateRPMSimModeState(useSimulatedRPM) {
     } else {
       simBtnRPM.style.background = '#444';
       simBtnRPM.style.color = '#fff';
-      simBtnRPM.textContent = 'SIM';
+      simBtnRPM.textContent = 'MAN';
     }
   }
 
