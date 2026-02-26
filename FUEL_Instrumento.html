@@ -20,8 +20,7 @@
     alt="Needle FUEL">
     <img class="fuel-needle" id="fuel_Rneedle" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/FUEL/FUEL_RNeedle.png"
     alt="Needle FUEL">
-    <img class="fuel-light" id="fuel_light" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/FUEL/FUEL_Light.png"
-    alt="FUEL Light">
+    <div class="fuel-light" id="fuel_light" aria-hidden="true"></div>
     <img class="fuel-front" id="fuel-front" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/FUEL/FUEL_Front.png"
     alt="FUEL Front">
     <img class="brokenCrystal04" id="fuel_broken_crystal04" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/Crystals/BrokenCrystal04.png" 
@@ -56,15 +55,19 @@
   transform-origin: center center;
 }
 .fuel-light {
-  width: 100%;
-  height: 100%;
-  position:absolute;
-  top:0;
-  left:0%;
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  left: 50%;
+  top: 62%;
+  transform: translate(-50%, -50%);
   z-index:4;
-  pointer-events:none;
+  pointer-events: none;
   border-radius: 50%;
-  transform-origin: center center;
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: none;
+  transition: box-shadow 120ms linear, background-color 120ms linear;
 }
 .fuel-front {
   width: 100%;

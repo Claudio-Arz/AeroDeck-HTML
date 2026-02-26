@@ -23,7 +23,74 @@
 
 */
 
+let fuelLeftCurrent = 25.0;
+let fuelRightCurrent = 25.0;
+let fuelLightMode = 'off';
+let fuelLightVisible = false;
+let fuelLightLastToggleMs = 0;
+
+function applyFuelLightAppearance(mode, visible) {
+  const fuelLight = document.getElementById('fuel_light');
+  if (!fuelLight) return;
+
+  if (mode === 'off' || !visible) {
+    fuelLight.style.backgroundColor = 'rgba(0, 0, 0, 0.05)';
+    fuelLight.style.boxShadow = 'none';
+    return;
+  }
+
+  if (mode === 'red') {
+    fuelLight.style.backgroundColor = 'rgba(255, 40, 40, 0.55)';
+    fuelLight.style.boxShadow = '0 0 14px 8px rgba(255, 0, 0, 0.90)';
+    return;
+  }
+
+  fuelLight.style.backgroundColor = 'rgba(255, 235, 59, 0.50)';
+  fuelLight.style.boxShadow = '0 0 14px 8px rgba(255, 220, 0, 0.85)';
+}
+
+function computeFuelLightMode() {
+  const minFuel = Math.min(fuelLeftCurrent, fuelRightCurrent);
+  if (minFuel <= 2.5) return 'red';
+  if (minFuel <= 5.0) return 'yellow';
+  return 'off';
+}
+
+function updateFuelAlertLight() {
+  const now = Date.now();
+  const nextMode = computeFuelLightMode();
+
+  if (nextMode !== fuelLightMode) {
+    fuelLightMode = nextMode;
+    fuelLightLastToggleMs = now;
+    fuelLightVisible = (fuelLightMode !== 'off');
+    applyFuelLightAppearance(fuelLightMode, fuelLightVisible);
+    return;
+  }
+
+  if (fuelLightMode === 'off') {
+    fuelLightVisible = false;
+    applyFuelLightAppearance('off', false);
+    return;
+  }
+
+  const blinkIntervalMs = fuelLightMode === 'red' ? 500 : 1000;
+  if ((now - fuelLightLastToggleMs) >= blinkIntervalMs) {
+    fuelLightLastToggleMs = now;
+    fuelLightVisible = !fuelLightVisible;
+    applyFuelLightAppearance(fuelLightMode, fuelLightVisible);
+  }
+}
+
+function ensureFuelAlertLightTimer() {
+  if (window.fuelAlertLightTimerId) return;
+  window.fuelAlertLightTimerId = window.setInterval(updateFuelAlertLight, 100);
+}
+
 function initFUELControls() {
+  ensureFuelAlertLightTimer();
+  updateFuelAlertLight();
+
   // Event listener para el slider izquierdo
   const sliderL = document.getElementById('fuel-slider-left');
   if (sliderL) {
@@ -161,6 +228,8 @@ function updateFUELLeft(fuel, sendToESP = false) {
   if (sliderLabel) {
     sliderLabel.textContent = fuel.toFixed(1);
   }
+  fuelLeftCurrent = fuel;
+  updateFuelAlertLight();
   // Calcular el ángulo de la aguja utilizando la función fuelToAngleLeft
   const angle = fuelToAngleLeft(fuel);
   needle.style.transform = `rotate(${angle}deg)`;
@@ -196,6 +265,8 @@ function updateFUELRight(fuel, sendToESP = false) {
   if (sliderLabel) {
     sliderLabel.textContent = fuel.toFixed(1);
   }
+  fuelRightCurrent = fuel;
+  updateFuelAlertLight();
   // Calcular el ángulo de la aguja utilizando la función fuelToAngleRight
   const angle = fuelToAngleRight(fuel);
   needle.style.transform = `rotate(${angle}deg)`;
