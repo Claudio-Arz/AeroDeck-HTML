@@ -14,7 +14,7 @@
 -->
 <div class="instrumento-grid" onclick="toggleAltimeterBrokenCrystal()">
     <!-- Fondo escala Kollsman -->
-    <img class="altimeter-bg" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/altimeter/escala_kollsman.png" alt="Escala Kollsman">
+    <img class="altimeter-kollsman" id="altimeter-kollsman" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/altimeter/escala_kollsman.png" alt="Escala Kollsman">
     <!-- Dial principal -->
     <img class="altimeter-dial" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/altimeter/altimeter_dial.png" alt="Altimeter Dial">
     <!-- Bandera OFF -->
@@ -33,6 +33,7 @@
     </div>
     <img class="brokenCrystal13" id="altimeter_broken_crystal13" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/Crystals/BrokenCrystal13.png" 
     alt="Broken Crystal Altimeter">
+    <div id="altimeter-kollsman-value" class="altimeter-kollsman-value">29.92 inHg</div>
     <div id="altimeter-value" class="instrument-center-label">--</div>
 </div>
 
@@ -40,13 +41,14 @@
 
 
   /* Estilos específicos para el instrumento Altímetro */
-  .altimeter-bg {
+  .altimeter-kollsman {
     width: 85%;
     height: 85%;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    transition: transform 0.25s linear;
     z-index: 1;
     pointer-events: none;
     object-fit: contain;
@@ -108,6 +110,23 @@
     z-index: 18;
     pointer-events: none;
     object-fit: contain;
+  }
+
+  .altimeter-kollsman-value {
+    position: absolute;
+    left: 50%;
+    bottom: 15.5%;
+    transform: translateX(-50%);
+    z-index: 20;
+    font-size: 10px;
+    font-weight: bold;
+    color: #111;
+    background: rgba(245, 245, 245, 0.9);
+    border: 1px solid rgba(0, 0, 0, 0.35);
+    border-radius: 3px;
+    padding: 1px 4px;
+    line-height: 1.1;
+    pointer-events: none;
   }
 </style>
 
