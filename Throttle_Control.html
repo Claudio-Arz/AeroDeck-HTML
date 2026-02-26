@@ -1,0 +1,60 @@
+<!-- Throttle Control -->
+<div class="throttle-control-box">
+  <div class="throttle-title">Throttle</div>
+  <div class="throttle-body">
+    <input type="range" min="0" max="100" step="1" value="0" id="throttle-slider" class="throttle-slider">
+    <div class="throttle-actions">
+      <button id="throttle-btn-max" class="slider-glow-btn slider-btn slider-btn-max throttle-preset-btn">FULL</button>
+      <button id="throttle-btn-mid" class="slider-glow-btn slider-btn slider-btn-mid throttle-preset-btn">CRUISE</button>
+      <button id="throttle-btn-min" class="slider-glow-btn slider-btn slider-btn-min throttle-preset-btn">IDLE</button>
+      <span id="throttle-slider-value" class="throttle-value">0%</span>
+    </div>
+  </div>
+</div>
+
+<style>
+.throttle-control-box {
+  margin-top: 6px;
+  border-top: 1px solid #555;
+  padding: 6px 4px;
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.throttle-title {
+  text-align: center;
+  font-weight: bold;
+  font-size: 11px;
+  margin-bottom: 4px;
+}
+
+.throttle-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.throttle-slider {
+  height: 90px;
+  writing-mode: vertical-lr;
+  direction: rtl;
+}
+
+.throttle-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.throttle-preset-btn {
+  width: 60px;
+  height: 22px;
+  font-size: 10px;
+}
+
+.throttle-value {
+  font-size: 11px;
+  font-weight: bold;
+}
+</style>
