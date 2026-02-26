@@ -192,10 +192,6 @@ window.addEventListener('DOMContentLoaded', () => {
       // console.log("Actualizando TC Avión: " + data['tc-rollValue']);
       updateTurnCoordinatorPlane(data['tc-rollValue']);
     }
-    if (data['tc-pitchValue'] !== undefined && typeof updateTurnCoordinatorBall === 'function') {
-      // console.log("Actualizando TC Péndulo: " + data['tc-pitchValue']);
-      updateTurnCoordinatorBall(data['tc-pitchValue']);
-    }
     if (data['tcBallValue'] !== undefined && typeof updateTurnCoordinatorBall === 'function') {
       // console.log("Actualizando TC Ball (Slip/Skid): " + data['tcBallValue']);
       updateTurnCoordinatorBall(data['tcBallValue']);

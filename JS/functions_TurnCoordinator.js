@@ -103,8 +103,6 @@ function updateTurnCoordinatorBall(value) {
         const angle = (value / 30) * 30; // Ajusta el factor de movimiento según el diseño del instrumento
         ball.style.transform = `rotate(${angle}deg)`;
     }
-    // Sincronizar variable local
-    currentRudder = value;
 }
 // Variable global para el valor del rudder
 let currentRudder = 0;
