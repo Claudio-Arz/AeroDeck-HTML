@@ -31,22 +31,42 @@ let fuelLightLastToggleMs = 0;
 
 function applyFuelLightAppearance(mode, visible) {
   const fuelLight = document.getElementById('fuel_light');
-  if (!fuelLight) return;
+  const fuelFront = document.getElementById('fuel-front');
+
+  if (!fuelLight && !fuelFront) return;
 
   if (mode === 'off' || !visible) {
-    fuelLight.style.backgroundColor = 'rgba(0, 0, 0, 0.05)';
-    fuelLight.style.boxShadow = 'none';
+    if (fuelLight) {
+      fuelLight.style.backgroundColor = 'rgba(0, 0, 0, 0.05)';
+      fuelLight.style.boxShadow = 'none';
+    }
+    if (fuelFront) {
+      fuelFront.style.filter = 'none';
+      fuelFront.style.boxShadow = 'none';
+    }
     return;
   }
 
   if (mode === 'red') {
-    fuelLight.style.backgroundColor = 'rgba(255, 40, 40, 0.55)';
-    fuelLight.style.boxShadow = '0 0 14px 8px rgba(255, 0, 0, 0.90)';
+    if (fuelLight) {
+      fuelLight.style.backgroundColor = 'rgba(255, 40, 40, 0.55)';
+      fuelLight.style.boxShadow = '0 0 14px 8px rgba(255, 0, 0, 0.90)';
+    }
+    if (fuelFront) {
+      fuelFront.style.filter = 'drop-shadow(0 0 10px rgba(255, 0, 0, 0.95)) drop-shadow(0 0 18px rgba(255, 0, 0, 0.85))';
+      fuelFront.style.boxShadow = '0 0 12px 6px rgba(255, 0, 0, 0.75)';
+    }
     return;
   }
 
-  fuelLight.style.backgroundColor = 'rgba(255, 235, 59, 0.50)';
-  fuelLight.style.boxShadow = '0 0 14px 8px rgba(255, 220, 0, 0.85)';
+  if (fuelLight) {
+    fuelLight.style.backgroundColor = 'rgba(255, 235, 59, 0.50)';
+    fuelLight.style.boxShadow = '0 0 14px 8px rgba(255, 220, 0, 0.85)';
+  }
+  if (fuelFront) {
+    fuelFront.style.filter = 'drop-shadow(0 0 10px rgba(255, 220, 0, 0.95)) drop-shadow(0 0 18px rgba(255, 200, 0, 0.80))';
+    fuelFront.style.boxShadow = '0 0 12px 6px rgba(255, 220, 0, 0.70)';
+  }
 }
 
 function computeFuelLightMode() {
