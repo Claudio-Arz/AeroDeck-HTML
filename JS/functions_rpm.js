@@ -50,8 +50,13 @@ function initRPMControls() {
 
   // Variables de estado para los toggles (no usar .value que convierte a string)
   let noiceState = false;
-  let startState = false;
+  let startState = (window.rpmStartState === true);
   let brakeState = false;
+
+  function updateStartButtonUI(isStarted) {
+    window.rpmStartState = isStarted === true;
+    startBtnRPM.textContent = window.rpmStartState ? 'STOP' : 'START';
+  }
 
   function isRPMSimOn() {
     return window.rpmSimModeState === true;
@@ -115,8 +120,10 @@ function initRPMControls() {
   });
   startBtnRPM.addEventListener('click', () => {
     if (isRPMSimOn()) return;
+    startState = !startState;
+    updateStartButtonUI(startState);
     if(ws.readyState === 1) {
-      sendRPMToESP32("startBtnRPM", true);
+      sendRPMToESP32("startBtnRPM", startState);
     }
   });
   rpmBtnPlus.addEventListener('click', () => {
@@ -158,8 +165,18 @@ function initRPMControls() {
     sendRPMToESP32("rpmSlider", value);
   });
 
+  updateStartButtonUI(startState);
+
   updateRPMSimUI(window.rpmSimModeState === true);
 
+}
+
+function updateRPMEngineState(isStarted) {
+  const startBtnRPM = document.getElementById('start-btn-rpm');
+  if (!startBtnRPM) return;
+
+  window.rpmStartState = (isStarted === true);
+  startBtnRPM.textContent = window.rpmStartState ? 'STOP' : 'START';
 }
 
 function updateRPMSimModeState(useSimulatedRPM) {

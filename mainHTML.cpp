@@ -147,6 +147,9 @@ window.addEventListener('DOMContentLoaded', () => {
       // console.log("Actualizando RPM: " + data.RPMValue + " Noice: " + data.RPMNoice + " varRPM: " + data.varRPM);
       updateRPMAndValue(data.RPMValue, data.RPMNoice, data.varRPM);
     }
+    if (data.RPMStarted !== undefined && typeof updateRPMEngineState === 'function') {
+      updateRPMEngineState(data.RPMStarted);
+    }
     if (data.useSimulatedRPM !== undefined && typeof updateRPMSimModeState === 'function') {
       updateRPMSimModeState(data.useSimulatedRPM);
     }
