@@ -28,8 +28,43 @@
 function initOilTempControls() {
   // Event listener para el slider
   const slider = document.getElementById('ot-slider');
+  const simToggle = document.getElementById('ot-sim-toggle');
+
+  function isOilTempSimOn() {
+    return window.oilTempSimModeState === true;
+  }
+
+  function updateOilTempSimUI(isOn) {
+    window.oilTempSimModeState = isOn === true;
+    const lock = window.oilTempSimModeState;
+
+    if (simToggle) {
+      if (lock) {
+        simToggle.classList.add('active');
+        simToggle.textContent = 'SIM ON';
+      } else {
+        simToggle.classList.remove('active');
+        simToggle.textContent = 'SIM';
+      }
+    }
+
+    const btnMax = document.getElementById('ot-slider-max');
+    const btnMid = document.getElementById('ot-slider-mid');
+    const btnMin = document.getElementById('ot-slider-min');
+    const btnPlus = document.getElementById('ot-btn-plus');
+    const btnMinus = document.getElementById('ot-btn-minus');
+
+    if (slider) slider.disabled = lock;
+    if (btnMax) btnMax.disabled = lock;
+    if (btnMid) btnMid.disabled = lock;
+    if (btnMin) btnMin.disabled = lock;
+    if (btnPlus) btnPlus.disabled = lock;
+    if (btnMinus) btnMinus.disabled = lock;
+  }
+
   if (slider) {
     slider.addEventListener('input', () => {
+      if (isOilTempSimOn()) return;
       updateOilTemp(parseFloat(slider.value), true); // true = desde el slider, enviar al ESP32
     });
   } else {
@@ -42,25 +77,28 @@ function initOilTempControls() {
   const btnMin = document.getElementById('ot-slider-min');
   const btnPlus = document.getElementById('ot-btn-plus');
   const btnMinus = document.getElementById('ot-btn-minus');
-  const simToggle = document.getElementById('ot-sim-toggle');
   
   if (btnMax) {
     btnMax.addEventListener('click', () => {
+      if (isOilTempSimOn()) return;
       updateOilTemp(250, true); // Máximo: 250 °C
     });
   }
   if (btnMid) {
     btnMid.addEventListener('click', () => {
+      if (isOilTempSimOn()) return;
       updateOilTemp(150, true); // Medio: 150 °C
     });
   }
   if (btnMin) {
     btnMin.addEventListener('click', () => {
+      if (isOilTempSimOn()) return;
       updateOilTemp(50, true); // Mínimo: 50 °C
     });
   }
   if (btnPlus) {
     btnPlus.addEventListener('click', () => {
+      if (isOilTempSimOn()) return;
       const slider = document.getElementById('ot-slider');
       if (slider) {
         const newValue = Math.min(250, parseFloat(slider.value) + 1); // +1 °C
@@ -70,6 +108,7 @@ function initOilTempControls() {
   }
   if (btnMinus) {
     btnMinus.addEventListener('click', () => {
+      if (isOilTempSimOn()) return;
       const slider = document.getElementById('ot-slider');
       if (slider) {
         const newValue = Math.max(50, parseFloat(slider.value) - 1); // -1 °C
@@ -80,10 +119,13 @@ function initOilTempControls() {
 
   if (simToggle) {
     simToggle.addEventListener('click', () => {
-      const isSimulated = simToggle.classList.contains('active');
-      updateOilTempSimModeState(!isSimulated, true);
+      const newState = !isOilTempSimOn();
+      updateOilTempSimUI(newState);
+      sendOilTempSimModeToESP32(newState);
     });
   }
+
+  updateOilTempSimUI(window.oilTempSimModeState === true);
 }
 
 function updateOilTemp(oilTemp, sendToESP = false) {
@@ -141,14 +183,28 @@ function sendOilTempSimModeToESP32(simulated) {
 
 function updateOilTempSimModeState(simulated, sendToESP = false) {
   const simToggle = document.getElementById('ot-sim-toggle');
+  const slider = document.getElementById('ot-slider');
+  const btnMax = document.getElementById('ot-slider-max');
+  const btnMid = document.getElementById('ot-slider-mid');
+  const btnMin = document.getElementById('ot-slider-min');
+  const btnPlus = document.getElementById('ot-btn-plus');
+  const btnMinus = document.getElementById('ot-btn-minus');
   if (!simToggle) {
     return;
   }
 
   const isSimulated = !!simulated;
+  window.oilTempSimModeState = isSimulated;
   simToggle.classList.toggle('active', isSimulated);
-  simToggle.textContent = isSimulated ? 'SIM' : 'MAN';
+  simToggle.textContent = isSimulated ? 'SIM ON' : 'SIM';
   simToggle.title = isSimulated ? 'Oil Temp Simulado activo' : 'Oil Temp Manual activo';
+
+  if (slider) slider.disabled = isSimulated;
+  if (btnMax) btnMax.disabled = isSimulated;
+  if (btnMid) btnMid.disabled = isSimulated;
+  if (btnMin) btnMin.disabled = isSimulated;
+  if (btnPlus) btnPlus.disabled = isSimulated;
+  if (btnMinus) btnMinus.disabled = isSimulated;
 
   if (sendToESP) {
     sendOilTempSimModeToESP32(isSimulated);

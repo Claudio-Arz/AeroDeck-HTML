@@ -24,8 +24,43 @@
 function initOilPressControls() {
   // Event listener para el slider
   const slider = document.getElementById('op-slider');
+  const simToggle = document.getElementById('op-sim-toggle');
+
+  function isOilPressSimOn() {
+    return window.oilPressSimModeState === true;
+  }
+
+  function updateOilPressSimUI(isOn) {
+    window.oilPressSimModeState = isOn === true;
+    const lock = window.oilPressSimModeState;
+
+    if (simToggle) {
+      if (lock) {
+        simToggle.classList.add('active');
+        simToggle.textContent = 'SIM ON';
+      } else {
+        simToggle.classList.remove('active');
+        simToggle.textContent = 'SIM';
+      }
+    }
+
+    const btnMax = document.getElementById('op-slider-max');
+    const btnMid = document.getElementById('op-slider-mid');
+    const btnMin = document.getElementById('op-slider-min');
+    const btnPlus = document.getElementById('op-btn-plus');
+    const btnMinus = document.getElementById('op-btn-minus');
+
+    if (slider) slider.disabled = lock;
+    if (btnMax) btnMax.disabled = lock;
+    if (btnMid) btnMid.disabled = lock;
+    if (btnMin) btnMin.disabled = lock;
+    if (btnPlus) btnPlus.disabled = lock;
+    if (btnMinus) btnMinus.disabled = lock;
+  }
+
   if (slider) {
     slider.addEventListener('input', () => {
+      if (isOilPressSimOn()) return;
       updateOilPress(parseFloat(slider.value), true); // true = desde el slider, enviar al ESP32
     });
   } else {
@@ -38,25 +73,28 @@ function initOilPressControls() {
   const btnMin = document.getElementById('op-slider-min');
   const btnPlus = document.getElementById('op-btn-plus');
   const btnMinus = document.getElementById('op-btn-minus');
-  const simToggle = document.getElementById('op-sim-toggle');
   
   if (btnMax) {
     btnMax.addEventListener('click', () => {
+      if (isOilPressSimOn()) return;
       updateOilPress(120, true); // Máximo: 120 PSI
     });
   }
   if (btnMid) {
     btnMid.addEventListener('click', () => {
+      if (isOilPressSimOn()) return;
       updateOilPress(60, true); // Medio: 60 PSI
     });
   }
   if (btnMin) {
     btnMin.addEventListener('click', () => {
+      if (isOilPressSimOn()) return;
       updateOilPress(0, true); // Mínimo: 0 PSI
     });
   }
   if (btnPlus) {
     btnPlus.addEventListener('click', () => {
+      if (isOilPressSimOn()) return;
       const slider = document.getElementById('op-slider');
       if (slider) {
         const newValue = Math.min(120, parseFloat(slider.value) + 1); // +1 PSI
@@ -66,6 +104,7 @@ function initOilPressControls() {
   }
   if (btnMinus) {
     btnMinus.addEventListener('click', () => {
+      if (isOilPressSimOn()) return;
       const slider = document.getElementById('op-slider');
       if (slider) {
         const newValue = Math.max(0, parseFloat(slider.value) - 1); // -1 PSI
@@ -76,10 +115,13 @@ function initOilPressControls() {
 
   if (simToggle) {
     simToggle.addEventListener('click', () => {
-      const isSimulated = simToggle.classList.contains('active');
-      updateOilPressSimModeState(!isSimulated, true);
+      const newState = !isOilPressSimOn();
+      updateOilPressSimUI(newState);
+      sendOilPressSimModeToESP32(newState);
     });
   }
+
+  updateOilPressSimUI(window.oilPressSimModeState === true);
 }
 
 function updateOilPress(oilPress, sendToESP = false) {
@@ -137,14 +179,28 @@ function sendOilPressSimModeToESP32(simulated) {
 
 function updateOilPressSimModeState(simulated, sendToESP = false) {
   const simToggle = document.getElementById('op-sim-toggle');
+  const slider = document.getElementById('op-slider');
+  const btnMax = document.getElementById('op-slider-max');
+  const btnMid = document.getElementById('op-slider-mid');
+  const btnMin = document.getElementById('op-slider-min');
+  const btnPlus = document.getElementById('op-btn-plus');
+  const btnMinus = document.getElementById('op-btn-minus');
   if (!simToggle) {
     return;
   }
 
   const isSimulated = !!simulated;
+  window.oilPressSimModeState = isSimulated;
   simToggle.classList.toggle('active', isSimulated);
-  simToggle.textContent = isSimulated ? 'SIM' : 'MAN';
+  simToggle.textContent = isSimulated ? 'SIM ON' : 'SIM';
   simToggle.title = isSimulated ? 'Oil Press Simulado activo' : 'Oil Press Manual activo';
+
+  if (slider) slider.disabled = isSimulated;
+  if (btnMax) btnMax.disabled = isSimulated;
+  if (btnMid) btnMid.disabled = isSimulated;
+  if (btnMin) btnMin.disabled = isSimulated;
+  if (btnPlus) btnPlus.disabled = isSimulated;
+  if (btnMinus) btnMinus.disabled = isSimulated;
 
   if (sendToESP) {
     sendOilPressSimModeToESP32(isSimulated);
