@@ -138,11 +138,14 @@ window.addEventListener('DOMContentLoaded', () => {
       updateVariometerAndValue(data.verticalSpeed);
     }
     if (data.altitudValue !== undefined && typeof updateAltimeterAndValue === 'function') {
-      updateAltimeterAndValue(data.altitudValue, data.bandera_off, data.atmosphericPressureInHg);
+      updateAltimeterAndValue(data.altitudValue, data.bandera_off, data.atmosphericPressureHpa);
     }
     if (data.RPMValue !== undefined && typeof updateRPMAndValue === 'function') {
       // console.log("Actualizando RPM: " + data.RPMValue + " Noice: " + data.RPMNoice + " varRPM: " + data.varRPM);
       updateRPMAndValue(data.RPMValue, data.RPMNoice, data.varRPM);
+    }
+    if (data.useSimulatedRPM !== undefined && typeof updateRPMSimModeState === 'function') {
+      updateRPMSimModeState(data.useSimulatedRPM);
     }
     if (data.throttleValue !== undefined && typeof updateThrottleControl === 'function') {
       updateThrottleControl(data.throttleValue, false);

@@ -39,10 +39,11 @@ function initRPMControls() {
   const rpmBtnMinus = document.getElementById('rpm-btn-minus');
   const startBtnRPM = document.getElementById('start-btn-rpm');
   const noiceBtnRPM = document.getElementById('noice-btn-rpm');
+  const simBtnRPM = document.getElementById('sim-btn-rpm');
   const brakeBtn = document.getElementById('rpm-brake-btn');
 
   if (!rpmSlider || !rpmSliderValue || !maxButton || !midButton || 
-    !minButton || !rpmBtnPlus || !rpmBtnMinus || !startBtnRPM || !noiceBtnRPM || !brakeBtn) {
+    !minButton || !rpmBtnPlus || !rpmBtnMinus || !startBtnRPM || !noiceBtnRPM || !simBtnRPM || !brakeBtn) {
     console.warn('No se encontraron los controles del RPM en el DOM.');
     return;
   }
@@ -51,6 +52,32 @@ function initRPMControls() {
   let noiceState = false;
   let startState = false;
   let brakeState = false;
+
+  function isRPMSimOn() {
+    return window.rpmSimModeState === true;
+  }
+
+  function updateRPMSimUI(isOn) {
+    window.rpmSimModeState = isOn === true;
+    if (window.rpmSimModeState) {
+      simBtnRPM.style.background = '#0f0';
+      simBtnRPM.style.color = '#111';
+      simBtnRPM.textContent = 'SIM ON';
+    } else {
+      simBtnRPM.style.background = '#444';
+      simBtnRPM.style.color = '#fff';
+      simBtnRPM.textContent = 'SIM';
+    }
+
+    const lock = window.rpmSimModeState;
+    rpmSlider.disabled = lock;
+    maxButton.disabled = lock;
+    midButton.disabled = lock;
+    minButton.disabled = lock;
+    rpmBtnPlus.disabled = lock;
+    rpmBtnMinus.disabled = lock;
+    startBtnRPM.disabled = lock;
+  }
 
   function updateBrakeUI(isOn) {
     const brakeLabel = document.getElementById('rpm-brake-label');
@@ -77,47 +104,96 @@ function initRPMControls() {
   });
 
   noiceBtnRPM.addEventListener('click', () => {
+    if (isRPMSimOn()) return;
     noiceState = !noiceState;
     sendRPMToESP32("noiceBtnRPM", noiceState);
   });
+  simBtnRPM.addEventListener('click', () => {
+    const newState = !isRPMSimOn();
+    updateRPMSimUI(newState);
+    sendRPMToESP32("useSimulatedRPM", newState);
+  });
   startBtnRPM.addEventListener('click', () => {
+    if (isRPMSimOn()) return;
     if(ws.readyState === 1) {
       sendRPMToESP32("startBtnRPM", true);
     }
   });
   rpmBtnPlus.addEventListener('click', () => {
+    if (isRPMSimOn()) return;
     let currentValue = parseFloat(rpmSlider.value);
     rpmSlider.value = currentValue < 3000 ? currentValue + 1 : currentValue;
     rpmSliderValue.textContent = rpmSlider.value;
     sendRPMToESP32("rpmSlider", parseFloat(rpmSlider.value));
   });
   rpmBtnMinus.addEventListener('click', () => {
+    if (isRPMSimOn()) return;
     let currentValue = parseFloat(rpmSlider.value);
     rpmSlider.value = currentValue > 0 ? currentValue - 1 : currentValue;
     rpmSliderValue.textContent = rpmSlider.value;
     sendRPMToESP32("rpmSlider", parseFloat(rpmSlider.value));
   });
   maxButton.addEventListener('click', () => {
+    if (isRPMSimOn()) return;
     rpmSlider.value = parseFloat(3000);
     rpmSliderValue.textContent = 3000;
     sendRPMToESP32("rpmSlider", 3000.0);
   });
   midButton.addEventListener('click', () => {
+    if (isRPMSimOn()) return;
     rpmSlider.value = parseFloat(1500);
     rpmSliderValue.textContent = 1500;
     sendRPMToESP32("rpmSlider", 1500.0);
   });
   minButton.addEventListener('click', () => {
+    if (isRPMSimOn()) return;
     rpmSlider.value = parseFloat(0);
     rpmSliderValue.textContent = 0;
     sendRPMToESP32("rpmSlider", 0.0);
   });
   rpmSlider.addEventListener('input', () => {
+    if (isRPMSimOn()) return;
     const value = parseFloat(rpmSlider.value);
     rpmSliderValue.textContent = value;
     sendRPMToESP32("rpmSlider", value);
   });
 
+  updateRPMSimUI(window.rpmSimModeState === true);
+
+}
+
+function updateRPMSimModeState(useSimulatedRPM) {
+  const simBtnRPM = document.getElementById('sim-btn-rpm');
+  const rpmSlider = document.getElementById('rpm-slider');
+  const maxButton = document.getElementById('rpm-slider-max');
+  const midButton = document.getElementById('rpm-slider-mid');
+  const minButton = document.getElementById('rpm-slider-min');
+  const rpmBtnPlus = document.getElementById('rpm-btn-plus');
+  const rpmBtnMinus = document.getElementById('rpm-btn-minus');
+  const startBtnRPM = document.getElementById('start-btn-rpm');
+
+  window.rpmSimModeState = useSimulatedRPM === true;
+
+  if (simBtnRPM) {
+    if (window.rpmSimModeState) {
+      simBtnRPM.style.background = '#0f0';
+      simBtnRPM.style.color = '#111';
+      simBtnRPM.textContent = 'SIM ON';
+    } else {
+      simBtnRPM.style.background = '#444';
+      simBtnRPM.style.color = '#fff';
+      simBtnRPM.textContent = 'SIM';
+    }
+  }
+
+  const lock = window.rpmSimModeState;
+  if (rpmSlider) rpmSlider.disabled = lock;
+  if (maxButton) maxButton.disabled = lock;
+  if (midButton) midButton.disabled = lock;
+  if (minButton) minButton.disabled = lock;
+  if (rpmBtnPlus) rpmBtnPlus.disabled = lock;
+  if (rpmBtnMinus) rpmBtnMinus.disabled = lock;
+  if (startBtnRPM) startBtnRPM.disabled = lock;
 }
 
 function updateBrakeState(brakeOn) {

@@ -1,6 +1,6 @@
 // Alias para compatibilidad con mainHTML.cpp
-function updateAltimeterAndValue(altitudValue, bandera_off, atmosphericPressureInHg) {
-  updateAltimeter(altitudValue, bandera_off, atmosphericPressureInHg);
+function updateAltimeterAndValue(altitudValue, bandera_off, atmosphericPressureHpa) {
+  updateAltimeter(altitudValue, bandera_off, atmosphericPressureHpa);
 }
 /*
   Sistema AeroDeck
@@ -13,7 +13,7 @@ function updateAltimeterAndValue(altitudValue, bandera_off, atmosphericPressureI
 
 
 // Función para actualizar el altímetro con el valor recibido
-function updateAltimeter(altitudValue, bandera_off, atmosphericPressureInHg) {
+function updateAltimeter(altitudValue, bandera_off, atmosphericPressureHpa) {
   // Actualizar el valor numérico en el centro del instrumento
   document.getElementById("altimeter-value").textContent = Math.round(altitudValue);
   // Calcular los ángulos de las agujas en función de la altitud
@@ -38,13 +38,13 @@ function updateAltimeter(altitudValue, bandera_off, atmosphericPressureInHg) {
   }
 
   // Actualizar escala Kollsman y lectura en ventanita
-  // Rango gráfico: 28..31 inHg distribuidos en 180°
-  // Referencia: 29.92 inHg = 0°
+  // Rango gráfico: 950..1050 hPa distribuidos en 180°
+  // Referencia: 1000 hPa = 0°
   // Menor presión => sentido horario (+)
   // Mayor presión => sentido antihorario (-)
-  const pressure = (typeof atmosphericPressureInHg === 'number') ? atmosphericPressureInHg : 29.92;
-  const pressureClamped = Math.max(28.0, Math.min(31.0, pressure));
-  const kolsmanAngle = (29.92 - pressureClamped) * 60.0;
+  const pressure = (typeof atmosphericPressureHpa === 'number') ? atmosphericPressureHpa : 1000.0;
+  const pressureClamped = Math.max(950.0, Math.min(1050.0, pressure));
+  const kolsmanAngle = (1000.0 - pressureClamped) * 1.8;
 
   const kolsmanScale = document.getElementById("altimeter-kollsman");
   if (kolsmanScale) {
@@ -53,7 +53,7 @@ function updateAltimeter(altitudValue, bandera_off, atmosphericPressureInHg) {
 
   const kolsmanElement = document.getElementById("altimeter-kollsman-value");
   if (kolsmanElement) {
-    kolsmanElement.textContent = `${pressureClamped.toFixed(2)} inHg`;
+    kolsmanElement.textContent = `${Math.round(pressureClamped)} hPa`;
   }
 }
 
