@@ -230,14 +230,14 @@ function setupTurnCoordinatorControls() {
     
     if (rudderLeft) {
         rudderLeft.addEventListener('click', () => {
-            currentRudder = Math.max(-30, currentRudder - 1); // -1° (izquierda)
+            currentRudder = Math.min(30, currentRudder + 1); // +1° (izquierda, corregido)
             sendTurnCoordinatorToESP32('tc-pitchValue', currentRudder);
             console.log('Rudder Left:', currentRudder);
         });
     }
     if (rudderRight) {
         rudderRight.addEventListener('click', () => {
-            currentRudder = Math.min(30, currentRudder + 1); // +1° (derecha)
+            currentRudder = Math.max(-30, currentRudder - 1); // -1° (derecha, corregido)
             sendTurnCoordinatorToESP32('tc-pitchValue', currentRudder);
             console.log('Rudder Right:', currentRudder);
         });
