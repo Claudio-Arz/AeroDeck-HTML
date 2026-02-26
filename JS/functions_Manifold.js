@@ -18,8 +18,45 @@
 function initManifoldControls() {
   // Event listener para el slider
   const slider = document.getElementById('mf-slider');
+  const simBtn = document.getElementById('mf-sim-btn');
+
+  function isManifoldSimOn() {
+    return window.manifoldSimModeState === true;
+  }
+
+  function updateManifoldSimUI(isOn) {
+    window.manifoldSimModeState = isOn === true;
+    const lock = window.manifoldSimModeState;
+
+    if (simBtn) {
+      if (lock) {
+        simBtn.style.background = '#0f0';
+        simBtn.style.color = '#111';
+        simBtn.textContent = 'SIM ON';
+      } else {
+        simBtn.style.background = '#444';
+        simBtn.style.color = '#fff';
+        simBtn.textContent = 'SIM';
+      }
+    }
+
+    const btnMax = document.getElementById('mf-slider-max');
+    const btnMid = document.getElementById('mf-slider-mid');
+    const btnMin = document.getElementById('mf-slider-min');
+    const btnPlus = document.getElementById('mf-btn-plus');
+    const btnMinus = document.getElementById('mf-btn-minus');
+
+    if (slider) slider.disabled = lock;
+    if (btnMax) btnMax.disabled = lock;
+    if (btnMid) btnMid.disabled = lock;
+    if (btnMin) btnMin.disabled = lock;
+    if (btnPlus) btnPlus.disabled = lock;
+    if (btnMinus) btnMinus.disabled = lock;
+  }
+
   if (slider) {
     slider.addEventListener('input', () => {
+      if (isManifoldSimOn()) return;
       updateManifold(parseFloat(slider.value), true); // true = desde el slider, enviar al ESP32
     });
   } else {
@@ -35,21 +72,25 @@ function initManifoldControls() {
   
   if (btnMax) {
     btnMax.addEventListener('click', () => {
+      if (isManifoldSimOn()) return;
       updateManifold(50, true); // Máximo: 50 IN Hg ALg
     });
   }
   if (btnMid) {
     btnMid.addEventListener('click', () => {
+      if (isManifoldSimOn()) return;
       updateManifold(30, true); // Medio: 30 IN Hg ALg
     });
   }
   if (btnMin) {
     btnMin.addEventListener('click', () => {
+      if (isManifoldSimOn()) return;
       updateManifold(10, true); // Mínimo: 10 IN Hg ALg
     });
   }
   if (btnPlus) {
     btnPlus.addEventListener('click', () => {
+      if (isManifoldSimOn()) return;
       const slider = document.getElementById('mf-slider');
       if (slider) {
         const newValue = Math.min(50, parseFloat(slider.value) + 0.1); // +0.1 IN Hg ALg
@@ -59,6 +100,7 @@ function initManifoldControls() {
   }
   if (btnMinus) {
     btnMinus.addEventListener('click', () => {
+      if (isManifoldSimOn()) return;
       const slider = document.getElementById('mf-slider');
       if (slider) {
         const newValue = Math.max(10, parseFloat(slider.value) - 0.1); // -0.1 IN Hg ALg
@@ -66,6 +108,51 @@ function initManifoldControls() {
       }
     });
   }
+
+  if (simBtn) {
+    simBtn.addEventListener('click', () => {
+      const newState = !isManifoldSimOn();
+      updateManifoldSimUI(newState);
+      if (window.ws && window.ws.readyState === WebSocket.OPEN) {
+        window.ws.send(JSON.stringify({ useSimulatedManifold: newState }));
+      }
+    });
+  }
+
+  updateManifoldSimUI(window.manifoldSimModeState === true);
+}
+
+function updateManifoldSimModeState(useSimulatedManifold) {
+  window.manifoldSimModeState = useSimulatedManifold === true;
+
+  const simBtn = document.getElementById('mf-sim-btn');
+  const slider = document.getElementById('mf-slider');
+  const btnMax = document.getElementById('mf-slider-max');
+  const btnMid = document.getElementById('mf-slider-mid');
+  const btnMin = document.getElementById('mf-slider-min');
+  const btnPlus = document.getElementById('mf-btn-plus');
+  const btnMinus = document.getElementById('mf-btn-minus');
+
+  const lock = window.manifoldSimModeState;
+
+  if (simBtn) {
+    if (lock) {
+      simBtn.style.background = '#0f0';
+      simBtn.style.color = '#111';
+      simBtn.textContent = 'SIM ON';
+    } else {
+      simBtn.style.background = '#444';
+      simBtn.style.color = '#fff';
+      simBtn.textContent = 'SIM';
+    }
+  }
+
+  if (slider) slider.disabled = lock;
+  if (btnMax) btnMax.disabled = lock;
+  if (btnMid) btnMid.disabled = lock;
+  if (btnMin) btnMin.disabled = lock;
+  if (btnPlus) btnPlus.disabled = lock;
+  if (btnMinus) btnMinus.disabled = lock;
 }
 
 function updateManifold(manifold, sendToESP = false) {

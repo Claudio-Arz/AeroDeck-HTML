@@ -15,8 +15,45 @@
 function initAirSpeedControls() {
   // Event listener para el slider
   const slider = document.getElementById('as-slider');
+  const simBtn = document.getElementById('as-sim-btn');
+
+  function isAirSpeedSimOn() {
+    return window.airSpeedSimModeState === true;
+  }
+
+  function updateAirSpeedSimUI(isOn) {
+    window.airSpeedSimModeState = isOn === true;
+    const lock = window.airSpeedSimModeState;
+
+    if (simBtn) {
+      if (lock) {
+        simBtn.style.background = '#0f0';
+        simBtn.style.color = '#111';
+        simBtn.textContent = 'SIM ON';
+      } else {
+        simBtn.style.background = '#444';
+        simBtn.style.color = '#fff';
+        simBtn.textContent = 'SIM';
+      }
+    }
+
+    const btnMax = document.getElementById('as-slider-max');
+    const btnMid = document.getElementById('as-slider-mid');
+    const btnMin = document.getElementById('as-slider-min');
+    const btnPlus = document.getElementById('as-btn-plus');
+    const btnMinus = document.getElementById('as-btn-minus');
+
+    if (slider) slider.disabled = lock;
+    if (btnMax) btnMax.disabled = lock;
+    if (btnMid) btnMid.disabled = lock;
+    if (btnMin) btnMin.disabled = lock;
+    if (btnPlus) btnPlus.disabled = lock;
+    if (btnMinus) btnMinus.disabled = lock;
+  }
+
   if (slider) {
     slider.addEventListener('input', () => {
+      if (isAirSpeedSimOn()) return;
       updateAirspeed(parseFloat(slider.value), true); // true = desde el slider, enviar al ESP32
     });
   } else {
@@ -32,21 +69,25 @@ function initAirSpeedControls() {
   
   if (btnMax) {
     btnMax.addEventListener('click', () => {
+      if (isAirSpeedSimOn()) return;
       updateAirspeed(200, true); // Máximo: 200 kts
     });
   }
   if (btnMid) {
     btnMid.addEventListener('click', () => {
+      if (isAirSpeedSimOn()) return;
       updateAirspeed(120, true); // Medio: 120 kts
     });
   }
   if (btnMin) {
     btnMin.addEventListener('click', () => {
+      if (isAirSpeedSimOn()) return;
       updateAirspeed(40, true); // Mínimo: 40 kts
     });
   }
   if (btnPlus) {
     btnPlus.addEventListener('click', () => {
+      if (isAirSpeedSimOn()) return;
       const slider = document.getElementById('as-slider');
       if (slider) {
         const newValue = Math.min(200, parseFloat(slider.value) + 1); // +1 nudo
@@ -56,6 +97,7 @@ function initAirSpeedControls() {
   }
   if (btnMinus) {
     btnMinus.addEventListener('click', () => {
+      if (isAirSpeedSimOn()) return;
       const slider = document.getElementById('as-slider');
       if (slider) {
         const newValue = Math.max(40, parseFloat(slider.value) - 1); // -1 nudo
@@ -63,6 +105,50 @@ function initAirSpeedControls() {
       }
     });
   }
+
+  if (simBtn) {
+    simBtn.addEventListener('click', () => {
+      const newState = !isAirSpeedSimOn();
+      updateAirSpeedSimUI(newState);
+      if (window.ws && window.ws.readyState === WebSocket.OPEN) {
+        window.ws.send(JSON.stringify({ useSimulatedAirspeed: newState }));
+      }
+    });
+  }
+
+  updateAirSpeedSimUI(window.airSpeedSimModeState === true);
+}
+
+function updateAirSpeedSimModeState(useSimulatedAirspeed) {
+  window.airSpeedSimModeState = useSimulatedAirspeed === true;
+  const simBtn = document.getElementById('as-sim-btn');
+  const slider = document.getElementById('as-slider');
+  const btnMax = document.getElementById('as-slider-max');
+  const btnMid = document.getElementById('as-slider-mid');
+  const btnMin = document.getElementById('as-slider-min');
+  const btnPlus = document.getElementById('as-btn-plus');
+  const btnMinus = document.getElementById('as-btn-minus');
+
+  const lock = window.airSpeedSimModeState;
+
+  if (simBtn) {
+    if (lock) {
+      simBtn.style.background = '#0f0';
+      simBtn.style.color = '#111';
+      simBtn.textContent = 'SIM ON';
+    } else {
+      simBtn.style.background = '#444';
+      simBtn.style.color = '#fff';
+      simBtn.textContent = 'SIM';
+    }
+  }
+
+  if (slider) slider.disabled = lock;
+  if (btnMax) btnMax.disabled = lock;
+  if (btnMid) btnMid.disabled = lock;
+  if (btnMin) btnMin.disabled = lock;
+  if (btnPlus) btnPlus.disabled = lock;
+  if (btnMinus) btnMinus.disabled = lock;
 }
 
 function updateAirspeed(airspeed, sendToESP = false) {

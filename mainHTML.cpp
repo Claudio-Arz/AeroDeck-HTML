@@ -137,6 +137,9 @@ window.addEventListener('DOMContentLoaded', () => {
     if (data.verticalSpeed !== undefined && typeof updateVariometerAndValue === 'function') {
       updateVariometerAndValue(data.verticalSpeed);
     }
+    if (data.usePitchDrivenVerticalSpeed !== undefined && typeof updateVariometerSimModeState === 'function') {
+      updateVariometerSimModeState(data.usePitchDrivenVerticalSpeed);
+    }
     if (data.altitudValue !== undefined && typeof updateAltimeterAndValue === 'function') {
       updateAltimeterAndValue(data.altitudValue, data.bandera_off, data.atmosphericPressureHpa);
     }
@@ -177,6 +180,9 @@ window.addEventListener('DOMContentLoaded', () => {
       // console.log("Actualizando Air Speed: " + data.airspeedValue);
       updateAirspeed(data.airspeedValue);
       }
+      if (data.useSimulatedAirspeed !== undefined && typeof updateAirSpeedSimModeState === 'function') {
+      updateAirSpeedSimModeState(data.useSimulatedAirspeed);
+    }
       if (data.gyroValue !== undefined && typeof updateGyro === 'function') {
         // console.log("Actualizando Gyro: " + data.gyroValue);
       updateGyro(data.gyroValue);
@@ -204,6 +210,9 @@ window.addEventListener('DOMContentLoaded', () => {
     if (data['manifold'] !== undefined && typeof updateManifold === 'function') {
       // console.log("Actualizando Manifold: " + data['manifold']);
       updateManifold(data['manifold']);
+    }
+    if (data['useSimulatedManifold'] !== undefined && typeof updateManifoldSimModeState === 'function') {
+      updateManifoldSimModeState(data['useSimulatedManifold']);
     }
     if (data['oilPress'] !== undefined && typeof updateOilPress === 'function') {
       // console.log("Actualizando Oil Press: " + data['oilPress']);

@@ -32,6 +32,7 @@
     <div class="variometer-slider-section">
       <input type="range" min="-2000" max="2000" value="0" class="slider vertical-slider" id="variometer-slider" style="writing-mode: vertical-lr; direction: rtl;">
       <div class="slider-value" id="variometer-slider-value">0</div>
+      <button id="variometer-sim-btn" class="variometer-sim-btn">SIM</button>
     </div>
     <div class="variometer-plusminus-section">
       <button id="variometer-btn-plus" class="slider-glow-btn slider-btn slider-btn-max">+</button>
@@ -142,6 +143,19 @@
     font-weight: bold;
     color: #eeb4b4;
     padding: 2px 0;
+  }
+  .variometer-sim-btn {
+    width: 30px;
+    height: 16px;
+    margin-top: 4px;
+    font-size: 8px;
+    line-height: 1;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    background: #444;
+    color: #fff;
+    padding: 0;
   }
   .variometer-plusminus-section {
     display: flex;
