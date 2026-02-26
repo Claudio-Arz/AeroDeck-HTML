@@ -142,6 +142,12 @@ window.addEventListener('DOMContentLoaded', () => {
       // console.log("Actualizando RPM: " + data.RPMValue + " Noice: " + data.RPMNoice + " varRPM: " + data.varRPM);
       updateRPMAndValue(data.RPMValue, data.RPMNoice, data.varRPM);
     }
+    if (data.throttleValue !== undefined) {
+      const throttleSlider = document.getElementById('throttle-slider');
+      const throttleValueLabel = document.getElementById('throttle-slider-value');
+      if (throttleSlider) throttleSlider.value = data.throttleValue;
+      if (throttleValueLabel) throttleValueLabel.textContent = Math.round(data.throttleValue) + "%";
+    }
     if (data.brakeOn !== undefined && typeof updateBrakeState === 'function') {
       updateBrakeState(data.brakeOn);
     }
@@ -631,6 +637,53 @@ window.addEventListener('DOMContentLoaded', () => {
     .then(r => r.text())
     .then(html => {
       document.getElementById("inst06").innerHTML = html;
+
+      const throttleBoxHtml = `
+        <div style="margin-top:6px; border-top:1px solid #555; padding:6px 4px; background: rgba(0,0,0,0.15);">
+          <div style="text-align:center; font-weight:bold; font-size:11px; margin-bottom:4px;">Throttle</div>
+          <div style="display:flex; align-items:center; justify-content:center; gap:8px;">
+            <input type="range" min="0" max="100" step="1" value="0" id="throttle-slider" style="height:90px; writing-mode: vertical-lr; direction: rtl">
+            <div style="display:flex; flex-direction:column; align-items:center; gap:4px;">
+              <button id="throttle-btn-max" class="slider-glow-btn slider-btn slider-btn-max" style="width:60px; height:22px; font-size:10px;">FULL</button>
+              <button id="throttle-btn-mid" class="slider-glow-btn slider-btn slider-btn-mid" style="width:60px; height:22px; font-size:10px;">CRUISE</button>
+              <button id="throttle-btn-min" class="slider-glow-btn slider-btn slider-btn-min" style="width:60px; height:22px; font-size:10px;">IDLE</button>
+              <span id="throttle-slider-value" style="font-size:11px; font-weight:bold;">0%</span>
+            </div>
+          </div>
+        </div>
+      `;
+      document.getElementById("inst06").insertAdjacentHTML('beforeend', throttleBoxHtml);
+
+      const sendThrottle = (value) => {
+        if (window.ws && window.ws.readyState === WebSocket.OPEN) {
+          window.ws.send(JSON.stringify({ throttleValue: value }));
+        }
+      };
+
+      const throttleSlider = document.getElementById('throttle-slider');
+      const throttleValueLabel = document.getElementById('throttle-slider-value');
+      const throttleBtnMax = document.getElementById('throttle-btn-max');
+      const throttleBtnMid = document.getElementById('throttle-btn-mid');
+      const throttleBtnMin = document.getElementById('throttle-btn-min');
+
+      const setThrottle = (value, send = true) => {
+        const clamped = Math.max(0, Math.min(100, Math.round(value)));
+        if (throttleSlider) throttleSlider.value = clamped;
+        if (throttleValueLabel) throttleValueLabel.textContent = clamped + "%";
+        if (send) sendThrottle(clamped);
+      };
+
+      if (throttleSlider) {
+        throttleSlider.addEventListener('input', () => {
+          setThrottle(parseFloat(throttleSlider.value), true);
+        });
+      }
+      if (throttleBtnMax) throttleBtnMax.addEventListener('click', () => setThrottle(100, true));
+      if (throttleBtnMid) throttleBtnMid.addEventListener('click', () => setThrottle(65, true));
+      if (throttleBtnMin) throttleBtnMin.addEventListener('click', () => setThrottle(0, true));
+
+      setThrottle(0, false);
+
       // Inicializar controles del RPM después de insertar el HTML
       if (typeof initRPMControls === 'function') {
         initRPMControls();
