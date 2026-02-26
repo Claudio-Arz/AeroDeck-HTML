@@ -187,6 +187,9 @@ window.addEventListener('DOMContentLoaded', () => {
         // console.log("Actualizando Gyro: " + data.gyroValue);
       updateGyro(data.gyroValue);
     }
+    if (data.useSimulatedGyro !== undefined && typeof updateGyroSimModeState === 'function') {
+      updateGyroSimModeState(data.useSimulatedGyro);
+    }
     // --- Turn Coordinator ---
     if (data['tc-rollValue'] !== undefined && typeof updateTurnCoordinatorPlane === 'function') {
       // console.log("Actualizando TC Avión: " + data['tc-rollValue']);

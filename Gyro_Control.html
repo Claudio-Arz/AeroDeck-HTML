@@ -36,6 +36,7 @@
     <div class="gyro-plusminus-row" style="grid-column:1;grid-row:5;">
       <button class="gyro-tri-btn gyro-tri-up" id="gyr-btn-plus"></button>
       <button class="gyro-tri-btn gyro-tri-down" id="gyr-btn-minus"></button>
+      <button id="gyr-sim-btn" class="gyro-sim-btn">SIM</button>
     </div>
     <div class="gyro-btn-row" style="background:#616b58;grid-column:2;grid-row:1;">
       <button class="gyro-btn slider-glow-btn" id="gyr-btn-0">0°</button><div class="gyro-btn-label">North</div>
@@ -220,6 +221,19 @@
   justify-content: center;
   align-items: center;
   gap: 6px;
+}
+
+.gyro-sim-btn {
+  width: 24px;
+  height: 16px;
+  border: none;
+  border-radius: 3px;
+  font-size: 7px;
+  line-height: 1;
+  cursor: pointer;
+  background: #444;
+  color: #fff;
+  padding: 0;
 }
 
 /* Base redonda para botones triangulares */

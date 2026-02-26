@@ -97,10 +97,51 @@ function sendGyroToESP32(gyro) {
 * Los controles solo envían al ESP32, no actualizan la vista directamente
 */
 function setupGyroControls() {
+  const simBtn = document.getElementById('gyr-sim-btn');
+
+  function isGyroSimOn() {
+    return window.gyroSimModeState === true;
+  }
+
+  function updateGyroSimUI(isOn) {
+    window.gyroSimModeState = isOn === true;
+    const lock = window.gyroSimModeState;
+
+    if (simBtn) {
+      if (lock) {
+        simBtn.style.background = '#0f0';
+        simBtn.style.color = '#111';
+        simBtn.textContent = 'SIM ON';
+      } else {
+        simBtn.style.background = '#444';
+        simBtn.style.color = '#fff';
+        simBtn.textContent = 'MAN';
+      }
+    }
+
+    const gyroSlider = document.getElementById('gyr-slider');
+    const gyrBtnPlus = document.getElementById('gyr-btn-plus');
+    const gyrBtnMinus = document.getElementById('gyr-btn-minus');
+
+    const quickBtn0 = document.getElementById('gyr-btn-0');
+    const quickBtn90 = document.getElementById('gyr-btn-90');
+    const quickBtn180 = document.getElementById('gyr-btn-180');
+    const quickBtn270 = document.getElementById('gyr-btn-270');
+
+    if (gyroSlider) gyroSlider.disabled = lock;
+    if (gyrBtnPlus) gyrBtnPlus.disabled = lock;
+    if (gyrBtnMinus) gyrBtnMinus.disabled = lock;
+    if (quickBtn0) quickBtn0.disabled = lock;
+    if (quickBtn90) quickBtn90.disabled = lock;
+    if (quickBtn180) quickBtn180.disabled = lock;
+    if (quickBtn270) quickBtn270.disabled = lock;
+  }
+
   // Slider
   const gyroSlider = document.getElementById("gyr-slider");
   if (gyroSlider) {
     gyroSlider.addEventListener("input", function() {
+      if (isGyroSimOn()) return;
       sendGyroToESP32(Number(gyroSlider.value));
     });
   }
@@ -116,6 +157,7 @@ function setupGyroControls() {
     const btn = document.getElementById(btnInfo.id);
     if (btn) {
       btn.addEventListener("click", function() {
+        if (isGyroSimOn()) return;
         sendGyroToESP32(btnInfo.value);
       });
     }
@@ -127,6 +169,7 @@ function setupGyroControls() {
   
   if (gyrBtnPlus) {
     gyrBtnPlus.addEventListener("click", function() {
+      if (isGyroSimOn()) return;
       let newValue = normalizeGyroAngle(currentGyro + 1);
       sendGyroToESP32(newValue);
     });
@@ -134,10 +177,58 @@ function setupGyroControls() {
   
   if (gyrBtnMinus) {
     gyrBtnMinus.addEventListener("click", function() {
+      if (isGyroSimOn()) return;
       let newValue = normalizeGyroAngle(currentGyro - 1);
       sendGyroToESP32(newValue);
     });
   }
+
+  if (simBtn) {
+    simBtn.addEventListener('click', function() {
+      const newState = !isGyroSimOn();
+      updateGyroSimUI(newState);
+      if (window.ws && window.ws.readyState === WebSocket.OPEN) {
+        window.ws.send(JSON.stringify({ useSimulatedGyro: newState }));
+      }
+    });
+  }
+
+  updateGyroSimUI(window.gyroSimModeState === true);
+}
+
+function updateGyroSimModeState(useSimulatedGyro) {
+  window.gyroSimModeState = useSimulatedGyro === true;
+
+  const simBtn = document.getElementById('gyr-sim-btn');
+  const gyroSlider = document.getElementById('gyr-slider');
+  const gyrBtnPlus = document.getElementById('gyr-btn-plus');
+  const gyrBtnMinus = document.getElementById('gyr-btn-minus');
+  const quickBtn0 = document.getElementById('gyr-btn-0');
+  const quickBtn90 = document.getElementById('gyr-btn-90');
+  const quickBtn180 = document.getElementById('gyr-btn-180');
+  const quickBtn270 = document.getElementById('gyr-btn-270');
+
+  const lock = window.gyroSimModeState;
+
+  if (simBtn) {
+    if (lock) {
+      simBtn.style.background = '#0f0';
+      simBtn.style.color = '#111';
+      simBtn.textContent = 'SIM ON';
+    } else {
+      simBtn.style.background = '#444';
+      simBtn.style.color = '#fff';
+      simBtn.textContent = 'MAN';
+    }
+  }
+
+  if (gyroSlider) gyroSlider.disabled = lock;
+  if (gyrBtnPlus) gyrBtnPlus.disabled = lock;
+  if (gyrBtnMinus) gyrBtnMinus.disabled = lock;
+  if (quickBtn0) quickBtn0.disabled = lock;
+  if (quickBtn90) quickBtn90.disabled = lock;
+  if (quickBtn180) quickBtn180.disabled = lock;
+  if (quickBtn270) quickBtn270.disabled = lock;
 }
 
 
