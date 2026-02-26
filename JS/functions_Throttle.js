@@ -27,6 +27,8 @@ function initThrottleControls() {
   const throttleBtnMax = document.getElementById('throttle-btn-max');
   const throttleBtnMid = document.getElementById('throttle-btn-mid');
   const throttleBtnMin = document.getElementById('throttle-btn-min');
+  const throttleBtnPlus = document.getElementById('throttle-btn-plus');
+  const throttleBtnMinus = document.getElementById('throttle-btn-minus');
 
   if (!throttleSlider) {
     return;
@@ -49,6 +51,18 @@ function initThrottleControls() {
   }
   if (throttleBtnMin) {
     throttleBtnMin.addEventListener('click', () => updateThrottleControl(0, true));
+  }
+  if (throttleBtnPlus) {
+    throttleBtnPlus.addEventListener('click', () => {
+      const current = parseFloat(throttleSlider.value) || 0;
+      updateThrottleControl(current + 1, true);
+    });
+  }
+  if (throttleBtnMinus) {
+    throttleBtnMinus.addEventListener('click', () => {
+      const current = parseFloat(throttleSlider.value) || 0;
+      updateThrottleControl(current - 1, true);
+    });
   }
 
   updateThrottleControl(throttleSlider.value, false);

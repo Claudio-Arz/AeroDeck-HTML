@@ -1,58 +1,117 @@
 <!-- Throttle Control -->
 <div class="throttle-control-box">
-  <div class="throttle-title">🔘 Throttle</div>
-  <div class="throttle-body">
-    <input type="range" min="0" max="100" step="1" value="0" id="throttle-slider" class="throttle-slider">
-    <div class="throttle-actions">
+  <div class="throttle-title">Throttle Control</div>
+
+  <div class="throttle-center-zone">
+    <div class="throttle-slider-col">
+      <input type="range" min="0" max="100" step="1" value="0" id="throttle-slider" class="throttle-slider">
+    </div>
+
+    <div class="throttle-step-col">
+      <button id="throttle-btn-plus" class="slider-glow-btn slider-btn slider-btn-max throttle-step-btn">+</button>
+      <button id="throttle-btn-minus" class="slider-glow-btn slider-btn slider-btn-min throttle-step-btn">-</button>
+    </div>
+
+    <div class="throttle-presets-col">
       <button id="throttle-btn-max" class="slider-glow-btn slider-btn slider-btn-max throttle-preset-btn">FULL</button>
       <button id="throttle-btn-mid" class="slider-glow-btn slider-btn slider-btn-mid throttle-preset-btn">CRUISE</button>
       <button id="throttle-btn-min" class="slider-glow-btn slider-btn slider-btn-min throttle-preset-btn">IDLE</button>
+    </div>
+  </div>
+
+  <div class="throttle-bottom-zone">
+    <div class="throttle-value-cell">
       <span id="throttle-slider-value" class="throttle-value">0%</span>
     </div>
+    <div class="throttle-bottom-fill"></div>
   </div>
 </div>
 
 <style>
 .throttle-control-box {
   width: 120px;
-  height: 240px;    
-  margin-top: 6px;
-  border-top: 1px solid #555;
-  padding: 6px 4px;
-  background: rgba(0, 0, 0, 0.15);
+  height: 240px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  background-color: rgb(63, 155, 158);
 }
 
 .throttle-title {
   text-align: center;
   font-weight: bold;
   font-size: 11px;
-  margin-bottom: 4px;
+  padding: 4px 0;
+  border-bottom: 1px solid #555;
 }
 
-.throttle-body {
+.throttle-center-zone {
+  flex: 1;
   display: flex;
+  flex-direction: row;
+}
+
+.throttle-slider-col {
+  width: 30px;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
 }
 
 .throttle-slider {
-  height: 100px;
+  height: 120px;
   writing-mode: vertical-lr;
   direction: rtl;
 }
 
-.throttle-actions {
+.throttle-step-col {
+  width: 30px;
   display: flex;
   flex-direction: column;
+  justify-content: space-around;
   align-items: center;
-  gap: 4px;
+}
+
+.throttle-step-btn {
+  width: 24px;
+  height: 24px;
+  font-size: 14px;
+  color: #f7e30a;
+}
+
+.throttle-presets-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  padding: 4px;
 }
 
 .throttle-preset-btn {
-  width: 60px;
-  height: 22px;
+  width: 100%;
+  height: 28px;
   font-size: 10px;
+}
+
+.throttle-bottom-zone {
+  display: flex;
+  flex-direction: row;
+  border-top: 1px solid #555;
+  height: 50px;
+}
+
+.throttle-value-cell {
+  width: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+}
+
+.throttle-bottom-fill {
+  flex: 1;
 }
 
 .throttle-value {
