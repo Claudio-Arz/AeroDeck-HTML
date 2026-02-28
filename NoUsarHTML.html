@@ -150,6 +150,9 @@ window.addEventListener('DOMContentLoaded', () => {
       // console.log("Actualizando Fuel Right: " + data['fuelValueRight']);
       updateFUELRight(data['fuelValueRight']);
     }
+    if (data['activeTank'] !== undefined && typeof updateActiveTankIndicator === 'function') {
+      updateActiveTankIndicator(data['activeTank']);
+    }
 
 
 

@@ -12,13 +12,13 @@
     los event listeners para los controles interactivos del FUEL, como el slider y los 
     botones de valores predefinidos.
 
-  El instrumento de combustible muestra la cantidad de combustible disponible en tiempo real. El valor se representa en litros (L) y se 
-  muestra en una escala que va de 0 a 100 L. El instrumento tiene una aguja que se mueve 
-  para indicar la cantidad de combustible actual, y un valor numérico que muestra la cantidad exacta de 
-  combustible disponible. El control de combustible se puede ajustar mediante 
-  un slider o botones predefinidos para valores comunes de combustible. Al cambiar el valor, 
-  se anima la aguja del instrumento y se envía el nuevo valor al ESP32 para que lo refleje 
-  en el instrumento físico y en todas las terminales conectadas.
+  El instrumento de combustible muestra la cantidad de combustible disponible en tiempo real. 
+  El valor se representa en galones (Gls) y se   muestra en una escala que va de 0 a 25 Gls. 
+  El instrumento tiene una aguja que se mueve   para indicar la cantidad de combustible actual, 
+  y un valor numérico que muestra la cantidad exacta de combustible disponible. El control de 
+  combustible se puede ajustar mediante un slider o botones predefinidos para valores comunes 
+  de combustible. Al cambiar el valor, se anima la aguja del instrumento y se envía el nuevo 
+  valor al ESP32 para que lo refleje en el instrumento físico y en todas las terminales conectadas.
 
 
 */
@@ -366,19 +366,30 @@ function updateActiveTankIndicator(activeTank) {
   const tankValueSpan = document.getElementById('fuel-active-tank-value');
   const leftColumn = document.getElementById('fuel-column-left');
   const rightColumn = document.getElementById('fuel-column-right');
-  
+
+  // Acepta: 1/2, "1"/"2", "L"/"R", "left"/"right"
+  const normalized = String(activeTank).trim().toUpperCase();
+  const isLeftTank = (
+    activeTank === 1 ||
+    normalized === '1' ||
+    normalized === 'L' ||
+    normalized === 'LEFT' ||
+    normalized === 'IZQ' ||
+    normalized === 'IZQUIERDO'
+  );
+
   if (tankValueSpan) {
-    tankValueSpan.textContent = activeTank === 1 ? 'L' : 'R';
+    tankValueSpan.textContent = isLeftTank ? 'L' : 'R';
   }
-  
+
   // Resaltar la columna del tanque activo
   if (leftColumn && rightColumn) {
-    if (activeTank === 1) {
-      leftColumn.classList.add('active');
-      rightColumn.classList.remove('active');
-    } else {
-      leftColumn.classList.remove('active');
-      rightColumn.classList.add('active');
-    }
+    leftColumn.classList.toggle('active', isLeftTank);
+    rightColumn.classList.toggle('active', !isLeftTank);
   }
+}
+
+// Compatibilidad con llamadas antiguas con typo en el nombre
+function updateActiveTYankIndicator(activeTank) {
+  updateActiveTankIndicator(activeTank);
 }
