@@ -184,7 +184,7 @@ function sendEGTSimModeToESP32(simulated) {
 
 function egtToAngle(egt) {
   const clamped = clampEGT(egt);
-  return EGT_ANGLE_MIN - ((clamped - EGT_MIN) * (EGT_ANGLE_MIN - EGT_ANGLE_MAX)) / (EGT_MAX - EGT_MIN);
+  return EGT_ANGLE_MIN + ((clamped - EGT_MIN) * (EGT_ANGLE_MIN - EGT_ANGLE_MAX)) / (EGT_MAX - EGT_MIN);
 }
 
 function egtBugToAngle(egtBug) {
@@ -200,7 +200,7 @@ function clampEGT(value) {
 }
 
 function toggleEGTBrokenCrystal() {
-  const crystal = document.getElementById('egt_broken_crystal07');
+  const crystal = document.getElementById('egt_broken_crystal06');
   if (crystal) {
     crystal.classList.toggle('visible');
   }
