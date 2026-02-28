@@ -240,9 +240,9 @@ function sendRPMToESP32(DataVar, DataValue) {
   });
 }
 
-function updateRPMAndValue(RPMValue, RPMNoice, varRPM) {
+function updateRPMAndValue(RPMValue, RPMNoise, varRPM) {
   // RPMValue = valor del slider/botones (valor base)
-  // varRPM = RPMValue + ruido si RPMNoice está activo, RPMValue si está apagado
+  // varRPM = RPMValue + ruido si RPMNoise está activo, RPMValue si está apagado
   // La aguja muestra varRPM, el drum-counter muestra horas de funcionamiento (se actualiza por separado)
   
   // Actualizar el valor numérico en el centro del instrumento con el valor del slider
@@ -263,7 +263,7 @@ function updateRPMAndValue(RPMValue, RPMNoice, varRPM) {
   // Cambiar el color del boton Noice y crystal según el estado
   const noiceBtnRPM = document.getElementById('noice-btn-rpm');
   const rpmCrystal = document.getElementById('rpm-crystal');
-  const noiceActive = (RPMNoice === true || RPMNoice === 1);
+  const noiceActive = (RPMNoise === true || RPMNoise === 1);
   if (noiceActive) {
     noiceBtnRPM.style.background = '#0f0';
     if (rpmCrystal) rpmCrystal.style.background = 'rgba(74, 252, 74, 0.08)';
