@@ -192,7 +192,7 @@ function clampEGT(value) {
 }
 
 function toggleEGTBrokenCrystal() {
-  const crystal = document.getElementById('egt_broken_crystal16');
+  const crystal = document.getElementById('egt_broken_crystal07');
   if (crystal) {
     crystal.classList.toggle('visible');
   }

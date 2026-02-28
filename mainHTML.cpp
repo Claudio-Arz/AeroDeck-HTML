@@ -239,7 +239,7 @@ window.addEventListener('DOMContentLoaded', () => {
   fetch("https://claudio-arz.github.io/AeroDeck-HTML/Throttle_Control.html")
     .then(r => r.text())
     .then(html => {
-      document.getElementById("inst33").innerHTML = html;
+      document.getElementById("inst32").innerHTML = html;
       // Inicializar controles del Throttle después de insertar el HTML
       if (typeof initThrottleControls === 'function') {
         initThrottleControls();
@@ -269,7 +269,7 @@ window.addEventListener('DOMContentLoaded', () => {
   fetch("https://claudio-arz.github.io/AeroDeck-HTML/EGT_Control.html")
     .then(r => r.text())
     .then(html => {
-      document.getElementById("inst32").innerHTML = html;
+      document.getElementById("inst33").innerHTML = html;
       // Inicializar controles del EGT después de insertar el HTML
       if (typeof initEGTControls === 'function') {
         initEGTControls();
