@@ -146,7 +146,7 @@ window.addEventListener('DOMContentLoaded', () => {
       updateVariometerAndValue(data.verticalSpeed);
     }
     if (data.altitudValue !== undefined && typeof updateAltimeterAndValue === 'function') {
-      updateAltimeterAndValue(data.altitudValue, data.bandera_off);
+      updateAltimeterAndValue(data.altitudValue, data.bandera_off, data.atmosphericPressureHpa);
     }
     if (data.RPMValue !== undefined && typeof updateRPMAndValue === 'function') {
       // console.log("Actualizando RPM: " + data.RPMValue + " Noice: " + data.RPMNoice + " varRPM: " + data.varRPM);
