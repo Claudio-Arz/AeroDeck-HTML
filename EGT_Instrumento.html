@@ -15,8 +15,12 @@
     <img class="egt-dial" id="egt_dial" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/EGT/EGT_Dial.png" 
     alt="Dial EGT">
     <!-- Needle -->
-    <img class="egt-needle" id="egt_needle" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/EGT/EGT_Needle.png"
+    <img class="egt-needle" id="egt_needle" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/EGT/EGT_Neddle.png"
     alt="Needle EGT">
+    <!-- Bug marker (referencia móvil de peak) -->
+    <img class="egt-bug" id="egt_bug" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/EGT/EGT_Bug.png"
+    alt="Bug EGT">
+
     <!-- Front -->
     <img class="egt-front" id="egt_front" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/EGT/EGT_Front.png" 
     alt="Front EGT">
@@ -46,7 +50,7 @@
   height: 100%;
   position:absolute;
   top:0;
-  left:0%;
+  left:0;
   z-index:1;
   pointer-events:none;
   border-radius: 50%;
@@ -61,6 +65,18 @@
   left:0;
   z-index:3;
   pointer-events:none;
+}
+
+.egt-bug {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  pointer-events: none;
+  object-fit: contain;
+  transform-origin: 50% 50%;
 }
 
 #egt-container {

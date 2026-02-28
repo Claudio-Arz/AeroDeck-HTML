@@ -52,6 +52,7 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_Reloj.js"></script>
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_VoltAmp.js"></script>
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_EGT.js"></script>
+<script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_Throttle.js"></script>
 
 
 </head>
@@ -78,8 +79,10 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
   <div class="grid-item" id="inst03" style="grid-row: 1; grid-column: 5;">Altimeter</div>  
   
   <div class="grid-item" id="inst05" style="grid-row: 1; grid-column: 7;">Pitch & Roll Controls</div>  
-  <div class="grid-item" id="inst06" style="grid-row: 1; grid-column: 9;">RPM Controls</div>  
   <div class="grid-item" id="inst08" style="grid-row: 1; grid-column: 8;">Air Speed Controls</div>  
+  <div class="grid-item" id="inst06" style="grid-row: 1; grid-column: 9;">RPM Controls</div>  
+  <div class="grid-item" id="inst32" style="grid-row: 1; grid-column: 10;">Throttle Controls</div>  
+
   <div class="grid-item" id="inst12" style="grid-row: 2; grid-column: 1;">Fuel Flow Instrument</div>  
   <div class="grid-item" id="inst09" style="grid-row: 2; grid-column: 3;">Turn Coordinator</div>  
   <div class="grid-item" id="inst10" style="grid-row: 2; grid-column: 4;">Gyro</div>  
@@ -131,7 +134,11 @@ window.addEventListener('DOMContentLoaded', () => {
     } catch (e) {
       return;
     }
-    // --- Actualizar instrumentos ---
+    // --- Actualizar configuración con Throttle ---
+    if (data.throttleValue !== undefined && typeof updateThrottle === 'function') {
+      updateThrottle(data.throttleValue);
+    }
+    // --- Actualizar instrumento whatch ---
     if (data.relojValue !== undefined && typeof updateReloj === 'function') {
       updateReloj(data.relojValue);
     }
@@ -214,10 +221,39 @@ window.addEventListener('DOMContentLoaded', () => {
       // console.log("Actualizando EGT: " + data['egtValue']);
       updateEGT(data['egtValue']);
     }
+    if (data['egtBugValue'] !== undefined && typeof updateEGTBug === 'function') {
+      updateEGTBug(data['egtBugValue']);
+    }
+    if (data['useSimulatedEGT'] !== undefined && typeof updateEGTSimModeState === 'function') {
+      updateEGTSimModeState(data['useSimulatedEGT']);
+    }
   }
 });
 
 
+
+
+
+// Cargar el HTML de la caja de control del Throttle de forma dinámica.
+window.addEventListener('DOMContentLoaded', () => {
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/Throttle_Control.html")
+    .then(r => r.text())
+    .then(html => {
+      document.getElementById("inst33").innerHTML = html;
+      // Inicializar controles del Throttle después de insertar el HTML
+      if (typeof initThrottleControls === 'function') {
+        initThrottleControls();
+      } else {
+        // Si el script aún no está cargado, esperar y reintentar
+        setTimeout(() => {
+          if (typeof initThrottleControls === 'function') {
+            initThrottleControls();
+          }
+        }, 200);
+      }
+    });
+}); 
+ 
 
 // Cargar el HTML del instrumento EGT de forma dinámica
 window.addEventListener('DOMContentLoaded', () => {
