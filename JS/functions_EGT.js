@@ -9,6 +9,8 @@ const EGT_DEFAULT = 800;
 const EGT_BUG_DEFAULT = 1450;
 const EGT_ANGLE_MIN = 270;
 const EGT_ANGLE_MAX = 90;
+const EGT_BUG_REFERENCE_VALUE = 1450;
+const EGT_BUG_ANGLE_OFFSET = 0;
 
 let currentEGTValue = EGT_DEFAULT;
 let currentEGTBugValue = EGT_BUG_DEFAULT;
@@ -137,7 +139,7 @@ function updateEGTBug(egtBug, sendToESP = false) {
   }
 
   if (bug) {
-    const angle = egtToAngle(clamped);
+    const angle = egtBugToAngle(clamped);
     bug.style.transform = `rotate(${angle}deg)`;
   }
 
@@ -183,6 +185,12 @@ function sendEGTSimModeToESP32(simulated) {
 function egtToAngle(egt) {
   const clamped = clampEGT(egt);
   return EGT_ANGLE_MIN - ((clamped - EGT_MIN) * (EGT_ANGLE_MIN - EGT_ANGLE_MAX)) / (EGT_MAX - EGT_MIN);
+}
+
+function egtBugToAngle(egtBug) {
+  const currentAngle = egtToAngle(egtBug);
+  const referenceAngle = egtToAngle(EGT_BUG_REFERENCE_VALUE);
+  return (currentAngle - referenceAngle) + EGT_BUG_ANGLE_OFFSET;
 }
 
 function clampEGT(value) {
