@@ -51,7 +51,7 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_FUEL.js"></script>
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_Reloj.js"></script>
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_VoltAmp.js"></script>
-<script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_Throttle.js"></script>
+<script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_EGT.js"></script>
 
 
 </head>
@@ -80,7 +80,6 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
   <div class="grid-item" id="inst05" style="grid-row: 1; grid-column: 7;">Pitch & Roll Controls</div>  
   <div class="grid-item" id="inst06" style="grid-row: 1; grid-column: 9;">RPM Controls</div>  
   <div class="grid-item" id="inst08" style="grid-row: 1; grid-column: 8;">Air Speed Controls</div>  
-  <div class="grid-item" id="inst31" style="grid-row: 1; grid-column: 10;">Throttle Controls</div>
   <div class="grid-item" id="inst12" style="grid-row: 2; grid-column: 1;">Fuel Flow Instrument</div>  
   <div class="grid-item" id="inst09" style="grid-row: 2; grid-column: 3;">Turn Coordinator</div>  
   <div class="grid-item" id="inst10" style="grid-row: 2; grid-column: 4;">Gyro</div>  
@@ -102,8 +101,10 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
   <div class="grid-item" id="inst24" style="grid-row: 3; grid-column: 10;">CHT Controls</div>
 
   <div class="grid-item" id="inst28" style="grid-row: 4; grid-column: 1;">Volt/Amp Instrument</div>
+  <div class="grid-item" id="inst31" style="grid-row: 4; grid-column: 2;">EGT Instrument</div>
   <div class="grid-item" id="inst27" style="grid-row: 4; grid-column: 5;">Clock</div>  
   <div class="grid-item" id="inst30" style="grid-row: 4; grid-column: 6;">Clock Controls</div>
+  <div class="grid-item" id="inst32" style="grid-row: 4; grid-column: 7;">EGT Controls</div>
   
   <div class="grid-item" id="inst29" style="grid-row: 4; grid-column: 10;">Volt/Amp Controls</div>
   
@@ -137,27 +138,12 @@ window.addEventListener('DOMContentLoaded', () => {
     if (data.verticalSpeed !== undefined && typeof updateVariometerAndValue === 'function') {
       updateVariometerAndValue(data.verticalSpeed);
     }
-    if (data.usePitchDrivenVerticalSpeed !== undefined && typeof updateVariometerSimModeState === 'function') {
-      updateVariometerSimModeState(data.usePitchDrivenVerticalSpeed);
-    }
     if (data.altitudValue !== undefined && typeof updateAltimeterAndValue === 'function') {
-      updateAltimeterAndValue(data.altitudValue, data.bandera_off, data.atmosphericPressureHpa);
+      updateAltimeterAndValue(data.altitudValue, data.bandera_off);
     }
     if (data.RPMValue !== undefined && typeof updateRPMAndValue === 'function') {
       // console.log("Actualizando RPM: " + data.RPMValue + " Noice: " + data.RPMNoice + " varRPM: " + data.varRPM);
       updateRPMAndValue(data.RPMValue, data.RPMNoice, data.varRPM);
-    }
-    if (data.RPMStarted !== undefined && typeof updateRPMEngineState === 'function') {
-      updateRPMEngineState(data.RPMStarted);
-    }
-    if (data.useSimulatedRPM !== undefined && typeof updateRPMSimModeState === 'function') {
-      updateRPMSimModeState(data.useSimulatedRPM);
-    }
-    if (data.throttleValue !== undefined && typeof updateThrottleControl === 'function') {
-      updateThrottleControl(data.throttleValue, false);
-    }
-    if (data.brakeOn !== undefined && typeof updateBrakeState === 'function') {
-      updateBrakeState(data.brakeOn);
     }
     // Actualizar horas de funcionamiento en el Drum-Roll
     if (data.horasFuncionamiento !== undefined && typeof setDrumHours === 'function') {
@@ -167,77 +153,44 @@ window.addEventListener('DOMContentLoaded', () => {
       // console.log("Actualizando Pitch: " + data.pitchValue + " Roll: " + data.rollValue);
       updateAttitudeControl(data.pitchValue, data.rollValue);
     }
-    // Sincronizar Roll value en ambos instrumentos (Attitude y Turn Coordinator)
-    if (data.rollValue !== undefined) {
-      // Actualizar Turn Coordinator slider y display cuando recibe rollValue desde Attitude
-      const slider = document.getElementById('turncoordinator-slider');
-      const sliderValue = document.getElementById('turncoordinator-slider-value');
-      if (slider) slider.value = data.rollValue;
-      if (sliderValue) sliderValue.textContent = data.rollValue;
-      // Actualizar también el plano visual del Turn Coordinator
-      if (typeof updateTurnCoordinatorPlane === 'function') {
-        updateTurnCoordinatorPlane(data.rollValue, false); // false = no enviar de vuelta al ESP32
-      }
-    }
     if (data.airspeedValue !== undefined && typeof updateAirspeed === 'function') {
       // console.log("Actualizando Air Speed: " + data.airspeedValue);
       updateAirspeed(data.airspeedValue);
       }
-      if (data.useSimulatedAirspeed !== undefined && typeof updateAirSpeedSimModeState === 'function') {
-      updateAirSpeedSimModeState(data.useSimulatedAirspeed);
-    }
       if (data.gyroValue !== undefined && typeof updateGyro === 'function') {
         // console.log("Actualizando Gyro: " + data.gyroValue);
       updateGyro(data.gyroValue);
-    }
-    if (data.useSimulatedGyro !== undefined && typeof updateGyroSimModeState === 'function') {
-      updateGyroSimModeState(data.useSimulatedGyro);
     }
     // --- Turn Coordinator ---
     if (data['tc-rollValue'] !== undefined && typeof updateTurnCoordinatorPlane === 'function') {
       // console.log("Actualizando TC Avión: " + data['tc-rollValue']);
       updateTurnCoordinatorPlane(data['tc-rollValue']);
     }
-    if (data['tcBallValue'] !== undefined && typeof updateTurnCoordinatorBall === 'function') {
-      // console.log("Actualizando TC Ball (Slip/Skid): " + data['tcBallValue']);
-      updateTurnCoordinatorBall(data['tcBallValue']);
+    if (data['tc-pitchValue'] !== undefined && typeof updateTurnCoordinatorBall === 'function') {
+      // console.log("Actualizando TC Péndulo: " + data['tc-pitchValue']);
+      updateTurnCoordinatorBall(data['tc-pitchValue']);
     }
     if (data['fuelFlowValue'] !== undefined && typeof updateFuelFlow === 'function') {
       // console.log("Actualizando Fuel Flow: " + data['fuelFlowValue']);
       updateFuelFlow(data['fuelFlowValue']);
     }
-    if (data['useSimulatedFuelFlow'] !== undefined && typeof updateFuelFlowSimModeState === 'function') {
-      updateFuelFlowSimModeState(data['useSimulatedFuelFlow']);
-    }
     if (data['manifold'] !== undefined && typeof updateManifold === 'function') {
       // console.log("Actualizando Manifold: " + data['manifold']);
       updateManifold(data['manifold']);
     }
-    if (data['useSimulatedManifold'] !== undefined && typeof updateManifoldSimModeState === 'function') {
-      updateManifoldSimModeState(data['useSimulatedManifold']);
-    }
     if (data['oilPress'] !== undefined && typeof updateOilPress === 'function') {
       // console.log("Actualizando Oil Press: " + data['oilPress']);
       updateOilPress(data['oilPress']);
-    }
-    if (data['useSimulatedOilPress'] !== undefined && typeof updateOilPressSimModeState === 'function') {
-      updateOilPressSimModeState(data['useSimulatedOilPress']);
     }
 
     if (data['oilTemp'] !== undefined && typeof updateOilTemp === 'function') {
       // console.log("Actualizando Oil Temp: " + data['oilTemp']);
       updateOilTemp(data['oilTemp']);
     }
-    if (data['useSimulatedOilTemp'] !== undefined && typeof updateOilTempSimModeState === 'function') {
-      updateOilTempSimModeState(data['useSimulatedOilTemp']);
-    }
 
     if (data['chtValue'] !== undefined && typeof updateCHT === 'function') {
       // console.log("Actualizando CHT: " + data['chtValue']);
       updateCHT(data['chtValue']);
-    }
-    if (data['useSimulatedCHT'] !== undefined && typeof updateCHTSimModeState === 'function') {
-      updateCHTSimModeState(data['useSimulatedCHT']);
     }
 
     if (data['fuelValueLeft'] !== undefined && typeof updateFUELLeft === 'function') {
@@ -248,29 +201,53 @@ window.addEventListener('DOMContentLoaded', () => {
       // console.log("Actualizando Fuel Right: " + data['fuelValueRight']);
       updateFUELRight(data['fuelValueRight']);
     }
-    if (data['useSimulatedFuel'] !== undefined && typeof updateFuelSimModeState === 'function') {
-      updateFuelSimModeState(data['useSimulatedFuel']);
-    }
-    if (data['activeTank'] !== undefined && typeof updateActiveTankIndicator === 'function') {
-      updateActiveTankIndicator(data['activeTank']);
-    }
 
     if (data['voltAmpValueLeft'] !== undefined && typeof updateVoltAmpLeft === 'function') {
       // console.log("Actualizando Volt/Amp Left: " + data['voltAmpValueLeft']);
       updateVoltAmpLeft(data['voltAmpValueLeft']);
     }
-    if (data['useSimulatedVoltage'] !== undefined && typeof updateVoltageSimModeState === 'function') {
-      updateVoltageSimModeState(data['useSimulatedVoltage']);
-    }
     if (data['voltAmpValueRight'] !== undefined && typeof updateVoltAmpRight === 'function') {
       // console.log("Actualizando Volt/Amp Right: " + data['voltAmpValueRight']);
       updateVoltAmpRight(data['voltAmpValueRight']);
     }
-
-
+    if (data['egtValue'] !== undefined && typeof updateEGT === 'function') {
+      // console.log("Actualizando EGT: " + data['egtValue']);
+      updateEGT(data['egtValue']);
+    }
   }
 });
 
+
+
+// Cargar el HTML del instrumento EGT de forma dinámica
+window.addEventListener('DOMContentLoaded', () => {
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/EGT_Instrumento.html")
+  .then(r => r.text())
+  .then(html => {
+    document.getElementById("inst28").innerHTML = html;
+    });
+});     
+
+// Cargar el HTML de la caja de control del EGT de forma dinámica.
+window.addEventListener('DOMContentLoaded', () => {
+  fetch("https://claudio-arz.github.io/AeroDeck-HTML/EGT_Control.html")
+    .then(r => r.text())
+    .then(html => {
+      document.getElementById("inst32").innerHTML = html;
+      // Inicializar controles del EGT después de insertar el HTML
+      if (typeof initEGTControls === 'function') {
+        initEGTControls();
+      } else {
+        // Si el script aún no está cargado, esperar y reintentar
+        setTimeout(() => {
+          if (typeof initEGTControls === 'function') {
+            initEGTControls();
+          }
+        }, 200);
+      }
+    });
+}); 
+ 
 
 
 // Cargar el HTML del instrumento Volt/Amp de forma dinámica
@@ -650,7 +627,6 @@ window.addEventListener('DOMContentLoaded', () => {
     .then(r => r.text())
     .then(html => {
       document.getElementById("inst06").innerHTML = html;
-
       // Inicializar controles del RPM después de insertar el HTML
       if (typeof initRPMControls === 'function') {
         initRPMControls();
@@ -664,24 +640,6 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     });
 });       
-
-// Cargar el HTML de la caja de control del Throttle en la grilla (fila 1, columna 10)
-window.addEventListener('DOMContentLoaded', () => {
-  fetch("https://claudio-arz.github.io/AeroDeck-HTML/Throttle_Control.html")
-    .then(r => r.text())
-    .then(html => {
-      document.getElementById("inst31").innerHTML = html;
-      if (typeof initThrottleControls === 'function') {
-        initThrottleControls();
-      } else {
-        setTimeout(() => {
-          if (typeof initThrottleControls === 'function') {
-            initThrottleControls();
-          }
-        }, 200);
-      }
-    });
-});
     
     
 // Cargar el HTML del instrumento Variometer de forma dinámica
@@ -726,7 +684,7 @@ window.addEventListener('DOMContentLoaded', () => {
 window.addEventListener('DOMContentLoaded', () => {
   const slider = document.getElementById('shadow-color');
   const logo = document.getElementById('logo');
-  let shadowEnabled = false; // Estado del shadow (APAGADO por defecto al arrancar)
+  let shadowEnabled = true; // Estado del shadow (encendido por defecto)
 
   // Función para aplicar el color del box-shadow
   const applyShadowColor = (hue) => {
@@ -743,15 +701,6 @@ window.addEventListener('DOMContentLoaded', () => {
       el.style.boxShadow = 'none';
     });
   };
-
-  // Inicializar el estado apagado al cargar la página
-  if (logo) {
-    logo.style.filter = 'grayscale(100%) brightness(0.5)';
-  }
-  if (slider) {
-    slider.style.display = 'none'; // Ocultar slider inicialmente
-  }
-  removeShadow(); // Asegurar que las sombras estén apagadas
 
   // Toggle shadow al hacer click en el logo
   if (logo) {
@@ -771,6 +720,9 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   if (slider) {
+    // Aplicar el color inicial
+    applyShadowColor(slider.value);
+
     // Escuchar cambios en el slider
     slider.addEventListener('input', (e) => {
       applyShadowColor(e.target.value);

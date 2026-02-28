@@ -1,0 +1,71 @@
+<!-- 
+
+  HTML para el instrumento EGT.
+  Autor: Claudio Arzamendia
+  Fecha: 2026-02-27 00:26:52
+    Este programa solo muestra el instrumento EGT con su dial, aguja y frente.
+    No tiene funcionalidad de movimiento de la aguja ni recepción de datos a través de WebSocket.
+
+
+
+-->
+
+<div class="instrumento-grid" id="egt-container" onclick="toggleEGTBrokenCrystal()">
+    <!-- Dial -->
+    <img class="egt-dial" id="egt_dial" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/EGT/EGT_Dial.png" 
+    alt="Dial EGT">
+    <!-- Needle -->
+    <img class="egt-needle" id="egt_needle" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/EGT/EGT_Needle.png"
+    alt="Needle EGT">
+    <!-- Front -->
+    <img class="egt-front" id="egt_front" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/EGT/EGT_Front.png" 
+    alt="Front EGT">
+    <img class="brokenCrystal16" id="egt_broken_crystal16" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/Crystals/BrokenCrystal16.png" 
+    alt="Broken Crystal EGT">
+
+    <div id="egt-value" class="instrument-center-label">--</div>
+</div>
+
+<style>
+.egt-needle {
+  width: 100%;
+  height: 100%;
+  position:absolute;
+  top:0;
+  left:0;
+  z-index:2;
+  pointer-events:none;
+  object-fit: contain;  
+  border-radius: 392px;
+  /* El centro del instrumento está a 50% del contenedor padre. */
+  transform-origin: 50% 50%;
+}
+
+.egt-dial {
+  width: 100%;
+  height: 100%;
+  position:absolute;
+  top:0;
+  left:0%;
+  z-index:1;
+  pointer-events:none;
+  border-radius: 50%;
+  transform-origin: center center;
+}
+
+.egt-front {
+  width:100%;
+  height:100%;
+  position:absolute;
+  top:0;
+  left:0;
+  z-index:3;
+  pointer-events:none;
+}
+
+#egt-container {
+  cursor: pointer;
+}
+
+
+</style>

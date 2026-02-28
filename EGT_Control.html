@@ -1,0 +1,203 @@
+<!-- 
+
+Este código HTML representa un control deslizante para ajustar el EGT (Exhaust Gas Temperature) 
+en un instrumento de simulación de vuelo. El control incluye un slider vertical que permite al 
+usuario seleccionar un valor de temperatura entre 100 y 500 grados, y tres botones para establecer 
+valores predefinidos (mínimo, medio y máximo). El valor seleccionado se muestra en una etiqueta 
+debajo del slider, y se envía al ESP32 para actualizar el instrumento de EGT en tiempo real. 
+
+
+EGT Control  (medidas 120px x 240px)
+
+
+                +------------------------+
+                |      EGT Control       |
+                +-------+-----+----------+
+                |       |     |          |   
+                |   s   | (+) |  Máximo  |   
+                |   l   +-----+----------+
+                |   i   |     |          |   
+                |   d   |     |  Medio   |   
+                |   e   +-----+----------+   
+                |   r   |     |          |   
+                |       | (-) |  Mínimo  |   
+                +-------+----------------+   
+                | value |                |   
+                +-------+----------------+
+
+-->
+
+<div class="egt-control-container">
+  <!-- Título -->
+  <div class="title-egt-control">EGT Control</div>
+  <!-- Fila principal: Slider + Botones -->
+  <div class="egt-main-row">
+    <!-- Slider vertical -->
+    <div class="egt-slider-column">
+      <input type="range" min="100" max="500" value="100" id="egt-slider" orient="vertical" class="egt-slider-input">
+    </div>
+    <!-- Botones +1/-1 -->
+    <div class="egt-plusminus-column">
+      <button id="egt-btn-plus" class="egt-btn egt-btn-plus">+</button>
+      <button id="egt-btn-minus" class="egt-btn egt-btn-minus">−</button>
+    </div>
+    <!-- Botones Máx/Med/Mín -->
+    <div class="egt-presets-column">
+      <button id="egt-slider-max" class="egt-btn egt-btn-preset egt-btn-max">Máx</button>
+      <button id="egt-slider-mid" class="egt-btn egt-btn-preset egt-btn-mid">Med</button>
+      <button id="egt-slider-min" class="egt-btn egt-btn-preset egt-btn-min">Mín</button>
+    </div>
+  </div>
+  <!-- Fila inferior: Value -->
+  <div class="egt-value-row">
+    <div class="egt-value-label" id="egt-slider-value-label">0</div>
+  </div>
+</div>
+
+<style>
+  /* === EGT CONTROL - ESTILO MADERA Y ACERO === */
+  /* Medidas copiadas de airSpeed_Control.html */
+  .egt-control-container {
+    display: flex;
+    flex-direction: column;
+    width: 120px;
+    height: 240px;
+    max-width: 120px;
+    max-height: 240px;
+    background: linear-gradient(135deg, #5D4E37 0%, #8B7355 25%, #A0896C 50%, #6B5344 75%, #4A3C2A 100%);
+    border: 2px solid #708090;
+    border-radius: 8px;
+    box-sizing: border-box;    
+    box-shadow: 0 0 8px rgba(176, 196, 222, 0.5);
+    overflow: hidden;
+  }
+  .title-egt-control {
+    font-size: 11px;
+    font-weight: bold;
+    text-align: center;
+    background: linear-gradient(90deg, #4A5568, #5A6578, #4A5568);
+    color: #DEB887;
+    padding: 2px 0;
+    height: 18px;
+    min-height: 18px;
+    box-sizing: border-box;
+    text-shadow: 1px 1px 2px #000;
+    border-bottom: 1px solid #A0AEC0;
+  }
+  .egt-main-row {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 2px;
+    height: 180px;
+    padding: 4px;
+    box-sizing: border-box;
+  }
+  .egt-slider-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 26px;
+    height: 100%;
+    background: #3D3426;
+    border-radius: 4px;
+  }
+  .egt-slider-input {
+    writing-mode: vertical-lr;
+    direction: rtl;
+    height: 100%;
+    width: 18px;
+    margin: 0;
+    padding: 0;
+    accent-color: #A0AEC0;
+  }
+  .egt-plusminus-column {
+    padding: 20px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 26px;
+    box-sizing: border-box;
+  }
+  .egt-presets-column {
+    padding: 20px 20px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 48px;
+    background: linear-gradient(180deg, #708090, #94A3B8, #708090);
+    border-radius: 4px;
+  }
+  /* === BOTONES ESTILO MADERA Y ACERO === */
+  .egt-btn {
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.15s ease;
+    text-shadow: 1px 1px 1px #000;
+  }
+  .egt-btn:hover {
+    filter: brightness(1.2);
+  }
+  .egt-btn:active {
+    box-shadow: 0 0 8px 3px #DEB887;
+    filter: brightness(1.4);
+  }
+  .egt-btn-plus, .egt-btn-minus {
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    padding: 0;
+    line-height: 1;
+    border-radius: 50%;
+    color: #F5F5DC;
+  }
+  .egt-btn-plus {
+    background: linear-gradient(145deg, #5A6578, #708090);
+    box-shadow: 1px 1px 3px #2D3748;
+  }
+  .egt-btn-minus {
+    background: linear-gradient(145deg, #8B7355, #6B5344);
+    box-shadow: 1px 1px 3px #3D3426;
+  }
+  .egt-btn-preset {
+    font-size: 9px;
+    padding: 2px;
+    height: 50px;
+    border-radius: 4px;
+    color: #F5F5DC;
+  }
+  .egt-btn-max {
+    background: linear-gradient(145deg, #8B4513, #A0522D);
+  }
+  .egt-btn-mid {
+    background: linear-gradient(145deg, #CD853F, #DEB887);
+    color: #3D2B1F;
+    text-shadow: none;
+  }
+  .egt-btn-min {
+    background: linear-gradient(145deg, #6B4423, #5D3A1A);
+  }
+  .egt-value-row {
+    display: flex;
+    height: 20px;
+    padding: 2px 4px;
+    box-sizing: border-box;
+    background: #4A5568;
+    border-top: 1px solid #708090;
+  }
+  .egt-value-label {
+    font-size: 11px;
+    font-weight: bold;
+    text-align: center;
+    width: 26px;
+    color: #B0C4DE;
+    background: #2D3748;
+    border-radius: 3px;
+    font-family: 'Courier New', monospace;
+    text-shadow: 0 0 4px #B0C4DE;
+  }
+</style>
+
