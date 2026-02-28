@@ -107,7 +107,7 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
   <div class="grid-item" id="inst31" style="grid-row: 4; grid-column: 2;">EGT Instrument</div>
   <div class="grid-item" id="inst27" style="grid-row: 4; grid-column: 5;">Clock</div>  
   <div class="grid-item" id="inst30" style="grid-row: 4; grid-column: 6;">Clock Controls</div>
-  <div class="grid-item" id="inst32" style="grid-row: 4; grid-column: 9;">EGT Controls</div>
+  <div class="grid-item" id="inst33" style="grid-row: 4; grid-column: 9;">EGT Controls</div>
   
   <div class="grid-item" id="inst29" style="grid-row: 4; grid-column: 10;">Volt/Amp Controls</div>
   
