@@ -67,7 +67,7 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
       alt="Logo de Claudio Arzamendia Systems">
 
     <input type="range" min="0" max="360" value="220" step="1" 
-      id="shadow-color" class="color-slider-input">
+      id="shadow-color" class="color-slider-input" style="display:none;">
     
 </div>
 
@@ -720,11 +720,27 @@ window.addEventListener('DOMContentLoaded', () => {
 window.addEventListener('DOMContentLoaded', () => {
   const slider = document.getElementById('shadow-color');
   const logo = document.getElementById('logo');
-  let shadowEnabled = true; // Estado del shadow (encendido por defecto)
+  let shadowEnabled = false; // Estado del shadow (apagado por defecto)
+  const shadowOffStyleId = 'instrument-shadow-off-style';
+
+  const setShadowOffStyle = (enabled) => {
+    let styleTag = document.getElementById(shadowOffStyleId);
+    if (enabled) {
+      if (!styleTag) {
+        styleTag = document.createElement('style');
+        styleTag.id = shadowOffStyleId;
+        styleTag.textContent = '.instrumento-grid{box-shadow:none !important;}';
+        document.head.appendChild(styleTag);
+      }
+    } else if (styleTag) {
+      styleTag.remove();
+    }
+  };
 
   // Función para aplicar el color del box-shadow
   const applyShadowColor = (hue) => {
     if (!shadowEnabled) return; // No aplicar si está apagado
+    setShadowOffStyle(false);
     const color = `hsl(${hue}, 60%, 70%)`;
     document.querySelectorAll('.instrumento-grid').forEach(el => {
       el.style.boxShadow = `0 0 20px 10px ${color}`;
@@ -733,6 +749,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Función para quitar el box-shadow
   const removeShadow = () => {
+    setShadowOffStyle(true);
     document.querySelectorAll('.instrumento-grid').forEach(el => {
       el.style.boxShadow = 'none';
     });
@@ -756,8 +773,9 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   if (slider) {
-    // Aplicar el color inicial
-    applyShadowColor(slider.value);
+    // Arrancar sin shadow y con slider oculto
+    removeShadow();
+    slider.style.display = 'none';
 
     // Escuchar cambios en el slider
     slider.addEventListener('input', (e) => {
