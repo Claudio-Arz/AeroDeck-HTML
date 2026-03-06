@@ -29,12 +29,12 @@ EGT Control  (medidas 120px x 240px)
 
 <div class="egt-control-container">
   <!-- Título -->
-  <div class="title-egt-control">EGT Control</div>
+  <div class="title-egt-control">Mixture Control</div>
   <!-- Fila principal: Slider + Botones -->
   <div class="egt-main-row">
     <!-- Slider vertical -->
     <div class="egt-slider-column">
-      <input type="range" min="800" max="1600" value="800" id="egt-slider" orient="vertical" class="egt-slider-input">
+      <input type="range" min="0" max="100" value="45" id="egt-slider" orient="vertical" class="egt-slider-input">
     </div>
     <!-- Botones +1/-1 -->
     <div class="egt-plusminus-column">
@@ -43,14 +43,14 @@ EGT Control  (medidas 120px x 240px)
     </div>
     <!-- Botones Máx/Med/Mín -->
     <div class="egt-presets-column">
-      <button id="egt-slider-max" class="egt-btn egt-btn-preset egt-btn-max">Máx</button>
-      <button id="egt-slider-mid" class="egt-btn egt-btn-preset egt-btn-mid">Med</button>
-      <button id="egt-slider-min" class="egt-btn egt-btn-preset egt-btn-min">Mín</button>
+      <button id="egt-slider-max" class="egt-btn egt-btn-preset egt-btn-max">RICH</button>
+      <button id="egt-slider-mid" class="egt-btn egt-btn-preset egt-btn-mid">PEAK</button>
+      <button id="egt-slider-min" class="egt-btn egt-btn-preset egt-btn-min">LEAN</button>
     </div>
   </div>
   <!-- Fila inferior: Value -->
   <div class="egt-value-row">
-    <div class="egt-value-label" id="egt-slider-value-label">800</div>
+    <div class="egt-value-label" id="egt-slider-value-label">45%</div>
   </div>
 
   <div class="egt-bug-row">
@@ -181,15 +181,15 @@ EGT Control  (medidas 120px x 240px)
     color: #F5F5DC;
   }
   .egt-btn-max {
-    background: linear-gradient(145deg, #8B4513, #A0522D);
+    background: linear-gradient(145deg, #B45309, #EA580C);
   }
   .egt-btn-mid {
-    background: linear-gradient(145deg, #CD853F, #DEB887);
-    color: #3D2B1F;
+    background: linear-gradient(145deg, #D97706, #F59E0B);
+    color: #2D1B00;
     text-shadow: none;
   }
   .egt-btn-min {
-    background: linear-gradient(145deg, #6B4423, #5D3A1A);
+    background: linear-gradient(145deg, #1D4ED8, #2563EB);
   }
   .egt-value-row {
     display: flex;

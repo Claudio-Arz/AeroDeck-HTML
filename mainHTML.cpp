@@ -200,6 +200,10 @@ window.addEventListener('DOMContentLoaded', () => {
       updateCHT(data['chtValue']);
     }
 
+    if (data['mixtureValue'] !== undefined && typeof updateEGTMixture === 'function') {
+      updateEGTMixture(parseFloat(data['mixtureValue']) * 100.0);
+    }
+
     if (data['fuelValueLeft'] !== undefined && typeof updateFUELLeft === 'function') {
       // console.log("Actualizando Fuel Left: " + data['fuelValueLeft']);
       updateFUELLeft(data['fuelValueLeft']);

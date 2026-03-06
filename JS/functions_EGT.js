@@ -6,6 +6,9 @@
 const EGT_MIN = 800;
 const EGT_MAX = 1600;
 const EGT_DEFAULT = 800;
+const EGT_MIXTURE_MIN_PERCENT = 0;
+const EGT_MIXTURE_MAX_PERCENT = 100;
+const EGT_MIXTURE_DEFAULT_PERCENT = 45;
 const EGT_BUG_DEFAULT = 1450;
 const EGT_ANGLE_MIN = 270;
 const EGT_ANGLE_MAX = 90;
@@ -14,6 +17,7 @@ const EGT_BUG_ANGLE_OFFSET = 0;
 
 let currentEGTValue = EGT_DEFAULT;
 let currentEGTBugValue = EGT_BUG_DEFAULT;
+let currentEGTMixturePercent = EGT_MIXTURE_DEFAULT_PERCENT;
 
 function initEGTControls() {
   const slider = document.getElementById('egt-slider');
@@ -30,28 +34,28 @@ function initEGTControls() {
 
   if (slider) {
     slider.addEventListener('input', () => {
-      updateEGT(parseFloat(slider.value), true);
+      updateEGTMixture(parseFloat(slider.value), true);
     });
   }
 
   if (btnMax) {
-    btnMax.addEventListener('click', () => updateEGT(EGT_MAX, true));
+    btnMax.addEventListener('click', () => updateEGTMixture(EGT_MIXTURE_MAX_PERCENT, true));
   }
 
   if (btnMid) {
-    btnMid.addEventListener('click', () => updateEGT(1200, true));
+    btnMid.addEventListener('click', () => updateEGTMixture(EGT_MIXTURE_DEFAULT_PERCENT, true));
   }
 
   if (btnMin) {
-    btnMin.addEventListener('click', () => updateEGT(EGT_MIN, true));
+    btnMin.addEventListener('click', () => updateEGTMixture(EGT_MIXTURE_MIN_PERCENT, true));
   }
 
   if (btnPlus) {
-    btnPlus.addEventListener('click', () => updateEGT(currentEGTValue + 10, true));
+    btnPlus.addEventListener('click', () => updateEGTMixture(currentEGTMixturePercent + 1, true));
   }
 
   if (btnMinus) {
-    btnMinus.addEventListener('click', () => updateEGT(currentEGTValue - 10, true));
+    btnMinus.addEventListener('click', () => updateEGTMixture(currentEGTMixturePercent - 1, true));
   }
 
   if (simToggle) {
@@ -81,6 +85,31 @@ function initEGTControls() {
 
   updateEGT(currentEGTValue, false);
   updateEGTBug(currentEGTBugValue, false);
+  updateEGTMixture(currentEGTMixturePercent, false);
+}
+
+function updateEGTMixture(mixturePercent, sendToESP = false) {
+  const slider = document.getElementById('egt-slider');
+  const sliderLabel = document.getElementById('egt-slider-value-label');
+
+  if (mixturePercent === undefined || Number.isNaN(mixturePercent)) {
+    mixturePercent = currentEGTMixturePercent;
+  }
+
+  const clampedPercent = clampEGTMixturePercent(mixturePercent);
+  currentEGTMixturePercent = clampedPercent;
+
+  if (!sendToESP && slider) {
+    slider.value = clampedPercent;
+  }
+
+  if (sliderLabel) {
+    sliderLabel.textContent = `${clampedPercent.toFixed(0)}%`;
+  }
+
+  if (sendToESP) {
+    sendEGTMixtureToESP32(clampedPercent / 100.0);
+  }
 }
 
 function updateEGT(egt, sendToESP = false) {
@@ -170,6 +199,12 @@ function sendEGTToESP32(egt) {
   }
 }
 
+function sendEGTMixtureToESP32(mixtureNormalized) {
+  if (window.ws && window.ws.readyState === WebSocket.OPEN) {
+    window.ws.send(JSON.stringify({ mixtureValue: mixtureNormalized }));
+  }
+}
+
 function sendEGTBugToESP32(egtBug) {
   if (window.ws && window.ws.readyState === WebSocket.OPEN) {
     window.ws.send(JSON.stringify({ egtBugValue: egtBug }));
@@ -196,6 +231,12 @@ function egtBugToAngle(egtBug) {
 function clampEGT(value) {
   if (value < EGT_MIN) return EGT_MIN;
   if (value > EGT_MAX) return EGT_MAX;
+  return value;
+}
+
+function clampEGTMixturePercent(value) {
+  if (value < EGT_MIXTURE_MIN_PERCENT) return EGT_MIXTURE_MIN_PERCENT;
+  if (value > EGT_MIXTURE_MAX_PERCENT) return EGT_MIXTURE_MAX_PERCENT;
   return value;
 }
 
