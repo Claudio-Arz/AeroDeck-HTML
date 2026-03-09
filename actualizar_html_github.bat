@@ -31,6 +31,9 @@ if errorlevel 1 goto :error_pop
 git checkout %TARGET_BRANCH%
 if errorlevel 1 goto :error_pop
 
+git reset --hard HEAD
+if errorlevel 1 goto :error_pop
+
 git pull --rebase origin %TARGET_BRANCH%
 if errorlevel 1 goto :error_pop
 popd
@@ -57,6 +60,14 @@ if not errorlevel 1 (
 
 set /p "MSG=Mensaje de commit para AeroDeck-HTML (vacio = cancelar): "
 if "%MSG%"=="" (
+	echo Operacion cancelada por el usuario.
+	popd
+	pause
+	exit /b 0
+)
+
+set /p "GO=Publicar en GitHub con ese mensaje? (S/N): "
+if /I not "%GO%"=="S" (
 	echo Operacion cancelada por el usuario.
 	popd
 	pause
