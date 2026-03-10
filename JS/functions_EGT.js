@@ -213,9 +213,7 @@ function egtToAngle(egt) {
 }
 
 function egtBugToAngle(egtBug) {
-  const currentAngle = egtToAngle(egtBug);
-  const referenceAngle = egtToAngle(EGT_BUG_REFERENCE_VALUE);
-  return (currentAngle - referenceAngle) + EGT_BUG_ANGLE_OFFSET;
+  return egtToAngle(egtBug);
 }
 
 function clampEGT(value) {
