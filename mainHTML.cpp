@@ -32,7 +32,7 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Benchmark & Calibration</title>
+<title>Cessna 172 - Lycoming 0-300 Simulator</title>
 
 
 <link rel="stylesheet" href="https://claudio-arz.github.io/AeroDeck-HTML/CSS/mainHTML.css">
@@ -60,7 +60,7 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 <body>
  
 
-<h1 style="text-align:center; margin-top: 24px;">Benchmark & Calibration</h1>
+<h1 style="text-align:center; margin-top: 24px;">Cessna 172 - Lycoming 0-300 Simulator</h1>
 <div class="logo-container">
     <img class="logo" id="logo" 
       src="https://claudio-arz.github.io/AeroDeck-HTML/Images/ClaudioArzamendiaSystems.png" 
