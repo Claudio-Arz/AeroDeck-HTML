@@ -113,9 +113,7 @@ function updateEGTMixture(mixturePercent, sendToESP = false) {
 }
 
 function updateEGT(egt, sendToESP = false) {
-  const slider = document.getElementById('egt-slider');
   const valueLabel = document.getElementById('egt-value');
-  const sliderLabel = document.getElementById('egt-slider-value-label');
   const needle = document.getElementById('egt_needle');
 
   if (egt === undefined || Number.isNaN(egt)) {
@@ -124,14 +122,6 @@ function updateEGT(egt, sendToESP = false) {
 
   const clamped = clampEGT(egt);
   currentEGTValue = clamped;
-
-  if (!sendToESP && slider) {
-    slider.value = clamped;
-  }
-
-  if (sliderLabel) {
-    sliderLabel.textContent = clamped.toFixed(0);
-  }
 
   if (valueLabel) {
     valueLabel.textContent = clamped.toFixed(0);
