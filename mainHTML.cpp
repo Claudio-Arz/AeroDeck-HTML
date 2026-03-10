@@ -135,8 +135,8 @@ window.addEventListener('DOMContentLoaded', () => {
       return;
     }
     // --- Actualizar configuración con Throttle ---
-    if (data.throttleValue !== undefined && typeof updateThrottle === 'function') {
-      updateThrottle(data.throttleValue);
+    if (data.throttleValue !== undefined && typeof updateThrottleControl === 'function') {
+      updateThrottleControl(data.throttleValue, false);
     }
     // --- Actualizar instrumento whatch ---
     if (data.relojValue !== undefined && typeof updateReloj === 'function') {
