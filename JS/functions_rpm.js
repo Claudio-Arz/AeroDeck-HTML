@@ -122,6 +122,10 @@ function initRPMControls() {
     if (isRPMSimOn()) return;
     startState = !startState;
     updateStartButtonUI(startState);
+    if (startState) {
+      const startAudio = new Audio('Audio/Start32s.wav');
+      startAudio.play();
+    }
     if(ws.readyState === 1) {
       sendRPMToESP32("startBtnRPM", startState);
     }
