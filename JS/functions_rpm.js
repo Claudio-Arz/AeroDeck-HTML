@@ -286,75 +286,60 @@ function updateRPMAndValue(RPMValue, RPMNoise, varRPM) {
 }
 
 // =============================================================
-// Máquina de estados de audio por zonas de RPM
-// Zonas:
-//   SILENT : RPM = 0            → sin audio
-//   IDLE   : RPM   1 –  550     → Ralenti8s.wav (loop)
-//   MID    : RPM 551 – 1000     → RalentiTo1000.wav → RPM1000.wav (loop)
-//   HIGH   : RPM 1001 – 2700    → Acelera1000-2000.wav → RPM2400.wav (loop)
-// Transiciones descendentes especiales:
-//   HIGH (>2000) → MID         : Desacelera24000-1000.wav → RPM1000.wav (loop)
-//   MID  (≥1000) → IDLE (<1000): Ralenti8s.wav (loop, sin transición)
+// Sistema de audio de motor con pitch/tempo dinámico
+//   SILENT : RPM = 0       → sin audio
+//   IDLE   : RPM  1 – 550  → Ralenti8s.wav en loop (velocidad fija)
+//   RUN    : RPM 551 – 2700 → RPM1000.wav en loop con playbackRate = RPM/1000
+//            (grabado a 1000 RPM → a 2000 RPM suena el doble de rápido, etc.)
 // =============================================================
 (function initRPMAudio() {
   const BASE        = 'https://claudio-arz.github.io/AeroDeck-HTML/Audio/';
   const ZONE_SILENT = 0;
   const ZONE_IDLE   = 1;
-  const ZONE_MID    = 2;
-  const ZONE_HIGH   = 3;
+  const ZONE_RUN    = 2;
 
-  let currentZone = ZONE_SILENT;
-  let loopAudio   = null;  // audio en loop continuo
-  let transAudio  = null;  // audio de transición (una sola vez)
-  let lastRPM     = 0;
+  let currentZone  = ZONE_SILENT;
+  let currentAudio = null;
+  let currentFile  = '';
 
   function stopAll() {
-    if (transAudio) { transAudio.pause(); transAudio.src = ''; transAudio = null; }
-    if (loopAudio)  { loopAudio.pause();  loopAudio.src  = ''; loopAudio  = null; }
+    if (currentAudio) {
+      currentAudio.pause();
+      currentAudio.src = '';
+      currentAudio = null;
+      currentFile  = '';
+    }
   }
 
-  function startLoop(file) {
-    stopAll();
-    const a = new Audio(BASE + file);
-    a.loop = true;
-    a.play().catch(() => {});
-    loopAudio = a;
-  }
-
-  function playTransThenLoop(transFile, loopFile) {
-    stopAll();
-    const t = new Audio(BASE + transFile);
-    transAudio = t;
-    // Si el archivo de transición no existe, pasar directo al loop
-    t.addEventListener('error', () => {
-      transAudio = null;
-      if (window.isSoundEnabled && window.isSoundEnabled()) startLoop(loopFile);
-    }, { once: true });
-    t.addEventListener('ended', () => {
-      transAudio = null;
-      if (window.isSoundEnabled && window.isSoundEnabled()) startLoop(loopFile);
-    }, { once: true });
-    t.play().catch(() => {});
+  function ensureLoop(file, rate) {
+    if (currentFile !== file) {
+      stopAll();
+      const a = new Audio(BASE + file);
+      a.loop = true;
+      a.playbackRate = rate;
+      a.play().catch(() => {});
+      currentAudio = a;
+      currentFile  = file;
+    } else if (currentAudio) {
+      // Mismo archivo: solo actualizar playbackRate en tiempo real
+      currentAudio.playbackRate = rate;
+    }
   }
 
   function getZone(rpm) {
-    if (rpm <= 0)    return ZONE_SILENT;
-    if (rpm <= 550)  return ZONE_IDLE;
-    if (rpm <= 1000) return ZONE_MID;
-    return ZONE_HIGH;
+    if (rpm <= 0)   return ZONE_SILENT;
+    if (rpm <= 550) return ZONE_IDLE;
+    return ZONE_RUN;
   }
 
   window.updateRPMEngineAudio = function(rpm) {
-    // Si sonido está apagado, detener todo y resetear zona para re-iniciar cuando vuelva
     if (!window.isSoundEnabled || !window.isSoundEnabled()) {
       stopAll();
       currentZone = ZONE_SILENT;
-      lastRPM = rpm;
       return;
     }
 
     const zone = getZone(rpm);
-    if (zone === currentZone) { lastRPM = rpm; return; }
 
     switch (zone) {
       case ZONE_SILENT:
@@ -362,38 +347,17 @@ function updateRPMAndValue(RPMValue, RPMNoise, varRPM) {
         break;
 
       case ZONE_IDLE:
-        // Llegando desde HIGH o MID: loop Ralenti directo, sin transición
-        startLoop('Ralenti8s.wav');
+        ensureLoop('Ralenti8s.wav', 1.0);
         break;
 
-      case ZONE_MID:
-        if (currentZone < ZONE_MID) {
-          // Subiendo desde IDLE (o arranque)
-          playTransThenLoop('RalentiTo1000.wav', 'RPM1000.wav');
-        } else {
-          // Bajando desde HIGH
-          if (lastRPM > 2000) {
-            // Cruzó el umbral 2000 → 1999
-            playTransThenLoop('Desacelera2400-1000.wav', 'RPM1000.wav');
-          } else {
-            // Bajó desde rango 1001-2000 sin cruzar 2000
-            startLoop('RPM1000.wav');
-          }
-        }
-        break;
-
-      case ZONE_HIGH:
-        if (currentZone === ZONE_SILENT) {
-          // Motor iniciado directamente en HIGH, sin transición
-          startLoop('RPM2400.wav');
-        } else {
-          playTransThenLoop('Acelera1000-2000.wav', 'RPM2400.wav');
-        }
+      case ZONE_RUN:
+        // playbackRate = RPM / 1000 → escala pitch y tempo linealmente
+        const rate = Math.max(0.2, Math.min(4.0, rpm / 1000));
+        ensureLoop('RPM1000.wav', rate);
         break;
     }
 
     currentZone = zone;
-    lastRPM = rpm;
   };
 }());
 
