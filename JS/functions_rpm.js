@@ -286,76 +286,92 @@ function updateRPMAndValue(RPMValue, RPMNoise, varRPM) {
 }
 
 // =============================================================
-// Sistema de audio de motor con pitch/tempo dinámico
+// Sistema de audio de motor con Web Audio API
 //   SILENT : RPM = 0       → sin audio
-//   IDLE   : RPM  1 – 550  → Ralenti8s.wav en loop (velocidad fija)
-//   RUN    : RPM 551 – 2700 → RPM1000.wav en loop con playbackRate = RPM/1000
-//            (grabado a 1000 RPM → a 2000 RPM suena el doble de rápido, etc.)
+//   IDLE   : RPM  1 – 550  → Ralenti8s.wav en loop (rate fijo 1.0)
+//   RUN    : RPM 551 – 2700 → RPM1000.wav en loop, rate = RPM/1000
+//            Cambios de pitch suavizados con setTargetAtTime (τ=0.05s)
 // =============================================================
 (function initRPMAudio() {
-  const BASE        = 'https://claudio-arz.github.io/AeroDeck-HTML/Audio/';
-  const ZONE_SILENT = 0;
-  const ZONE_IDLE   = 1;
-  const ZONE_RUN    = 2;
+  const BASE = 'https://claudio-arz.github.io/AeroDeck-HTML/Audio/';
 
-  let currentZone  = ZONE_SILENT;
-  let currentAudio = null;
-  let currentFile  = '';
+  let audioCtx    = null;
+  let buffers     = {};     // cache de AudioBuffers decodificados
+  let source      = null;   // AudioBufferSourceNode activo
+  let currentFile = '';
+  let currentZone = 0;      // 0=SILENT  1=IDLE  2=RUN
 
-  function stopAll() {
-    if (currentAudio) {
-      currentAudio.pause();
-      currentAudio.src = '';
-      currentAudio = null;
-      currentFile  = '';
+  function getCtx() {
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    return audioCtx;
+  }
+
+  async function loadBuffer(file) {
+    if (buffers[file]) return buffers[file];
+    const ctx = getCtx();
+    const res = await fetch(BASE + file);
+    const ab  = await res.arrayBuffer();
+    buffers[file] = await ctx.decodeAudioData(ab);
+    return buffers[file];
+  }
+
+  function stopSource() {
+    if (source) {
+      try { source.stop(); } catch(e) {}
+      source.disconnect();
+      source      = null;
+      currentFile = '';
     }
   }
 
-  function ensureLoop(file, rate) {
-    if (currentFile !== file) {
-      stopAll();
-      const a = new Audio(BASE + file);
-      a.loop = true;
-      a.playbackRate = rate;
-      a.play().catch(() => {});
-      currentAudio = a;
-      currentFile  = file;
-    } else if (currentAudio) {
-      // Mismo archivo: solo actualizar playbackRate en tiempo real
-      currentAudio.playbackRate = rate;
+  async function playFile(file, rate) {
+    const ctx = getCtx();
+    if (ctx.state === 'suspended') await ctx.resume();
+
+    const buf = await loadBuffer(file);
+
+    // Mismo archivo ya sonando → solo suavizar el rate
+    if (currentFile === file && source) {
+      source.playbackRate.setTargetAtTime(rate, ctx.currentTime, 0.05);
+      return;
     }
+
+    // Archivo diferente → detener el anterior y arrancar el nuevo
+    stopSource();
+    const s = ctx.createBufferSource();
+    s.buffer             = buf;
+    s.loop               = true;
+    s.playbackRate.value = rate;
+    s.connect(ctx.destination);
+    s.start();
+    source      = s;
+    currentFile = file;
   }
 
   function getZone(rpm) {
-    if (rpm <= 0)   return ZONE_SILENT;
-    if (rpm <= 550) return ZONE_IDLE;
-    return ZONE_RUN;
+    if (rpm <= 0)   return 0;
+    if (rpm <= 550) return 1;
+    return 2;
   }
 
   window['updateRPMEngineAudio'] = function(rpm) {
     if (!window.isSoundEnabled || !window.isSoundEnabled()) {
-      stopAll();
-      currentZone = ZONE_SILENT;
+      stopSource();
+      currentZone = 0;
       return;
     }
 
     const zone = getZone(rpm);
 
-    switch (zone) {
-      case ZONE_SILENT:
-        stopAll();
-        break;
-
-      case ZONE_IDLE:
-        ensureLoop('Ralenti8s.wav', 1.0);
-        break;
-
-      case ZONE_RUN: {
-        // playbackRate = RPM / 1000 → escala pitch y tempo linealmente
-        const rate = Math.max(0.2, Math.min(4.0, rpm / 1000));
-        ensureLoop('RPM1000.wav', rate);
-        break;
-      }
+    if (zone === 0) {
+      stopSource();
+    } else if (zone === 1) {
+      playFile('Ralenti8s.wav', 1.0).catch(() => {});
+    } else {
+      const rate = Math.max(0.2, Math.min(4.0, rpm / 1000));
+      playFile('RPM1000.wav', rate).catch(() => {});
     }
 
     currentZone = zone;
