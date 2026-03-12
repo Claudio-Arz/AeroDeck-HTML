@@ -32,9 +32,10 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Cessna 172 - Lycoming 0-300 Simulator</title>
+<title>Cessna 172 - Lycoming O-320 Simulator</title>
 
 
+<link rel="icon" href="data:,">
 <link rel="stylesheet" href="https://claudio-arz.github.io/AeroDeck-HTML/CSS/mainHTML.css">
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_variometer.js"></script>
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_altimeter.js"></script>
@@ -60,7 +61,7 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 <body>
  
 
-<h1 style="text-align:center; margin-top: 24px;">Cessna 172 - Lycoming 0-300 Simulator</h1>
+<h1 style="text-align:center; margin-top: 24px;">Cessna 172 - Lycoming O-320 Simulator</h1>
 <div class="logo-container">
     <img class="logo" id="logo" 
       src="https://claudio-arz.github.io/AeroDeck-HTML/Images/ClaudioArzamendiaSystems.png" 

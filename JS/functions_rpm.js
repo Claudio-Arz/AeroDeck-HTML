@@ -279,8 +279,8 @@ function updateRPMAndValue(RPMValue, RPMNoise, varRPM) {
   }
 
   // Actualizar audio de motor según zona de RPM
-  if (typeof window.updateRPMEngineAudio === 'function') {
-    window.updateRPMEngineAudio(RPMValue);
+  if (typeof window['updateRPMEngineAudio'] === 'function') {
+    window['updateRPMEngineAudio'](RPMValue);
   }
   
 }
@@ -332,7 +332,7 @@ function updateRPMAndValue(RPMValue, RPMNoise, varRPM) {
     return ZONE_RUN;
   }
 
-  window.updateRPMEngineAudio = function(rpm) {
+  window['updateRPMEngineAudio'] = function(rpm) {
     if (!window.isSoundEnabled || !window.isSoundEnabled()) {
       stopAll();
       currentZone = ZONE_SILENT;
@@ -350,11 +350,12 @@ function updateRPMAndValue(RPMValue, RPMNoise, varRPM) {
         ensureLoop('Ralenti8s.wav', 1.0);
         break;
 
-      case ZONE_RUN:
+      case ZONE_RUN: {
         // playbackRate = RPM / 1000 → escala pitch y tempo linealmente
         const rate = Math.max(0.2, Math.min(4.0, rpm / 1000));
         ensureLoop('RPM1000.wav', rate);
         break;
+      }
     }
 
     currentZone = zone;
