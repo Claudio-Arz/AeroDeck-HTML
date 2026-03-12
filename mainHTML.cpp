@@ -156,6 +156,16 @@ window.addEventListener('DOMContentLoaded', () => {
     if (data.altitudValue !== undefined && typeof updateAltimeterAndValue === 'function') {
       updateAltimeterAndValue(data.altitudValue, data.bandera_off, data.atmosphericPressureHpa);
     }
+    // --- Detección de aterrizaje duro (> 500 fpm de descenso) ---
+    if (data.altitudValue !== undefined && data.verticalSpeed !== undefined) {
+      const prevAlt = window._lastAltitude !== undefined ? window._lastAltitude : data.altitudValue;
+      const isLanding = (prevAlt > 5) && (data.altitudValue <= 5) && (data.verticalSpeed < -500);
+      if (isLanding) {
+        showAllBrokenCrystals();
+      }
+      window._lastAltitude    = data.altitudValue;
+      window._lastVertSpeed   = data.verticalSpeed;
+    }
     if (data.RPMValue !== undefined && typeof updateRPMAndValue === 'function') {
       // console.log("Actualizando RPM: " + data.RPMValue + " Noice: " + data.RPMNoice + " varRPM: " + data.varRPM);
       updateRPMAndValue(data.RPMValue, data.RPMNoice, data.varRPM);
@@ -734,6 +744,38 @@ window.addEventListener('DOMContentLoaded', () => {
       document.getElementById("inst03").innerHTML = html;
     });
 });
+
+// =============================================================
+// Muestra todos los cristales rotos (penalidad por aterrizaje duro)
+// Condición: velocidad vertical > 500 fpm al tocar tierra
+// =============================================================
+function showAllBrokenCrystals() {
+  const ids = [
+    'airspeed_broken_crystal11',
+    'altimeter_broken_crystal13',
+    'attitude_broken_crystal12',
+    'cht_broken_crystal07',
+    'egt_broken_crystal06',
+    'fuel_broken_crystal04',
+    'gyro_broken_crystal01',
+    'mf_broken_crystal05',
+    'op_broken_crystal03',
+    'ot_broken_crystal02',
+    'reloj_broken_crystal14',
+    'rpm_broken_crystal09',
+    'turn_coor_broken_crystal06',
+    'variometer_broken_crystal08',
+    'voltAmp_broken_crystal16',
+  ];
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.add('visible');
+  });
+  // Buscar también cualquier FuelFlow u otros cristales cargados dinámicamente
+  document.querySelectorAll('[id*="broken_crystal"]').forEach(el => {
+    el.classList.add('visible');
+  });
+}
 
 // Control del botón Sound ON/OFF
 window._soundEnabled = true; // arranca en ON
