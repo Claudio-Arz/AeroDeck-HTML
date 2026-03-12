@@ -68,6 +68,13 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 
     <input type="range" min="0" max="360" value="220" step="1" 
       id="shadow-color" class="color-slider-input" style="display:none;">
+
+    <button id="sound-toggle-btn" title="Sonido ON/OFF"
+      style="margin-left:16px; padding:4px 12px; font-size:13px; font-weight:bold;
+             background:#1a7a1a; color:#fff; border:none; border-radius:6px;
+             cursor:pointer; white-space:nowrap;">
+      &#128266; Sound ON
+    </button>
     
 </div>
 
@@ -725,6 +732,25 @@ window.addEventListener('DOMContentLoaded', () => {
     .then(html => {
       document.getElementById("inst03").innerHTML = html;
     });
+});
+
+// Control del botón Sound ON/OFF
+window._soundEnabled = true; // arranca en ON
+window.isSoundEnabled = () => window._soundEnabled;
+
+window.addEventListener('DOMContentLoaded', () => {
+  const soundBtn = document.getElementById('sound-toggle-btn');
+  if (!soundBtn) return;
+  soundBtn.addEventListener('click', () => {
+    window._soundEnabled = !window._soundEnabled;
+    if (window._soundEnabled) {
+      soundBtn.textContent = '\u{1F50A} Sound ON';
+      soundBtn.style.background = '#1a7a1a';
+    } else {
+      soundBtn.textContent = '\u{1F507} Sound OFF';
+      soundBtn.style.background = '#7a1a1a';
+    }
+  });
 });
 
 // Control del slider para cambiar el color del box-shadow

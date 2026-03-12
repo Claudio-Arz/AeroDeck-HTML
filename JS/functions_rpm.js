@@ -111,6 +111,8 @@ function initRPMControls() {
   noiceBtnRPM.addEventListener('click', () => {
     if (isRPMSimOn()) return;
     noiceState = !noiceState;
+    window._rpmNoiceActive = noiceState;
+    noiceBtnRPM.style.background = noiceState ? '#0f0' : '#444';
     sendRPMToESP32("noiceBtnRPM", noiceState);
   });
   simBtnRPM.addEventListener('click', () => {
@@ -122,12 +124,9 @@ function initRPMControls() {
     if (isRPMSimOn()) return;
     startState = !startState;
     updateStartButtonUI(startState);
-    if (startState) {
+    if (startState && window.isSoundEnabled && window.isSoundEnabled()) {
       const startAudio = new Audio('https://claudio-arz.github.io/AeroDeck-HTML/Audio/Start32s.wav');
       startAudio.play();
-      playStartRPMAnimation();
-    } else {
-      cancelStartRPMAnimation();
     }
     if(ws.readyState === 1) {
       sendRPMToESP32("startBtnRPM", startState);
@@ -279,69 +278,6 @@ function updateRPMAndValue(RPMValue, RPMNoise, varRPM) {
     if (rpmCrystal) rpmCrystal.style.background = '';
   }
   
-}
-
-/*
-  Anima la aguja RPM sincronizada con el audio Start32s.wav.
-  Secuencia:
-    0-4s   : quieto en 0 RPM
-    4-7s   : sube de 0 a 1000 RPM (3s)
-    7-24s  : se mantiene en 1000 RPM (17s)
-    24-35s : baja de 1000 a 475 RPM (11s)
-*/
-function playStartRPMAnimation() {
-  cancelStartRPMAnimation();
-
-  const phases = [
-    { t0:     0, rpm0:    0, t1:  4000, rpm1:    0 },
-    { t0:  4000, rpm0:    0, t1:  7000, rpm1: 1000 },
-    { t0:  7000, rpm0: 1000, t1: 24000, rpm1: 1000 },
-    { t0: 24000, rpm0: 1000, t1: 35000, rpm1:  475 },
-  ];
-  const totalDuration = 35000;
-  const startTime = performance.now();
-  let lastSentRPM = -999;
-
-  function animate(now) {
-    const elapsed = now - startTime;
-
-    if (elapsed >= totalDuration) {
-      updateRPMAndValue(475, false, 475);
-      sendRPMToESP32('rpmSlider', 475);
-      const sl = document.getElementById('rpm-slider');
-      if (sl) { sl.value = 475; document.getElementById('rpm-slider-value').textContent = 475; }
-      window._startRPMAnimId = null;
-      return;
-    }
-
-    let currentRPM = 0;
-    for (const ph of phases) {
-      if (elapsed >= ph.t0 && elapsed <= ph.t1) {
-        const dur = ph.t1 - ph.t0;
-        currentRPM = dur === 0 ? ph.rpm1 : ph.rpm0 + (ph.rpm1 - ph.rpm0) * ((elapsed - ph.t0) / dur);
-        break;
-      }
-    }
-    currentRPM = Math.round(currentRPM);
-
-    updateRPMAndValue(currentRPM, false, currentRPM);
-
-    if (Math.abs(currentRPM - lastSentRPM) >= 5) {
-      sendRPMToESP32('rpmSlider', currentRPM);
-      lastSentRPM = currentRPM;
-    }
-
-    window._startRPMAnimId = requestAnimationFrame(animate);
-  }
-
-  window._startRPMAnimId = requestAnimationFrame(animate);
-}
-
-function cancelStartRPMAnimation() {
-  if (window._startRPMAnimId) {
-    cancelAnimationFrame(window._startRPMAnimId);
-    window._startRPMAnimId = null;
-  }
 }
 
 let drumDigits = 5;
