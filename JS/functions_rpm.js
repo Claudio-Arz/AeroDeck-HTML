@@ -123,7 +123,7 @@ function initRPMControls() {
     startState = !startState;
     updateStartButtonUI(startState);
     if (startState) {
-      const startAudio = new Audio('Audio/Start32s.wav');
+      const startAudio = new Audio('https://claudio-arz.github.io/AeroDeck-HTML/Audio/Start32s.wav');
       startAudio.play();
     }
     if(ws.readyState === 1) {
