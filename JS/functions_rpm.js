@@ -124,9 +124,14 @@ function initRPMControls() {
     if (isRPMSimOn()) return;
     startState = !startState;
     updateStartButtonUI(startState);
-    if (startState && window.isSoundEnabled && window.isSoundEnabled()) {
-      const startAudio = new Audio('https://claudio-arz.github.io/AeroDeck-HTML/Audio/Start32s.wav');
-      startAudio.play();
+    if (window.isSoundEnabled && window.isSoundEnabled()) {
+      if (startState) {
+        const startAudio = new Audio('https://claudio-arz.github.io/AeroDeck-HTML/Audio/Start32s.wav');
+        startAudio.play();
+      } else {
+        const stopAudio = new Audio('https://claudio-arz.github.io/AeroDeck-HTML/Audio/StopEngine.wav');
+        stopAudio.play();
+      }
     }
     if(ws.readyState === 1) {
       sendRPMToESP32("startBtnRPM", startState);
