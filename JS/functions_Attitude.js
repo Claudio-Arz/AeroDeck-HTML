@@ -337,8 +337,10 @@ function updateAttitudeControl(pitchValue, rollValue) {
   if (ball) {
     // Pitch: mover verticalmente (±50px para ±20°)
     const pitchPx = (pitchValue / 20) * 50;
+    // La esfera es tierra-referenciada: gira opuesto al roll del avión.
+    // Bank derecho → esfera gira izquierda (sentido contrario al TC). Por eso se niega rollValue.
     // Primero rotate, luego translateY (orden importante!)
-    ball.style.transform = `rotate(${rollValue}deg) translateY(${pitchPx}px)`;
+    ball.style.transform = `rotate(${-rollValue}deg) translateY(${pitchPx}px)`;
   }
   
   if (dial) {
