@@ -23,36 +23,6 @@
 let currentTurnCoordinator = 0;
 let targetTurnCoordinator = 0;
 let turnCoordinatorAnimationFrame = null;
-let lastTurnCoordinatorValue = 0;
-
-// Función helper para redondear a 1 decimal consistentemente
-function formatTCValue(value) {
-  return Math.round(value * 10) / 10;
-}
-
-function isBrakeOn() {
-    return window.brakeOnState === true;
-}
-
-function updateTurnCoordinatorBrakeUI(isOn) {
-    const slider = document.getElementById('turncoordinator-slider');
-    const btnMax = document.getElementById('turncoordinator-slider-max');
-    const btnMid = document.getElementById('turncoordinator-slider-mid');
-    const btnMin = document.getElementById('turncoordinator-slider-min');
-    const btnPlus = document.getElementById('turncoordinator-btn-plus');
-    const btnMinus = document.getElementById('turncoordinator-btn-minus');
-    const rudderLeft = document.getElementById('tc-rudder-left');
-    const rudderRight = document.getElementById('tc-rudder-right');
-
-    if (slider) slider.disabled = isOn;
-    if (btnMax) btnMax.disabled = isOn;
-    if (btnMid) btnMid.disabled = isOn;
-    if (btnMin) btnMin.disabled = isOn;
-    if (btnPlus) btnPlus.disabled = isOn;
-    if (btnMinus) btnMinus.disabled = isOn;
-    if (rudderLeft) rudderLeft.disabled = isOn;
-    if (rudderRight) rudderRight.disabled = isOn;
-}
 
 
 // Función para animar la aguja del Turn Coordinator hacia el valor objetivo
@@ -85,13 +55,12 @@ function updateTurnCoordinator() {
 // Función para actualizar el avión del Turn Coordinator desde WebSocket
 function updateTurnCoordinatorPlane(value, sendToESP = false) {
     animateDialTurnCoordinator(value);
-    lastTurnCoordinatorValue = value;
     // Sincronizar slider si el dato viene del ESP32
     if (!sendToESP) {
         const slider = document.getElementById('turncoordinator-slider');
         const sliderValue = document.getElementById('turncoordinator-slider-value');
         if (slider) slider.value = value;
-        if (sliderValue) sliderValue.textContent = formatTCValue(value);
+        if (sliderValue) sliderValue.textContent = value;
     }
 }
 
@@ -103,6 +72,8 @@ function updateTurnCoordinatorBall(value) {
         const angle = (value / 30) * 30; // Ajusta el factor de movimiento según el diseño del instrumento
         ball.style.transform = `rotate(${angle}deg)`;
     }
+    // Sincronizar variable local
+    currentRudder = value;
 }
 // Variable global para el valor del rudder
 let currentRudder = 0;
@@ -114,15 +85,10 @@ function setupTurnCoordinatorControls() {
     
     if (slider) {
         slider.addEventListener('input', () => {
-            if (isBrakeOn()) {
-                if (slider) slider.value = lastTurnCoordinatorValue;
-                if (sliderValue) sliderValue.textContent = formatTCValue(lastTurnCoordinatorValue);
-                return;
-            }
             const value = parseFloat(slider.value);
-            if (sliderValue) sliderValue.textContent = formatTCValue(value);
+            if (sliderValue) sliderValue.textContent = value;
             animateDialTurnCoordinator(value);
-            sendTurnCoordinatorToESP32('rollValue', value);
+            sendTurnCoordinatorToESP32('tc-rollValue', value);
         });
     }
     
@@ -135,92 +101,44 @@ function setupTurnCoordinatorControls() {
  
     if (btnMax) {
         btnMax.addEventListener('click', () => {
-            if (isBrakeOn()) return;
             if (slider) slider.value = 30;
             if (sliderValue) sliderValue.textContent = 30;
             animateDialTurnCoordinator(30);
-            sendTurnCoordinatorToESP32('rollValue', 30);
+            sendTurnCoordinatorToESP32('tc-rollValue', 30);
         });
     }
     if (btnMid) {
         btnMid.addEventListener('click', () => {
-            if (isBrakeOn()) return;
-            // Animación gradual a cero en 8 segundos
-            const currentValue = parseFloat(slider.value) || 0;
-            if (Math.abs(currentValue) < 0.1) {
-                // Ya está en cero, no hacer nada
-                return;
-            }
-            
-            const duration = 8000; // 8 segundos
-            const startTime = Date.now();
-            const startValue = currentValue;
-            
-            function animateToZero() {
-                if (isBrakeOn()) {
-                    if (slider) slider.value = lastTurnCoordinatorValue;
-                    if (sliderValue) sliderValue.textContent = formatTCValue(lastTurnCoordinatorValue);
-                    return;
-                }
-                const elapsed = Date.now() - startTime;
-                const progress = Math.min(1, elapsed / duration);
-                
-                // Easing suave (ease-out cúbico)
-                const easeProgress = 1 - Math.pow(1 - progress, 3);
-                
-                // Interpolar hacia cero
-                const newValue = startValue * (1 - easeProgress);
-                
-                // Redondear a 1 decimal consistentemente
-                const roundedValue = Math.round(newValue * 10) / 10;
-                
-                // Actualizar UI
-                if (slider) slider.value = roundedValue;
-                if (sliderValue) sliderValue.textContent = roundedValue;
-                animateDialTurnCoordinator(roundedValue);
-                sendTurnCoordinatorToESP32('rollValue', roundedValue);
-                
-                if (progress < 1) {
-                    requestAnimationFrame(animateToZero);
-                } else {
-                    // Asegurar valor final exacto
-                    if (slider) slider.value = 0;
-                    if (sliderValue) sliderValue.textContent = 0;
-                    animateDialTurnCoordinator(0);
-                    sendTurnCoordinatorToESP32('rollValue', 0);
-                }
-            }
-            
-            animateToZero();
+            if (slider) slider.value = 0;
+            if (sliderValue) sliderValue.textContent = 0;
+            animateDialTurnCoordinator(0);
+            sendTurnCoordinatorToESP32('tc-rollValue', 0);
         });
     }
     if (btnMin) {
         btnMin.addEventListener('click', () => {
-            if (isBrakeOn()) return;
             if (slider) slider.value = -30;
             if (sliderValue) sliderValue.textContent = -30;
             animateDialTurnCoordinator(-30);
-            sendTurnCoordinatorToESP32('rollValue', -30);
+            sendTurnCoordinatorToESP32('tc-rollValue', -30);
         });
     }
     if (btnPlus) {
         btnPlus.addEventListener('click', () => {
-            if (isBrakeOn()) return;
             const newValue = Math.min(30, parseFloat(slider.value) + 1);
             if (slider) slider.value = newValue;
-            if (sliderValue) sliderValue.textContent = formatTCValue(newValue);
+            if (sliderValue) sliderValue.textContent = newValue;
             animateDialTurnCoordinator(newValue);
-            sendTurnCoordinatorToESP32('rollValue', newValue);
+            sendTurnCoordinatorToESP32('tc-rollValue', newValue);
         });
     }
     if (btnMinus) {
         btnMinus.addEventListener('click', () => {
-            if (isBrakeOn()) return;
             const newValue = Math.max(-30, parseFloat(slider.value) - 1);
             if (slider) slider.value = newValue;
-            if (sliderValue) sliderValue.textContent = formatTCValue(newValue);
+            if (sliderValue) sliderValue.textContent = newValue;
             animateDialTurnCoordinator(newValue);
-            sendTurnCoordinatorToESP32('rollValue', newValue);
+            sendTurnCoordinatorToESP32('tc-rollValue', newValue);
         });
     }
     
@@ -230,14 +148,14 @@ function setupTurnCoordinatorControls() {
     
     if (rudderLeft) {
         rudderLeft.addEventListener('click', () => {
-            currentRudder = Math.min(30, currentRudder + 1); // +1° (izquierda, corregido)
+            currentRudder = Math.max(-30, currentRudder - 1); // -1° (izquierda)
             sendTurnCoordinatorToESP32('tc-pitchValue', currentRudder);
             console.log('Rudder Left:', currentRudder);
         });
     }
     if (rudderRight) {
         rudderRight.addEventListener('click', () => {
-            currentRudder = Math.max(-30, currentRudder - 1); // -1° (derecha, corregido)
+            currentRudder = Math.min(30, currentRudder + 1); // +1° (derecha)
             sendTurnCoordinatorToESP32('tc-pitchValue', currentRudder);
             console.log('Rudder Right:', currentRudder);
         });

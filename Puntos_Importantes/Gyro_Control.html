@@ -1,0 +1,187 @@
+
+<div class="gyro-main-grid">
+  <div class="gyro-title">GYRO</div>
+  <div class="gyro-controls-grid">
+    <input type="range" min="0" max="360" value="0" class="gyro-slider" id="gyr-slider" orient="vertical" style="grid-column:1;grid-row:1/4;">
+    <div class="gyro-slider-value" id="gyr-slider-value-label" style="grid-column:1;grid-row:4;">0</div>
+    <div class="gyro-btn-row" style="background:#616b58;grid-column:2;grid-row:1;">
+      <button class="gyro-btn" id="gyr-btn-0">0°</button><div class="gyro-btn-label">North</div>
+    </div>
+    <div class="gyro-btn-row" style="background:#547456;grid-column:2;grid-row:2;">
+      <button class="gyro-btn" id="gyr-btn-90">90°</button><div class="gyro-btn-label">East</div>
+    </div>
+    <div class="gyro-btn-row" style="background:#427a3f;grid-column:2;grid-row:3;">
+      <button class="gyro-btn" id="gyr-btn-180">180°</button><div class="gyro-btn-label">South</div>
+    </div>
+    <div class="gyro-btn-row" style="background:#2b8933;grid-column:2;grid-row:4;">
+      <button class="gyro-btn" id="gyr-btn-270">270°</button><div class="gyro-btn-label">West</div>
+    </div>
+  </div>
+</div>
+<style>
+  .gyro-grid-final {
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    width: 98vw;
+    height: 98vh;
+    box-sizing: border-box;
+    padding: 1vw 1vw 1vw 1vw;
+  }
+
+  .gyro-main-grid {
+    width: 90px;
+    height: 240px;
+    display: grid;
+    grid-template-rows: 32px 1fr;
+    background: #232d2d;
+    border-radius: 12px;
+    box-shadow: 0 0 12px #2e3d2f, 0 0 4px #1a2323;
+    overflow: hidden;
+    font-family: 'Orbitron', 'Arial', sans-serif;
+  }
+  .gyro-controls-grid {
+    display: grid;
+    grid-template-columns: 55px 30px;
+    grid-template-rows: 25% 25% 25% 25%;
+    width: 100%;
+    height: 100%;
+    gap: 0;
+  }
+  .gyro-title {
+    grid-row: 1;
+    width: 100%;
+    height: 32px;
+    background: linear-gradient(90deg, #3a4a3a 0%, #1a2323 100%);
+    color: #fff;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 8px #2e3d2f, 0 0 4px #1a2323;
+  }
+  .gyro-content {
+    display: grid;
+    grid-template-columns: 55px 35px;
+    grid-template-rows: 1fr;
+    height: 208px;
+    gap: 0;
+  }
+  .gyro-slider-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 55px;
+    height: 90%;
+    background: #2e3d2f;
+    border-right: 2px solid #46123b;
+    box-shadow: 0 0 8px #00fff7 inset;
+  }
+  .gyro-slider {
+    grid-row: 1 / 2;
+    align-self: center;
+    justify-self: center;
+    margin-top: 2px;
+    accent-color: #4a5a3a;
+    background: #23234a;
+    border-radius: 8px;
+    box-shadow: 0 0 8px #fffb00 inset;
+    transform: rotate(-90deg);
+    direction: ltr;
+  }
+
+   
+  .gyro-slider-value {
+    grid-row: 2 / 3;
+    align-self: center;
+    justify-self: center;
+    font-size: 12px;
+    color: #e2e2c6;
+    text-align: center;
+    font-family: 'Orbitron', 'Arial', sans-serif;
+    letter-spacing: 1px;
+  }
+  .gyro-btns-col {
+    display: flex;
+    flex-direction: column;
+    width: 30px;
+    height: 100%;
+    gap: 0;
+  }
+  .gyro-btn-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 50px;
+    min-width: 30px;
+    max-width: 30px;
+    min-height:50px;
+    border-radius: 6px;
+    margin: 0;
+    box-shadow: 0 0 6px #1a2323, 0 0 2px #3a4a3a;
+  }
+  .gyro-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: none;
+    margin: 0 auto;
+    box-shadow: 0 0 6px #1a2323, 0 0 2px #3a4a3a;
+    cursor: pointer;
+    font-size: 12px;
+    color: #e1fafa;
+    font-weight: bold;
+    background: transparent;
+    transition: box-shadow 0.2s, background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .gyro-slider-glow-btn {
+    width: 50px;
+    height: 100%;
+    font-size: 9px;
+    padding: 4px 0;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    background-color: #444;
+    box-shadow: 0 0 8px #000a;
+    transition: box-shadow 0.2s, background-color 0.2s;
+  }
+  .gyro-slider-glow-btn:hover {
+    box-shadow: 0 0 12px #2196f3cc;
+    background-color: #555;
+  }
+  .gyro-slider-row {
+    display: grid;
+    grid-template-rows: 90% 10%;
+    height: 100%;
+    gap: 0;    
+    display:flex;
+    border-radius:6px;
+    align-items:center;
+    justify-content:center;
+  }
+  .gyro-slider-value-row {  
+    height: 10%;
+    width: 55px;
+    display:flex;
+    border-radius:6px;
+    background: #232d2d;
+    align-items: center;
+    justify-content: center;
+
+  } 
+
+
+</style>

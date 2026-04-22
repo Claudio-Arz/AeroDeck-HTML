@@ -23,7 +23,6 @@
 function initVariometerControls() {
   const variometerSlider = document.getElementById('variometer-slider');
   const variometerSliderValue = document.getElementById('variometer-slider-value');
-  const simBtn = document.getElementById('variometer-sim-btn');
   const maxButton = document.getElementById('variometer-slider-max');
   const midButton = document.getElementById('variometer-slider-mid');
   const minButton = document.getElementById('variometer-slider-min');
@@ -35,37 +34,8 @@ function initVariometerControls() {
     return;
   }
 
-  function isVariometerSimOn() {
-    return window.variometerSimModeState === true;
-  }
-
-  function updateVariometerSimUI(isOn) {
-    window.variometerSimModeState = isOn === true;
-    const lock = window.variometerSimModeState;
-
-    if (simBtn) {
-      if (lock) {
-        simBtn.style.background = '#0f0';
-        simBtn.style.color = '#111';
-        simBtn.textContent = 'SIM ON';
-      } else {
-        simBtn.style.background = '#444';
-        simBtn.style.color = '#fff';
-        simBtn.textContent = 'SIM';
-      }
-    }
-
-    variometerSlider.disabled = lock;
-    maxButton.disabled = lock;
-    midButton.disabled = lock;
-    minButton.disabled = lock;
-    if (btnPlus) btnPlus.disabled = lock;
-    if (btnMinus) btnMinus.disabled = lock;
-  }
-
   if (btnPlus) {
     btnPlus.addEventListener('click', () => {
-      if (isVariometerSimOn()) return;
       let currentValue = parseFloat(variometerSlider.value);
       let newValue = currentValue < 2000 ? currentValue + 1 : currentValue;
       variometerSlider.value = newValue;
@@ -75,7 +45,6 @@ function initVariometerControls() {
   }
   if (btnMinus) {
     btnMinus.addEventListener('click', () => {
-      if (isVariometerSimOn()) return;
       let currentValue = parseFloat(variometerSlider.value);
       let newValue = currentValue > -2000 ? currentValue - 1 : currentValue;
       variometerSlider.value = newValue;
@@ -85,76 +54,27 @@ function initVariometerControls() {
   }
 
   maxButton.addEventListener('click', () => {
-    if (isVariometerSimOn()) return;
     variometerSlider.value = parseFloat(2000);
     variometerSliderValue.textContent = 2000;
     sendVerticalSpeedToESP32(2000);
   });
   midButton.addEventListener('click', () => {
-    if (isVariometerSimOn()) return;
     variometerSlider.value = parseFloat(0);
     variometerSliderValue.textContent = 0;
     sendVerticalSpeedToESP32(0);
   });
   minButton.addEventListener('click', () => {
-    if (isVariometerSimOn()) return;
     variometerSlider.value = parseFloat(-2000);
     variometerSliderValue.textContent = -2000;
     sendVerticalSpeedToESP32(-2000);
   });
   variometerSlider.addEventListener('input', () => {
-    if (isVariometerSimOn()) return;
     const value = parseFloat(variometerSlider.value);
     variometerSliderValue.textContent = value;
     sendVerticalSpeedToESP32(value);
     // console.log('Slider variometer ajustado a:', value);
     // updateVariometerAndValue(value); // Mueve la aguja localmente
   });
-
-  if (simBtn) {
-    simBtn.addEventListener('click', () => {
-      const newState = !isVariometerSimOn();
-      updateVariometerSimUI(newState);
-      getWebSocketInstance(function(ws) {
-        ws.send(JSON.stringify({ usePitchDrivenVerticalSpeed: newState }));
-      });
-    });
-  }
-
-  updateVariometerSimUI(window.variometerSimModeState === true);
-}
-
-function updateVariometerSimModeState(usePitchDrivenVerticalSpeed) {
-  window.variometerSimModeState = usePitchDrivenVerticalSpeed === true;
-
-  const simBtn = document.getElementById('variometer-sim-btn');
-  const variometerSlider = document.getElementById('variometer-slider');
-  const maxButton = document.getElementById('variometer-slider-max');
-  const midButton = document.getElementById('variometer-slider-mid');
-  const minButton = document.getElementById('variometer-slider-min');
-  const btnPlus = document.getElementById('variometer-btn-plus');
-  const btnMinus = document.getElementById('variometer-btn-minus');
-
-  const lock = window.variometerSimModeState;
-
-  if (simBtn) {
-    if (lock) {
-      simBtn.style.background = '#0f0';
-      simBtn.style.color = '#111';
-      simBtn.textContent = 'SIM ON';
-    } else {
-      simBtn.style.background = '#444';
-      simBtn.style.color = '#fff';
-      simBtn.textContent = 'SIM';
-    }
-  }
-
-  if (variometerSlider) variometerSlider.disabled = lock;
-  if (maxButton) maxButton.disabled = lock;
-  if (midButton) midButton.disabled = lock;
-  if (minButton) minButton.disabled = lock;
-  if (btnPlus) btnPlus.disabled = lock;
-  if (btnMinus) btnMinus.disabled = lock;
 }
 // función para enviar los datos al ESP32, para que calcule valores para el altímetro.
 // a travez del ws abierto con el ESP32.

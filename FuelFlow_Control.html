@@ -52,7 +52,6 @@ Fuel Flow Control  (medidas 120px x 240px)
   <!-- Fila inferior: Value -->
   <div class="ff-value-row">
     <div class="ff-value-label" id="ff-slider-value-label">0</div>
-    <button id="ff-sim-toggle" class="ff-sim-toggle" title="Alternar Fuel Flow Simulado">SIM</button>
   </div>
 </div>
 
@@ -184,8 +183,6 @@ Fuel Flow Control  (medidas 120px x 240px)
   }
   .ff-value-row {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
     height: 20px;
     padding: 2px 4px;
     box-sizing: border-box;
@@ -202,24 +199,6 @@ Fuel Flow Control  (medidas 120px x 240px)
     border-radius: 3px;
     font-family: 'Courier New', monospace;
     text-shadow: 0 0 4px #7cfc00;
-  }
-  .ff-sim-toggle {
-    width: 34px;
-    height: 16px;
-    border: 1px solid #4a5d23;
-    border-radius: 3px;
-    font-size: 9px;
-    font-weight: bold;
-    padding: 0;
-    cursor: pointer;
-    color: #7cfc00;
-    background: linear-gradient(145deg, #3d4f1f, #2f3d13);
-    text-shadow: 1px 1px 1px #000;
-  }
-  .ff-sim-toggle.active {
-    color: #1a2510;
-    background: linear-gradient(145deg, #7cfc00, #adff2f);
-    text-shadow: none;
   }
 </style>
 

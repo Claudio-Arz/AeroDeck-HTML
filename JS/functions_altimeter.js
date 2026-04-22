@@ -1,6 +1,6 @@
 // Alias para compatibilidad con mainHTML.cpp
-function updateAltimeterAndValue(altitudValue, bandera_off, atmosphericPressureHpa) {
-  updateAltimeter(altitudValue, bandera_off, atmosphericPressureHpa);
+function updateAltimeterAndValue(altitudValue, bandera_off) {
+  updateAltimeter(altitudValue, bandera_off);
 }
 /*
   Sistema AeroDeck
@@ -13,7 +13,7 @@ function updateAltimeterAndValue(altitudValue, bandera_off, atmosphericPressureH
 
 
 // Función para actualizar el altímetro con el valor recibido
-function updateAltimeter(altitudValue, bandera_off, atmosphericPressureHpa) {
+function updateAltimeter(altitudValue, bandera_off) {
   // Actualizar el valor numérico en el centro del instrumento
   document.getElementById("altimeter-value").textContent = Math.round(altitudValue);
   // Calcular los ángulos de las agujas en función de la altitud
@@ -35,25 +35,6 @@ function updateAltimeter(altitudValue, bandera_off, atmosphericPressureHpa) {
   } else {
     // Ocultar la bandera OFF
     flagElement.style.transform = "translate(-50%, -50%) rotate(0deg)";
-  }
-
-  // Actualizar escala Kollsman y lectura en ventanita
-  // Rango gráfico: 950..1050 hPa distribuidos en 180°
-  // Referencia: 1000 hPa = 0°
-  // Menor presión => sentido horario (+)
-  // Mayor presión => sentido antihorario (-)
-  const pressure = (typeof atmosphericPressureHpa === 'number') ? atmosphericPressureHpa : 1000.0;
-  const pressureClamped = Math.max(950.0, Math.min(1050.0, pressure));
-  const kolsmanAngle = (1000.0 - pressureClamped) * 1.8;
-
-  const kolsmanScale = document.getElementById("altimeter-kollsman");
-  if (kolsmanScale) {
-    kolsmanScale.style.transform = `translate(-50%, -50%) rotate(${kolsmanAngle.toFixed(2)}deg)`;
-  }
-
-  const kolsmanElement = document.getElementById("altimeter-kollsman-value");
-  if (kolsmanElement) {
-    kolsmanElement.textContent = `${Math.round(pressureClamped)} hPa`;
   }
 }
 

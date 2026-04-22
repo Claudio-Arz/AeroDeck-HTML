@@ -11,7 +11,7 @@ set "WORKDIR=%TEMP%\AeroDeck-HTML_sync"
 set "TARGET=%WORKDIR%\AeroDeck-HTML"
 
 echo =============================================
-echo Publicar HTML en repo publico
+echo Publicar HTML en repo publico - V003
 echo Source: %SRC%
 echo Target: %TARGET_URL%
 echo =============================================
@@ -19,9 +19,9 @@ echo =============================================
 if not exist "%WORKDIR%" mkdir "%WORKDIR%"
 
 if not exist "%TARGET%\.git" (
-	echo Clonando repo publico por primera vez...
-	git clone "%TARGET_URL%" "%TARGET%"
-	if errorlevel 1 goto :error
+    echo Clonando repo publico por primera vez...
+    git clone "%TARGET_URL%" "%TARGET%"
+    if errorlevel 1 goto :error
 )
 
 pushd "%TARGET%"
@@ -29,9 +29,6 @@ git fetch origin
 if errorlevel 1 goto :error_pop
 
 git checkout %TARGET_BRANCH%
-if errorlevel 1 goto :error_pop
-
-git reset --hard HEAD
 if errorlevel 1 goto :error_pop
 
 git pull --rebase origin %TARGET_BRANCH%
@@ -50,28 +47,28 @@ echo.
 git add -A
 git diff --cached --quiet
 if not errorlevel 1 (
-	echo No hay cambios para publicar.
-	popd
-	echo.
-	echo URL publica: https://claudio-arz.github.io/AeroDeck-HTML/
-	pause
-	exit /b 0
+    echo No hay cambios para publicar.
+    popd
+    echo.
+    echo URL publica: https://claudio-arz.github.io/AeroDeck-HTML/
+    pause
+    exit /b 0
 )
 
 set /p "MSG=Mensaje de commit para AeroDeck-HTML (vacio = cancelar): "
 if "%MSG%"=="" (
-	echo Operacion cancelada por el usuario.
-	popd
-	pause
-	exit /b 0
+    echo Operacion cancelada por el usuario.
+    popd
+    pause
+    exit /b 0
 )
 
 set /p "GO=Publicar en GitHub con ese mensaje? (S/N): "
 if /I not "%GO%"=="S" (
-	echo Operacion cancelada por el usuario.
-	popd
-	pause
-	exit /b 0
+    echo Operacion cancelada por el usuario.
+    popd
+    pause
+    exit /b 0
 )
 
 git commit -m "%MSG%"
@@ -94,4 +91,3 @@ popd
 echo.
 echo ERROR: Revisar mensajes de Git arriba.
 pause
-exit /b 1

@@ -73,15 +73,6 @@ function initFuelFlowControls() {
       }
     });
   }
-
-  // Event listener para el botón de Simulación/Manual
-  const simToggle = document.getElementById('ff-sim-toggle');
-  if (simToggle) {
-    simToggle.addEventListener('click', () => {
-      const isCurrentlySimulated = simToggle.classList.contains('active');
-      updateFuelFlowSimModeState(!isCurrentlySimulated, true);
-    });
-  }
   
 }
 
@@ -147,28 +138,5 @@ function toggleFuelFlowBrokenCrystal() {
   const crystal = document.getElementById('ff_broken_crystal_10');
   if (crystal) {
     crystal.classList.toggle('visible');
-  }
-}
-// Envía el estado de Simulación/Manual del Fuel Flow al ESP32 vía WebSocket
-function sendFuelFlowSimModeToESP32(simulated) {
-  if (window.ws && window.ws.readyState === WebSocket.OPEN) {
-    const data = JSON.stringify({ useSimulatedFuelFlow: simulated });
-    window.ws.send(data);
-    // console.log(`Enviando modo Fuel Flow al ESP32: ${simulated ? 'SIM' : 'MAN'}`);
-  }
-}
-
-// Actualiza el estado visual del botón SIM/MAN de Fuel Flow en la UI
-function updateFuelFlowSimModeState(simulated, sendToESP = false) {
-  const simToggle = document.getElementById('ff-sim-toggle');
-  if (!simToggle) return;
-  
-  const isSimulated = !!simulated;
-  simToggle.classList.toggle('active', isSimulated);
-  simToggle.textContent = isSimulated ? 'SIM' : 'MAN';
-  simToggle.title = isSimulated ? 'Fuel Flow Simulado activo' : 'Fuel Flow Manual activo';
-  
-  if (sendToESP) {
-    sendFuelFlowSimModeToESP32(isSimulated);
   }
 }

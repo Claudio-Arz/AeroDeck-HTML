@@ -32,10 +32,9 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Cessna 172 - Lycoming O-320 Simulator</title>
+<title>Benchmark & Calibration</title>
 
 
-<link rel="icon" href="data:,">
 <link rel="stylesheet" href="https://claudio-arz.github.io/AeroDeck-HTML/CSS/mainHTML.css">
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_variometer.js"></script>
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_altimeter.js"></script>
@@ -52,8 +51,6 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_FUEL.js"></script>
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_Reloj.js"></script>
 <script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_VoltAmp.js"></script>
-<script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_EGT.js"></script>
-<script src="https://claudio-arz.github.io/AeroDeck-HTML/JS/functions_Throttle.js"></script>
 
 
 </head>
@@ -61,21 +58,14 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 <body>
  
 
-<h1 style="text-align:center; margin-top: 24px;">Cessna 172 - Lycoming O-320 Simulator</h1>
+<h1 style="text-align:center; margin-top: 24px;">Benchmark & Calibration</h1>
 <div class="logo-container">
     <img class="logo" id="logo" 
       src="https://claudio-arz.github.io/AeroDeck-HTML/Images/ClaudioArzamendiaSystems.png" 
       alt="Logo de Claudio Arzamendia Systems">
 
     <input type="range" min="0" max="360" value="220" step="1" 
-      id="shadow-color" class="color-slider-input" style="display:none;">
-
-    <button id="sound-toggle-btn" title="Sonido ON/OFF"
-      style="margin-left:16px; padding:4px 12px; font-size:13px; font-weight:bold;
-             background:#1a7a1a; color:#fff; border:none; border-radius:6px;
-             cursor:pointer; white-space:nowrap;">
-      &#128266; Sound ON
-    </button>
+      id="shadow-color" class="color-slider-input">
     
 </div>
 
@@ -87,10 +77,8 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
   <div class="grid-item" id="inst03" style="grid-row: 1; grid-column: 5;">Altimeter</div>  
   
   <div class="grid-item" id="inst05" style="grid-row: 1; grid-column: 7;">Pitch & Roll Controls</div>  
-  <div class="grid-item" id="inst08" style="grid-row: 1; grid-column: 8;">Air Speed Controls</div>  
   <div class="grid-item" id="inst06" style="grid-row: 1; grid-column: 9;">RPM Controls</div>  
-  <div class="grid-item" id="inst32" style="grid-row: 1; grid-column: 10;">Throttle Controls</div>  
-
+  <div class="grid-item" id="inst08" style="grid-row: 1; grid-column: 8;">Air Speed Controls</div>  
   <div class="grid-item" id="inst12" style="grid-row: 2; grid-column: 1;">Fuel Flow Instrument</div>  
   <div class="grid-item" id="inst09" style="grid-row: 2; grid-column: 3;">Turn Coordinator</div>  
   <div class="grid-item" id="inst10" style="grid-row: 2; grid-column: 4;">Gyro</div>  
@@ -112,10 +100,8 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
   <div class="grid-item" id="inst24" style="grid-row: 3; grid-column: 10;">CHT Controls</div>
 
   <div class="grid-item" id="inst28" style="grid-row: 4; grid-column: 1;">Volt/Amp Instrument</div>
-  <div class="grid-item" id="inst31" style="grid-row: 4; grid-column: 2;">EGT Instrument</div>
   <div class="grid-item" id="inst27" style="grid-row: 4; grid-column: 5;">Clock</div>  
   <div class="grid-item" id="inst30" style="grid-row: 4; grid-column: 6;">Clock Controls</div>
-  <div class="grid-item" id="inst33" style="grid-row: 4; grid-column: 9;">EGT Controls</div>
   
   <div class="grid-item" id="inst29" style="grid-row: 4; grid-column: 10;">Volt/Amp Controls</div>
   
@@ -142,11 +128,7 @@ window.addEventListener('DOMContentLoaded', () => {
     } catch (e) {
       return;
     }
-    // --- Actualizar configuración con Throttle ---
-    if (data.throttleValue !== undefined && typeof updateThrottleControl === 'function') {
-      updateThrottleControl(data.throttleValue, false);
-    }
-    // --- Actualizar instrumento whatch ---
+    // --- Actualizar instrumentos ---
     if (data.relojValue !== undefined && typeof updateReloj === 'function') {
       updateReloj(data.relojValue);
     }
@@ -154,17 +136,7 @@ window.addEventListener('DOMContentLoaded', () => {
       updateVariometerAndValue(data.verticalSpeed);
     }
     if (data.altitudValue !== undefined && typeof updateAltimeterAndValue === 'function') {
-      updateAltimeterAndValue(data.altitudValue, data.bandera_off, data.atmosphericPressureHpa);
-    }
-    // --- Detección de aterrizaje duro (> 500 fpm de descenso) ---
-    if (data.altitudValue !== undefined && data.verticalSpeed !== undefined) {
-      const prevAlt = window._lastAltitude !== undefined ? window._lastAltitude : data.altitudValue;
-      const isLanding = (prevAlt > 5) && (data.altitudValue <= 5) && (data.verticalSpeed < -500);
-      if (isLanding) {
-        showAllBrokenCrystals();
-      }
-      window._lastAltitude    = data.altitudValue;
-      window._lastVertSpeed   = data.verticalSpeed;
+      updateAltimeterAndValue(data.altitudValue, data.bandera_off);
     }
     if (data.RPMValue !== undefined && typeof updateRPMAndValue === 'function') {
       // console.log("Actualizando RPM: " + data.RPMValue + " Noice: " + data.RPMNoice + " varRPM: " + data.varRPM);
@@ -191,9 +163,9 @@ window.addEventListener('DOMContentLoaded', () => {
       // console.log("Actualizando TC Avión: " + data['tc-rollValue']);
       updateTurnCoordinatorPlane(data['tc-rollValue']);
     }
-    if (data.tcBallValue !== undefined && typeof updateTurnCoordinatorBall === 'function') {
-      // console.log("Actualizando TC Péndulo: " + data.tcBallValue);
-      updateTurnCoordinatorBall(data.tcBallValue);
+    if (data['tc-pitchValue'] !== undefined && typeof updateTurnCoordinatorBall === 'function') {
+      // console.log("Actualizando TC Péndulo: " + data['tc-pitchValue']);
+      updateTurnCoordinatorBall(data['tc-pitchValue']);
     }
     if (data['fuelFlowValue'] !== undefined && typeof updateFuelFlow === 'function') {
       // console.log("Actualizando Fuel Flow: " + data['fuelFlowValue']);
@@ -218,10 +190,6 @@ window.addEventListener('DOMContentLoaded', () => {
       updateCHT(data['chtValue']);
     }
 
-    if (data['mixtureValue'] !== undefined && typeof updateEGTMixture === 'function') {
-      updateEGTMixture(parseFloat(data['mixtureValue']) * 100.0);
-    }
-
     if (data['fuelValueLeft'] !== undefined && typeof updateFUELLeft === 'function') {
       // console.log("Actualizando Fuel Left: " + data['fuelValueLeft']);
       updateFUELLeft(data['fuelValueLeft']);
@@ -229,13 +197,6 @@ window.addEventListener('DOMContentLoaded', () => {
     if (data['fuelValueRight'] !== undefined && typeof updateFUELRight === 'function') {
       // console.log("Actualizando Fuel Right: " + data['fuelValueRight']);
       updateFUELRight(data['fuelValueRight']);
-    }
-    if (data['activeTank'] !== undefined) {
-      if (typeof updateActiveTankIndicator === 'function') {
-        updateActiveTankIndicator(data['activeTank']);
-      } else if (typeof updateActiveTYankIndicator === 'function') {
-        updateActiveTYankIndicator(data['activeTank']);
-      }
     }
 
     if (data['voltAmpValueLeft'] !== undefined && typeof updateVoltAmpLeft === 'function') {
@@ -250,46 +211,17 @@ window.addEventListener('DOMContentLoaded', () => {
       // console.log("Actualizando EGT: " + data['egtValue']);
       updateEGT(data['egtValue']);
     }
-    if (data['egtBugValue'] !== undefined && typeof updateEGTBug === 'function') {
-      updateEGTBug(data['egtBugValue']);
-    }
-    if (data['useSimulatedEGT'] !== undefined && typeof updateEGTSimModeState === 'function') {
-      updateEGTSimModeState(data['useSimulatedEGT']);
-    }
   }
 });
 
 
-
-
-
-// Cargar el HTML de la caja de control del Throttle de forma dinámica.
-window.addEventListener('DOMContentLoaded', () => {
-  fetch("https://claudio-arz.github.io/AeroDeck-HTML/Throttle_Control.html")
-    .then(r => r.text())
-    .then(html => {
-      document.getElementById("inst32").innerHTML = html;
-      // Inicializar controles del Throttle después de insertar el HTML
-      if (typeof initThrottleControls === 'function') {
-        initThrottleControls();
-      } else {
-        // Si el script aún no está cargado, esperar y reintentar
-        setTimeout(() => {
-          if (typeof initThrottleControls === 'function') {
-            initThrottleControls();
-          }
-        }, 200);
-      }
-    });
-}); 
- 
 
 // Cargar el HTML del instrumento EGT de forma dinámica
 window.addEventListener('DOMContentLoaded', () => {
   fetch("https://claudio-arz.github.io/AeroDeck-HTML/EGT_Instrumento.html")
   .then(r => r.text())
   .then(html => {
-    document.getElementById("inst31").innerHTML = html;
+    document.getElementById("inst28").innerHTML = html;
     });
 });     
 
@@ -298,7 +230,7 @@ window.addEventListener('DOMContentLoaded', () => {
   fetch("https://claudio-arz.github.io/AeroDeck-HTML/EGT_Control.html")
     .then(r => r.text())
     .then(html => {
-      document.getElementById("inst33").innerHTML = html;
+      document.getElementById("inst29").innerHTML = html;
       // Inicializar controles del EGT después de insertar el HTML
       if (typeof initEGTControls === 'function') {
         initEGTControls();
@@ -745,82 +677,15 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// =============================================================
-// Muestra todos los cristales rotos (penalidad por aterrizaje duro)
-// Condición: velocidad vertical > 500 fpm al tocar tierra
-// =============================================================
-function showAllBrokenCrystals() {
-  const ids = [
-    'airspeed_broken_crystal11',
-    'altimeter_broken_crystal13',
-    'attitude_broken_crystal12',
-    'cht_broken_crystal07',
-    'egt_broken_crystal06',
-    'fuel_broken_crystal04',
-    'gyro_broken_crystal01',
-    'mf_broken_crystal05',
-    'op_broken_crystal03',
-    'ot_broken_crystal02',
-    'reloj_broken_crystal14',
-    'rpm_broken_crystal09',
-    'turn_coor_broken_crystal06',
-    'variometer_broken_crystal08',
-    'voltAmp_broken_crystal16',
-  ];
-  ids.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.classList.add('visible');
-  });
-  // Buscar también cualquier FuelFlow u otros cristales cargados dinámicamente
-  document.querySelectorAll('[id*="broken_crystal"]').forEach(el => {
-    el.classList.add('visible');
-  });
-}
-
-// Control del botón Sound ON/OFF
-window._soundEnabled = true; // arranca en ON
-window.isSoundEnabled = () => window._soundEnabled;
-
-window.addEventListener('DOMContentLoaded', () => {
-  const soundBtn = document.getElementById('sound-toggle-btn');
-  if (!soundBtn) return;
-  soundBtn.addEventListener('click', () => {
-    window._soundEnabled = !window._soundEnabled;
-    if (window._soundEnabled) {
-      soundBtn.textContent = '\u{1F50A} Sound ON';
-      soundBtn.style.background = '#1a7a1a';
-    } else {
-      soundBtn.textContent = '\u{1F507} Sound OFF';
-      soundBtn.style.background = '#7a1a1a';
-    }
-  });
-});
-
 // Control del slider para cambiar el color del box-shadow
 window.addEventListener('DOMContentLoaded', () => {
   const slider = document.getElementById('shadow-color');
   const logo = document.getElementById('logo');
-  let shadowEnabled = false; // Estado del shadow (apagado por defecto)
-  const shadowOffStyleId = 'instrument-shadow-off-style';
-
-  const setShadowOffStyle = (enabled) => {
-    let styleTag = document.getElementById(shadowOffStyleId);
-    if (enabled) {
-      if (!styleTag) {
-        styleTag = document.createElement('style');
-        styleTag.id = shadowOffStyleId;
-        styleTag.textContent = '.instrumento-grid{box-shadow:none !important;}';
-        document.head.appendChild(styleTag);
-      }
-    } else if (styleTag) {
-      styleTag.remove();
-    }
-  };
+  let shadowEnabled = true; // Estado del shadow (encendido por defecto)
 
   // Función para aplicar el color del box-shadow
   const applyShadowColor = (hue) => {
     if (!shadowEnabled) return; // No aplicar si está apagado
-    setShadowOffStyle(false);
     const color = `hsl(${hue}, 60%, 70%)`;
     document.querySelectorAll('.instrumento-grid').forEach(el => {
       el.style.boxShadow = `0 0 20px 10px ${color}`;
@@ -829,7 +694,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Función para quitar el box-shadow
   const removeShadow = () => {
-    setShadowOffStyle(true);
     document.querySelectorAll('.instrumento-grid').forEach(el => {
       el.style.boxShadow = 'none';
     });
@@ -853,9 +717,8 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   if (slider) {
-    // Arrancar sin shadow y con slider oculto
-    removeShadow();
-    slider.style.display = 'none';
+    // Aplicar el color inicial
+    applyShadowColor(slider.value);
 
     // Escuchar cambios en el slider
     slider.addEventListener('input', (e) => {

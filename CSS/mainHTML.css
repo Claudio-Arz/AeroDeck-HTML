@@ -148,7 +148,7 @@ para indicar visualmente su estado.
   position: relative;
   border-radius: 120px;
   overflow: hidden;
-  box-shadow: none; /* Apagado por defecto - controlado por JavaScript al hacer click en el logo */
+  box-shadow: 0 0 20px 10px rgb(121, 171, 242);
   background: #1d3958;
   border: 8px solid #1f22f0;
   box-sizing: border-box;

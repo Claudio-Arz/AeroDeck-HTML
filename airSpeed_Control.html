@@ -47,10 +47,9 @@ Este código HTML representa un control deslizante para ajustar la velocidad aé
       <button id="as-slider-min" class="slider-glow-btn slider-btn slider-btn-min as-btn-preset">Mín</button>
     </div>
   </div>
-  <!-- Fila inferior: Value + SIM -->
+  <!-- Fila inferior: Value solo debajo del slider -->
   <div class="as-value-row">
     <div class="slider-value" id="as-slider-value-label">40</div>
-    <button id="as-sim-btn" class="as-sim-btn">SIM</button>
   </div>
 </div>
 
@@ -136,8 +135,6 @@ Este código HTML representa un control deslizante para ajustar la velocidad aé
   }
   .as-value-row {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
     height: 20px;
     padding: 2px 4px;
     box-sizing: border-box;
@@ -147,17 +144,5 @@ Este código HTML representa un control deslizante para ajustar la velocidad aé
     text-align: center;
     width: 26px;
     color: black;
-  }
-  .as-sim-btn {
-    width: 36px;
-    height: 16px;
-    font-size: 8px;
-    background: #444;
-    color: #fff;
-    border-radius: 3px;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    line-height: 1;
   }
 </style>

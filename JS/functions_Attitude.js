@@ -23,61 +23,6 @@ let zeroActive = false;
 let currentPitch = 0;  // Valor actual de pitch en grados
 let currentRoll = 0;   // Valor actual de roll en grados
 
-// Función para actualizar la posición del knob basándose en valores de pitch/roll
-function updateAttitudeKnobPosition(pitchValue, rollValue) {
-  const knob = document.getElementById('knob');
-  const armLine = document.getElementById('joystick-arm-line');
-  
-  if (!knob) return;
-  
-  // Calcular posición X desde roll: roll (-30° a +30°) → x (-28 a +28 px)
-  const knobX = (rollValue / 30) * joystickRadius + joystickCenterX;
-  
-  // Calcular posición Y desde pitch: pitch (-20° a +20°) → y limitado a ±28px (50px = 20°)
-  const pitchPx = (pitchValue / 20) * 50;
-  const limitedY = Math.max(-joystickRadius, Math.min(joystickRadius, pitchPx));
-  const knobY = joystickCenterY + limitedY;
-  
-  // Actualizar posición visual del knob
-  knob.style.left = knobX + 'px';
-  knob.style.top = knobY + 'px';
-  
-  // Actualizar línea del brazo
-  if (armLine) {
-    armLine.setAttribute('x2', knobX);
-    armLine.setAttribute('y2', knobY);
-  }
-}
-
-function isBrakeOn() {
-  return window.brakeOnState === true;
-}
-
-function updateAttitudeBrakeUI(isOn) {
-  const box = document.querySelector('.attitude-control-box');
-  const joystick = document.getElementById('joystick');
-  const zeroBtn = document.getElementById('atti-zero-btn');
-  const pitchUpBtn = document.getElementById('pitch-up-btn');
-  const pitchDownBtn = document.getElementById('pitch-down-btn');
-  const rollUpBtn = document.getElementById('roll-up-btn');
-  const rollDownBtn = document.getElementById('roll-down-btn');
-
-  if (box) {
-    box.classList.toggle('is-brake-on', isOn === true);
-  }
-  if (joystick) {
-    joystick.style.pointerEvents = isOn ? 'none' : 'auto';
-  }
-  if (zeroBtn) {
-    zeroBtn.disabled = isOn;
-    zeroBtn.textContent = isOn ? 'Zero: LOCK' : 'Zero: OFF';
-  }
-  if (pitchUpBtn) pitchUpBtn.disabled = isOn;
-  if (pitchDownBtn) pitchDownBtn.disabled = isOn;
-  if (rollUpBtn) rollUpBtn.disabled = isOn;
-  if (rollDownBtn) rollDownBtn.disabled = isOn;
-}
-
 function setupAttitudeControls() {
   const knob = document.getElementById('knob');
   const joystick = document.getElementById('joystick');
@@ -98,16 +43,12 @@ function setupAttitudeControls() {
     return;
   }
 
-  // Aplicar estado inicial de frenos
-  updateAttitudeBrakeUI(isBrakeOn());
-
   // Centrar el knob inicialmente
   updateKnobPosition(joystickCenterX, joystickCenterY);
 
   // Botón Zero - anima suavemente a cero en 3 segundos
   if (zeroBtn) {
     zeroBtn.addEventListener('click', () => {
-      if (isBrakeOn()) return;
       if (zeroActive) return; // Ya está animando
       
       zeroActive = true;
@@ -122,7 +63,7 @@ function setupAttitudeControls() {
       const startX = currentX - joystickCenterX;
       const startY = currentY - joystickCenterY;
       
-      const duration = 8000; // 8 segundos (más gradual)
+      const duration = 3000; // 3 segundos
       const startTime = Date.now();
       
       function animateToZero() {
@@ -194,7 +135,6 @@ function setupAttitudeControls() {
   // Eventos de los botones de flechas Pitch/Roll
   if (pitchUpBtn) {
     pitchUpBtn.addEventListener('click', () => {
-      if (isBrakeOn()) return;
       if (zeroActive) return;
       currentPitch = Math.max(-20, currentPitch - 1);  // Arriba = pitch negativo (nariz arriba)
       updatePitchRollFromButtons();
@@ -202,7 +142,6 @@ function setupAttitudeControls() {
   }
   if (pitchDownBtn) {
     pitchDownBtn.addEventListener('click', () => {
-      if (isBrakeOn()) return;
       if (zeroActive) return;
       currentPitch = Math.min(20, currentPitch + 1);   // Abajo = pitch positivo (nariz abajo)
       updatePitchRollFromButtons();
@@ -210,7 +149,6 @@ function setupAttitudeControls() {
   }
   if (rollUpBtn) {
     rollUpBtn.addEventListener('click', () => {
-      if (isBrakeOn()) return;
       if (zeroActive) return;
       currentRoll = Math.min(30, currentRoll + 1);     // Roll derecha
       updatePitchRollFromButtons();
@@ -218,7 +156,6 @@ function setupAttitudeControls() {
   }
   if (rollDownBtn) {
     rollDownBtn.addEventListener('click', () => {
-      if (isBrakeOn()) return;
       if (zeroActive) return;
       currentRoll = Math.max(-30, currentRoll - 1);    // Roll izquierda
       updatePitchRollFromButtons();
@@ -243,7 +180,6 @@ function setupAttitudeControls() {
   }
 
   function startDrag(e) {
-    if (isBrakeOn()) return;
     if (zeroActive) return; // No mover si Zero está activo
     joystickDragging = true;
     knob.style.cursor = 'grabbing';
@@ -251,7 +187,6 @@ function setupAttitudeControls() {
   }
 
   function onDrag(e) {
-    if (isBrakeOn()) return;
     if (!joystickDragging || zeroActive) return;
     e.preventDefault();
 
@@ -331,16 +266,12 @@ function updateAttitudeControl(pitchValue, rollValue) {
   // Actualizar el instrumento visualmente
   const ball = document.getElementById('AttCon_ball');
   const dial = document.getElementById('AttCon_dial');
-  const pitchValueEl = document.getElementById('pitch-value');
-  const rollValueEl = document.getElementById('roll-value');
   
   if (ball) {
     // Pitch: mover verticalmente (±50px para ±20°)
     const pitchPx = (pitchValue / 20) * 50;
-    // La esfera es tierra-referenciada: gira opuesto al roll del avión.
-    // Bank derecho → esfera gira izquierda (sentido contrario al TC). Por eso se niega rollValue.
     // Primero rotate, luego translateY (orden importante!)
-    ball.style.transform = `rotate(${-rollValue}deg) translateY(${pitchPx}px)`;
+    ball.style.transform = `rotate(${rollValue}deg) translateY(${pitchPx}px)`;
   }
   
   if (dial) {
@@ -348,18 +279,11 @@ function updateAttitudeControl(pitchValue, rollValue) {
     dial.style.transform = `rotate(${rollValue}deg)`;
   }
 
-  // Actualizar displays de valores numéricos
-  if (pitchValueEl) pitchValueEl.textContent = pitchValue.toFixed(1) + '°';
-  if (rollValueEl) rollValueEl.textContent = rollValue.toFixed(1) + '°';
-
   // Actualizar display de coordenadas si existe
   const coordsDisplay = document.getElementById('coords');
   if (coordsDisplay) {
     coordsDisplay.textContent = `roll: ${rollValue.toFixed(1)}°, pitch: ${pitchValue.toFixed(1)}°`;
   }
-  
-  // Actualizar posición visual del knob del joystick
-  updateAttitudeKnobPosition(pitchValue, rollValue);
 }
 
 function initializeAttitudeControls() {

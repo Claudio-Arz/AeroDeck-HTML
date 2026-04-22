@@ -51,7 +51,6 @@ Oil Temperature Control  (medidas 120px x 240px)
   <!-- Fila inferior: Value -->
   <div class="ot-value-row">
     <div class="ot-value-label" id="ot-slider-value-label">0</div>
-    <button id="ot-sim-toggle" class="ot-sim-toggle" title="Alternar Oil Temp Simulado">SIM</button>
   </div>
 </div>
 
@@ -183,8 +182,6 @@ Oil Temperature Control  (medidas 120px x 240px)
   }
   .ot-value-row {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
     height: 20px;
     padding: 2px 4px;
     box-sizing: border-box;
@@ -201,24 +198,6 @@ Oil Temperature Control  (medidas 120px x 240px)
     border-radius: 3px;
     font-family: 'Courier New', monospace;
     text-shadow: 0 0 4px #B0C4DE;
-  }
-  .ot-sim-toggle {
-    width: 34px;
-    height: 16px;
-    border: 1px solid #708090;
-    border-radius: 3px;
-    font-size: 9px;
-    font-weight: bold;
-    padding: 0;
-    cursor: pointer;
-    color: #E2E8F0;
-    background: linear-gradient(145deg, #4A5568, #2D3748);
-    text-shadow: 1px 1px 1px #000;
-  }
-  .ot-sim-toggle.active {
-    color: #3D2B1F;
-    background: linear-gradient(145deg, #B8860B, #CD853F);
-    text-shadow: none;
   }
 </style>
 

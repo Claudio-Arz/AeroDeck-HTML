@@ -21,18 +21,14 @@ Medidas: 120px x 240px
 
 <div class="fuel-control-container">
   <!-- Título -->
-  <div class="title-fuel-control">⛽ Fuel Control <button id="fuel-sim-toggle" class="fuel-sim-toggle">SIM</button></div>
-  <!-- Indicador de tanque activo -->
-  <div class="fuel-active-tank-indicator">
-    <span id="fuel-active-tank-text">Tank: <span id="fuel-active-tank-value">L</span></span>
-  </div>
+  <div class="title-fuel-control">⛽ Fuel Control</div>
   <!-- Fila principal -->
   <div class="fuel-main-row">
     <!-- Slider Left -->
-    <div class="fuel-slider-column" id="fuel-column-left">
+    <div class="fuel-slider-column">
       <span class="fuel-tank-label">L</span>
-      <input type="range" min="0" max="25" value="25" step="0.5" id="fuel-slider-left" orient="vertical" class="fuel-slider-input">
-      <div class="fuel-value-label" id="fuel-value-left">25</div>
+      <input type="range" min="0" max="25" value="12" step="0.5" id="fuel-slider-left" orient="vertical" class="fuel-slider-input">
+      <div class="fuel-value-label" id="fuel-value-left">12</div>
     </div>
     <!-- Botones +/- Left -->
     <div class="fuel-plusminus-column">
@@ -54,10 +50,10 @@ Medidas: 120px x 240px
       <button id="fuel-btn-minus-right" class="fuel-btn fuel-btn-minus">▼</button>
     </div>
     <!-- Slider Right -->
-    <div class="fuel-slider-column" id="fuel-column-right">
+    <div class="fuel-slider-column">
       <span class="fuel-tank-label">R</span>
-      <input type="range" min="0" max="25" value="25" step="0.5" id="fuel-slider-right" orient="vertical" class="fuel-slider-input">
-      <div class="fuel-value-label" id="fuel-value-right">25</div>
+      <input type="range" min="0" max="25" value="12" step="0.5" id="fuel-slider-right" orient="vertical" class="fuel-slider-input">
+      <div class="fuel-value-label" id="fuel-value-right">12</div>
     </div>
   </div>
 </div>
@@ -90,43 +86,6 @@ Medidas: 120px x 240px
     box-sizing: border-box;
     text-shadow: 0 0 4px #4ade80;
     border-bottom: 1px solid #4ade80;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-  }
-  .fuel-sim-toggle {
-    width: 28px;
-    height: 14px;
-    border: 1px solid #4a5d23;
-    border-radius: 3px;
-    font-size: 8px;
-    font-weight: bold;
-    padding: 0;
-    cursor: pointer;
-    color: #4ade80;
-    background: linear-gradient(145deg, #1e3a5f, #0d1b2a);
-    text-shadow: 1px 1px 1px #000;
-  }
-  .fuel-sim-toggle.active {
-    color: #0d1b2a;
-    background: linear-gradient(145deg, #4ade80, #22c55e);
-    text-shadow: none;
-  }
-  .fuel-active-tank-indicator {
-    font-size: 9px;
-    font-weight: bold;
-    text-align: center;
-    color: #fbbf24;
-    background: #0a1628;
-    padding: 2px;
-    height: 14px;
-    border-bottom: 1px solid #1e3a5f;
-    text-shadow: 0 0 3px #fbbf24;
-  }
-  .fuel-slider-column.active {
-    background: #1a3a2a;
-    box-shadow: 0 0 8px #4ade80;
   }
   .fuel-main-row {
     display: flex;

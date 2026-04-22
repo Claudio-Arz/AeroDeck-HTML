@@ -12,105 +12,18 @@
     los event listeners para los controles interactivos del FUEL, como el slider y los 
     botones de valores predefinidos.
 
-  El instrumento de combustible muestra la cantidad de combustible disponible en tiempo real. 
-  El valor se representa en galones (Gls) y se   muestra en una escala que va de 0 a 25 Gls. 
-  El instrumento tiene una aguja que se mueve   para indicar la cantidad de combustible actual, 
-  y un valor numérico que muestra la cantidad exacta de combustible disponible. El control de 
-  combustible se puede ajustar mediante un slider o botones predefinidos para valores comunes 
-  de combustible. Al cambiar el valor, se anima la aguja del instrumento y se envía el nuevo 
-  valor al ESP32 para que lo refleje en el instrumento físico y en todas las terminales conectadas.
+  El instrumento de combustible muestra la cantidad de combustible disponible en tiempo real. El valor se representa en litros (L) y se 
+  muestra en una escala que va de 0 a 100 L. El instrumento tiene una aguja que se mueve 
+  para indicar la cantidad de combustible actual, y un valor numérico que muestra la cantidad exacta de 
+  combustible disponible. El control de combustible se puede ajustar mediante 
+  un slider o botones predefinidos para valores comunes de combustible. Al cambiar el valor, 
+  se anima la aguja del instrumento y se envía el nuevo valor al ESP32 para que lo refleje 
+  en el instrumento físico y en todas las terminales conectadas.
 
 
 */
 
-let fuelLeftCurrent = 25.0;
-let fuelRightCurrent = 25.0;
-let fuelLightMode = 'off';
-let fuelLightVisible = false;
-let fuelLightLastToggleMs = 0;
-
-function applyFuelLightAppearance(mode, visible) {
-  const fuelLight = document.getElementById('fuel_light');
-  const fuelFront = document.getElementById('fuel-front');
-
-  if (!fuelLight && !fuelFront) return;
-
-  if (mode === 'off' || !visible) {
-    if (fuelLight) {
-      fuelLight.style.backgroundColor = 'rgba(0, 0, 0, 0.05)';
-      fuelLight.style.boxShadow = 'none';
-    }
-    if (fuelFront) {
-      fuelFront.style.filter = 'none';
-      fuelFront.style.boxShadow = 'none';
-    }
-    return;
-  }
-
-  if (mode === 'red') {
-    if (fuelLight) {
-      fuelLight.style.backgroundColor = 'rgba(255, 40, 40, 0.55)';
-      fuelLight.style.boxShadow = '0 0 14px 8px rgba(255, 0, 0, 0.90)';
-    }
-    if (fuelFront) {
-      fuelFront.style.filter = 'drop-shadow(0 0 10px rgba(255, 0, 0, 0.95)) drop-shadow(0 0 18px rgba(255, 0, 0, 0.85))';
-      fuelFront.style.boxShadow = '0 0 12px 6px rgba(255, 0, 0, 0.75)';
-    }
-    return;
-  }
-
-  if (fuelLight) {
-    fuelLight.style.backgroundColor = 'rgba(255, 235, 59, 0.50)';
-    fuelLight.style.boxShadow = '0 0 14px 8px rgba(255, 220, 0, 0.85)';
-  }
-  if (fuelFront) {
-    fuelFront.style.filter = 'drop-shadow(0 0 10px rgba(255, 220, 0, 0.95)) drop-shadow(0 0 18px rgba(255, 200, 0, 0.80))';
-    fuelFront.style.boxShadow = '0 0 12px 6px rgba(255, 220, 0, 0.70)';
-  }
-}
-
-function computeFuelLightMode() {
-  const minFuel = Math.min(fuelLeftCurrent, fuelRightCurrent);
-  if (minFuel <= 2.5) return 'red';
-  if (minFuel <= 5.0) return 'yellow';
-  return 'off';
-}
-
-function updateFuelAlertLight() {
-  const now = Date.now();
-  const nextMode = computeFuelLightMode();
-
-  if (nextMode !== fuelLightMode) {
-    fuelLightMode = nextMode;
-    fuelLightLastToggleMs = now;
-    fuelLightVisible = (fuelLightMode !== 'off');
-    applyFuelLightAppearance(fuelLightMode, fuelLightVisible);
-    return;
-  }
-
-  if (fuelLightMode === 'off') {
-    fuelLightVisible = false;
-    applyFuelLightAppearance('off', false);
-    return;
-  }
-
-  const blinkIntervalMs = fuelLightMode === 'red' ? 500 : 1000;
-  if ((now - fuelLightLastToggleMs) >= blinkIntervalMs) {
-    fuelLightLastToggleMs = now;
-    fuelLightVisible = !fuelLightVisible;
-    applyFuelLightAppearance(fuelLightMode, fuelLightVisible);
-  }
-}
-
-function ensureFuelAlertLightTimer() {
-  if (window.fuelAlertLightTimerId) return;
-  window.fuelAlertLightTimerId = window.setInterval(updateFuelAlertLight, 100);
-}
-
 function initFUELControls() {
-  ensureFuelAlertLightTimer();
-  updateFuelAlertLight();
-
   // Event listener para el slider izquierdo
   const sliderL = document.getElementById('fuel-slider-left');
   if (sliderL) {
@@ -211,15 +124,6 @@ function initFUELControls() {
       }
     });
   }
-
-  // Event listener para el botón de Simulación/Manual de Fuel
-  const simToggle = document.getElementById('fuel-sim-toggle');
-  if (simToggle) {
-    simToggle.addEventListener('click', () => {
-      const isCurrentlySimulated = simToggle.classList.contains('active');
-      updateFuelSimModeState(!isCurrentlySimulated, true);
-    });
-  }
 }
 
 function updateFUELLeft(fuel, sendToESP = false) {
@@ -248,8 +152,6 @@ function updateFUELLeft(fuel, sendToESP = false) {
   if (sliderLabel) {
     sliderLabel.textContent = fuel.toFixed(1);
   }
-  fuelLeftCurrent = fuel;
-  updateFuelAlertLight();
   // Calcular el ángulo de la aguja utilizando la función fuelToAngleLeft
   const angle = fuelToAngleLeft(fuel);
   needle.style.transform = `rotate(${angle}deg)`;
@@ -285,8 +187,6 @@ function updateFUELRight(fuel, sendToESP = false) {
   if (sliderLabel) {
     sliderLabel.textContent = fuel.toFixed(1);
   }
-  fuelRightCurrent = fuel;
-  updateFuelAlertLight();
   // Calcular el ángulo de la aguja utilizando la función fuelToAngleRight
   const angle = fuelToAngleRight(fuel);
   needle.style.transform = `rotate(${angle}deg)`;
@@ -335,61 +235,4 @@ function toggleFuelBrokenCrystal() {
   if (crystal) {
     crystal.classList.toggle('visible');
   }
-}
-
-// Envía el estado de Simulación/Manual del Fuel al ESP32 vía WebSocket
-function sendFuelSimModeToESP32(simulated) {
-  if (window.ws && window.ws.readyState === WebSocket.OPEN) {
-    const data = JSON.stringify({ useSimulatedFuel: simulated });
-    window.ws.send(data);
-    // console.log(`Enviando modo Fuel al ESP32: ${simulated ? 'SIM' : 'MAN'}`);
-  }
-}
-
-// Actualiza el estado visual del botón SIM/MAN de Fuel en la UI
-function updateFuelSimModeState(simulated, sendToESP = false) {
-  const simToggle = document.getElementById('fuel-sim-toggle');
-  if (!simToggle) return;
-  
-  const isSimulated = !!simulated;
-  simToggle.classList.toggle('active', isSimulated);
-  simToggle.textContent = isSimulated ? 'SIM' : 'MAN';
-  simToggle.title = isSimulated ? 'Fuel Simulado activo' : 'Fuel Manual activo';
-  
-  if (sendToESP) {
-    sendFuelSimModeToESP32(isSimulated);
-  }
-}
-
-// Actualiza el indicador de tanque activo en la UI
-function updateActiveTankIndicator(activeTank) {
-  const tankValueSpan = document.getElementById('fuel-active-tank-value');
-  const leftColumn = document.getElementById('fuel-column-left');
-  const rightColumn = document.getElementById('fuel-column-right');
-
-  // Acepta: 1/2, "1"/"2", "L"/"R", "left"/"right"
-  const normalized = String(activeTank).trim().toUpperCase();
-  const isLeftTank = (
-    activeTank === 1 ||
-    normalized === '1' ||
-    normalized === 'L' ||
-    normalized === 'LEFT' ||
-    normalized === 'IZQ' ||
-    normalized === 'IZQUIERDO'
-  );
-
-  if (tankValueSpan) {
-    tankValueSpan.textContent = isLeftTank ? 'L' : 'R';
-  }
-
-  // Resaltar la columna del tanque activo
-  if (leftColumn && rightColumn) {
-    leftColumn.classList.toggle('active', isLeftTank);
-    rightColumn.classList.toggle('active', !isLeftTank);
-  }
-}
-
-// Compatibilidad con llamadas antiguas con typo en el nombre
-function updateActiveTYankIndicator(activeTank) {
-  updateActiveTankIndicator(activeTank);
 }

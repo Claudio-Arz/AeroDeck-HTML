@@ -1,0 +1,112 @@
+<!--
+  HTML para el instrumento Altímetro.
+  Autor: Claudio Arzamendia
+  Fecha: 2026-02-07 18:51:04
+
+  Este programa tiene que recibir la altitud en pies a través de WebSocket
+  con el nombre "altitudValue" y calcular los ángulos de las agujas
+  del altímetro en función de ese valor. 
+  También recibe el valor de bandera_off para mostrar u ocultar 
+  la bandera de OFF cuando la altitud supera los 19000 pies.
+
+  Tiene que incluir el CSS y el JS Especifico para el instrumento Altimetro.
+
+-->
+<div class="instrumento-grid">
+    <!-- Fondo escala Kollsman -->
+    <img class="altimeter-bg" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/altimeter/escala_kollsman.png" alt="Escala Kollsman">
+    <!-- Dial principal -->
+    <img class="altimeter-dial" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/altimeter/altimeter_dial.png" alt="Altimeter Dial">
+    <!-- Bandera OFF -->
+    <img id="altimeter-flag" class="altimeter-flag" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/altimeter/bandera_off.png" alt="Bandera Off">
+    <!-- Tapa frente -->
+    <img class="altimeter-cover" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/altimeter/tapa_frente.png" alt="Tapa Frente">
+
+    <!-- Agujas principales -->
+    <div class="aguja-altimeter" id="aguja-altimeter">
+      <img id="aguja_decenas_miles" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/altimeter/aguja_dec_miles_pies.png" alt="Aguja Dec Miles Pies">
+      <img id="aguja_miles" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/altimeter/aguja_miles_pies.png" alt="Aguja Miles Pies">
+    </div>
+    <!-- Aguja de cientos -->
+    <div class="aguja-altimeter-cientos" id="aguja-altimeter-cientos">
+      <img id="aguja_pies" src="https://claudio-arz.github.io/AeroDeck-HTML/Images/altimeter/aguja_pies.png" alt="Aguja Pies">
+    </div>
+
+    <div id="altimeter-value" class="instrument-center-label">--</div>
+</div>
+
+<style>
+
+
+  /* Estilos específicos para el instrumento Altímetro */
+  .altimeter-bg {
+    width: 85%;
+    height: 85%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    pointer-events: none;
+    object-fit: contain;
+  }
+  .altimeter-dial {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    pointer-events: none;
+    border-radius: 50%;
+    object-fit: contain;
+  }
+  .altimeter-flag {
+    width: 48%;
+    height: 48%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    pointer-events: none;
+    border-radius: 50%;
+    object-fit: contain;
+    transition: transform 1.5s cubic-bezier(.4,2,.6,1);
+  }
+  .altimeter-cover {
+    width: 48%;
+    height: 48%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    pointer-events: none;
+    border-radius: 50%;
+    object-fit: contain;
+  }
+  .aguja-altimeter img {
+    width: 7.8%;
+    height: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 18;
+    pointer-events: none;
+    object-fit: contain;
+  }
+  .aguja-altimeter-cientos img {
+    width: 6.1%;
+    height: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 18;
+    pointer-events: none;
+    object-fit: contain;
+  }
+</style>
+

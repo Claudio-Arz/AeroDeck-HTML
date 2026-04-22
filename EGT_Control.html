@@ -29,12 +29,12 @@ EGT Control  (medidas 120px x 240px)
 
 <div class="egt-control-container">
   <!-- Título -->
-  <div class="title-egt-control">Mixture Control</div>
+  <div class="title-egt-control">EGT Control</div>
   <!-- Fila principal: Slider + Botones -->
   <div class="egt-main-row">
     <!-- Slider vertical -->
     <div class="egt-slider-column">
-      <input type="range" min="0" max="100" value="45" id="egt-slider" orient="vertical" class="egt-slider-input">
+      <input type="range" min="100" max="500" value="100" id="egt-slider" orient="vertical" class="egt-slider-input">
     </div>
     <!-- Botones +1/-1 -->
     <div class="egt-plusminus-column">
@@ -43,25 +43,14 @@ EGT Control  (medidas 120px x 240px)
     </div>
     <!-- Botones Máx/Med/Mín -->
     <div class="egt-presets-column">
-      <button id="egt-slider-max" class="egt-btn egt-btn-preset egt-btn-max">RICH</button>
-      <button id="egt-slider-mid" class="egt-btn egt-btn-preset egt-btn-mid">PEAK</button>
-      <button id="egt-slider-min" class="egt-btn egt-btn-preset egt-btn-min">LEAN</button>
+      <button id="egt-slider-max" class="egt-btn egt-btn-preset egt-btn-max">Máx</button>
+      <button id="egt-slider-mid" class="egt-btn egt-btn-preset egt-btn-mid">Med</button>
+      <button id="egt-slider-min" class="egt-btn egt-btn-preset egt-btn-min">Mín</button>
     </div>
   </div>
   <!-- Fila inferior: Value -->
   <div class="egt-value-row">
-    <div class="egt-value-label" id="egt-slider-value-label">45%</div>
-  </div>
-
-  <div class="egt-bug-row">
-    <input type="range" min="800" max="1600" value="1450" id="egt-bug-slider" class="egt-bug-slider-input">
-    <div class="egt-bug-value-label" id="egt-bug-value-label">1450</div>
-  </div>
-
-  <div class="egt-bug-actions-row">
-    <button id="egt-bug-set-peak" class="egt-btn egt-btn-bug">SET PK</button>
-    <button id="egt-bug-reset" class="egt-btn egt-btn-bug">RST 1450</button>
-    <button id="egt-sim-toggle" class="egt-btn egt-btn-sim active" title="EGT Simulado activo">SIM</button>
+    <div class="egt-value-label" id="egt-slider-value-label">0</div>
   </div>
 </div>
 
@@ -75,7 +64,7 @@ EGT Control  (medidas 120px x 240px)
     height: 240px;
     max-width: 120px;
     max-height: 240px;
-    background: linear-gradient(135deg, #37545d 0%, #557b8b 25%, #6c92a0 50%, #44636b 75%, #2a424a 100%);
+    background: linear-gradient(135deg, #5D4E37 0%, #8B7355 25%, #A0896C 50%, #6B5344 75%, #4A3C2A 100%);
     border: 2px solid #708090;
     border-radius: 8px;
     box-sizing: border-box;    
@@ -100,7 +89,7 @@ EGT Control  (medidas 120px x 240px)
     flex-direction: row;
     align-items: stretch;
     gap: 2px;
-    height: 162px;
+    height: 180px;
     padding: 4px;
     box-sizing: border-box;
   }
@@ -181,15 +170,15 @@ EGT Control  (medidas 120px x 240px)
     color: #F5F5DC;
   }
   .egt-btn-max {
-    background: linear-gradient(145deg, #B45309, #EA580C);
+    background: linear-gradient(145deg, #8B4513, #A0522D);
   }
   .egt-btn-mid {
-    background: linear-gradient(145deg, #D97706, #F59E0B);
-    color: #2D1B00;
+    background: linear-gradient(145deg, #CD853F, #DEB887);
+    color: #3D2B1F;
     text-shadow: none;
   }
   .egt-btn-min {
-    background: linear-gradient(145deg, #1D4ED8, #2563EB);
+    background: linear-gradient(145deg, #6B4423, #5D3A1A);
   }
   .egt-value-row {
     display: flex;
@@ -209,63 +198,6 @@ EGT Control  (medidas 120px x 240px)
     border-radius: 3px;
     font-family: 'Courier New', monospace;
     text-shadow: 0 0 4px #B0C4DE;
-  }
-
-  .egt-bug-row {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    height: 18px;
-    padding: 1px 4px;
-    background: #2a3547;
-    border-top: 1px solid #708090;
-    box-sizing: border-box;
-  }
-
-  .egt-bug-slider-input {
-    flex: 1;
-    min-width: 0;
-    width: 0;
-    height: 12px;
-    accent-color: #fbbf24;
-  }
-
-  .egt-bug-value-label {
-    width: 34px;
-    font-size: 9px;
-    font-weight: bold;
-    text-align: center;
-    color: #fbbf24;
-    background: #1f2937;
-    border-radius: 3px;
-    font-family: 'Courier New', monospace;
-  }
-
-  .egt-bug-actions-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 3px;
-    height: 22px;
-    padding: 2px 4px;
-    box-sizing: border-box;
-    background: #4A5568;
-    border-top: 1px solid #708090;
-  }
-
-  .egt-btn-bug,
-  .egt-btn-sim {
-    font-size: 8px;
-    line-height: 1;
-    padding: 2px 3px;
-    border-radius: 3px;
-    height: 16px;
-    color: #F5F5DC;
-    background: linear-gradient(145deg, #5A6578, #708090);
-  }
-
-  .egt-btn-sim.active {
-    background: linear-gradient(145deg, #2b6cb0, #3b82f6);
   }
 </style>
 
