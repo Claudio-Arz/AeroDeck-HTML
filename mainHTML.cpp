@@ -99,11 +99,11 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
   <div class="grid-item" id="inst22" style="grid-row: 3; grid-column: 9;">Oil Temp Controls</div>
   <div class="grid-item" id="inst24" style="grid-row: 3; grid-column: 10;">CHT Controls</div>
 
-  <div class="grid-item" id="inst28" style="grid-row: 4; grid-column: 1;">Volt/Amp Instrument</div>
+  <div class="grid-item" id="inst28" style="grid-row: 4; grid-column: 1;"></div>
   <div class="grid-item" id="inst27" style="grid-row: 4; grid-column: 5;">Clock</div>  
   <div class="grid-item" id="inst30" style="grid-row: 4; grid-column: 6;">Clock Controls</div>
   
-  <div class="grid-item" id="inst29" style="grid-row: 4; grid-column: 10;">Volt/Amp Controls</div>
+  <div class="grid-item" id="inst29" style="grid-row: 4; grid-column: 10;"></div>
   
 
 </div>
