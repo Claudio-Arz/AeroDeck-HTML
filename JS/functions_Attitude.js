@@ -270,8 +270,9 @@ function updateAttitudeControl(pitchValue, rollValue) {
   if (ball) {
     // Pitch: mover verticalmente (±50px para ±20°)
     const pitchPx = (pitchValue / 20) * 50;
+    // El horizonte (ball) debe inclinar en sentido opuesto al roll del avion.
     // Primero rotate, luego translateY (orden importante!)
-    ball.style.transform = `rotate(${rollValue}deg) translateY(${pitchPx}px)`;
+    ball.style.transform = `rotate(${-rollValue}deg) translateY(${pitchPx}px)`;
   }
   
   if (dial) {
