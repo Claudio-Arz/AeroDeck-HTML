@@ -199,82 +199,28 @@ window.addEventListener('DOMContentLoaded', () => {
       updateFUELRight(data['fuelValueRight']);
     }
 
-    if (data['voltAmpValueLeft'] !== undefined && typeof updateVoltAmpLeft === 'function') {
-      // console.log("Actualizando Volt/Amp Left: " + data['voltAmpValueLeft']);
-      updateVoltAmpLeft(data['voltAmpValueLeft']);
-    }
-    if (data['voltAmpValueRight'] !== undefined && typeof updateVoltAmpRight === 'function') {
-      // console.log("Actualizando Volt/Amp Right: " + data['voltAmpValueRight']);
-      updateVoltAmpRight(data['voltAmpValueRight']);
-    }
-    if (data['egtValue'] !== undefined && typeof updateEGT === 'function') {
-      // console.log("Actualizando EGT: " + data['egtValue']);
-      updateEGT(data['egtValue']);
-    }
+
+
   }
 });
 
 
 
 // Cargar el HTML del instrumento EGT de forma dinámica
-window.addEventListener('DOMContentLoaded', () => {
-  fetch("https://claudio-arz.github.io/AeroDeck-HTML/EGT_Instrumento.html")
-  .then(r => r.text())
-  .then(html => {
-    document.getElementById("inst28").innerHTML = html;
-    });
-});     
+// Se eliminó EGT Instrument para simplificar el diseño, ya que no hay instrumentos específicos para este instrumento.    
 
 // Cargar el HTML de la caja de control del EGT de forma dinámica.
-window.addEventListener('DOMContentLoaded', () => {
-  fetch("https://claudio-arz.github.io/AeroDeck-HTML/EGT_Control.html")
-    .then(r => r.text())
-    .then(html => {
-      document.getElementById("inst29").innerHTML = html;
-      // Inicializar controles del EGT después de insertar el HTML
-      if (typeof initEGTControls === 'function') {
-        initEGTControls();
-      } else {
-        // Si el script aún no está cargado, esperar y reintentar
-        setTimeout(() => {
-          if (typeof initEGTControls === 'function') {
-            initEGTControls();
-          }
-        }, 200);
-      }
-    });
-}); 
+// Se eliminó EGT Controls para simplificar el diseño, ya que no hay controles específicos para este instrumento. 
  
 
 
 // Cargar el HTML del instrumento Volt/Amp de forma dinámica
-window.addEventListener('DOMContentLoaded', () => {
-  fetch("https://claudio-arz.github.io/AeroDeck-HTML/VoltAmp_Instrumento.html")
-  .then(r => r.text())
-  .then(html => {
-    document.getElementById("inst28").innerHTML = html;
-    });
-});     
+// Se eliminó Volt/Amp Instrument para simplificar el diseño, ya que no hay instrumentos 
+// específicos para este instrumento.    
 
 // Cargar el HTML de la caja de control del Volt/Amp de forma dinámica.
-window.addEventListener('DOMContentLoaded', () => {
-  fetch("https://claudio-arz.github.io/AeroDeck-HTML/VoltAmp_Control.html")
-    .then(r => r.text())
-    .then(html => {
-      document.getElementById("inst29").innerHTML = html;
-      // Inicializar controles del Volt/Amp después de insertar el HTML
-      if (typeof initVoltAmpControls === 'function') {
-        initVoltAmpControls();
-      } else {
-        // Si el script aún no está cargado, esperar y reintentar
-        setTimeout(() => {
-          if (typeof initVoltAmpControls === 'function') {
-            initVoltAmpControls();
-          }
-        }, 200);
-      }
-    });
-}); 
+// Se eliminó Volt/Amp Controls para simplificar el diseño, ya que no hay controles específicos
+// para este instrumento.
  
 // Cargar el HTML del instrumento Reloj de forma dinámica
 window.addEventListener('DOMContentLoaded', () => {
